@@ -1,0 +1,10 @@
+External microphone
+44100
+8
+1
+codec
+5 seconds
+home/gianghandsome/esca-main/data
+1
+HW:2,0
+5
