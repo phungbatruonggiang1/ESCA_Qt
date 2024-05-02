@@ -18,6 +18,13 @@ public:
     QVector<float> getBuffer() const {
         return m_buffer;
     }
+
+    int getSampleCount() const;
+    void setSampleCount(int newSampleCount);
+
+    int getResolution() const;
+    void setResolution(int newResolution);
+
 signals:
     void bufferUpdated(const QVector<float>& newBuffer);
 
