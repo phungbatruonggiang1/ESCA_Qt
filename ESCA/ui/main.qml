@@ -3,7 +3,7 @@ import QtQuick.Window 2.15
 import QtQuick.Controls 2.15
 import QtCharts 2.6
 import QtMultimedia 5.15
-import "qrc:/ui/component"
+import "qrc:/ui/components"
 
 Window {
     id: mainScreen

@@ -1,5 +1,5 @@
 import QtQuick 2.15
-import "qrc:/ui/component/QtQuick/Studio/Components"
+import "qrc:/ui/components/QtQuick/Studio/Components"
 import QtQuick.Controls 2.15
 import QtQuick.Dialogs 1.0
 import QtCharts 2.6

@@ -1,5 +1,5 @@
 import QtQuick 2.15
-import "qrc:/ui/component/QtQuick/Studio/Components"
+import "qrc:/ui/components/QtQuick/Studio/Components"
 import QtQuick.Controls 2.15
 
 Rectangle {
@@ -302,7 +302,7 @@ Rectangle {
             anchors.fill: parent
             anchors.leftMargin: 0
             onClicked: {
-                loader.source = "/ui/layout/recordingSound.qml"
+                loader.source = "/ui/modules/recording/recordingSound.qml"
             }
         }
     }
