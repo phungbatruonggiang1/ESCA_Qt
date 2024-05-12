@@ -45,21 +45,21 @@ void AudioEngine::audioInputStop() {
     m_audioInput->stop();
 }
 
-void AudioEngine::startAudioInput(QIODevice *device) {
-    m_audioInput->start(device);
-}
+// void AudioEngine::startAudioInput(QIODevice *device) {
+    // m_audioInput->start(device);
+// }
 
-void AudioEngine::setAudioInputDevice(const QString device)
+void AudioEngine::setAudioInputDevice(QString device)
 {
-    m_availableAudioInputDevices = QAudioDeviceInfo::availableDevices(QAudio::AudioInput);
-    for(int i = 0; i < m_availableAudioInputDevices.size(); ++i) {
-        if(device == m_availableAudioInputDevices.at(i).deviceName()) {
-            m_audioInput->~QAudioInput();
-            m_audioInput = new QAudioInput(m_availableAudioInputDevices.at(i), m_inputFormat, this);
-            m_audioInput->setBufferSize(1024);
-            break;
-        }
-    }
+    // m_availableAudioInputDevices = QAudioDeviceInfo::availableDevices(QAudio::AudioInput);
+    // for(int i = 0; i < m_availableAudioInputDevices.size(); ++i) {
+    //     if(device == m_availableAudioInputDevices.at(i).deviceName()) {
+    //         m_audioInput->~QAudioInput();
+    //         // m_audioInput = new QAudioInput(m_availableAudioInputDevices.at(i), m_inputFormat, this);
+    //         m_audioInput->setBufferSize(1024);
+    //         break;
+    //     }
+    // }
 }
 
 void AudioEngine::setAudioOutputDevice(const QString device)
@@ -68,7 +68,7 @@ void AudioEngine::setAudioOutputDevice(const QString device)
     for(int i = 0; i < m_availableAudioOutputDevices.size(); ++i) {
         if(device == m_availableAudioOutputDevices.at(i).deviceName()) {
             m_audioOutput->~QAudioOutput();
-            m_audioOutput = new QAudioOutput(m_availableAudioOutputDevices.at(i), m_inputFormat, this);
+            // m_audioOutput = new QAudioOutput(m_availableAudioOutputDevices.at(i), m_inputFormat, this);
             break;
         }
     }
@@ -76,9 +76,9 @@ void AudioEngine::setAudioOutputDevice(const QString device)
 
 QVector<QString> AudioEngine::getsupportedCodecList() const
 {
-    for(int i = 0; i < m_inputDevice.supportedCodecs().size(); ++i)
-        m_supportedCodecList.append(1);
-    return m_supportedCodecList;
+    // for(int i = 0; i < m_inputDevice.supportedCodecs().size(); ++i)
+    //     m_supportedCodecList.append(1);
+    // return m_supportedCodecList;
 }
 
 

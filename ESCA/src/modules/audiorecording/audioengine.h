@@ -27,22 +27,27 @@ public:
     const QVector<QString> availableAudioInputDevices() const
     { return m_inputDevice; }
 
-    const QList<QAudioDeviceInfo> &availableAudioOutputDevices() const
+    const QVector<QString> &availableAudioOutputDevices() const
     { return m_outputDevice; }
 
     void setInputBufferSize(int value);
     void audioInputStop();
-    void startAudioInput();
+    // void startAudioInput();
 
-   void setAudioInputDevice(const QString device);
+   void setAudioInputDevice(QString device);
    void setAudioOutputDevice(const QString device);
 
-signals:
+
+
+
+   QVector<QString> getsupportedCodecList() const;
+
+   signals:
     void inputDeviceSig(QVector<QString>& m_inputDevice);
 
 
 private:
-    QAudioFormat* m_inputFormat = nullptr;
+    QAudioFormat m_inputFormat;
     QAudioFormat* m_outputFormat = nullptr;
     QVector<QString> m_supportedCodecList;
 

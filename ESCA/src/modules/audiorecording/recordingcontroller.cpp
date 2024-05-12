@@ -28,70 +28,66 @@ RecordingController::RecordingController(QObject *parent) : QObject{parent}
         formatAudio.setSampleType(QAudioFormat::UnSignedInt);
 
         // khoi tạo một obj mới dùng để thu âm thanh từ loa
-        m_audio = new AudioEngine(formatAudio, this);
-        m_audio->setInputBufferSize(1024);
-        m_audiochart = new AudioChart(this);
-        m_audiochart->open(QIODevice::WriteOnly);
-        m_audio->startAudioInput(m_audiochart);
-        m_audio_file = new AudioFile();
-        m_audio_config = new AudioConfigFile();
-        m_audio_socket = new Socket();
+        m_audioEngine = new AudioEngine(formatAudio, this);
+        m_audioEngine->setInputBufferSize(1024);
+        m_audioChart = new RecordingChart();
+        // m_audiochart->open(QIODevice::WriteOnly);
+        // m_audioEngine->startAudioInput(m_audiochart);
+        m_audioConfig = new AudioConfigFile();
     }
 
 }
 
-void RecordingController::updateAudioPath() {
-    QVector<QString> result = m_audio_config->loadConfig();
+// void RecordingController::updateAudioPath() {
+    // QVector<QString> result = m_audioConfig->loadConfig();
     // qInfo() << result;
+// }
+
+QVector<float> RecordingController::getBufferChart() const
+{
+    return m_bufferChart;
 }
 
-QVector<float> RecordingController::bufferData() const
+void RecordingController::setbufferChart(const QVector<float> &newBufferData)
 {
-    return m_bufferData;
-}
-
-void RecordingController::setbufferData(const QVector<float> &newBufferData)
-{
-    if (m_bufferData == newBufferData)
+    if (m_bufferChart == newBufferData)
         return;
-    m_bufferData = newBufferData;
+    m_bufferChart = newBufferData;
 
-    emit bufferDataChanged();
+    emit bufferChartChanged();
 }
 
-void RecordingController::startRecord()
+void RecordingController::startRecording()
 {
-    m_audio_socket->startAduioRecording();
+
 }
 
-void RecordingController::stopRecord()
+void RecordingController::stopRecording()
 {
-    m_audio_socket->endAudioRecording();
+
 }
 
 void RecordingController::editRecordParameters(QString device, QString path, int sampleRate, int bitsPerSample, int duration)
 {
-    updateAudioPath();
+    // updateAudioPath();
     qInfo() << "Hello Giang";
 
 }
 
-QVector<QString> RecordingController::loadParametersConfigure()
+QVector<QString> RecordingController::loadAduioConfigureParameters()
 {
-    QVector<QString> result = m_audio_config->loadConfig();
-    return result;
-
+   return m_audioConfig->loadAudioConfigureParameters();
 }
 
-void RecordingController::saveParametersConfigure(const QVector<QString> &configValue)
+void RecordingController::saveAduioConfigureParameters(const QVector<QString> &configValue)
 {
-    m_audio_config->saveConfig(configValue);
+    m_audioConfig->saveAudioConfigureParameters(configValue);
 }
 
 
-RecordingController::~AudioController()
+RecordingController::~RecordingController()
 {
-    m_audio->audioInputStop();
+    m_audioEngine->audioInputStop();
 }
 
 QVector<QString> RecordingController::getInputAudioDeviceList()

@@ -2,7 +2,7 @@
 #define RECORDINGCONTROLLER_H
 
 #include <QObject>
-#include <QString>
+#include <QDebug>
 
 #include "audioconfigfile.h"
 #include "audioengine.h"
@@ -20,8 +20,8 @@ class RecordingController : public QObject
     Q_OBJECT
     Q_PROPERTY(QVector<float> m_bufferChart READ getBufferChart WRITE setbufferChart NOTIFY bufferChartChanged)
 public:
-    explicit AudioController(QObject *parent = 0);
-    ~AudioController();
+    explicit RecordingController(QObject *parent = 0);
+    ~RecordingController();
 
 
     Q_INVOKABLE void startRecording();
@@ -32,9 +32,10 @@ public:
 
 
     Q_INVOKABLE QVector<QString> getInputAudioDeviceList();
-    Q_INVOKABLE void setInputAudioDevice(QString device);
-    Q_INVOKABLE QVector<QString> loadOutputAudioDeviceList();
-    Q_INVOKABLE void setOutputAudioDevice(QString device);
+     Q_INVOKABLE QVector<QString> getOutputAudioDeviceList();
+    // Q_INVOKABLE void setInputAudioDevice(QString device);
+    // Q_INVOKABLE QVector<QString> loadOutputAudioDeviceList();
+    // Q_INVOKABLE void setOutputAudioDevice(QString device);
 
 
 

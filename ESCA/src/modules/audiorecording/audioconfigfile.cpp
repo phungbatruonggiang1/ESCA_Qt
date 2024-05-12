@@ -1,6 +1,9 @@
 #include "audioconfigfile.h"
 
-AudioConfigFile::AudioConfigFile() {}
+AudioConfigFile::AudioConfigFile(QObject *parent)
+{
+
+}
 
 void AudioConfigFile::saveAudioConfigureParameters(const QVector<QString> &configValue)
 {
