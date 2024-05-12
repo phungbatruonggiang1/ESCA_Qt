@@ -12,6 +12,7 @@ QT += quick virtualkeyboard
 
 SOURCES += \
         main.cpp \
+    src/common/file/accessfile.cpp \
         src/components/dynamicchart/dynamicchart.cpp \
         src/modules/audiorecording/audioconfigfile.cpp \
         src/modules/audiorecording/audioengine.cpp \
@@ -34,7 +35,9 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
 
 HEADERS += \
+    src/common/file/accessfile.h \
     src/components/dynamicchart/dynamicchart.h \
+    src/config/config.h \
     src/modules/audiorecording/audioconfigfile.h \
     src/modules/audiorecording/audioengine.h \
     src/modules/audiorecording/recordingchart.h \

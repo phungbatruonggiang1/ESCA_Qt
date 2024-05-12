@@ -19,26 +19,20 @@ const int    LevelWindowUs          = 0.1 * 1000000;
 // Constructor and destructor
 //-----------------------------------------------------------------------------
 
-AudioEngine::AudioEngine(const QAudioDeviceInfo &deviceInfoInput, QAudioFormat formatAudioInput, QObject *parent) : QObject{parent}
+AudioEngine::AudioEngine(QAudioFormat formatAudioInput, QObject *parent) : QObject{parent}
 {
-    QVector<QString> m_inputDevice;
     m_availableAudioInputDevices = QAudioDeviceInfo::availableDevices(QAudio::AudioInput);
     m_availableAudioOutputDevices = QAudioDeviceInfo::availableDevices(QAudio::AudioOutput);
     for (int i = 0; i < m_availableAudioInputDevices.size(); ++i) {
-
-        //        qDebug() << "Input: " << inputDeviceList.at(i).deviceName();
         m_inputDevice.append(m_availableAudioInputDevices.at(i).deviceName());
     }
 
-
-    // for(int i =0; i < m_inputDevice.size(); ++i) {
-    //            qDebug() << "Input Giang: " << m_inputDevice[i];
-
-    // }
-
-
-    m_audioInput = new QAudioInput(deviceInfoInput, formatAudioInput, this);// tạo một obj mới dùng để thu âm thanh từ loa
-    m_audioInput->setBufferSize(1024);  // Đặt độ lớn Buffer
+    for (int i = 0; i < m_availableAudioOutputDevices.size(); ++i) {
+        m_outputDevice.append(m_availableAudioOutputDevices.at(i).deviceName());
+    }
+    m_inputFormat = formatAudioInput;
+    // m_audioInput = new QAudioInput(deviceInfoInput, formatAudioInput, this);// tạo một obj mới dùng để thu âm thanh từ loa
+    // m_audioInput->setBufferSize(1024);  // Đặt độ lớn Buffer
 
 }
 
@@ -54,6 +48,39 @@ void AudioEngine::audioInputStop() {
 void AudioEngine::startAudioInput(QIODevice *device) {
     m_audioInput->start(device);
 }
+
+void AudioEngine::setAudioInputDevice(const QString device)
+{
+    m_availableAudioInputDevices = QAudioDeviceInfo::availableDevices(QAudio::AudioInput);
+    for(int i = 0; i < m_availableAudioInputDevices.size(); ++i) {
+        if(device == m_availableAudioInputDevices.at(i).deviceName()) {
+            m_audioInput->~QAudioInput();
+            m_audioInput = new QAudioInput(m_availableAudioInputDevices.at(i), m_inputFormat, this);
+            m_audioInput->setBufferSize(1024);
+            break;
+        }
+    }
+}
+
+void AudioEngine::setAudioOutputDevice(const QString device)
+{
+    m_availableAudioOutputDevices = QAudioDeviceInfo::availableDevices(QAudio::AudioOutput);
+    for(int i = 0; i < m_availableAudioOutputDevices.size(); ++i) {
+        if(device == m_availableAudioOutputDevices.at(i).deviceName()) {
+            m_audioOutput->~QAudioOutput();
+            m_audioOutput = new QAudioOutput(m_availableAudioOutputDevices.at(i), m_inputFormat, this);
+            break;
+        }
+    }
+}
+
+QVector<QString> AudioEngine::getsupportedCodecList() const
+{
+    for(int i = 0; i < m_inputDevice.supportedCodecs().size(); ++i)
+        m_supportedCodecList.append(1);
+    return m_supportedCodecList;
+}
+
 
 void AudioEngine::setInputBufferSize(int value) {
     m_audioInput->setBufferSize(value);
