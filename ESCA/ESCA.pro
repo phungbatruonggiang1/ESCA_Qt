@@ -1,3 +1,9 @@
+QT = core
+QT += quick
+QT += qml
+QT += multimedia
+QT += widgets
+QT += network
 QT += quick virtualkeyboard
 
 # You can make your code fail to compile if it uses deprecated APIs.
