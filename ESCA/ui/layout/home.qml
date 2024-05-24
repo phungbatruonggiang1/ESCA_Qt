@@ -272,7 +272,7 @@ Rectangle {
             id: system_config_ma
             anchors.fill: parent
             onClicked: {
-                loader.source = "/ui/layout/systemConfig.qml"
+                loader.source = "/ui/modules/systemConfig.qml"
             }
         }
     }

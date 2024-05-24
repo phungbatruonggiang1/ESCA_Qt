@@ -29,11 +29,11 @@ RecordingController::RecordingController(QObject *parent) : QObject{parent}
 
         // khoi tạo một obj mới dùng để thu âm thanh từ loa
         m_audioEngine = new AudioEngine(formatAudio, this);
-        m_audioEngine->setInputBufferSize(1024);
-        m_audioChart = new RecordingChart();
+        // m_audioEngine->setInputBufferSize(1024);
+        // m_audioChart = new RecordingChart();
         // m_audiochart->open(QIODevice::WriteOnly);
         // m_audioEngine->startAudioInput(m_audiochart);
-        m_audioConfig = new AudioConfigFile();
+        // m_audioConfig = new AudioConfigFile();
     }
 
 }

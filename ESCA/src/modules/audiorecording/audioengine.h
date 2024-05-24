@@ -27,7 +27,7 @@ public:
     const QVector<QString> availableAudioInputDevices() const
     { return m_inputDevice; }
 
-    const QVector<QString> &availableAudioOutputDevices() const
+    const QVector<QString> availableAudioOutputDevices() const
     { return m_outputDevice; }
 
     void setInputBufferSize(int value);

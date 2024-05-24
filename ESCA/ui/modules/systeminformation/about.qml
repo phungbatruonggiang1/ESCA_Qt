@@ -1,6 +1,6 @@
 import QtQuick 2.15
 import QtQuick.Controls 2.15
-import "qrc:/ui/component/QtQuick/Studio/Components"
+import "qrc:/ui/components/QtQuick/Studio/Components"
 // Import folder list
 import Qt.labs.folderlistmodel 2.6
 

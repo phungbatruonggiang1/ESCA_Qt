@@ -1,5 +1,12 @@
-#include <QGuiApplication>
 #include <QQmlApplicationEngine>
+#include <QQmlEngine>
+#include <QQmlContext>
+#include <QtWidgets/QApplication>
+
+
+
+
+#include "./src/modules/audiorecording/recordingcontroller.h"
 
 int main(int argc, char *argv[])
 {
@@ -22,6 +29,13 @@ int main(int argc, char *argv[])
         },
         Qt::QueuedConnection);
     engine.load(url);
+
+
+    RecordingController* recording = new RecordingController();
+
+
+    // control audiocontroller
+    engine.rootContext()->setContextProperty("RecodingObject", recording);
 
     return app.exec();
 }

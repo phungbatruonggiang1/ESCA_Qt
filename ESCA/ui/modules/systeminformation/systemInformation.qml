@@ -1,6 +1,6 @@
 import QtQuick 2.15
 import QtQuick.Controls 2.15
-import "qrc:/ui/component"
+import "qrc:/ui/components"
 
 Rectangle {
     width: 1024

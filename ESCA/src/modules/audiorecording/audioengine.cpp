@@ -34,6 +34,14 @@ AudioEngine::AudioEngine(QAudioFormat formatAudioInput, QObject *parent) : QObje
     // m_audioInput = new QAudioInput(deviceInfoInput, formatAudioInput, this);// tạo một obj mới dùng để thu âm thanh từ loa
     // m_audioInput->setBufferSize(1024);  // Đặt độ lớn Buffer
 
+
+    // qInfo() << "The input sources: \n";
+    // for(int i = 0; i< m_inputDevice.size(); ++i)
+    //     qInfo() << m_inputDevice.at(i) << "\n";
+
+    // qInfo() << "The output sources: \n";
+    // for(int i = 0; i< m_outputDevice.size(); ++i)
+    //     qInfo() << m_outputDevice.at(i) << "\n";
 }
 
 AudioEngine::~AudioEngine()

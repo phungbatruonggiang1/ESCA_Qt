@@ -17,15 +17,18 @@ Rectangle {
     property string device_name: ''
     property string duration: 'duration'
     property string file_to_store: 'file_to_store'
+    property var inputSources: []
+    property var outputSources: []
 
     Component.onCompleted: {
-        let test = [];
-        test = AudioObject.loadParametersConfigure();
-        console.log("Hi Giang, I'm here to load information to recording")
-        console.log(test);
-        device_name = test[0];
-        duration = test[5];
-        file_to_store = test[6];
+
+        inputSources = RecodingObject.getInputAudioDeviceList();
+        outputSources = RecodingObject.getOutputAudioDeviceList();
+        // console.log(inputSources);
+
+        // device_name = test[0];
+        // duration = test[5];
+        // file_to_store = test[6];
     }
 
     Text {
@@ -49,7 +52,7 @@ Rectangle {
         width: 545
         height: 70
         color: "#ffffff"
-        text: file_to_store
+        text: "file_to_store"
         font.pixelSize: 23
         horizontalAlignment: Text.AlignLeft
         verticalAlignment: Text.AlignVCenter
@@ -118,62 +121,92 @@ Rectangle {
         font.family: "Itim"
     }
 
-    ChartView {
-        id: lineChart
-        x: 111
-        y: 71
-        title: "Line Chart"
-        width: 565
-        height: 393
-        anchors.verticalCenterOffset: 50
-        anchors.horizontalCenterOffset: 210
-        anchors.centerIn: parent
-        antialiasing: true
-
-        LineSeries {
-            id: series
-            name: "Real-time Data"
-            axisX: ValueAxis {
-                id: axisX
-                min: 1
-                max: 1028 // Giá trị tối đa hiển thị trên trục X
-                tickCount: 11
-            }
-            axisY: ValueAxis {
-                id: axisY
-                min: -105
-                max: 105
-                tickCount: 11
-            }
+    ListModel {
+        id: testfor
+        ListElement {
+            name: "Bill Smith"
+            number: "555 3264"
         }
-
-        Timer {
-            interval: 1 // Mỗi 10ms cập nhật một lần // em chua biet dung nhieu cho toi uu
-            running: flag
-            repeat: true
-            onTriggered: {
-
-                for (var i = 1028; i >= 0; i--) {
-                    var xValue = series.count
-                    // truc x la thoi gian ( tai thoi diem chay trong for :3)
-                    var yValue = audioDataFromCpp[i]
-                    //                  var yValue = Math.sin(xValue / 10);
-                    if (yValue >= 95 || yValue <= -95) {
-                        // console.log("yValue: " + yValue)
-                    }
-
-                    series.append(xValue, yValue)
-                }
-                // Cập nhật giá trị tối đa trên trục X nếu cần
-                if (xValue > axisX.max)
-                    axisX.max = xValue
-                axisX.min = xValue - 1028 //set lai gia tri toi da de chart chay lien tuc
-                // Cập nhật giá trị tối đa trên trục Y nếu cần
-                if (yValue > axisY.max)
-                    axisY.max = yValue
-            }
+        ListElement {
+            name: "John Brown"
+            number: "555 8426"
+        }
+        ListElement {
+            name: "Sam Wise"
+            number: "555 0473"
         }
     }
+
+
+    ListView {
+            x: 111
+            y: 71
+        width: 180
+        height: 300
+
+        model: inputSources
+         Component.onCompleted: console.log(inputSources)
+        delegate: Text {
+            color: "#ffffff"
+            text: dataModel
+        }
+    }
+    // ChartView {
+    //     id: lineChart
+    //     x: 111
+    //     y: 71
+    //     title: "Line Chart"
+    //     width: 565
+    //     height: 393
+    //     anchors.verticalCenterOffset: 50
+    //     anchors.horizontalCenterOffset: 210
+    //     anchors.centerIn: parent
+    //     antialiasing: true
+
+    //     LineSeries {
+    //         id: series
+    //         name: "Real-time Data"
+    //         axisX: ValueAxis {
+    //             id: axisX
+    //             min: 1
+    //             max: 1028 // Giá trị tối đa hiển thị trên trục X
+    //             tickCount: 11
+    //         }
+    //         axisY: ValueAxis {
+    //             id: axisY
+    //             min: -105
+    //             max: 105
+    //             tickCount: 11
+    //         }
+    //     }
+
+    //     Timer {
+    //         interval: 1 // Mỗi 10ms cập nhật một lần // em chua biet dung nhieu cho toi uu
+    //         running: flag
+    //         repeat: true
+    //         onTriggered: {
+
+    //             for (var i = 1028; i >= 0; i--) {
+    //                 var xValue = series.count
+    //                 // truc x la thoi gian ( tai thoi diem chay trong for :3)
+    //                 var yValue = audioDataFromCpp[i]
+    //                 //                  var yValue = Math.sin(xValue / 10);
+    //                 if (yValue >= 95 || yValue <= -95) {
+    //                     // console.log("yValue: " + yValue)
+    //                 }
+
+    //                 series.append(xValue, yValue)
+    //             }
+    //             // Cập nhật giá trị tối đa trên trục X nếu cần
+    //             if (xValue > axisX.max)
+    //                 axisX.max = xValue
+    //             axisX.min = xValue - 1028 //set lai gia tri toi da de chart chay lien tuc
+    //             // Cập nhật giá trị tối đa trên trục Y nếu cần
+    //             if (yValue > axisY.max)
+    //                 axisY.max = yValue
+    //         }
+    //     }
+    // }
 
     Rectangle {
         id: start_stop_rec
@@ -230,7 +263,7 @@ Rectangle {
         width: 225
         height: 26
         color: "#ffffff"
-        text: device_name
+        text: "device_name"
         font.pixelSize: 23
         horizontalAlignment: Text.AlignLeft
         verticalAlignment: Text.AlignVCenter
@@ -279,7 +312,7 @@ Rectangle {
         width: 189
         height: 26
         color: "#ffffff"
-        text: duration
+        text: "duration"
         font.pixelSize: 23
         horizontalAlignment: Text.AlignLeft
         verticalAlignment: Text.AlignVCenter
