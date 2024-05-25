@@ -24,11 +24,14 @@ Rectangle {
 
         inputSources = RecodingObject.getInputAudioDeviceList();
         outputSources = RecodingObject.getOutputAudioDeviceList();
-        // console.log(inputSources);
+        for (let i = 0; i < inputSources.length; ++i) {
+            listInputDeviceModel.append({"name" : inputSources[i]});
+        }
 
-        // device_name = test[0];
-        // duration = test[5];
-        // file_to_store = test[6];
+        for (let j = 0; j<outputSources.length; ++j) {
+            listOutputDeviceModel.append({"name" : outputSources[j]});
+        }
+
     }
 
     Text {
@@ -121,36 +124,73 @@ Rectangle {
         font.family: "Itim"
     }
 
-    ListModel {
-        id: testfor
-        ListElement {
-            name: "Bill Smith"
-            number: "555 3264"
+
+    ComboBox {
+            id: choose_input_device
+            x: 720
+            y: 100
+            width: 195
+            height: 35
+            font.pointSize: 13
+            currentIndex: 0
+
+            model: ListModel {
+                id: listInputDeviceModel
+            }
+
+            onCurrentIndexChanged: {
+                var selectedItem = inputSources[currentIndex] // Get the selected item
+                console.log("Selected choose_device Item:", selectedItem)
+                // Add logic here
+            }
         }
-        ListElement {
-            name: "John Brown"
-            number: "555 8426"
-        }
-        ListElement {
-            name: "Sam Wise"
-            number: "555 0473"
-        }
-    }
 
 
-    ListView {
-            x: 111
-            y: 71
-        width: 180
-        height: 300
 
-        model: inputSources
-         Component.onCompleted: console.log(inputSources)
-        delegate: Text {
-            color: "#ffffff"
-            text: dataModel
+    ComboBox {
+            id: choose_output_device
+            x: 720
+            y: 300
+            width: 195
+            height: 35
+            font.pointSize: 13
+            currentIndex: 0
+
+            model: ListModel {
+                id: listOutputDeviceModel
+            }
+
+            onCurrentIndexChanged: {
+                var selectedItem = inputSources[currentIndex] // Get the selected item
+                console.log("Selected choose_device Item:", selectedItem)
+                // Add logic here
+            }
         }
-    }
+    // ListView {
+    //      x: 580
+    //      y: 100
+    //      width: 180
+    //      height: 300
+
+    //      // Data
+    //      model: ListModel {
+    //          id: listModel
+    //      }
+
+    //      // One element css
+    //      delegate: Item {
+    //          width: parent.width
+    //          height: 50
+    //          Row {
+    //              spacing: 5
+    //              Text {
+    //                  text: name
+    //                  font.pixelSize: 20
+    //                  color: "#FFFFFF"
+    //              }
+    //          }
+    //      }
+    // }
     // ChartView {
     //     id: lineChart
     //     x: 111
