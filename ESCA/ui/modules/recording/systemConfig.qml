@@ -26,7 +26,7 @@ Rectangle {
         test = AudioObject.loadParametersConfigure();
         console.log(test);
         console.log(test[0])
-        if(test[0] == "default")
+        if(test[0] === "default")
         {
             console.log("Default")
             choose_device = 0
