@@ -18,6 +18,19 @@ class QAudioOutput;
 class QAudioDeviceInfo;
 QT_END_NAMESPACE
 
+
+
+// struct audio properties
+
+struct AudioInstance {
+    QString inputDevice;
+    QString outputDevice;
+    QString saveAudioLocation;
+    int numberOfChannels;
+    int sampleRate;
+    int resolution;
+};
+
 class AudioEngine : public QObject {
     Q_OBJECT
 public:
@@ -36,6 +49,7 @@ public:
 
    void setAudioInputDevice(QString device);
    void setAudioOutputDevice(const QString device);
+   void setAudioParameters (const QVector<QString> &configValue);
 
 
 
@@ -59,6 +73,14 @@ private:
     QList<QAudioDeviceInfo> m_availableAudioOutputDevices;
     QVector<QString> m_outputDevice;
     QVector<QString> m_inputDevice;
+
+
+    // audio properties instance
+    AudioInstance audioParameters;
+
+
+
+
 
 
 };

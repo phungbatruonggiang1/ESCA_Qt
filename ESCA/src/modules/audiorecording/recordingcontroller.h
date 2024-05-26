@@ -33,7 +33,8 @@ public:
 
     Q_INVOKABLE QVector<QString> getInputAudioDeviceList();
      Q_INVOKABLE QVector<QString> getOutputAudioDeviceList();
-    // Q_INVOKABLE void setInputAudioDevice(QString device);
+    Q_INVOKABLE void setInputAudioDevice(QString device);
+     Q_INVOKABLE void setOutputAudioDevice(QString device);
     // Q_INVOKABLE QVector<QString> loadOutputAudioDeviceList();
     // Q_INVOKABLE void setOutputAudioDevice(QString device);
 
@@ -43,6 +44,9 @@ public:
     void setbufferChart(const QVector<float> &newBufferData);
 
 
+
+    QString getRecordingStatus() const;
+    void setRecordingStatus(const QString &newRecordingStatus);
 
 signals:
     void bufferChartChanged();
@@ -55,6 +59,10 @@ private:
     AudioConfigFile *m_audioConfig = nullptr;
     RecordingSchedule *m_recordingSchedule = nullptr;
     QVector<float> m_bufferChart;
+
+
+    // audio status
+    QString recordingStatus;
 };
 
 #endif // RECORDINGCONTROLLER_H

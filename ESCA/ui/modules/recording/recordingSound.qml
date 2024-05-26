@@ -24,6 +24,8 @@ Rectangle {
 
         inputSources = RecodingObject.getInputAudioDeviceList();
         outputSources = RecodingObject.getOutputAudioDeviceList();
+        listInputDeviceModel.append({"name" : "none"});
+        listOutputDeviceModel.append({"name" : "none"});
         for (let i = 0; i < inputSources.length; ++i) {
             listInputDeviceModel.append({"name" : inputSources[i]});
         }
@@ -139,8 +141,8 @@ Rectangle {
             }
 
             onCurrentIndexChanged: {
-                var selectedItem = inputSources[currentIndex] // Get the selected item
-                console.log("Selected choose_device Item:", selectedItem)
+                let selectedItem = inputSources[currentIndex] // Get the selected item
+                RecodingObject.setInputAudioDevice(selectedItem);
                 // Add logic here
             }
         }
@@ -161,8 +163,8 @@ Rectangle {
             }
 
             onCurrentIndexChanged: {
-                var selectedItem = inputSources[currentIndex] // Get the selected item
-                console.log("Selected choose_device Item:", selectedItem)
+                var selectedItem = outputSources[currentIndex] // Get the selected item
+                RecodingObject.setOutputAudioDevice(selectedItem);
                 // Add logic here
             }
         }

@@ -59,6 +59,8 @@ void AudioEngine::audioInputStop() {
 
 void AudioEngine::setAudioInputDevice(QString device)
 {
+
+    audioParameters.inputDevice = device;
     // m_availableAudioInputDevices = QAudioDeviceInfo::availableDevices(QAudio::AudioInput);
     // for(int i = 0; i < m_availableAudioInputDevices.size(); ++i) {
     //     if(device == m_availableAudioInputDevices.at(i).deviceName()) {
@@ -72,6 +74,7 @@ void AudioEngine::setAudioInputDevice(QString device)
 
 void AudioEngine::setAudioOutputDevice(const QString device)
 {
+    audioParameters.outputDevice = device;
     m_availableAudioOutputDevices = QAudioDeviceInfo::availableDevices(QAudio::AudioOutput);
     for(int i = 0; i < m_availableAudioOutputDevices.size(); ++i) {
         if(device == m_availableAudioOutputDevices.at(i).deviceName()) {
@@ -81,6 +84,25 @@ void AudioEngine::setAudioOutputDevice(const QString device)
         }
     }
 }
+
+void AudioEngine::setAudioParameters(const QVector<QString> &configValue)
+{
+    QString inputDevice = configValue[0];
+    QString outputDevice = configValue[1];
+    QString filePath = configValue[2];
+    int channels = configValue[3].toInt();
+    int sampleRate = configValue[4].toInt();
+    int resolution = configValue[5].toInt();
+
+    audioParameters.inputDevice = inputDevice;
+    audioParameters.outputDevice = outputDevice;
+    audioParameters.saveAudioLocation = filePath;
+    audioParameters.numberOfChannels = channels;
+    audioParameters.sampleRate = sampleRate;
+    audioParameters.resolution = resolution;
+
+}
+
 
 QVector<QString> AudioEngine::getsupportedCodecList() const
 {

@@ -57,6 +57,16 @@ void RecordingController::setbufferChart(const QVector<float> &newBufferData)
     emit bufferChartChanged();
 }
 
+QString RecordingController::getRecordingStatus() const
+{
+    return recordingStatus;
+}
+
+void RecordingController::setRecordingStatus(const QString &newRecordingStatus)
+{
+    recordingStatus = newRecordingStatus;
+}
+
 void RecordingController::startRecording()
 {
 
@@ -76,11 +86,14 @@ void RecordingController::editRecordParameters(QString device, QString path, int
 
 QVector<QString> RecordingController::loadAduioConfigureParameters()
 {
-   return m_audioConfig->loadAudioConfigureParameters();
+   QVector<QString> configValue = m_audioConfig->loadAudioConfigureParameters();
+   m_audioEngine->setAudioParameters(configValue);
+   return configValue;
 }
 
 void RecordingController::saveAduioConfigureParameters(const QVector<QString> &configValue)
 {
+    m_audioEngine->setAudioParameters(configValue);
     m_audioConfig->saveAudioConfigureParameters(configValue);
 }
 
@@ -98,4 +111,14 @@ QVector<QString> RecordingController::getInputAudioDeviceList()
 QVector<QString> RecordingController::getOutputAudioDeviceList()
 {
     return m_audioEngine->availableAudioOutputDevices();
+}
+
+void RecordingController::setInputAudioDevice(QString device)
+{
+    qInfo() << "The input is: " << device;
+}
+
+void RecordingController::setOutputAudioDevice(QString device)
+{
+    qInfo() << "The output is: " << device;
 }

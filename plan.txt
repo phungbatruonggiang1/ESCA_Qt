@@ -1,0 +1,24 @@
+1. Thực hiện chức năng config audio
+- Cho phép giao diện config các tham số -> có dữ liệu đầu vào -> cung cấp cho backend, đồng bộ hóa giữa RAM và file trong database
+- Thực hiện khởi tạo audio trong các trường hợp nhất định
+
+
+- Chức năng hẹn giờ thu âm
+2. Xây dựng hiển thị âm thanh, tương tác file: bật, tắt, xóa, lưu lên clouds, trích xuất các đặc trưng của âm thanh qua python
+
+
+3. Xây dựng module monitor hệ thống
+- các tài nguyên trong hệ thống
+- lịch sử bật máy, lịch sử thu âm, thống kê tần suất,
+- lưu lượng, tài nguyên trên clouds
+- các kết quả thu âm
+- mức độ tiêu thụ tài nguyên khi thực hiện training, inference, thu âm, ... -> đẩy lên clouds các ảnh
+
+4. Xây dựng module huấn luyện dữ liệu
+
+5. Xây dựng module suy diễn theo thời gian thực
+
+
+
+6 [optional]: cho phép truyền thông, chia sẻ dữ liệu giữa các thiết bị biên hoặc trong mạng thu thập dữ liệu. Hiển thị mạng cảm biến và trạng thái mạng
+7 [optional]: toàn diện quy trình điều khiển từ xa, giữa các edge.
