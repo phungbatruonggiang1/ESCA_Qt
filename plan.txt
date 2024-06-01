@@ -1,5 +1,6 @@
 1. Thực hiện chức năng config audio
 - Cho phép giao diện config các tham số -> có dữ liệu đầu vào -> cung cấp cho backend, đồng bộ hóa giữa RAM và file trong database
+input device, oupt device, format audio (sample rate, resolution, codec, number of channels), duration, save file location, 
 - Thực hiện khởi tạo audio trong các trường hợp nhất định
 
 

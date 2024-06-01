@@ -1,8 +1,8 @@
 import QtQuick 2.15
-import "qrc:/ui/component/QtQuick/Studio/Components"
+import "qrc:/ui/components/QtQuick/Studio/Components"
 import QtQuick.Controls 2.15
 import QtQuick.Dialogs 1.0
-import ConfigAudio 1.0
+// import ConfigAudio 1.0
 
 
 Rectangle {
@@ -11,41 +11,24 @@ Rectangle {
     height: 500
     color: "#262e4b"
 
-    property string device_name: 'default'
-    property int choose_device: 0
-    property string bits_per_sample: 'bits_per_sample'
-    property string channels: 'channels'
-    property string codec: 'codec'
+    property string device_name: ''
     property string duration: 'duration'
-    property string number_of_channels: 'number_of_channels'
     property string file_to_store: 'file_to_store'
-    property string sample_rate_ne: 'sample_rate'
+    property var inputSources: []
+    property var outputSources: []
 
     Component.onCompleted: {
-        let test = [];
-        test = AudioObject.loadParametersConfigure();
-        console.log(test);
-        console.log(test[0])
-        if(test[0] == "default")
-        {
-            console.log("Default")
-            choose_device = 0
-
-         }
-        else {
-            console.log("external microphone")
-            choose_device = 1
+        inputSources = RecodingObject.getInputAudioDeviceList();
+        outputSources = RecodingObject.getOutputAudioDeviceList();
+        listInputDeviceModel.append({"name" : "none"});
+        // listOutputDeviceModel.append({"name" : "none"});
+        for (let i = 0; i < inputSources.length; ++i) {
+            listInputDeviceModel.append({"name" : inputSources[i]});
         }
-
-
-        device_name = test[0];
-        sample_rate_ne = test[1];
-        bits_per_sample = test[2];
-        channels = test[3];
-        codec = test[4];
-        duration = test[5];
-        file_to_store = test[6];
-        number_of_channels = test[7];
+        console.log(listInputDeviceModel);
+        // for (let j = 0; j<outputSources.length; ++j) {
+        //     listOutputDeviceModel.append({"name" : outputSources[j]});
+        // }
     }
 
     Image {
@@ -298,9 +281,9 @@ Rectangle {
             font.weight: Font.Normal
         }
 
-        ConfigAudio {
-            id: configAudio
-        }
+        // ConfigAudio {
+        //     id: configAudio
+        // }
 
 
         MouseArea {
@@ -420,43 +403,47 @@ Rectangle {
         font.weight: Font.Normal
         font.family: "Courier"
         font.pointSize: 13
-        currentIndex: choose_device
-        background: Rectangle {
-            color: "#f8c3dab8"
-            border.color: "#435493"
+        // currentIndex: choose_device
+        currentIndex: 0
+        // background: Rectangle {
+        //     color: "#f8c3dab8"
+        //     border.color: "#435493"
+        // }
+
+        model: ListModel {
+            id: listInputDeviceModel
         }
 
-        model: ["default", "External microphone"]
 
         // Customizing the appearance of items in the ComboBox
-        delegate: Item {
-            width: choose_device_combobox.width
-            height: 30
+        // delegate: Item {
+        //     width: choose_device_combobox.width
+        //     height: 30
 
-            Rectangle {
-                width: parent.width
-                height: parent.height
-                color: "#dcb3c9a9"
-                border.color: "#262e4b"
+        //     Rectangle {
+        //         width: parent.width
+        //         height: parent.height
+        //         color: "#dcb3c9a9"
+        //         border.color: "#262e4b"
 
-                Text {
-                    anchors.centerIn: parent
-                    text: modelData
-                    font.family: "Courier"
-                }
+        //         Text {
+        //             anchors.centerIn: parent
+        //             text: modelData
+        //             font.family: "Courier"
+        //         }
 
-                MouseArea {
-                    anchors.fill: parent
-                    onClicked: {
-                        choose_device_combobox.currentIndex = index
-                    }
-                }
-            }
-        }
+        //         MouseArea {
+        //             anchors.fill: parent
+        //             onClicked: {
+        //                 choose_device_combobox.currentIndex = index
+        //             }
+        //         }
+        //     }
+        // }
         //            Signal handler for item selection change
         onCurrentIndexChanged: {
-            var selectedItem = model[currentIndex] // Get the selected item
-            console.log("Selected choose_device Item:", selectedItem)
+            let selectedItem = inputSources[currentIndex] // Get the selected item
+            RecodingObject.setInputAudioDevice(selectedItem);
             // Add logic here
         }
     }

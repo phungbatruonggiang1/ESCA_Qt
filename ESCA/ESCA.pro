@@ -19,7 +19,8 @@ SOURCES += \
         src/modules/audiorecording/recordingchart.cpp \
         src/modules/audiorecording/recordingcontroller.cpp \
         src/modules/audiorecording/recordingschedule.cpp \
-        # src/modules/systeminformation/basicmonitor.cpp
+ \        # src/modules/systeminformation/basicmonitor.cpp
+    src/modules/systeminformation/systeminformationcontroller.cpp
 
 RESOURCES += qml.qrc
 
@@ -43,4 +44,5 @@ HEADERS += \
     src/modules/audiorecording/recordingchart.h \
     src/modules/audiorecording/recordingcontroller.h \
     src/modules/audiorecording/recordingschedule.h \
-    # src/modules/systeminformation/basicmonitor.h
+ \    # src/modules/systeminformation/basicmonitor.h
+    src/modules/systeminformation/systeminformationcontroller.h
