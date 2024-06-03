@@ -1,4 +1,5 @@
 #include "accessfile.h"
+#include "QDebug"
 
 AccessFile::AccessFile(QObject *parent) : QObject(parent)
 {
@@ -14,6 +15,7 @@ QString AccessFile::getFilePath()
 void AccessFile::writeFile(const QVector<QString> &data)
 {
     QFile file(filePath);
+    qInfo() << filePath;
     if (file.open(QIODevice::WriteOnly))
     {
         QTextStream out(&file);

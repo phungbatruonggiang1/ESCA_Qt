@@ -1,4 +1,5 @@
 #include "audioconfigfile.h"
+#include "QDebug"
 
 AudioConfigFile::AudioConfigFile(QObject *parent)
 {
@@ -7,9 +8,9 @@ AudioConfigFile::AudioConfigFile(QObject *parent)
 
 void AudioConfigFile::saveAudioConfigureParameters(const QVector<QString> &configValue)
 {
-    // setFilePath(RECORDING_CONFIG_FILE);
-    setFilePath("../database/recording_params.txt");
-    // writeFile(configValue);
+    setFilePath(RECORDING_CONFIG_FILE);
+    qInfo() << getFilePath();
+    writeFile(configValue);
 }
 
 QVector<QString> AudioConfigFile::loadAudioConfigureParameters()

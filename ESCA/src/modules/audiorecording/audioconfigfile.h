@@ -12,7 +12,7 @@ class AudioConfigFile : public AccessFile
 {
     Q_OBJECT
 public:
-    AudioConfigFile(QObject *parent = nullptr);
+    explicit AudioConfigFile(QObject *parent = nullptr);
 
 public slots:
     Q_INVOKABLE void saveAudioConfigureParameters(const QVector<QString> &configValue);

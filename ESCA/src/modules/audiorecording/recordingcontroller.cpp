@@ -33,7 +33,7 @@ RecordingController::RecordingController(QObject *parent) : QObject{parent}
         // m_audioChart = new RecordingChart();
         // m_audiochart->open(QIODevice::WriteOnly);
         // m_audioEngine->startAudioInput(m_audiochart);
-        // m_audioConfig = new AudioConfigFile();
+        m_audioConfig = new AudioConfigFile();
     }
 
 }
