@@ -87,12 +87,14 @@ void AudioEngine::setAudioOutputDevice(const QString device)
 
 void AudioEngine::setAudioParameters(const QVector<QString> &configValue)
 {
+    // qInfo() << configValue;
     QString inputDevice = configValue[0];
     QString outputDevice = configValue[1];
     QString filePath = configValue[2];
     int channels = configValue[3].toInt();
     int sampleRate = configValue[4].toInt();
     int resolution = configValue[5].toInt();
+    int duration = configValue[6].toInt();
 
     audioParameters.inputDevice = inputDevice;
     audioParameters.outputDevice = outputDevice;
@@ -100,6 +102,7 @@ void AudioEngine::setAudioParameters(const QVector<QString> &configValue)
     audioParameters.numberOfChannels = channels;
     audioParameters.sampleRate = sampleRate;
     audioParameters.resolution = resolution;
+    audioParameters.duration = duration;
 
 }
 

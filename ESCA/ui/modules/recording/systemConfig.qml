@@ -11,9 +11,17 @@ Rectangle {
     height: 500
     color: "#262e4b"
 
-    property string device_name: ''
-    property string duration: 'duration'
-    property string file_to_store: 'file_to_store'
+    // properties for audio parameters
+    property string inputDevice: '';
+    property string outputDevice: '';
+    property string duration: '10'
+    property string fileSave: 'abckjefnvlermflermnvler';
+    property string sampleRate: '44100';
+    property string codec: 'codec';
+    property string channels: '2';
+    property string resolution: '8';
+
+
     property var inputSources: []
     property var outputSources: []
 
@@ -60,7 +68,7 @@ Rectangle {
             width: 130
             height: 27
             color: "#ffffff"
-            text: sample_rate_ne
+            text: sampleRate
             font.pixelSize: 18
             horizontalAlignment: Text.AlignRight
             verticalAlignment: Text.AlignVCenter
@@ -78,7 +86,7 @@ Rectangle {
             width: 130
             height: 27
             color: "#ffffff"
-            text: bits_per_sample
+            text: resolution
             font.pixelSize: 18
             horizontalAlignment: Text.AlignRight
             verticalAlignment: Text.AlignVCenter
@@ -96,7 +104,7 @@ Rectangle {
             width: 130
             height: 27
             color: "#ffffff"
-            text: number_of_channels
+            text: channels
             font.pixelSize: 18
             horizontalAlignment: Text.AlignRight
             verticalAlignment: Text.AlignVCenter
@@ -294,34 +302,33 @@ Rectangle {
             onClicked: {
                 let stringList = [];
 
-                sample_rate_ne = sample_rate_textedit.text;
-                bits_per_sample = bits_per_sample_textedit.text;
-                number_of_channels = numberofchannel_textedit.text;
+                sampleRate = sample_rate_textedit.text;
+                resolution = bits_per_sample_textedit.text;
+                channels = numberofchannel_textedit.text;
                 codec = codec_textedit.text;
                 duration = duration_textedit.text;
-                file_to_store = folder_to_store.text;
-                device_name = choose_device_combobox.currentText;
+                fileSave = folder_to_store.text;
+                inputDevice = choose_device_combobox.currentText;
 
                 console.log(choose_device_combobox);
 
-                stringList.push(device_name);
-                stringList.push(sample_rate_ne);
-                stringList.push(bits_per_sample);
-                stringList.push(channels);
-                stringList.push(codec);
-                stringList.push(duration);
-                stringList.push(file_to_store.substring(7));
-                stringList.push(number_of_channels);
+                stringList.push(inputDevice); // input device
+                stringList.push(inputDevice); // output device
+                stringList.push(fileSave.substring(7)); // file path
+                stringList.push(channels); // channels
+                stringList.push(sampleRate); // sample rate
+                stringList.push(resolution); // resolution
+                stringList.push(duration); // duration
 
-                if(choose_device_combobox.currentIndex == 0)
-                    stringList.push("default");
-                else
-                    stringList.push("hw:2,0");
+                // if(choose_device_combobox.currentIndex == 0)
+                //     stringList.push("default");
+                // else
+                //     stringList.push("hw:2,0");
 
-                stringList.push(duration.charAt(0));
+                // stringList.push(duration.charAt(0));
 
                 console.log(stringList);
-                AudioObject.saveParametersConfigure(stringList);
+                RecodingObject.saveAduioConfigureParameters(stringList);
                 notificationDialog.visible = true;
 
             }
@@ -507,7 +514,7 @@ Rectangle {
         width: 501
         height: 24
         color: "#ffffff"
-        text: file_to_store
+        text: fileSave
         font.pixelSize: 18
         horizontalAlignment: Text.AlignRight
         verticalAlignment: Text.AlignVCenter

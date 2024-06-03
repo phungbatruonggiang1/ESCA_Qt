@@ -29,6 +29,7 @@ struct AudioInstance {
     int numberOfChannels;
     int sampleRate;
     int resolution;
+    int duration;
 };
 
 class AudioEngine : public QObject {
