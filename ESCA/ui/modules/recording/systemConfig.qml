@@ -22,21 +22,31 @@ Rectangle {
     property string resolution: '8';
 
 
-    property var inputSources: []
-    property var outputSources: []
+    property var inputSources: [];
+    property var outputSources: [];
+    property var  configValue: [];
 
     Component.onCompleted: {
-        inputSources = RecodingObject.getInputAudioDeviceList();
-        outputSources = RecodingObject.getOutputAudioDeviceList();
-        listInputDeviceModel.append({"name" : "none"});
-        // listOutputDeviceModel.append({"name" : "none"});
-        for (let i = 0; i < inputSources.length; ++i) {
-            listInputDeviceModel.append({"name" : inputSources[i]});
-        }
-        console.log(listInputDeviceModel);
-        // for (let j = 0; j<outputSources.length; ++j) {
-        //     listOutputDeviceModel.append({"name" : outputSources[j]});
+        inputSources = RecordingObject.getInputAudioDeviceList();
+        // outputSources = RecordingObject.getOutputAudioDeviceList();
+        // listInputDeviceModel.append({"name" : "none"});
+        // // listOutputDeviceModel.append({"name" : "none"});
+        // for (let i = 0; i < inputSources.length; ++i) {
+        //     listInputDeviceModel.append({"name" : inputSources[i]});
         // }
+        // console.log(listInputDeviceModel);
+        // // for (let j = 0; j<outputSources.length; ++j) {
+        // //     listOutputDeviceModel.append({"name" : outputSources[j]});
+        // // }
+        // configValue = RecordingObject.loadAduioConfigureParameters();
+        // console.log(configValue);
+        // inputDevice = configValue[0];
+        // outputDevice = configValue[1];
+        // fileSave = configValue[2];
+        // channels = configValue[3];
+        // sampleRate = configValue[4];
+        // resolution = configValue[5];
+        // duration = configValue[6];
     }
 
     Image {
@@ -327,8 +337,8 @@ Rectangle {
 
                 // stringList.push(duration.charAt(0));
 
-                console.log(stringList);
-                RecodingObject.saveAduioConfigureParameters(stringList);
+                // console.log(stringList);
+                RecordingObject.saveAduioConfigureParameters(stringList);
                 notificationDialog.visible = true;
 
             }

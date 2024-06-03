@@ -15,13 +15,12 @@ QString AccessFile::getFilePath()
 void AccessFile::writeFile(const QVector<QString> &data)
 {
     QFile file(filePath);
-    qInfo() << filePath;
     if (file.open(QIODevice::WriteOnly))
     {
         QTextStream out(&file);
         for(int i = 0; i < data.size(); i++) {
             out << data[i] << "\n";
-            qInfo() << "Writing lines" << i << data[i];
+            // qInfo() << "Writing lines" << i << data[i];
         }
         file.close();
     }
@@ -41,11 +40,11 @@ QVector<QString> AccessFile::readFile()
         int lines = 0;
         while (in.readLineInto(&line))
         {
-            qInfo() << "line read: " << line;
+            // qInfo() << "line read: " << line;
             data += line;
             lines++;
         }
-        qInfo() << "line read: " << line;
+        // qInfo() << "line read: " << line;
         file.close();
     }
     return data;

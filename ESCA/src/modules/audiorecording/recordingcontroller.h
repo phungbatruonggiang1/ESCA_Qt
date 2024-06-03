@@ -2,8 +2,11 @@
 #define RECORDINGCONTROLLER_H
 
 #include <QObject>
-#include <QDebug>
+#include <QtMultimedia/QAudioDeviceInfo>
+#include <QtMultimedia/QAudioInput>
 
+
+#include "../../config/config.h"
 #include "audioconfigfile.h"
 #include "audioengine.h"
 #include "recordingchart.h"
@@ -63,6 +66,11 @@ private:
 
     // audio status
     QString recordingStatus;
+
+
+    // audio device list
+    QVector<QString> m_outputDevice;
+    QVector<QString> m_inputDevice;
 };
 
 #endif // RECORDINGCONTROLLER_H

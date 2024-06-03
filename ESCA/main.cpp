@@ -35,7 +35,7 @@ int main(int argc, char *argv[])
 
 
     // control audiocontroller
-    engine.rootContext()->setContextProperty("RecodingObject", recording);
+    engine.rootContext()->setContextProperty("RecordingObject", recording);
 
     return app.exec();
 }

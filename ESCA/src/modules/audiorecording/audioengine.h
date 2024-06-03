@@ -38,12 +38,6 @@ public:
     explicit AudioEngine(QAudioFormat formatAudioInput, QObject *parent = 0);
     ~AudioEngine();
 
-    const QVector<QString> availableAudioInputDevices() const
-    { return m_inputDevice; }
-
-    const QVector<QString> availableAudioOutputDevices() const
-    { return m_outputDevice; }
-
     void setInputBufferSize(int value);
     void audioInputStop();
     // void startAudioInput();
@@ -70,10 +64,7 @@ private:
 
     QAudioInput* m_audioInput = nullptr;
     QAudioOutput* m_audioOutput = nullptr;
-    QList<QAudioDeviceInfo> m_availableAudioInputDevices;
-    QList<QAudioDeviceInfo> m_availableAudioOutputDevices;
-    QVector<QString> m_outputDevice;
-    QVector<QString> m_inputDevice;
+
 
 
     // audio properties instance

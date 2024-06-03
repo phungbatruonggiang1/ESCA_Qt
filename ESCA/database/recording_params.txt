@@ -1,7 +1,7 @@
+default
 none
-none
-nvlermflermnvler
+iubnnkjr
 2
 44100
-8
-10
+4
+30

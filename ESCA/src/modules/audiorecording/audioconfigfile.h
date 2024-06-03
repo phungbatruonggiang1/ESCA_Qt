@@ -5,7 +5,6 @@
 #include <QString>
 
 #include "../../common/file/accessfile.h"
-#include "../../config/config.h"
 
 
 class AudioConfigFile : public AccessFile
@@ -14,9 +13,9 @@ class AudioConfigFile : public AccessFile
 public:
     explicit AudioConfigFile(QObject *parent = nullptr);
 
-public slots:
-    Q_INVOKABLE void saveAudioConfigureParameters(const QVector<QString> &configValue);
-    Q_INVOKABLE QVector<QString> loadAudioConfigureParameters();
+    void saveAudioConfigureParameters(const QVector<QString> configValue);
+    QVector<QString> loadAudioConfigureParameters();
+    int checkAudioSetuped(QVector<QString> &configValue);
 
 
 signals:

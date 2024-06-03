@@ -6,10 +6,19 @@ AudioConfigFile::AudioConfigFile(QObject *parent)
 
 }
 
-void AudioConfigFile::saveAudioConfigureParameters(const QVector<QString> &configValue)
+int AudioConfigFile::checkAudioSetuped(QVector<QString> &configValue)
 {
-    setFilePath(RECORDING_CONFIG_FILE);
-    qInfo() << getFilePath();
+    QVector<QString> result = readFile();
+    configValue = result;
+    QString inputDevice = configValue[0];
+    if(inputDevice != NULL && inputDevice != "none")
+        return 1;
+    return 0;
+
+}
+
+void AudioConfigFile::saveAudioConfigureParameters(const QVector<QString> configValue)
+{
     writeFile(configValue);
 }
 

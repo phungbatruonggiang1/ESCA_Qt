@@ -22,8 +22,8 @@ Rectangle {
 
     Component.onCompleted: {
 
-        inputSources = RecodingObject.getInputAudioDeviceList();
-        outputSources = RecodingObject.getOutputAudioDeviceList();
+        inputSources = RecordingObject.getInputAudioDeviceList();
+        outputSources = RecordingObject.getOutputAudioDeviceList();
         listInputDeviceModel.append({"name" : "none"});
         listOutputDeviceModel.append({"name" : "none"});
         for (let i = 0; i < inputSources.length; ++i) {
