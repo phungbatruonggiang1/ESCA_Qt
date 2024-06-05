@@ -22,6 +22,11 @@ class RecordingController : public QObject
 {
     Q_OBJECT
     Q_PROPERTY(QVector<float> m_bufferChart READ getBufferChart WRITE setbufferChart NOTIFY bufferChartChanged)
+
+    Q_PROPERTY(QVector<QString> recommendSampleRateBuffer READ getRecommendSampleRateBuffer NOTIFY recommendSampleRateBufferChanged)
+    Q_PROPERTY(QVector<QString> recommendChannelBuffer READ getRecommendChannelBuffer NOTIFY recommendChannelBufferChanged)
+    Q_PROPERTY(QVector<QString> recommendResoultionBuffer READ getRecommendResoultionBuffer NOTIFY recommendResoultionChanged)
+    Q_PROPERTY(QVector<QString> recommendCodecBuffer READ getRecommendCodecBuffer NOTIFY recommendCodecChanged)
 public:
     explicit RecordingController(QObject *parent = 0);
     ~RecordingController();
@@ -47,13 +52,33 @@ public:
     void setbufferChart(const QVector<float> &newBufferData);
 
 
+    QVector<QString> getRecommendSampleRateBuffer() const;
+    QVector<QString> getRecommendChannelBuffer() const;
+    QVector<QString> getRecommendResoultionBuffer() const;
+    QVector<QString> getRecommendCodecBuffer() const;
+
+
+
+
+
+
+
 
     QString getRecordingStatus() const;
     void setRecordingStatus(const QString &newRecordingStatus);
 
+    int InputAudioInitialize(QString inputDeviceName, QString codec, int channels, int sampleRate, int reslolution);
+
 signals:
     void bufferChartChanged();
     void dataChartSent(const QString &);
+
+
+
+    void recommendSampleRateBufferChanged();
+    void recommendChannelBufferChanged();
+    void recommendResoultionChanged();
+    void recommendCodecChanged();
 
 
 private:
@@ -71,6 +96,16 @@ private:
     // audio device list
     QVector<QString> m_outputDevice;
     QVector<QString> m_inputDevice;
+
+
+
+    QVector<QString> recommendSampleRateBuffer;
+    QVector<QString> recommendChannelBuffer;
+    QVector<QString> recommendResoultionBuffer;
+    QVector<QString> recommendCodecBuffer;
+
+
+
 };
 
 #endif // RECORDINGCONTROLLER_H

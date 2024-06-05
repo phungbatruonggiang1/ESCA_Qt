@@ -19,20 +19,18 @@ const int    LevelWindowUs          = 0.1 * 1000000;
 // Constructor and destructor
 //-----------------------------------------------------------------------------
 
-AudioEngine::AudioEngine(QAudioFormat formatAudioInput, QObject *parent) : QObject{parent}
+AudioEngine::AudioEngine(QAudioDeviceInfo deviceInfoInput, QAudioFormat formatAudioInput, QObject *parent) : QObject{parent}
 {
-    m_inputFormat = formatAudioInput;
-    // m_audioInput = new QAudioInput(deviceInfoInput, formatAudioInput, this);// tạo một obj mới dùng để thu âm thanh từ loa
+    audioParameters.inputDevice = deviceInfoInput.deviceName();
+    audioParameters.duration = 0;
+    audioParameters.resolution = formatAudioInput.sampleSize();
+    audioParameters.numberOfChannels = formatAudioInput.channelCount();
+    audioParameters.sampleRate = formatAudioInput.sampleRate();
+    audioParameters.codec = formatAudioInput.codec();
+    audioParameters.saveAudioLocation = "";
+    m_audioInput = new QAudioInput(deviceInfoInput, formatAudioInput, this);// tạo một obj mới dùng để thu âm thanh từ loa
     // m_audioInput->setBufferSize(1024);  // Đặt độ lớn Buffer
 
-
-    // qInfo() << "The input sources: \n";
-    // for(int i = 0; i< m_inputDevice.size(); ++i)
-    //     qInfo() << m_inputDevice.at(i) << "\n";
-
-    // qInfo() << "The output sources: \n";
-    // for(int i = 0; i< m_outputDevice.size(); ++i)
-    //     qInfo() << m_outputDevice.at(i) << "\n";
 }
 
 AudioEngine::~AudioEngine()
@@ -55,7 +53,7 @@ void AudioEngine::setAudioInputDevice(QString device)
 
 void AudioEngine::setAudioOutputDevice(const QString device)
 {
-    audioParameters.outputDevice = device;
+    // audioParameters.outputDevice = device;
 }
 
 void AudioEngine::setAudioParameters(const QVector<QString> &configValue)
@@ -69,7 +67,7 @@ void AudioEngine::setAudioParameters(const QVector<QString> &configValue)
     int duration = configValue[6].toInt();
 
     audioParameters.inputDevice = inputDevice;
-    audioParameters.outputDevice = outputDevice;
+    // audioParameters.outputDevice = outputDevice;
     audioParameters.saveAudioLocation = filePath;
     audioParameters.numberOfChannels = channels;
     audioParameters.sampleRate = sampleRate;

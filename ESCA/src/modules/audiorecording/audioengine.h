@@ -24,8 +24,8 @@ QT_END_NAMESPACE
 
 struct AudioInstance {
     QString inputDevice;
-    QString outputDevice;
     QString saveAudioLocation;
+    QString codec;
     int numberOfChannels;
     int sampleRate;
     int resolution;
@@ -35,7 +35,8 @@ struct AudioInstance {
 class AudioEngine : public QObject {
     Q_OBJECT
 public:
-    explicit AudioEngine(QAudioFormat formatAudioInput, QObject *parent = 0);
+    // explicit AudioEngine(QAudioFormat formatAudioInput, QObject *parent = 0);
+    explicit AudioEngine(QAudioDeviceInfo deviceInfoInput, QAudioFormat formatAudioInput, QObject *parent = 0);
     ~AudioEngine();
 
     void setInputBufferSize(int value);
@@ -56,7 +57,6 @@ public:
 
 
 private:
-    QAudioFormat m_inputFormat;
     QAudioFormat* m_outputFormat = nullptr;
     QVector<QString> m_supportedCodecList;
 

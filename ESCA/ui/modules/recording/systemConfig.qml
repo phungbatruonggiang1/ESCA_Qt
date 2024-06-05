@@ -29,24 +29,24 @@ Rectangle {
     Component.onCompleted: {
         inputSources = RecordingObject.getInputAudioDeviceList();
         // outputSources = RecordingObject.getOutputAudioDeviceList();
-        // listInputDeviceModel.append({"name" : "none"});
-        // // listOutputDeviceModel.append({"name" : "none"});
-        // for (let i = 0; i < inputSources.length; ++i) {
-        //     listInputDeviceModel.append({"name" : inputSources[i]});
+        listInputDeviceModel.append({"name" : "none"});
+        // listOutputDeviceModel.append({"name" : "none"});
+        for (let i = 0; i < inputSources.length; ++i) {
+            listInputDeviceModel.append({"name" : inputSources[i]});
+        }
+        console.log(listInputDeviceModel);
+        // for (let j = 0; j<outputSources.length; ++j) {
+        //     listOutputDeviceModel.append({"name" : outputSources[j]});
         // }
-        // console.log(listInputDeviceModel);
-        // // for (let j = 0; j<outputSources.length; ++j) {
-        // //     listOutputDeviceModel.append({"name" : outputSources[j]});
-        // // }
-        // configValue = RecordingObject.loadAduioConfigureParameters();
-        // console.log(configValue);
-        // inputDevice = configValue[0];
-        // outputDevice = configValue[1];
-        // fileSave = configValue[2];
-        // channels = configValue[3];
-        // sampleRate = configValue[4];
-        // resolution = configValue[5];
-        // duration = configValue[6];
+        configValue = RecordingObject.loadAduioConfigureParameters();
+        console.log(configValue);
+        inputDevice = configValue[0];
+        outputDevice = configValue[1];
+        fileSave = configValue[2];
+        channels = configValue[3];
+        sampleRate = configValue[4];
+        resolution = configValue[5];
+        duration = configValue[6];
     }
 
     Image {
