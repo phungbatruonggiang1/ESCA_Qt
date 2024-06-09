@@ -31,11 +31,20 @@ RecordingController::RecordingController(QObject *parent) : QObject{parent}
     configValue.clear();
     if(!!m_audioConfig->checkAudioSetuped(configValue)) {
         // qInfo() << "It has configed" << configValue;
+        QString inputDevice = configValue[0];
+        QString outputDevice = configValue[1];
+        QString fileSave = configValue[2];
+        int channels = configValue[3].toInt();
+        int sampleRate = configValue[4].toInt();
+        int resolution = configValue[5].toInt();
+        int duration = configValue[6].toInt();
+        QString codec = configValue[7];
 
 
         // input device
-
-
+        inputAudioInitialize(inputDevice, codec, channels, sampleRate, resolution);
+        m_audioEngine->setDuration(duration);
+        m_audioEngine->setSaveFileLocation(fileSave);
     }
     else {
         qInfo() << "It Hasn't configed";
@@ -92,9 +101,9 @@ void RecordingController::setRecordingStatus(const QString &newRecordingStatus)
     recordingStatus = newRecordingStatus;
 }
 
-int RecordingController::InputAudioInitialize(QString inputDeviceName, QString codec, int channels, int sampleRate, int resolution)
+int RecordingController::inputAudioInitialize(QString inputDeviceName, QString codec, int channels, int sampleRate, int resolution)
 {
-    QAudioDeviceInfo inputDevice = QAudioDeviceInfo::defaultInputDevice();
+    QAudioDeviceInfo inputDevice;
     QList<QAudioDeviceInfo> devices = QAudioDeviceInfo::availableDevices(QAudio::AudioInput);
     for(int i = 0; i < devices.size(); ++i) {
         // qInfo() << devices.at(i).deviceName();
@@ -104,31 +113,37 @@ int RecordingController::InputAudioInitialize(QString inputDeviceName, QString c
             break;
         }
     }
-    if (inputDevice.supportedSampleRates().size() > 0
-        && inputDevice.supportedChannelCounts().size() > 0
-        && inputDevice.supportedSampleSizes().size() > 0
-        && inputDevice.supportedCodecs().size() > 0)
+
+    if (inputDevice.supportedSampleRates().size() > 0)
     {
-        for(int i = 0; i < inputDevice.supportedSampleRates().size(); ++i) {
-            recommendSampleRateBuffer.append(QString::number(inputDevice.supportedSampleRates().at(i)));
-        }
-
-        for(int i = 0; i < inputDevice.supportedChannelCounts().size(); ++i) {
-            recommendChannelBuffer.append(QString::number(inputDevice.supportedChannelCounts().at(i)));
-        }
-
-
-        for(int i = 0; i < inputDevice.supportedSampleSizes().size(); ++i) {
-            recommendResoultionBuffer.append(QString::number(inputDevice.supportedSampleSizes().at(i)));
-        }
-
-
-        for(int i = 0; i < inputDevice.supportedCodecs().size(); ++i) {
-            recommendCodecBuffer.append(inputDevice.supportedCodecs().at(i));
-        }
-
+    recommendSampleRateBuffer.clear();
+    for(int i = 0; i < inputDevice.supportedSampleRates().size(); ++i)
+        recommendSampleRateBuffer.append(QString::number(inputDevice.supportedSampleRates().at(i)));
+    emit recommendSampleRateBufferChanged();
     }
 
+    if(inputDevice.supportedChannelCounts().size() > 0) {
+    recommendChannelBuffer.clear();
+    for(int i = 0; i < inputDevice.supportedChannelCounts().size(); ++i)
+        recommendChannelBuffer.append(QString::number(inputDevice.supportedChannelCounts().at(i)));
+    emit recommendChannelBufferChanged();
+    }
+
+    if(inputDevice.supportedSampleSizes().size() > 0) {
+
+    recommendResoultionBuffer.clear();
+    for(int i = 0; i < inputDevice.supportedSampleSizes().size(); ++i) {
+        recommendResoultionBuffer.append(QString::number(inputDevice.supportedSampleSizes().at(i)));
+    }
+    emit recommendResoultionChanged();
+    }
+
+    if(inputDevice.supportedCodecs().size() > 0) {
+    recommendCodecBuffer.clear();
+    for(int i = 0; i < inputDevice.supportedCodecs().size(); ++i)
+        recommendCodecBuffer.append(inputDevice.supportedCodecs().at(i));
+    emit recommendCodecChanged();
+    }
 
     QAudioFormat formatAudio;
     try {

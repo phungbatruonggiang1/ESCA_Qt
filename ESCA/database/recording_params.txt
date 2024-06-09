@@ -5,3 +5,4 @@ iubnnkjr
 44100
 4
 30
+pcm

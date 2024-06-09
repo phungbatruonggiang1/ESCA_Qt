@@ -1,4 +1,4 @@
-    #ifndef AUDIOENGINE_H
+#ifndef AUDIOENGINE_H
 #define AUDIOENGINE_H
 
 
@@ -9,6 +9,7 @@
 #include <QDir>
 #include <QObject>
 #include <QVector>
+
 #include <QtCore/qiodevice.h>
 // #include "controller/audiocontroller.h"
 
@@ -24,12 +25,10 @@ QT_END_NAMESPACE
 
 struct AudioInstance {
     QString inputDevice;
-    QString saveAudioLocation;
     QString codec;
     int numberOfChannels;
     int sampleRate;
     int resolution;
-    int duration;
 };
 
 class AudioEngine : public QObject {
@@ -52,6 +51,12 @@ public:
 
    QVector<QString> getsupportedCodecList() const;
 
+   QString getSaveFileLocation() const;
+   void setSaveFileLocation(const QString &newSaveFileLocation);
+
+   int getDuration() const;
+   void setDuration(int newDuration);
+
    signals:
     void inputDeviceSig(QVector<QString>& m_inputDevice);
 
@@ -70,6 +75,9 @@ private:
     // audio properties instance
     AudioInstance audioParameters;
 
+
+    QString saveFileLocation;
+    int duration;
 
 
 

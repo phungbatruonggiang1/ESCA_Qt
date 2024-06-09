@@ -3,7 +3,7 @@
 input device, oupt device, format audio (sample rate, resolution, codec, number of channels), duration, save file location, 
 
 
-* Cho phép gợi ý các tham số thu âm cho người sử dụng; hoặc là ngườu dùng tự đề xuất, nhưng phải kiểm tra điều kiện.
+* Cho phép gợi ý các tham số thu âm cho người sử dụng; hoặc là người dùng tự đề xuất, nhưng phải kiểm tra điều kiện.
 - Thực hiện khởi tạo audio trong các trường hợp nhất định
 
 

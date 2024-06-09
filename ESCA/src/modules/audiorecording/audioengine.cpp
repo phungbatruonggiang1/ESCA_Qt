@@ -22,12 +22,10 @@ const int    LevelWindowUs          = 0.1 * 1000000;
 AudioEngine::AudioEngine(QAudioDeviceInfo deviceInfoInput, QAudioFormat formatAudioInput, QObject *parent) : QObject{parent}
 {
     audioParameters.inputDevice = deviceInfoInput.deviceName();
-    audioParameters.duration = 0;
     audioParameters.resolution = formatAudioInput.sampleSize();
     audioParameters.numberOfChannels = formatAudioInput.channelCount();
     audioParameters.sampleRate = formatAudioInput.sampleRate();
     audioParameters.codec = formatAudioInput.codec();
-    audioParameters.saveAudioLocation = "";
     m_audioInput = new QAudioInput(deviceInfoInput, formatAudioInput, this);// tạo một obj mới dùng để thu âm thanh từ loa
     // m_audioInput->setBufferSize(1024);  // Đặt độ lớn Buffer
 
@@ -64,15 +62,15 @@ void AudioEngine::setAudioParameters(const QVector<QString> &configValue)
     int channels = configValue[3].toInt();
     int sampleRate = configValue[4].toInt();
     int resolution = configValue[5].toInt();
-    int duration = configValue[6].toInt();
+    int durationFile = configValue[6].toInt();
 
     audioParameters.inputDevice = inputDevice;
     // audioParameters.outputDevice = outputDevice;
-    audioParameters.saveAudioLocation = filePath;
+    saveFileLocation = filePath;
     audioParameters.numberOfChannels = channels;
     audioParameters.sampleRate = sampleRate;
     audioParameters.resolution = resolution;
-    audioParameters.duration = duration;
+    duration = durationFile;
 
 }
 
@@ -82,6 +80,26 @@ QVector<QString> AudioEngine::getsupportedCodecList() const
     // for(int i = 0; i < m_inputDevice.supportedCodecs().size(); ++i)
     //     m_supportedCodecList.append(1);
     // return m_supportedCodecList;
+}
+
+QString AudioEngine::getSaveFileLocation() const
+{
+    return saveFileLocation;
+}
+
+void AudioEngine::setSaveFileLocation(const QString &newSaveFileLocation)
+{
+    saveFileLocation = newSaveFileLocation;
+}
+
+int AudioEngine::getDuration() const
+{
+    return duration;
+}
+
+void AudioEngine::setDuration(int newDuration)
+{
+    duration = newDuration;
 }
 
 

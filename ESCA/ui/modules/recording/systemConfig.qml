@@ -47,6 +47,7 @@ Rectangle {
         sampleRate = configValue[4];
         resolution = configValue[5];
         duration = configValue[6];
+        codec = configValue[7];
     }
 
     Image {
@@ -329,6 +330,7 @@ Rectangle {
                 stringList.push(sampleRate); // sample rate
                 stringList.push(resolution); // resolution
                 stringList.push(duration); // duration
+                stringList.push(codec); // codec
 
                 // if(choose_device_combobox.currentIndex == 0)
                 //     stringList.push("default");
@@ -460,7 +462,7 @@ Rectangle {
         //            Signal handler for item selection change
         onCurrentIndexChanged: {
             let selectedItem = inputSources[currentIndex] // Get the selected item
-            RecodingObject.setInputAudioDevice(selectedItem);
+            RecordingObject.setInputAudioDevice(selectedItem);
             // Add logic here
         }
     }

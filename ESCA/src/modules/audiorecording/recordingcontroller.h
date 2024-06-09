@@ -67,7 +67,7 @@ public:
     QString getRecordingStatus() const;
     void setRecordingStatus(const QString &newRecordingStatus);
 
-    int InputAudioInitialize(QString inputDeviceName, QString codec, int channels, int sampleRate, int reslolution);
+    int inputAudioInitialize(QString inputDeviceName, QString codec, int channels, int sampleRate, int reslolution);
 
 signals:
     void bufferChartChanged();
