@@ -7,11 +7,12 @@
 #include <QtCore/QIODevice>
 #include <QtCore/QVector>
 #include <QtCharts/QChartGlobal>
+#include <QAudioFormat>
 
 class RecordingIO : public QIODevice
 {
 public:
-    explicit RecordingIO(QObject *parent = nullptr);
+    explicit RecordingIO(const QAudioFormat &format);
     Q_OBJECT
     Q_PROPERTY(QVector<float> m_buffer READ getDataBuffer() NOTIFY bufferUpdated(value))
     QML_ELEMENT
@@ -27,6 +28,9 @@ protected:
     qint64 writeData(const char *data, qint64 maxSize) override;
 
 private:
+    const QAudioFormat m_format;
+    quint32 m_maxAmplitude = 0;
+    qreal m_level = 0.0; // 0.0 <= m_level <= 1.0
     static const int sampleCount = 400;
     QVector<float> m_buffer;
 };
