@@ -7,6 +7,10 @@ input device, oupt device, format audio (sample rate, resolution, codec, number 
 - Thực hiện khởi tạo audio trong các trường hợp nhất định
 
 
+Xác định các truờng hợp thu âm -> khởi tạo kèm theo
+suy diễn theo thời gian thực
+
+
 - Chức năng hẹn giờ thu âm
 2. Xây dựng hiển thị âm thanh, tương tác file: bật, tắt, xóa, lưu lên clouds, trích xuất các đặc trưng của âm thanh qua python
 
