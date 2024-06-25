@@ -277,9 +277,9 @@ Rectangle {
             onClicked: {
                 flag = !flag;
                 if(flag)
-                    AudioObject.startRecord();
+                    RecordingObject.startRecording();
                 else
-                    AudioObject.stopRecord();
+                    RecordingObject.stopRecording();
             }
         }
     }

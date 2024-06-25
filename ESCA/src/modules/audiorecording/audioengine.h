@@ -40,7 +40,7 @@ public:
 
     void setInputBufferSize(int value);
     void audioInputStop();
-    // void startAudioInput();
+    void startAudioInput(QIODevice* device);
 
    void setAudioInputDevice(QString device);
    void setAudioOutputDevice(const QString device);

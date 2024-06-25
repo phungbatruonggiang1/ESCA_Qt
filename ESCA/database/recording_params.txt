@@ -3,6 +3,6 @@ none
 iubnnkjr
 2
 44100
-4
+8
 30
 pcm
