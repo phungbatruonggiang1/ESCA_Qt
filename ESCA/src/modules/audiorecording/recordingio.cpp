@@ -1,8 +1,10 @@
 #include "recordingio.h"
+#include <QFile>
 
 
 RecordingIO::RecordingIO(const QAudioFormat &format) : m_format(format)
 {
+    bufferPrivilenge = 0;
     switch (m_format.sampleSize()) {
     case 8:
         switch (m_format.sampleType()) {
@@ -102,7 +104,11 @@ qint64 RecordingIO::writeData(const char *data, qint64 maxSize)
                 } else if (m_format.sampleSize() == 32 && m_format.sampleType() == QAudioFormat::Float) {
                     value = qAbs(*reinterpret_cast<const float*>(ptr) * 0x7fffffff); // assumes 0-1.0
                 }
-
+                if(bufferPrivilenge == 0)
+                    firstBuffer.append(value);
+                else {
+                    secondBuffer.append(value);
+                }
                 maxValue = qMax(value, maxValue);
                 ptr += channelBytes;
             }
@@ -120,4 +126,35 @@ qint64 RecordingIO::writeData(const char *data, qint64 maxSize)
 
 float RecordingIO::getDataBuffer() const {
     return m_buffer[0];
+}
+
+void RecordingIO::writeBufferToFile(QString filePath)
+{
+    QFile file(filePath);
+    if(bufferPrivilenge == 0) {
+        bufferPrivilenge = 1;
+        // write buffer 1 to file
+        if (file.open(QIODevice::WriteOnly))
+        {
+            QTextStream out(&file);
+            for(int i = 0; i < firstBuffer.size(); i++) {
+                out << firstBuffer[i] << "\n";
+            }
+            file.close();
+        }
+        firstBuffer.clear();
+    }
+    else {
+        bufferPrivilenge = 0;
+        // write buffer 2 to file
+        if (file.open(QIODevice::WriteOnly))
+        {
+            QTextStream out(&file);
+            for(int i = 0; i < secondBuffer.size(); i++) {
+                out << secondBuffer[i] << "\n";
+            }
+            file.close();
+        }
+        firstBuffer.clear();
+    }
 }

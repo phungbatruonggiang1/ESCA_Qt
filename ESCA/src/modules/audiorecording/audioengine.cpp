@@ -3,6 +3,7 @@
 #include <QtMultimedia/QAudioInput>
 #include <QtMultimedia/QAudioOutput>
 #include <QDebug>
+#include <QTimer>
 
 
 //-----------------------------------------------------------------------------
@@ -48,6 +49,9 @@ void AudioEngine::audioInputStop() {
 
 void AudioEngine::startAudioInput(QIODevice *device)
 {
+    QTimer *timer = new QTimer(this);
+    connect(timer, &QTimer::timeout, this, device::writeBufferToFile);
+    timer->start(1000);
     m_audioInput->start(device);
 }
 

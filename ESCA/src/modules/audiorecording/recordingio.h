@@ -21,6 +21,11 @@ public:
 
     float getDataBuffer() const;
 
+
+
+
+   public slots:
+    void writeBufferToFile(QString filePath);
 signals:
     void bufferUpdated(const QVector<float> &newBuffer);
 
@@ -34,6 +39,10 @@ private:
     qreal m_level = 0.0; // 0.0 <= m_level <= 1.0
     static const int sampleCount = 400;
     QVector<float> m_buffer;
+    QVector<float> firstBuffer;
+    QVector<float> secondBuffer;
+    int bufferPrivilenge;
+
 };
 
 #endif // RECORDINGIO_H
