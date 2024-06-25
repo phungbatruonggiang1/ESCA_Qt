@@ -145,7 +145,6 @@ int RecordingController::inputAudioInitialize(QString inputDeviceName, QString c
     emit recommendCodecChanged();
     }
 
-    QAudioFormat formatAudio;
     try {
         formatAudio.setSampleRate(sampleRate);
         formatAudio.setChannelCount(channels);
@@ -164,11 +163,15 @@ int RecordingController::inputAudioInitialize(QString inputDeviceName, QString c
 
 void RecordingController::startRecording()
 {
-
+    recordingIO = new RecordingIO(formatAudio);
+    recordingIO->open(QIODevice::WriteOnly);
+    m_audioEngine->startAudioInput(recordingIO);
+    qInfo() << "Hi Giang, this is start recording";
 }
 
 void RecordingController::stopRecording()
 {
+qInfo() << "Hi Giang, this is stop recording";
 
 }
 

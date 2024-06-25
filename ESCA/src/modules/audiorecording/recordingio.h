@@ -8,13 +8,14 @@
 #include <QtCore/QVector>
 #include <QtCharts/QChartGlobal>
 #include <QAudioFormat>
+#include <qendian.h>
 
 class RecordingIO : public QIODevice
 {
 public:
     explicit RecordingIO(const QAudioFormat &format);
     Q_OBJECT
-    Q_PROPERTY(QVector<float> m_buffer READ getDataBuffer() NOTIFY bufferUpdated(value))
+    // Q_PROPERTY(QVector<float> m_buffer READ getDataBuffer() NOTIFY bufferUpdated(value))
     QML_ELEMENT
 
 

@@ -9,14 +9,15 @@
 #include "../../config/config.h"
 #include "audioconfigfile.h"
 #include "audioengine.h"
-#include "recordingchart.h"
 #include "recordingschedule.h"
+#include "recordingio.h"
 
 
 class AudioEngine;
 class RecordingChart;
 class RecordingSchedule;
 class AudioConfigFile;
+class RecordingIO;
 
 class RecordingController : public QObject
 {
@@ -82,8 +83,11 @@ signals:
 
 
 private:
+    QAudioFormat formatAudio;
+
     RecordingChart *m_audioChart = nullptr;
     AudioEngine *m_audioEngine = nullptr;
+    RecordingIO *recordingIO = nullptr;
     AudioConfigFile *m_audioConfig = nullptr;
     RecordingSchedule *m_recordingSchedule = nullptr;
     QVector<float> m_bufferChart;

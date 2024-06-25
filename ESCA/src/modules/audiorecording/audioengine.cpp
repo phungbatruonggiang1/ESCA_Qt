@@ -21,6 +21,12 @@ const int    LevelWindowUs          = 0.1 * 1000000;
 
 AudioEngine::AudioEngine(QAudioDeviceInfo deviceInfoInput, QAudioFormat formatAudioInput, QObject *parent) : QObject{parent}
 {
+
+    // qInfo() << deviceInfoInput.supportedSampleRates();
+    // qInfo() << deviceInfoInput.supportedChannelCounts();
+    // qInfo() << deviceInfoInput.supportedSampleSizes();
+
+
     audioParameters.inputDevice = deviceInfoInput.deviceName();
     audioParameters.resolution = formatAudioInput.sampleSize();
     audioParameters.numberOfChannels = formatAudioInput.channelCount();
@@ -40,9 +46,11 @@ void AudioEngine::audioInputStop() {
     m_audioInput->stop();
 }
 
-// void AudioEngine::startAudioInput(QIODevice *device) {
-    // m_audioInput->start(device);
-// }
+void AudioEngine::startAudioInput(QIODevice *device)
+{
+    m_audioInput->start(device);
+}
+
 
 void AudioEngine::setAudioInputDevice(QString device)
 {

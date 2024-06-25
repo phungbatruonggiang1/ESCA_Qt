@@ -113,6 +113,7 @@ qint64 RecordingIO::writeData(const char *data, qint64 maxSize)
     }
 
     // emit update();
+    qInfo() << maxSize;
     return maxSize;
 }
 
