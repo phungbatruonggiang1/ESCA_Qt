@@ -20,7 +20,7 @@ RecordingController::RecordingController(QObject *parent) : QObject{parent}
     // khoi tạo một obj mới dùng để thu âm thanh từ loa
     // m_audioChart = new RecordingChart();
     // m_audiochart->open(QIODevice::WriteOnly);
-    // m_audioEngine->startAudioInput(m_audiochart);
+    // m_audioInputEngine->startAudioInput(m_audiochart);
 
 
     m_audioConfig = new AudioConfigFile();
@@ -44,8 +44,8 @@ RecordingController::RecordingController(QObject *parent) : QObject{parent}
 
         // input device
         inputAudioInitialize(inputDevice, codec, channels, sampleRate, resolution);
-        m_audioEngine->setDuration(duration);
-        m_audioEngine->setSaveFileLocation(fileSave);
+        m_audioInputEngine->setDuration(duration);
+        m_audioInputEngine->setSaveFileLocation(fileSave);
     }
     else {
         qInfo() << "It Hasn't configed";
@@ -147,26 +147,26 @@ int RecordingController::inputAudioInitialize(QString inputDeviceName, QString c
     }
 
     try {
-        formatAudio.setSampleRate(sampleRate);
-        formatAudio.setChannelCount(channels);
-        formatAudio.setSampleSize(resolution);
-        formatAudio.setCodec(codec);
-        formatAudio.setByteOrder(QAudioFormat::LittleEndian);
-        formatAudio.setSampleType(QAudioFormat::UnSignedInt);
+        formatAudioInput.setSampleRate(sampleRate);
+        formatAudioInput.setChannelCount(channels);
+        formatAudioInput.setSampleSize(resolution);
+        formatAudioInput.setCodec(codec);
+        formatAudioInput.setByteOrder(QAudioFormat::LittleEndian);
+        formatAudioInput.setSampleType(QAudioFormat::UnSignedInt);
     }
     catch(...) {
         qDebug() << "Handling exception not caught in slot.";
     }
-    m_audioEngine = new AudioEngine(inputDevice, formatAudio, this);
-    m_audioEngine->setInputBufferSize(1024);
+    m_audioInputEngine = new InputEngine(inputDevice, formatAudioInput, this);
+    m_audioInputEngine->setInputBufferSize(1024);
 
 }
 
 void RecordingController::startRecording()
 {
-    recordingIO = new RecordingIO(formatAudio);
+    recordingIO = new RecordingIO(formatAudioInput);
     recordingIO->open(QIODevice::WriteOnly);
-    m_audioEngine->startAudioInput(recordingIO);
+    m_audioInputEngine->startAudioInput(recordingIO);
     qInfo() << "Hi Giang, this is start recording";
 }
 
@@ -186,20 +186,20 @@ void RecordingController::editRecordParameters(QString device, QString path, int
 QVector<QString> RecordingController::loadAduioConfigureParameters()
 {
    QVector<QString> configValue = m_audioConfig->loadAudioConfigureParameters();
-   // m_audioEngine->setAudioParameters(configValue);
+   // m_audioInputEngine->setAudioParameters(configValue);
    return configValue;
 }
 
 void RecordingController::saveAduioConfigureParameters(const QVector<QString> &configValue)
 {
-    m_audioEngine->setAudioParameters(configValue);
+    m_audioInputEngine->setAudioParameters(configValue);
     m_audioConfig->saveAudioConfigureParameters(configValue);
 }
 
 
 RecordingController::~RecordingController()
 {
-    m_audioEngine->audioInputStop();
+    m_audioInputEngine->audioInputStop();
 }
 
 QVector<QString> RecordingController::getInputAudioDeviceList()

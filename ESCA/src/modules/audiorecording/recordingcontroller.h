@@ -8,7 +8,7 @@
 
 #include "../../config/config.h"
 #include "audioconfigfile.h"
-#include "audioengine.h"
+#include "inputengine.h"
 #include "recordingschedule.h"
 #include "recordingio.h"
 
@@ -83,10 +83,10 @@ signals:
 
 
 private:
-    QAudioFormat formatAudio;
+    QAudioFormat formatAudioInput;
 
     RecordingChart *m_audioChart = nullptr;
-    AudioEngine *m_audioEngine = nullptr;
+    InputEngine *m_audioInputEngine = nullptr;
     RecordingIO *recordingIO = nullptr;
     AudioConfigFile *m_audioConfig = nullptr;
     RecordingSchedule *m_recordingSchedule = nullptr;

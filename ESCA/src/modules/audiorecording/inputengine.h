@@ -1,5 +1,5 @@
-#ifndef AUDIOENGINE_H
-#define AUDIOENGINE_H
+#ifndef INPUTENGINE_H
+#define INPUTENGINE_H
 
 
 #include <QAudioDeviceInfo>
@@ -31,12 +31,12 @@ struct AudioInstance {
     int resolution;
 };
 
-class AudioEngine : public QObject {
+class InputEngine : public QObject {
     Q_OBJECT
 public:
     // explicit AudioEngine(QAudioFormat formatAudioInput, QObject *parent = 0);
-    explicit AudioEngine(QAudioDeviceInfo deviceInfoInput, QAudioFormat formatAudioInput, QObject *parent = 0);
-    ~AudioEngine();
+    explicit InputEngine(QAudioDeviceInfo deviceInfoInput, QAudioFormat formatAudioInput, QObject *parent = 0);
+    ~InputEngine();
 
     void setInputBufferSize(int value);
     void audioInputStop();
@@ -85,4 +85,4 @@ private:
 
 };
 
-#endif // AUDIOENGINE_H
+#endif // INPUTENGINE_H

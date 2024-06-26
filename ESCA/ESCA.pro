@@ -15,7 +15,7 @@ SOURCES += \
     src/common/file/accessfile.cpp \
         src/components/dynamicchart/dynamicchart.cpp \
         src/modules/audiorecording/audioconfigfile.cpp \
-        src/modules/audiorecording/audioengine.cpp \
+    src/modules/audiorecording/inputengine.cpp \
         src/modules/audiorecording/recordingcontroller.cpp \
     src/modules/audiorecording/recordingio.cpp \
         src/modules/audiorecording/recordingschedule.cpp \
@@ -40,7 +40,7 @@ HEADERS += \
     src/components/dynamicchart/dynamicchart.h \
     src/config/config.h \
     src/modules/audiorecording/audioconfigfile.h \
-    src/modules/audiorecording/audioengine.h \
+    src/modules/audiorecording/inputengine.h \
     src/modules/audiorecording/recordingcontroller.h \
     src/modules/audiorecording/recordingio.h \
     src/modules/audiorecording/recordingschedule.h \
