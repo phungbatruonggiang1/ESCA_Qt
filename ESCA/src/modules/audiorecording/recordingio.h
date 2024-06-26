@@ -9,6 +9,7 @@
 #include <QtCharts/QChartGlobal>
 #include <QAudioFormat>
 #include <qendian.h>
+#include <QTimer>
 
 class RecordingIO : public QIODevice
 {
@@ -24,7 +25,6 @@ public:
 
 
 
-   public slots:
     void writeBufferToFile(QString filePath);
 signals:
     void bufferUpdated(const QVector<float> &newBuffer);
@@ -42,6 +42,8 @@ private:
     QVector<float> firstBuffer;
     QVector<float> secondBuffer;
     int bufferPrivilenge;
+
+    QTimer m_timer;
 
 };
 

@@ -4,6 +4,42 @@
 
 RecordingIO::RecordingIO(const QAudioFormat &format) : m_format(format)
 {
+    m_timer.setInterval(3);
+    m_timer.setSingleShot(false);
+    m_timer.start(1000);
+    connect(&m_timer, &QTimer::timeout, this, [this]() {
+        QFile file("/home/gianghandsome/ESCA/ESCA_Qt/ESCA/database/test.txt");
+        if(bufferPrivilenge == 0) {
+            bufferPrivilenge = 1;
+            // write buffer 1 to file
+            if (file.open(QIODevice::WriteOnly))
+            {
+                QTextStream out(&file);
+                for(int i = 0; i < firstBuffer.size(); i++) {
+                    out << firstBuffer[i] << "\n";
+                }
+                file.close();
+            }
+            firstBuffer.clear();
+        }
+        else {
+            bufferPrivilenge = 0;
+            // write buffer 2 to file
+            if (file.open(QIODevice::WriteOnly))
+            {
+                QTextStream out(&file);
+                for(int i = 0; i < secondBuffer.size(); i++) {
+                    out << secondBuffer[i] << "\n";
+                }
+                file.close();
+            }
+            firstBuffer.clear();
+        }
+    }
+);
+
+
+
     bufferPrivilenge = 0;
     switch (m_format.sampleSize()) {
     case 8:
