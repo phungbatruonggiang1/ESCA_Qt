@@ -3,10 +3,12 @@
 input device, oupt device, format audio (sample rate, resolution, codec, number of channels), duration, save file location, 
 
 
-Chỉnh lại tên lớp: Chia lại hướng đối tượng giữa audioengine -> inputendine vad outputenigne trong class reocrding controller
+Chỉnh lại tên lớp: Chia lại hướng đối tượng giữa audioengine -> inputendine vad outputenigne trong class recording controller
+xem xét việc dùng chung recordingio giữa input và output hay tách riêng
 Thực hiện chức năng thu âm
 Thực hiện chức năng ghi ra file
 Thực hiện chức năng vẽ lên biểu đồ
+Vẽ các class diagram trước khi thực hiện các bước tiếp theo để có được thiết kế đúng
 Ghép 2 chức năng này lại (multithread hoặc tuần tự)
 
 
