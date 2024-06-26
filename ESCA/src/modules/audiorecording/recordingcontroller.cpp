@@ -1,5 +1,6 @@
 #include "recordingcontroller.h"
 #include <QDebug>
+#include <QTimer>
 
 RecordingController::RecordingController(QObject *parent) : QObject{parent}
 {
