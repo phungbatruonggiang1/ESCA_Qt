@@ -1,4 +1,4 @@
-#include "audioengine.h"
+#include "inputengine.h"
 #include <QtMultimedia/QAudioDeviceInfo>
 #include <QtMultimedia/QAudioInput>
 #include <QtMultimedia/QAudioOutput>
@@ -20,7 +20,7 @@ const int    LevelWindowUs          = 0.1 * 1000000;
 // Constructor and destructor
 //-----------------------------------------------------------------------------
 
-AudioEngine::AudioEngine(QAudioDeviceInfo deviceInfoInput, QAudioFormat formatAudioInput, QObject *parent) : QObject{parent}
+InputEngine::InputEngine(QAudioDeviceInfo deviceInfoInput, QAudioFormat formatAudioInput, QObject *parent) : QObject{parent}
 {
 
     // qInfo() << deviceInfoInput.supportedSampleRates();
@@ -38,32 +38,32 @@ AudioEngine::AudioEngine(QAudioDeviceInfo deviceInfoInput, QAudioFormat formatAu
 
 }
 
-AudioEngine::~AudioEngine()
+InputEngine::~InputEngine()
 {
     m_audioInput->stop();
 }
 
-void AudioEngine::audioInputStop() {
+void InputEngine::audioInputStop() {
     m_audioInput->stop();
 }
 
-void AudioEngine::startAudioInput(QIODevice *device)
+void InputEngine::startAudioInput(QIODevice *device)
 {
     m_audioInput->start(device);
 }
 
 
-void AudioEngine::setAudioInputDevice(QString device)
+void InputEngine::setAudioInputDevice(QString device)
 {
     audioParameters.inputDevice = device;
 }
 
-void AudioEngine::setAudioOutputDevice(const QString device)
+void InputEngine::setAudioOutputDevice(const QString device)
 {
     // audioParameters.outputDevice = device;
 }
 
-void AudioEngine::setAudioParameters(const QVector<QString> &configValue)
+void InputEngine::setAudioParameters(const QVector<QString> &configValue)
 {
     QString inputDevice = configValue[0];
     QString outputDevice = configValue[1];
@@ -84,35 +84,35 @@ void AudioEngine::setAudioParameters(const QVector<QString> &configValue)
 }
 
 
-QVector<QString> AudioEngine::getsupportedCodecList() const
+QVector<QString> InputEngine::getsupportedCodecList() const
 {
     // for(int i = 0; i < m_inputDevice.supportedCodecs().size(); ++i)
     //     m_supportedCodecList.append(1);
     // return m_supportedCodecList;
 }
 
-QString AudioEngine::getSaveFileLocation() const
+QString InputEngine::getSaveFileLocation() const
 {
     return saveFileLocation;
 }
 
-void AudioEngine::setSaveFileLocation(const QString &newSaveFileLocation)
+void InputEngine::setSaveFileLocation(const QString &newSaveFileLocation)
 {
     saveFileLocation = newSaveFileLocation;
 }
 
-int AudioEngine::getDuration() const
+int InputEngine::getDuration() const
 {
     return duration;
 }
 
-void AudioEngine::setDuration(int newDuration)
+void InputEngine::setDuration(int newDuration)
 {
     duration = newDuration;
 }
 
 
-void AudioEngine::setInputBufferSize(int value) {
+void InputEngine::setInputBufferSize(int value) {
     m_audioInput->setBufferSize(value);
 }
 
