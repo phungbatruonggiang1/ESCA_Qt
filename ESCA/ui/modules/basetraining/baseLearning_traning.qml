@@ -6,16 +6,15 @@ import QtCharts 2.6
 import QtMultimedia 5.15
 
 
-    Rectangle {
-        id: rectangle_55
-        x: 0
-        y: 0
-        width: 1024
-        height: 500
-        color: "#272D37"
+Rectangle {
+    id: rectangle_55
+    x: 0
+    y: 0
+    width: 1024
+    height: 500
+    color: "#272D37"
 
 
-    }
     // HEADER
     Rectangle {
         id: about
@@ -38,8 +37,8 @@ import QtMultimedia 5.15
         MouseArea {
             anchors.fill: parent
             onClicked: {
-                    loader.source = "baseLearning_data.qml"
-                }
+                loader.source = "baseLearning_data.qml"
+            }
         }
     }
 
@@ -64,8 +63,8 @@ import QtMultimedia 5.15
         MouseArea {
             anchors.fill: parent
             onClicked: {
-                    loader.source = "baseLearning_parameterConfigure.qml"
-                }
+                loader.source = "baseLearning_parameterConfigure.qml"
+            }
         }
     }
     Rectangle {
@@ -89,8 +88,8 @@ import QtMultimedia 5.15
         MouseArea {
             anchors.fill: parent
             onClicked: {
-                    loader.source = "baseLearning_traning.qml"
-                }
+                loader.source = "baseLearning_traning.qml"
+            }
         }
     }
 
@@ -222,8 +221,8 @@ import QtMultimedia 5.15
                     let xValue = i;
                     let yValue = LossFromCpp[i];
                     series.append(xValue, yValue);
-                   if(xValue > axisX.max)
-                       axisX.max += 20;
+                    if(xValue > axisX.max)
+                        axisX.max += 20;
                 }
             }
         }
@@ -262,3 +261,4 @@ import QtMultimedia 5.15
             anchors.horizontalCenter: parent.horizontalCenter
         }
     }
+}

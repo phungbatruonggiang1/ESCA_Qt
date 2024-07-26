@@ -1,6 +1,6 @@
-import QtQuick 2.15
+import QtQuick 2.12
 import "qrc:/ui/components/QtQuick/Studio/Components"
-import QtQuick.Controls 2.15
+import QtQuick.Controls 2.12
 
 Rectangle {
     id: frame_22
@@ -233,7 +233,6 @@ Rectangle {
             width: 40
             height: 50
             smooth: true
-            fillMode: Image.PreserveAspectFit
             source: "/ui/assets/lightbulb-regular.svg"
         }
 
@@ -353,7 +352,6 @@ Rectangle {
             width: 60
             height: 50
             smooth: true
-            fillMode: Image.PreserveAspectFitv
             source: "/ui/assets/folder-open-regular.svg"
         }
 

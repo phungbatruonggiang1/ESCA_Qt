@@ -1,6 +1,6 @@
 #include "recordingio.h"
 #include <QFile>
-
+#include <QDataStream>
 
 RecordingIO::RecordingIO(const QAudioFormat &format) : m_format(format)
 {
@@ -8,38 +8,17 @@ RecordingIO::RecordingIO(const QAudioFormat &format) : m_format(format)
     m_timer.setSingleShot(false);
     m_timer.start(1000);
     connect(&m_timer, &QTimer::timeout, this, [this]() {
-        QFile file("/home/gianghandsome/ESCA/ESCA_Qt/ESCA/database/test.txt");
+        QFile file("/home/haiminh/Desktop/ESCA_Qt/ESCA/database/test.wav");
         if(bufferPrivilenge == 0) {
             bufferPrivilenge = 1;
-            // write buffer 1 to file
-            if (file.open(QIODevice::WriteOnly))
-            {
-                QTextStream out(&file);
-                for(int i = 0; i < firstBuffer.size(); i++) {
-                    out << firstBuffer[i] << "\n";
-                }
-                file.close();
-            }
+            writeBufferToFile(file, firstBuffer);
             firstBuffer.clear();
-        }
-        else {
+        } else {
             bufferPrivilenge = 0;
-            // write buffer 2 to file
-            if (file.open(QIODevice::WriteOnly))
-            {
-                QTextStream out(&file);
-                for(int i = 0; i < secondBuffer.size(); i++) {
-                    out << secondBuffer[i] << "\n";
-                }
-                file.close();
-            }
-            firstBuffer.clear();
+            writeBufferToFile(file, secondBuffer);
+            secondBuffer.clear();
         }
-    }
-);
-
-
-
+    });
     bufferPrivilenge = 0;
     switch (m_format.sampleSize()) {
     case 8:
@@ -66,7 +45,6 @@ RecordingIO::RecordingIO(const QAudioFormat &format) : m_format(format)
             break;
         }
         break;
-
     case 32:
         switch (m_format.sampleType()) {
         case QAudioFormat::UnSignedInt:
@@ -81,14 +59,10 @@ RecordingIO::RecordingIO(const QAudioFormat &format) : m_format(format)
             break;
         }
         break;
-
     default:
         break;
     }
 }
-
-
-
 
 qint64 RecordingIO::readData(char *data, qint64 maxSize)
 {
@@ -159,38 +133,52 @@ qint64 RecordingIO::writeData(const char *data, qint64 maxSize)
     return maxSize;
 }
 
+void RecordingIO::writeWavHeader(QFile &file, qint64 dataSize)
+{
+    QDataStream out(&file);
+    out.setByteOrder(QDataStream::LittleEndian);
+
+    // RIFF header
+    out.writeRawData("RIFF", 4);
+    out << quint32(dataSize + 36);  // File size - 8 bytes
+    out.writeRawData("WAVE", 4);
+
+    // fmt chunk
+    out.writeRawData("fmt ", 4);
+    out << quint32(16);  // Chunk size
+    out << quint16(1);   // Audio format (PCM)
+    out << quint16(m_format.channelCount());
+    out << quint32(m_format.sampleRate());
+    out << quint32(m_format.sampleRate() * m_format.channelCount() * (m_format.sampleSize() / 8));
+    out << quint16(m_format.channelCount() * (m_format.sampleSize() / 8));
+    out << quint16(m_format.sampleSize());
+
+    // data chunk
+    out.writeRawData("data", 4);
+    out << quint32(dataSize);
+}
+
+void RecordingIO::writeBufferToFile(QFile &file, const QVector<quint32> &buffer)
+{
+    if (file.open(QIODevice::WriteOnly)) {
+        writeWavHeader(file, buffer.size() * (m_format.sampleSize() / 8));
+
+        QDataStream out(&file);
+        out.setByteOrder(QDataStream::LittleEndian);
+
+        for (auto sample : buffer) {
+            if (m_format.sampleSize() == 8) {
+                out << quint8(sample);
+            } else if (m_format.sampleSize() == 16) {
+                out << quint16(sample);
+            } else if (m_format.sampleSize() == 32) {
+                out << quint32(sample);
+            }
+        }
+        file.close();
+    }
+}
 
 float RecordingIO::getDataBuffer() const {
     return m_buffer[0];
-}
-
-void RecordingIO::writeBufferToFile(QString filePath)
-{
-    QFile file(filePath);
-    if(bufferPrivilenge == 0) {
-        bufferPrivilenge = 1;
-        // write buffer 1 to file
-        if (file.open(QIODevice::WriteOnly))
-        {
-            QTextStream out(&file);
-            for(int i = 0; i < firstBuffer.size(); i++) {
-                out << firstBuffer[i] << "\n";
-            }
-            file.close();
-        }
-        firstBuffer.clear();
-    }
-    else {
-        bufferPrivilenge = 0;
-        // write buffer 2 to file
-        if (file.open(QIODevice::WriteOnly))
-        {
-            QTextStream out(&file);
-            for(int i = 0; i < secondBuffer.size(); i++) {
-                out << secondBuffer[i] << "\n";
-            }
-            file.close();
-        }
-        firstBuffer.clear();
-    }
 }
