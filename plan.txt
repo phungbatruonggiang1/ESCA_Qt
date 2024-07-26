@@ -10,6 +10,17 @@ Thực hiện chức năng ghi ra file
 Thực hiện chức năng vẽ lên biểu đồ
 Vẽ các class diagram trước khi thực hiện các bước tiếp theo để có được thiết kế đúng
 Ghép 2 chức năng này lại (multithread hoặc tuần tự)
+-- hải minh -- Nhớ chỉnh lại hướng đối tượng cho rõ ràng và hợp lí.
+
+
+Công việc tiếp theo:
+- Hải Minh: Chức năng gợi ý tham số thu âm và setup môi trường, chức năng đặt lịch thu thập âm thanh, chức năng cắt file nhỏ
+- Giang: Class tiến trình + quản lí hoặc kill(suy diễn + hiển thị dữ liệu huấn luyện), daemons, nghiên cứu model-view: bảng hiển thị và webserver đẩy dữ liệu
+dynamic table: các lần huấn luyện, kết quả + view + monitor; các nội dung khác, ...
+chart: // Chưa nghĩ ra
+daemon + yocto for jetson nano, jetson origin nano and rasberry pi 4
+
+
 
 
 * Cho phép gợi ý các tham số thu âm cho người sử dụng; hoặc là người dùng tự đề xuất, nhưng phải kiểm tra điều kiện.
