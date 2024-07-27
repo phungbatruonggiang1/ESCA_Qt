@@ -21,10 +21,6 @@ public:
 
 
     float getDataBuffer() const;
-
-
-
-
     void writeBufferToFile(QString filePath);
 signals:
     void bufferUpdated(const QVector<float> &newBuffer);

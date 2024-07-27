@@ -59,12 +59,6 @@ public:
     QVector<QString> getRecommendCodecBuffer() const;
 
 
-
-
-
-
-
-
     QString getRecordingStatus() const;
     void setRecordingStatus(const QString &newRecordingStatus);
 
