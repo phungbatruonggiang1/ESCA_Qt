@@ -1,5 +1,4 @@
 QT = core
-QT += quick
 QT += qml
 QT += multimedia
 QT += widgets

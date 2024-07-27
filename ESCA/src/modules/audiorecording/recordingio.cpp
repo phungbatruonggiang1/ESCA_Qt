@@ -1,9 +1,10 @@
-#include "recordingio.h"
+    #include "recordingio.h"
 #include <QFile>
 #include <QDataStream>
 
 RecordingIO::RecordingIO(const QAudioFormat &format) : m_format(format)
 {
+    // qDebug()<< m_buffer;
     m_timer.setInterval(3);
     m_timer.setSingleShot(false);
     m_timer.start(1000);
@@ -129,7 +130,7 @@ qint64 RecordingIO::writeData(const char *data, qint64 maxSize)
     }
 
     // emit update();
-    qInfo() << maxSize;
+    // qInfo() << maxSize;
     return maxSize;
 }
 
@@ -179,6 +180,7 @@ void RecordingIO::writeBufferToFile(QFile &file, const QVector<quint32> &buffer)
     }
 }
 
-float RecordingIO::getDataBuffer() const {
-    return m_buffer[0];
+QVector<quint32> RecordingIO::getDataBuffer() {
+    qDebug()<<firstBuffer;
+    return secondBuffer;
 }

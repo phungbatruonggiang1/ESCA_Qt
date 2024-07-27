@@ -23,7 +23,6 @@ class RecordingController : public QObject
 {
     Q_OBJECT
     Q_PROPERTY(QVector<float> m_bufferChart READ getBufferChart WRITE setbufferChart NOTIFY bufferChartChanged)
-
     Q_PROPERTY(QVector<QString> recommendSampleRateBuffer READ getRecommendSampleRateBuffer NOTIFY recommendSampleRateBufferChanged)
     Q_PROPERTY(QVector<QString> recommendChannelBuffer READ getRecommendChannelBuffer NOTIFY recommendChannelBufferChanged)
     Q_PROPERTY(QVector<QString> recommendResoultionBuffer READ getRecommendResoultionBuffer NOTIFY recommendResoultionChanged)
@@ -41,9 +40,9 @@ public:
 
 
     Q_INVOKABLE QVector<QString> getInputAudioDeviceList();
-     Q_INVOKABLE QVector<QString> getOutputAudioDeviceList();
+    Q_INVOKABLE QVector<QString> getOutputAudioDeviceList();
     Q_INVOKABLE void setInputAudioDevice(QString device);
-     Q_INVOKABLE void setOutputAudioDevice(QString device);
+    Q_INVOKABLE void setOutputAudioDevice(QString device);
     // Q_INVOKABLE QVector<QString> loadOutputAudioDeviceList();
     // Q_INVOKABLE void setOutputAudioDevice(QString device);
 
@@ -73,8 +72,6 @@ public:
 signals:
     void bufferChartChanged();
     void dataChartSent(const QString &);
-
-
 
     void recommendSampleRateBufferChanged();
     void recommendChannelBufferChanged();

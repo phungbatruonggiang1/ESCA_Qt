@@ -18,7 +18,7 @@ class RecordingIO : public QIODevice
 
 public:
     explicit RecordingIO(const QAudioFormat &format);
-    float getDataBuffer() const;
+    QVector<quint32> getDataBuffer();
     void writeBufferToFile(QFile &file, const QVector<quint32> &buffer);
 
 signals:
@@ -35,7 +35,7 @@ private:
     quint32 m_maxAmplitude = 0;
     qreal m_level = 0.0; // 0.0 <= m_level <= 1.0
     static const int sampleCount = 400;
-    QVector<float> m_buffer;
+    QVector<quint32> m_buffer;
     QVector<quint32> firstBuffer;
     QVector<quint32> secondBuffer;
     int bufferPrivilenge;

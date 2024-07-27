@@ -4,8 +4,6 @@
 #include <QtWidgets/QApplication>
 
 
-
-
 #include "./src/modules/audiorecording/recordingcontroller.h"
 
 int main(int argc, char *argv[])
@@ -15,7 +13,7 @@ int main(int argc, char *argv[])
 #if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
     QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
 #endif
-    QGuiApplication app(argc, argv);
+    QApplication app(argc, argv);
 
     QQmlApplicationEngine engine;
     const QUrl url(QStringLiteral("qrc:/ui/main.qml"));
@@ -31,11 +29,18 @@ int main(int argc, char *argv[])
     engine.load(url);
 
 
-    RecordingController* recording = new RecordingController();
+    RecordingController recording;
+    RecordingIO *minhio;
+    // recording.s
+    // recording.startRecording();
+
+    // QVector<float> minh = recording.getBufferChart();
+    // minhio->getDataBuffer();
+    // qDebug()<<minh;
 
 
     // control audiocontroller
-    engine.rootContext()->setContextProperty("RecordingObject", recording);
+    engine.rootContext()->setContextProperty("RecordingObject", &recording);
 
     return app.exec();
 }

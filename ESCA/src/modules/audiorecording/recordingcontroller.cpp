@@ -6,7 +6,6 @@ RecordingController::RecordingController(QObject *parent) : QObject{parent}
 {
 
     QVector<QString> configValue;
-
     QList<QAudioDeviceInfo> m_availableAudioInputDevices = QAudioDeviceInfo::availableDevices(QAudio::AudioInput);
     QList<QAudioDeviceInfo> m_availableAudioOutputDevices = QAudioDeviceInfo::availableDevices(QAudio::AudioOutput);
     for (int i = 0; i < m_availableAudioInputDevices.size(); ++i) {
@@ -46,6 +45,9 @@ RecordingController::RecordingController(QObject *parent) : QObject{parent}
         inputAudioInitialize(inputDevice, codec, channels, sampleRate, resolution);
         m_audioInputEngine->setDuration(duration);
         m_audioInputEngine->setSaveFileLocation(fileSave);
+
+        recordingIO = new RecordingIO(formatAudioInput);
+
     }
     else {
         qInfo() << "It Hasn't configed";
@@ -53,13 +55,10 @@ RecordingController::RecordingController(QObject *parent) : QObject{parent}
 
 }
 
-
-
-
-
-
 QVector<float> RecordingController::getBufferChart() const
 {
+    // float minh = recordingIO->getDataBuffer();
+    // qDebug()<< minh;
     return m_bufferChart;
 }
 
@@ -163,10 +162,11 @@ int RecordingController::inputAudioInitialize(QString inputDeviceName, QString c
 }
 
 void RecordingController::startRecording()
-{
-    recordingIO = new RecordingIO(formatAudioInput);
+{    
     recordingIO->open(QIODevice::WriteOnly);
+    qDebug()<< "minh";
     m_audioInputEngine->startAudioInput(recordingIO);
+    qDebug()<< recordingIO->getDataBuffer();
     qInfo() << "Hi Giang, this is start recording";
 }
 
