@@ -9,6 +9,7 @@
 
 class DynamicChart : public QIODevice
 {
+
     Q_OBJECT
     Q_PROPERTY(float getData READ getData() NOTIFY bufferUpdated(value))
     QML_ELEMENT
@@ -41,3 +42,4 @@ private:
 };
 
 #endif // DYNAMICCHART_H
+
