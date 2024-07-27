@@ -164,7 +164,7 @@ int RecordingController::inputAudioInitialize(QString inputDeviceName, QString c
 void RecordingController::startRecording()
 {    
     recordingIO->open(QIODevice::WriteOnly);
-    qDebug()<< "minh";
+    qDebug()<< "haiminh";
     m_audioInputEngine->startAudioInput(recordingIO);
     qDebug()<< recordingIO->getDataBuffer();
     qInfo() << "Hi Giang, this is start recording";
