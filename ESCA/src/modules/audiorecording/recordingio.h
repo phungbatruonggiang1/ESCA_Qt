@@ -20,7 +20,7 @@ public:
     explicit RecordingIO(const QAudioFormat &format);
     QVector<quint32> getDataBuffer();
     void writeBufferToFile(QFile &file, const QVector<quint32> &buffer);
-
+    
 signals:
     void bufferUpdated(const QVector<float> &newBuffer);
 
