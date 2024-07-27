@@ -51,6 +51,10 @@ RecordingController::RecordingController(QObject *parent) : QObject{parent}
         qInfo() << "It Hasn't configed";
     }
 
+    m_fileFactory = new AudioFileFactory();
+    // just temporary for testing
+    QString audiofilePath = "/home/gianghandsome/ESCA/ESCA_Qt/ESCA/data/test.wav";
+    m_fileFactory->setFilePath(audiofilePath);
 }
 
 
