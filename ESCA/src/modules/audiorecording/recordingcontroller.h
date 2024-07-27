@@ -105,7 +105,7 @@ private:
 
 
     //save data to storage
-    AudioFileFactory *m_fileFactory;
+    AudioFileFactory *m_fileFactory = nullptr;
 
 
 };

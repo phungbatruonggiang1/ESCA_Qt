@@ -4,6 +4,7 @@
 #include <QObject>
 #include <QString>
 #include <QAudioFormat>
+#include <QDataStream>
 #include <qendian.h>
 #include <QTimer>
 #include <QFile>
@@ -15,13 +16,13 @@ class AudioFileFactory : public AccessFile
 {
     Q_OBJECT
 public:
-    explicit AudioFileFactory(QObject *parent = nullptr);
+    explicit AudioFileFactory(const QAudioFormat &format);
     void createFile();
     void saveDataToFile(const QVector<QString> datas);
     void writeWavHeader(QFile &file, qint64 dataSize);
 
 
-    AudioFormat m_format;
+    const QAudioFormat m_format;
 };
 
 #endif // AUDIOFILEFACTORY_H

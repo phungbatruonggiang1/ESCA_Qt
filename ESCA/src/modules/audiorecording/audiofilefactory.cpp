@@ -1,8 +1,10 @@
 #include "audiofilefactory.h"
 
-AudioFileFactory::AudioFileFactory() {}
 
+AudioFileFactory::AudioFileFactory(const QAudioFormat &format) : m_format(format)
+{
 
+}
 
 void AudioFileFactory::writeWavHeader(QFile &file, qint64 dataSize)
 {
@@ -29,11 +31,14 @@ void AudioFileFactory::writeWavHeader(QFile &file, qint64 dataSize)
     out << quint32(dataSize);
 }
 
+
+
 void AudioFileFactory::saveDataToFile(const QVector<QString> data)
 {
     QFile file(getFilePath());
     if (file.open(QIODevice::WriteOnly)) {
-        writeWavHeader(file, buffer.size() * (m_format.sampleSize() / 8));
+        // writeWavHeader(file, buffer.size() * (m_format.sampleSize() / 8));
+        writeWavHeader(file, 30000);
 
         QDataStream out(&file);
         out.setByteOrder(QDataStream::LittleEndian);
