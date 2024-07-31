@@ -17,19 +17,19 @@ Rectangle {
     property string file_to_store: 'file_to_store'
     property var inputSources: []
     property var outputSources: []
+    property var databuff: []
 
     Component.onCompleted: {
 
         inputSources = RecordingObject.getInputAudioDeviceList();
         // console.log("hello"+inputSources);
-        console.log(RecordingObject.getBufferChart);
+        console.log("hello", RecordingObject.bufferChart);
         outputSources = RecordingObject.getOutputAudioDeviceList();
         listInputDeviceModel.append({"name" : "none"});
         listOutputDeviceModel.append({"name" : "none"});
         for (let i = 0; i < inputSources.length; ++i) {
             listInputDeviceModel.append({"name" : inputSources[i]});
         }
-
         for (let j=0; j<outputSources.length; ++j) {
             listOutputDeviceModel.append({"name" : outputSources[j]});
         }
@@ -140,7 +140,7 @@ Rectangle {
 
         onCurrentIndexChanged: {
             let selectedItem = inputSources[currentIndex] // Get the selected item
-            RecodingObject.setInputAudioDevice(selectedItem);
+            RecordingObject.setInputAudioDevice(selectedItem);
             // Add logic here
         }
     }
@@ -160,7 +160,7 @@ Rectangle {
 
         onCurrentIndexChanged: {
             var selectedItem = outputSources[currentIndex] // Get the selected item
-            RecodingObject.setOutputAudioDevice(selectedItem);
+            RecordingObject.setOutputAudioDevice(selectedItem);
             // Add logic here
         }
     }
@@ -216,26 +216,29 @@ Rectangle {
         }
 
         Timer {
-            interval: 100 // Mỗi 10ms cập nhật một lần // em chua biet dung nhieu cho toi uu
+            interval: 3000 // Mỗi 1000ms cập nhật một lần // em chua biet dung nhieu cho toi uu
             running: flag
             repeat: true
             onTriggered: {
 
-                for (var i = 1028; i >= 0; i--) {
-                    var xValue = series.count
-                    // truc x la thoi gian ( tai thoi diem chay trong for :3)
-                    // var yValue = RecordingObject.getBufferChart()[i];
-                    var yValue = Math.sin(xValue / 10);
-                    if (yValue >= 95 || yValue <= -95) {
-                        // console.log("yValue: " + yValue)
-                    }
-                    series.append(xValue, yValue)
+                // for (var i = 0; i<= 1000; i--) {
+                //     var xValue = series.count
+                //     // truc x la thoi gian ( tai thoi diem chay trong for :3)
+                //     var yValue = RecordingObject.bufferChart[0];
+                //     // var yValue = Math.sin(xValue / 10);
+                //     if (yValue >= 95 || yValue <= -95) {
+                //         // console.log("yValue: " + yValue)
+                //     }
+                //     series.append(xValue, yValue)
+                // }
+                var xValue = series.count
+                var yValue = RecordingObject.bufferChart[0]
+                series.append(xValue, yValue)
 
-                }
                 // Cập nhật giá trị tối đa trên trục X nếu cần
                 if (xValue > axisX.max)
                     axisX.max = xValue
-                    axisX.min = xValue - 1028 //set lai gia tri toi da de chart chay lien tuc
+                axisX.min = xValue - 1028 //set lai gia tri toi da de chart chay lien tuc
                 // Cập nhật giá trị tối đa trên trục Y nếu cần
                 if (yValue > axisY.max)
                     axisY.max = yValue
@@ -271,8 +274,11 @@ Rectangle {
                 flag = !flag;
                 if(flag)
                     RecordingObject.startRecording();
-                else
+
+                else {
                     RecordingObject.stopRecording();
+                    // console.log("hello", RecordingObject.getBufferChart);
+                }
             }
         }
     }

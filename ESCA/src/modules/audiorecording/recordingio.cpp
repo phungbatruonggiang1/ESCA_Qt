@@ -1,26 +1,41 @@
-    #include "recordingio.h"
+#include "recordingio.h"
 #include <QFile>
 #include <QDataStream>
 
-RecordingIO::RecordingIO(const QAudioFormat &format) : m_format(format)
+RecordingIO::RecordingIO(const QAudioFormat &format, QObject *parent) :QIODevice(parent), m_format(format)
 {
     // qDebug()<< m_buffer;
     m_timer.setInterval(3);
     m_timer.setSingleShot(false);
-    m_timer.start(1000);
+    m_timer.start(1000);   // 5s time out
+
     connect(&m_timer, &QTimer::timeout, this, [this]() {
+        QMutexLocker locker(&bufferMutex);
+
         QFile file("/home/haiminh/Desktop/ESCA_Qt/ESCA/database/test.wav");
-        if(bufferPrivilenge == 0) {
-            bufferPrivilenge = 1;
-            writeBufferToFile(file, firstBuffer);
-            firstBuffer.clear();
-        } else {
-            bufferPrivilenge = 0;
-            writeBufferToFile(file, secondBuffer);
-            secondBuffer.clear();
+        if (file.open(QIODevice::WriteOnly)) {
+            writeWavHeader(file, dataBuffer.size() * (m_format.sampleSize() / 8));
+            QDataStream out(&file);
+            out.setByteOrder(QDataStream::LittleEndian);
+
+            for (auto sample : dataBuffer) {
+                if (m_format.sampleSize() == 8) {
+                    out << quint8(sample);
+                } else if (m_format.sampleSize() == 16) {
+                    out << quint16(sample);
+                } else if (m_format.sampleSize() == 32) {
+                    out << quint32(sample);
+                }
+            }
+            file.close();
+            qInfo()<<"dataBuffer timeout:" << dataBuffer;
+            emit dataReady(dataBuffer);
         }
+
+        // Clear the buffer after processing
+        dataBuffer.clear();
     });
-    bufferPrivilenge = 0;
+
     switch (m_format.sampleSize()) {
     case 8:
         switch (m_format.sampleType()) {
@@ -83,7 +98,6 @@ qint64 RecordingIO::writeData(const char *data, qint64 maxSize)
 
         quint32 maxValue = 0;
         const unsigned char *ptr = reinterpret_cast<const unsigned char *>(data);
-
         for (int i = 0; i < numSamples; ++i) {
             for (int j = 0; j < m_format.channelCount(); ++j) {
                 quint32 value = 0;
@@ -115,20 +129,18 @@ qint64 RecordingIO::writeData(const char *data, qint64 maxSize)
                 } else if (m_format.sampleSize() == 32 && m_format.sampleType() == QAudioFormat::Float) {
                     value = qAbs(*reinterpret_cast<const float*>(ptr) * 0x7fffffff); // assumes 0-1.0
                 }
-                if(bufferPrivilenge == 0)
-                    firstBuffer.append(value);
-                else {
-                    secondBuffer.append(value);
-                }
+
+                QMutexLocker locker(&bufferMutex);
+                // qDebug()<<"Value"+value;
+                dataBuffer.append(value);
                 maxValue = qMax(value, maxValue);
                 ptr += channelBytes;
             }
         }
-
+        qInfo()<<"dataBuffer write:" << dataBuffer;
         maxValue = qMin(maxValue, m_maxAmplitude);
         m_level = qreal(maxValue) / m_maxAmplitude;
     }
-
     // emit update();
     // qInfo() << maxSize;
     return maxSize;
@@ -159,28 +171,4 @@ void RecordingIO::writeWavHeader(QFile &file, qint64 dataSize)
     out << quint32(dataSize);
 }
 
-void RecordingIO::writeBufferToFile(QFile &file, const QVector<quint32> &buffer)
-{
-    if (file.open(QIODevice::WriteOnly)) {
-        writeWavHeader(file, buffer.size() * (m_format.sampleSize() / 8));
 
-        QDataStream out(&file);
-        out.setByteOrder(QDataStream::LittleEndian);
-
-        for (auto sample : buffer) {
-            if (m_format.sampleSize() == 8) {
-                out << quint8(sample);
-            } else if (m_format.sampleSize() == 16) {
-                out << quint16(sample);
-            } else if (m_format.sampleSize() == 32) {
-                out << quint32(sample);
-            }
-        }
-        file.close();
-    }
-}
-
-QVector<quint32> RecordingIO::getDataBuffer() {
-    qDebug()<<firstBuffer;
-    return secondBuffer;
-}

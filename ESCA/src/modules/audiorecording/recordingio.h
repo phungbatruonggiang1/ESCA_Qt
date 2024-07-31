@@ -10,19 +10,17 @@
 #include <qendian.h>
 #include <QTimer>
 #include <QFile>
+#include <QMutex>
 
 class RecordingIO : public QIODevice
 {
     Q_OBJECT
-    QML_ELEMENT
 
 public:
-    explicit RecordingIO(const QAudioFormat &format);
-    QVector<quint32> getDataBuffer();
-    void writeBufferToFile(QFile &file, const QVector<quint32> &buffer);
+    explicit RecordingIO(const QAudioFormat &format, QObject *parent = nullptr);
     
 signals:
-    void bufferUpdated(const QVector<float> &newBuffer);
+    void dataReady(const QVector<quint32> &buffer);
 
 protected:
     qint64 readData(char *data, qint64 maxSize) override;
@@ -35,11 +33,9 @@ private:
     quint32 m_maxAmplitude = 0;
     qreal m_level = 0.0; // 0.0 <= m_level <= 1.0
     static const int sampleCount = 400;
-    QVector<quint32> m_buffer;
-    QVector<quint32> firstBuffer;
-    QVector<quint32> secondBuffer;
-    int bufferPrivilenge;
 
+    QMutex bufferMutex;
+    QVector<quint32> dataBuffer;
     QTimer m_timer;
 };
 

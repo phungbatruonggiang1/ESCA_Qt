@@ -22,7 +22,7 @@ class RecordingIO;
 class RecordingController : public QObject
 {
     Q_OBJECT
-    Q_PROPERTY(QVector<float> m_bufferChart READ getBufferChart WRITE setbufferChart NOTIFY bufferChartChanged)
+    Q_PROPERTY(QVariantList bufferChart READ getBufferChart WRITE setbufferChart NOTIFY bufferChartChanged)
     Q_PROPERTY(QVector<QString> recommendSampleRateBuffer READ getRecommendSampleRateBuffer NOTIFY recommendSampleRateBufferChanged)
     Q_PROPERTY(QVector<QString> recommendChannelBuffer READ getRecommendChannelBuffer NOTIFY recommendChannelBufferChanged)
     Q_PROPERTY(QVector<QString> recommendResoultionBuffer READ getRecommendResoultionBuffer NOTIFY recommendResoultionChanged)
@@ -48,9 +48,6 @@ public:
 
 
 
-    QVector<float> getBufferChart() const;
-    void setbufferChart(const QVector<float> &newBufferData);
-
 
     QVector<QString> getRecommendSampleRateBuffer() const;
     QVector<QString> getRecommendChannelBuffer() const;
@@ -63,25 +60,29 @@ public:
 
     int inputAudioInitialize(QString inputDeviceName, QString codec, int channels, int sampleRate, int reslolution);
 
+    QVariantList getBufferChart() const;
+    void setbufferChart(const QVariantList &newBufferChart);
+
 signals:
     void bufferChartChanged();
     void dataChartSent(const QString &);
-
     void recommendSampleRateBufferChanged();
     void recommendChannelBufferChanged();
     void recommendResoultionChanged();
     void recommendCodecChanged();
 
+private slots:
+    void handleDataReady(const QVector<quint32> &buffer);
 
 private:
+    RecordingIO *recordingIO;
     QAudioFormat formatAudioInput;
 
     RecordingChart *m_audioChart = nullptr;
     InputEngine *m_audioInputEngine = nullptr;
-    RecordingIO *recordingIO = nullptr;
+
     AudioConfigFile *m_audioConfig = nullptr;
     RecordingSchedule *m_recordingSchedule = nullptr;
-    QVector<float> m_bufferChart;
 
 
     // audio status
@@ -92,15 +93,12 @@ private:
     QVector<QString> m_outputDevice;
     QVector<QString> m_inputDevice;
 
-
-
     QVector<QString> recommendSampleRateBuffer;
     QVector<QString> recommendChannelBuffer;
     QVector<QString> recommendResoultionBuffer;
     QVector<QString> recommendCodecBuffer;
 
-
-
+    QVariantList m_bufferChart;
 };
 
 #endif // RECORDINGCONTROLLER_H

@@ -4,7 +4,6 @@
 
 RecordingController::RecordingController(QObject *parent) : QObject{parent}
 {
-
     QVector<QString> configValue;
     QList<QAudioDeviceInfo> m_availableAudioInputDevices = QAudioDeviceInfo::availableDevices(QAudio::AudioInput);
     QList<QAudioDeviceInfo> m_availableAudioOutputDevices = QAudioDeviceInfo::availableDevices(QAudio::AudioOutput);
@@ -21,11 +20,8 @@ RecordingController::RecordingController(QObject *parent) : QObject{parent}
     // m_audiochart->open(QIODevice::WriteOnly);
     // m_audioInputEngine->startAudioInput(m_audiochart);
 
-
     m_audioConfig = new AudioConfigFile();
     m_audioConfig->setFilePath(RECORDING_CONFIG_FILE);
-
-
 
     // initialize device;
     configValue.clear();
@@ -46,30 +42,13 @@ RecordingController::RecordingController(QObject *parent) : QObject{parent}
         m_audioInputEngine->setDuration(duration);
         m_audioInputEngine->setSaveFileLocation(fileSave);
 
-        recordingIO = new RecordingIO(formatAudioInput);
 
     }
     else {
         qInfo() << "It Hasn't configed";
     }
-
 }
 
-QVector<float> RecordingController::getBufferChart() const
-{
-    // float minh = recordingIO->getDataBuffer();
-    // qDebug()<< minh;
-    return m_bufferChart;
-}
-
-void RecordingController::setbufferChart(const QVector<float> &newBufferData)
-{
-    if (m_bufferChart == newBufferData)
-        return;
-    m_bufferChart = newBufferData;
-
-    emit bufferChartChanged();
-}
 
 QVector<QString> RecordingController::getRecommendSampleRateBuffer() const
 {
@@ -116,33 +95,33 @@ int RecordingController::inputAudioInitialize(QString inputDeviceName, QString c
 
     if (inputDevice.supportedSampleRates().size() > 0)
     {
-    recommendSampleRateBuffer.clear();
-    for(int i = 0; i < inputDevice.supportedSampleRates().size(); ++i)
-        recommendSampleRateBuffer.append(QString::number(inputDevice.supportedSampleRates().at(i)));
-    emit recommendSampleRateBufferChanged();
+        recommendSampleRateBuffer.clear();
+        for(int i = 0; i < inputDevice.supportedSampleRates().size(); ++i)
+            recommendSampleRateBuffer.append(QString::number(inputDevice.supportedSampleRates().at(i)));
+        emit recommendSampleRateBufferChanged();
     }
 
     if(inputDevice.supportedChannelCounts().size() > 0) {
-    recommendChannelBuffer.clear();
-    for(int i = 0; i < inputDevice.supportedChannelCounts().size(); ++i)
-        recommendChannelBuffer.append(QString::number(inputDevice.supportedChannelCounts().at(i)));
-    emit recommendChannelBufferChanged();
+        recommendChannelBuffer.clear();
+        for(int i = 0; i < inputDevice.supportedChannelCounts().size(); ++i)
+            recommendChannelBuffer.append(QString::number(inputDevice.supportedChannelCounts().at(i)));
+        emit recommendChannelBufferChanged();
     }
 
     if(inputDevice.supportedSampleSizes().size() > 0) {
 
-    recommendResoultionBuffer.clear();
-    for(int i = 0; i < inputDevice.supportedSampleSizes().size(); ++i) {
-        recommendResoultionBuffer.append(QString::number(inputDevice.supportedSampleSizes().at(i)));
-    }
-    emit recommendResoultionChanged();
+        recommendResoultionBuffer.clear();
+        for(int i = 0; i < inputDevice.supportedSampleSizes().size(); ++i) {
+            recommendResoultionBuffer.append(QString::number(inputDevice.supportedSampleSizes().at(i)));
+        }
+        emit recommendResoultionChanged();
     }
 
     if(inputDevice.supportedCodecs().size() > 0) {
-    recommendCodecBuffer.clear();
-    for(int i = 0; i < inputDevice.supportedCodecs().size(); ++i)
-        recommendCodecBuffer.append(inputDevice.supportedCodecs().at(i));
-    emit recommendCodecChanged();
+        recommendCodecBuffer.clear();
+        for(int i = 0; i < inputDevice.supportedCodecs().size(); ++i)
+            recommendCodecBuffer.append(inputDevice.supportedCodecs().at(i));
+        emit recommendCodecChanged();
     }
 
     try {
@@ -159,20 +138,33 @@ int RecordingController::inputAudioInitialize(QString inputDeviceName, QString c
     m_audioInputEngine = new InputEngine(inputDevice, formatAudioInput, this);
     m_audioInputEngine->setInputBufferSize(1024);
 
+    return 0;
+}
+
+
+void RecordingController::handleDataReady(const QVector<quint32> &buffer)
+{
+    for (const auto& value : buffer) {
+        m_bufferChart.append(value);
+    }
+    qInfo()<<"dataBuffer controller:" << m_bufferChart;
+
+    // Gửi m_bufferChart lên QML ChartView
 }
 
 void RecordingController::startRecording()
-{    
+{
+    recordingIO = new RecordingIO(formatAudioInput);
+    connect(recordingIO, &RecordingIO::dataReady, this, &RecordingController::handleDataReady);
     recordingIO->open(QIODevice::WriteOnly);
-    qDebug()<< "haiminh";
     m_audioInputEngine->startAudioInput(recordingIO);
-    qDebug()<< recordingIO->getDataBuffer();
+
     qInfo() << "Hi Giang, this is start recording";
 }
 
 void RecordingController::stopRecording()
 {
-qInfo() << "Hi Giang, this is stop recording";
+    qInfo() << "Hi Giang, this is stop recording";
 
 }
 
@@ -180,14 +172,13 @@ void RecordingController::editRecordParameters(QString device, QString path, int
 {
     // updateAudioPath();
     qInfo() << "Hello Giang";
-
 }
 
 QVector<QString> RecordingController::loadAduioConfigureParameters()
 {
-   QVector<QString> configValue = m_audioConfig->loadAudioConfigureParameters();
-   // m_audioInputEngine->setAudioParameters(configValue);
-   return configValue;
+    QVector<QString> configValue = m_audioConfig->loadAudioConfigureParameters();
+    // m_audioInputEngine->setAudioParameters(configValue);
+    return configValue;
 }
 
 void RecordingController::saveAduioConfigureParameters(const QVector<QString> &configValue)
@@ -220,4 +211,18 @@ void RecordingController::setInputAudioDevice(QString device)
 void RecordingController::setOutputAudioDevice(QString device)
 {
     qInfo() << "The output is: " << device;
+}
+
+QVariantList RecordingController::getBufferChart() const
+{
+    qInfo()<<"in c++"<<m_bufferChart;
+    return m_bufferChart;
+}
+
+void RecordingController::setbufferChart(const QVariantList &newBufferChart)
+{
+    if (m_bufferChart == newBufferChart)
+        return;
+    m_bufferChart = newBufferChart;
+    emit bufferChartChanged();
 }

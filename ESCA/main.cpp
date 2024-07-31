@@ -30,14 +30,6 @@ int main(int argc, char *argv[])
 
 
     RecordingController recording;
-    RecordingIO *minhio;
-    // recording.s
-    // recording.startRecording();
-
-    // QVector<float> minh = recording.getBufferChart();
-    // minhio->getDataBuffer();
-    // qDebug()<<minh;
-
 
     // control audiocontroller
     engine.rootContext()->setContextProperty("RecordingObject", &recording);
