@@ -36,12 +36,10 @@ RecordingController::RecordingController(QObject *parent) : QObject{parent}
         int duration = configValue[6].toInt();
         QString codec = configValue[7];
 
-
         // input device
         inputAudioInitialize(inputDevice, codec, channels, sampleRate, resolution);
         m_audioInputEngine->setDuration(duration);
         m_audioInputEngine->setSaveFileLocation(fileSave);
-
 
     }
     else {
@@ -144,11 +142,8 @@ int RecordingController::inputAudioInitialize(QString inputDeviceName, QString c
 
 void RecordingController::handleDataReady(const QVector<quint32> &buffer)
 {
-    for (const auto& value : buffer) {
-        m_bufferChart.append(value);
-    }
-    qInfo()<<"dataBuffer controller:" << m_bufferChart;
-
+    setbufferChart(buffer);
+    qInfo()<<"dataBuffer controller property:" << m_bufferChart[0];
     // Gửi m_bufferChart lên QML ChartView
 }
 
@@ -165,7 +160,6 @@ void RecordingController::startRecording()
 void RecordingController::stopRecording()
 {
     qInfo() << "Hi Giang, this is stop recording";
-
 }
 
 void RecordingController::editRecordParameters(QString device, QString path, int sampleRate, int bitsPerSample, int duration)
@@ -213,13 +207,13 @@ void RecordingController::setOutputAudioDevice(QString device)
     qInfo() << "The output is: " << device;
 }
 
-QVariantList RecordingController::getBufferChart() const
+QVector<quint32> RecordingController::getBufferChart() const
 {
-    qInfo()<<"in c++"<<m_bufferChart;
+    // qInfo()<<"in c++"<<m_bufferChart;
     return m_bufferChart;
 }
 
-void RecordingController::setbufferChart(const QVariantList &newBufferChart)
+void RecordingController::setbufferChart(const QVector<quint32> &newBufferChart)
 {
     if (m_bufferChart == newBufferChart)
         return;

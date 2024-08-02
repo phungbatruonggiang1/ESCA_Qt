@@ -7,9 +7,9 @@ RecordingIO::RecordingIO(const QAudioFormat &format, QObject *parent) :QIODevice
     // qDebug()<< m_buffer;
     m_timer.setInterval(3);
     m_timer.setSingleShot(false);
-    m_timer.start(1000);   // 5s time out
+    m_timer.start(500);   // 0.5s time out
 
-    connect(&m_timer, &QTimer::timeout, this, [this]() {
+    connect(&m_timer, &QTimer::timeout, this, [this]() {      // each timeout 3s
         QMutexLocker locker(&bufferMutex);
 
         QFile file("/home/haiminh/Desktop/ESCA_Qt/ESCA/database/test.wav");
@@ -17,6 +17,8 @@ RecordingIO::RecordingIO(const QAudioFormat &format, QObject *parent) :QIODevice
             writeWavHeader(file, dataBuffer.size() * (m_format.sampleSize() / 8));
             QDataStream out(&file);
             out.setByteOrder(QDataStream::LittleEndian);
+
+            qInfo()<<"dataBuffer to file:" << dataBuffer[0];
 
             for (auto sample : dataBuffer) {
                 if (m_format.sampleSize() == 8) {
@@ -28,7 +30,8 @@ RecordingIO::RecordingIO(const QAudioFormat &format, QObject *parent) :QIODevice
                 }
             }
             file.close();
-            qInfo()<<"dataBuffer timeout:" << dataBuffer;
+
+            qInfo()<<"dataBuffer timeout:" << dataBuffer[0];
             emit dataReady(dataBuffer);
         }
 
@@ -94,7 +97,8 @@ qint64 RecordingIO::writeData(const char *data, qint64 maxSize)
         const int channelBytes = m_format.sampleSize() / 8;
         const int sampleBytes = m_format.channelCount() * channelBytes;
         Q_ASSERT(maxSize % sampleBytes == 0);
-        const int numSamples = maxSize / sampleBytes;
+        // const int numSamples = qMin(maxSize / sampleBytes);
+        const int numSamples = 5;
 
         quint32 maxValue = 0;
         const unsigned char *ptr = reinterpret_cast<const unsigned char *>(data);
@@ -102,49 +106,42 @@ qint64 RecordingIO::writeData(const char *data, qint64 maxSize)
             for (int j = 0; j < m_format.channelCount(); ++j) {
                 quint32 value = 0;
 
-                if (m_format.sampleSize() == 8 && m_format.sampleType() == QAudioFormat::UnSignedInt) {
-                    value = *reinterpret_cast<const quint8*>(ptr);
-                } else if (m_format.sampleSize() == 8 && m_format.sampleType() == QAudioFormat::SignedInt) {
-                    value = qAbs(*reinterpret_cast<const qint8*>(ptr));
-                } else if (m_format.sampleSize() == 16 && m_format.sampleType() == QAudioFormat::UnSignedInt) {
-                    if (m_format.byteOrder() == QAudioFormat::LittleEndian)
-                        value = qFromLittleEndian<quint16>(ptr);
-                    else
-                        value = qFromBigEndian<quint16>(ptr);
-                } else if (m_format.sampleSize() == 16 && m_format.sampleType() == QAudioFormat::SignedInt) {
-                    if (m_format.byteOrder() == QAudioFormat::LittleEndian)
-                        value = qAbs(qFromLittleEndian<qint16>(ptr));
-                    else
-                        value = qAbs(qFromBigEndian<qint16>(ptr));
-                } else if (m_format.sampleSize() == 32 && m_format.sampleType() == QAudioFormat::UnSignedInt) {
-                    if (m_format.byteOrder() == QAudioFormat::LittleEndian)
-                        value = qFromLittleEndian<quint32>(ptr);
-                    else
-                        value = qFromBigEndian<quint32>(ptr);
-                } else if (m_format.sampleSize() == 32 && m_format.sampleType() == QAudioFormat::SignedInt) {
-                    if (m_format.byteOrder() == QAudioFormat::LittleEndian)
-                        value = qAbs(qFromLittleEndian<qint32>(ptr));
-                    else
-                        value = qAbs(qFromBigEndian<qint32>(ptr));
-                } else if (m_format.sampleSize() == 32 && m_format.sampleType() == QAudioFormat::Float) {
-                    value = qAbs(*reinterpret_cast<const float*>(ptr) * 0x7fffffff); // assumes 0-1.0
+                if (m_format.sampleSize() == 8) {
+                    if (m_format.sampleType() == QAudioFormat::UnSignedInt) {
+                        value = *reinterpret_cast<const quint8*>(ptr);
+                    } else if (m_format.sampleType() == QAudioFormat::SignedInt) {
+                        value = qAbs(*reinterpret_cast<const qint8*>(ptr));
+                    }
+                } else if (m_format.sampleSize() == 16) {
+                    if (m_format.sampleType() == QAudioFormat::UnSignedInt) {
+                        value = *reinterpret_cast<const quint16*>(ptr);
+                    } else if (m_format.sampleType() == QAudioFormat::SignedInt) {
+                        value = qAbs(*reinterpret_cast<const qint16*>(ptr));
+                    }
+                } else if (m_format.sampleSize() == 32) {
+                    if (m_format.sampleType() == QAudioFormat::UnSignedInt) {
+                        value = *reinterpret_cast<const quint32*>(ptr);
+                    } else if (m_format.sampleType() == QAudioFormat::SignedInt) {
+                        value = qAbs(*reinterpret_cast<const qint32*>(ptr));
+                    } else if (m_format.sampleType() == QAudioFormat::Float) {
+                        value = qAbs(*reinterpret_cast<const float*>(ptr) * 0x7fffffff);
+                    }
                 }
 
                 QMutexLocker locker(&bufferMutex);
-                // qDebug()<<"Value"+value;
                 dataBuffer.append(value);
                 maxValue = qMax(value, maxValue);
                 ptr += channelBytes;
             }
         }
-        qInfo()<<"dataBuffer write:" << dataBuffer;
+        qInfo() << "dataBuffer write:" << dataBuffer[0];
         maxValue = qMin(maxValue, m_maxAmplitude);
         m_level = qreal(maxValue) / m_maxAmplitude;
+        // qInfo() << "dataBuffer level:" << m_level;
     }
-    // emit update();
-    // qInfo() << maxSize;
     return maxSize;
 }
+
 
 void RecordingIO::writeWavHeader(QFile &file, qint64 dataSize)
 {

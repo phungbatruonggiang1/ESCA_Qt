@@ -32,7 +32,7 @@ Rectangle {
         }
         for (let j=0; j<outputSources.length; ++j) {
             listOutputDeviceModel.append({"name" : outputSources[j]});
-        }
+        }                
     }
 
     Text {
@@ -204,36 +204,33 @@ Rectangle {
             axisX: ValueAxis {
                 id: axisX
                 min: 1
-                max: 1028 // Giá trị tối đa hiển thị trên trục X
+                max: 256 // Giá trị tối đa hiển thị trên trục X
                 tickCount: 11
             }
             axisY: ValueAxis {
                 id: axisY
-                min: -105
-                max: 105
+                min: -128
+                max: 128
                 tickCount: 11
             }
         }
 
         Timer {
-            interval: 3000 // Mỗi 1000ms cập nhật một lần // em chua biet dung nhieu cho toi uu
+            interval: 1000 // Mỗi 1000ms cập nhật một lần // em chua biet dung nhieu cho toi uu
             running: flag
             repeat: true
             onTriggered: {
 
-                // for (var i = 0; i<= 1000; i--) {
-                //     var xValue = series.count
-                //     // truc x la thoi gian ( tai thoi diem chay trong for :3)
-                //     var yValue = RecordingObject.bufferChart[0];
-                //     // var yValue = Math.sin(xValue / 10);
-                //     if (yValue >= 95 || yValue <= -95) {
-                //         // console.log("yValue: " + yValue)
-                //     }
-                //     series.append(xValue, yValue)
-                // }
-                var xValue = series.count
-                var yValue = RecordingObject.bufferChart[0]
-                series.append(xValue, yValue)
+                for (var i = 0; i<= 128; i++) {
+                    var xValue = series.count
+                    // truc x la thoi gian ( tai thoi diem chay trong for :3)
+                    var yValue = RecordingObject.bufferChart[i];
+                    // var yValue = Math.sin(xValue / 10);
+                    if (yValue >= 95 || yValue <= -95) {
+                        // console.log("yValue: " + yValue)
+                    }
+                    series.append(xValue, yValue)
+                }
 
                 // Cập nhật giá trị tối đa trên trục X nếu cần
                 if (xValue > axisX.max)

@@ -22,7 +22,7 @@ class RecordingIO;
 class RecordingController : public QObject
 {
     Q_OBJECT
-    Q_PROPERTY(QVariantList bufferChart READ getBufferChart WRITE setbufferChart NOTIFY bufferChartChanged)
+    Q_PROPERTY(QVector<quint32> bufferChart READ getBufferChart WRITE setbufferChart NOTIFY bufferChartChanged)
     Q_PROPERTY(QVector<QString> recommendSampleRateBuffer READ getRecommendSampleRateBuffer NOTIFY recommendSampleRateBufferChanged)
     Q_PROPERTY(QVector<QString> recommendChannelBuffer READ getRecommendChannelBuffer NOTIFY recommendChannelBufferChanged)
     Q_PROPERTY(QVector<QString> recommendResoultionBuffer READ getRecommendResoultionBuffer NOTIFY recommendResoultionChanged)
@@ -60,8 +60,10 @@ public:
 
     int inputAudioInitialize(QString inputDeviceName, QString codec, int channels, int sampleRate, int reslolution);
 
-    QVariantList getBufferChart() const;
-    void setbufferChart(const QVariantList &newBufferChart);
+    QVector<quint32> getBufferChart() const;
+
+
+    void setbufferChart(const QVector<quint32> &newBufferChart);
 
 signals:
     void bufferChartChanged();
@@ -98,7 +100,7 @@ private:
     QVector<QString> recommendResoultionBuffer;
     QVector<QString> recommendCodecBuffer;
 
-    QVariantList m_bufferChart;
+    QVector<quint32> m_bufferChart;
 };
 
 #endif // RECORDINGCONTROLLER_H
