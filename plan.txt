@@ -35,6 +35,8 @@ suy diễn theo thời gian thực
 2. Xây dựng hiển thị âm thanh, tương tác file: bật, tắt, xóa, lưu lên clouds, trích xuất các đặc trưng của âm thanh qua python
 
 
+audio manipulation: audio features extration + split audio. Maybe lack of crawl data from server to extract function
+
 3. Xây dựng module monitor hệ thống
 - các tài nguyên trong hệ thống
 - lịch sử bật máy, lịch sử thu âm, thống kê tần suất,
