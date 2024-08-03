@@ -42,6 +42,14 @@ suy diễn theo thời gian thực
 - các kết quả thu âm
 - mức độ tiêu thụ tài nguyên khi thực hiện training, inference, thu âm, ... -> đẩy lên clouds các ảnh
 
+Giao diện file manger
+xóa file, xóa thư mục: rm -rf file_name
+đẩy dử liệu lên cloud: python3 server.py
+mount file: mount file://adress
+play dữ liệu: tìm thư viện + code Qt
+
+
+
 4. Xây dựng module huấn luyện dữ liệu
 
 5. Xây dựng module suy diễn theo thời gian thực
