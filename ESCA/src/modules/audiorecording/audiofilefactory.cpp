@@ -43,15 +43,15 @@ void AudioFileFactory::saveDataToFile(const QVector<QString> data)
         QDataStream out(&file);
         out.setByteOrder(QDataStream::LittleEndian);
 
-        for (auto sample : buffer) {
-            if (m_format.sampleSize() == 8) {
-                out << quint8(sample);
-            } else if (m_format.sampleSize() == 16) {
-                out << quint16(sample);
-            } else if (m_format.sampleSize() == 32) {
-                out << quint32(sample);
-            }
-        }
+        // for (auto sample : buffer) {
+        //     if (m_format.sampleSize() == 8) {
+        //         out << quint8(sample);
+        //     } else if (m_format.sampleSize() == 16) {
+        //         out << quint16(sample);
+        //     } else if (m_format.sampleSize() == 32) {
+        //         out << quint32(sample);
+        //     }
+        // }
         file.close();
     }
 }
