@@ -12,13 +12,14 @@
 #include "inputengine.h"
 #include "recordingschedule.h"
 #include "recordingio.h"
-
+#include "audiofilefactory.h"
 
 class AudioEngine;
 class RecordingChart;
 class RecordingSchedule;
 class AudioConfigFile;
 class RecordingIO;
+class AudioFileFactory;
 
 class RecordingController : public QObject
 {
@@ -99,7 +100,15 @@ private:
     QVector<QString> recommendResoultionBuffer;
     QVector<QString> recommendCodecBuffer;
 
+<<<<<<< HEAD
     QList<qreal> m_bufferChart;
+=======
+    QVector<quint32> m_bufferChart;
+
+
+    //save data to storage
+    AudioFileFactory *m_fileFactory = nullptr;
+>>>>>>> 3aa6fe38adea6a7d8c9c61bab220fabb1afbb34f
 };
 
 #endif // RECORDINGCONTROLLER_H

@@ -47,6 +47,12 @@ RecordingController::RecordingController(QObject *parent) : QObject{parent}
     else {
         qInfo() << "It Hasn't configed";
     }
+
+}
+
+QVector<float> RecordingController::getBufferChart() const
+{
+    return m_bufferChart;
 }
 
 
@@ -137,7 +143,7 @@ int RecordingController::inputAudioInitialize(QString inputDeviceName, QString c
     }
     m_audioInputEngine = new InputEngine(inputDevice, formatAudioInput, this);
     m_audioInputEngine->setInputBufferSize(1024);
-
+ 
     return 0;
 }
 
@@ -147,6 +153,12 @@ void RecordingController::handleDataReady(const QList<qreal> &buffer)
     setbufferChart(buffer);
     qInfo()<<"dataBuffer controller property:" << m_bufferChart[0];
     // Gửi m_bufferChart lên QML ChartView
+
+    m_fileFactory = new AudioFileFactory(formatAudioInput);
+    // just temporary for testing
+    QString audiofilePath = "/home/gianghandsome/ESCA/ESCA_Qt/ESCA/data/test.wav";
+    m_fileFactory->setFilePath(audiofilePath);
+
 }
 
 void RecordingController::startRecording()
