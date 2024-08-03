@@ -11,6 +11,8 @@ RecordingController::RecordingController(QObject *parent) : QObject{parent}
         m_inputDevice.append(m_availableAudioInputDevices.at(i).deviceName());
     }
 
+    recordingIO = new RecordingIO(formatAudioInput);
+
     for (int i = 0; i < m_availableAudioOutputDevices.size(); ++i) {
         m_outputDevice.append(m_availableAudioOutputDevices.at(i).deviceName());
     }
@@ -140,7 +142,7 @@ int RecordingController::inputAudioInitialize(QString inputDeviceName, QString c
 }
 
 
-void RecordingController::handleDataReady(const QVector<quint32> &buffer)
+void RecordingController::handleDataReady(const QList<qreal> &buffer)
 {
     setbufferChart(buffer);
     qInfo()<<"dataBuffer controller property:" << m_bufferChart[0];
@@ -149,7 +151,6 @@ void RecordingController::handleDataReady(const QVector<quint32> &buffer)
 
 void RecordingController::startRecording()
 {
-    recordingIO = new RecordingIO(formatAudioInput);
     connect(recordingIO, &RecordingIO::dataReady, this, &RecordingController::handleDataReady);
     recordingIO->open(QIODevice::WriteOnly);
     m_audioInputEngine->startAudioInput(recordingIO);
@@ -160,6 +161,10 @@ void RecordingController::startRecording()
 void RecordingController::stopRecording()
 {
     qInfo() << "Hi Giang, this is stop recording";
+    // m_timer.stop();
+    // m_audioInput->stop();
+    // delete m_audioInput;
+    // m_audioInput = nullptr;
 }
 
 void RecordingController::editRecordParameters(QString device, QString path, int sampleRate, int bitsPerSample, int duration)
@@ -207,13 +212,13 @@ void RecordingController::setOutputAudioDevice(QString device)
     qInfo() << "The output is: " << device;
 }
 
-QVector<quint32> RecordingController::getBufferChart() const
+QList<qreal> RecordingController::getBufferChart() const
 {
     // qInfo()<<"in c++"<<m_bufferChart;
     return m_bufferChart;
 }
 
-void RecordingController::setbufferChart(const QVector<quint32> &newBufferChart)
+void RecordingController::setbufferChart(const QList<qreal> &newBufferChart)
 {
     if (m_bufferChart == newBufferChart)
         return;

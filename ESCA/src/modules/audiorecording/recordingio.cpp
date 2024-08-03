@@ -20,19 +20,23 @@ RecordingIO::RecordingIO(const QAudioFormat &format, QObject *parent) :QIODevice
 
             qInfo()<<"dataBuffer to file:" << dataBuffer[0];
 
+            QList<qreal> outputData;
             for (auto sample : dataBuffer) {
                 if (m_format.sampleSize() == 8) {
                     out << quint8(sample);
+                    outputData.append(sample);
                 } else if (m_format.sampleSize() == 16) {
                     out << quint16(sample);
+                    outputData.append(sample);
                 } else if (m_format.sampleSize() == 32) {
                     out << quint32(sample);
+                    outputData.append(sample);
                 }
             }
             file.close();
 
             qInfo()<<"dataBuffer timeout:" << dataBuffer[0];
-            emit dataReady(dataBuffer);
+            emit dataReady(outputData);
         }
 
         // Clear the buffer after processing
