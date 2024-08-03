@@ -8,6 +8,7 @@ xem xét việc dùng chung recordingio giữa input và output hay tách riêng
 Thực hiện chức năng thu âm
 Thực hiện chức năng ghi ra file
 Thực hiện chức năng vẽ lên biểu đồ
+
 Vẽ các class diagram trước khi thực hiện các bước tiếp theo để có được thiết kế đúng
 Ghép 2 chức năng này lại (multithread hoặc tuần tự)
 -- hải minh -- Nhớ chỉnh lại hướng đối tượng cho rõ ràng và hợp lí.
@@ -35,7 +36,13 @@ suy diễn theo thời gian thực
 2. Xây dựng hiển thị âm thanh, tương tác file: bật, tắt, xóa, lưu lên clouds, trích xuất các đặc trưng của âm thanh qua python
 
 
-audio manipulation: audio features extration + split audio. Maybe lack of crawl data from server to extract function
+audio manipulation: audio features extration + split audio. Maybe lack of crawl data from server to extract function.
+With spilit audio function, Hopefully, I would like to build 2 versions:
++ Version 1: Split the audio file by code python that the last term developed before
++ Version 2: Call a service in the OS to spilt file, maybe the service is developed by C++ and Qt. We can wait until the Yocto project for ESCA complete or we can test with this function. Split file is developed by Qt and run as a service on kernel. And the ESCA_Qt call a service through initctl emit signal. Remember build it to the dynamic for saving memory! 
+!!! I will see you soon when showing the service of OS diagram.
+
+
 
 3. Xây dựng module monitor hệ thống
 - các tài nguyên trong hệ thống

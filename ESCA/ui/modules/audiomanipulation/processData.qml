@@ -1,6 +1,6 @@
 import QtQuick 2.15
 import QtQuick.Controls 2.15
-import "qrc:/ui/component/QtQuick/Studio/Components"
+import "qrc:/ui/components/QtQuick/Studio/Components"
 // Import folder list
 import Qt.labs.folderlistmodel 2.6
 
@@ -220,7 +220,7 @@ Rectangle {
             anchors.leftMargin: 0
             cursorShape: Qt.WaitCursor
             onClicked: {
-                FeatureAudioExtractor.extractFrequency(chooseFile);
+                AudioManipulationObject.extractFrequency(chooseFile);
             }
         }
     }
@@ -293,7 +293,7 @@ Rectangle {
             anchors.leftMargin: 0
             cursorShape: Qt.WaitCursor
             onClicked: {
-                FeatureAudioExtractor.extractGFCC(chooseFile);
+                AudioManipulationObject.extractGFCC(chooseFile);
             }
         }
     }
@@ -324,7 +324,7 @@ Rectangle {
             anchors.leftMargin: 0
             cursorShape: Qt.WaitCursor
             onClicked: {
-                FeatureAudioExtractor.extractMFCC(chooseFile);
+                AudioManipulationObject.extractMFCC(chooseFile);
             }
         }
     }

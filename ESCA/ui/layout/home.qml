@@ -331,7 +331,7 @@ Rectangle {
             anchors.fill: parent
             anchors.leftMargin: 0
             onClicked: {
-                loader.source = "/ui/layout/processData.qml"
+                loader.source = "/ui/modules/audiomanipulation/processData.qml"
             }
         }
     }
