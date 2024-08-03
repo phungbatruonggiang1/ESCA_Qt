@@ -12,7 +12,7 @@ RecordingIO::RecordingIO(const QAudioFormat &format, QObject *parent) :QIODevice
     connect(&m_timer, &QTimer::timeout, this, [this]() {      // each timeout 3s
         QMutexLocker locker(&bufferMutex);
 
-        QFile file("/home/haiminh/Desktop/ESCA_Qt/ESCA/database/test.wav");
+        QFile file("/home/gianghandsome/ESCA/ESCA_Qt/ESCA/database/test.wav");
         if (file.open(QIODevice::WriteOnly)) {
             writeWavHeader(file, dataBuffer.size() * (m_format.sampleSize() / 8));
             QDataStream out(&file);

@@ -48,10 +48,10 @@ RecordingController::RecordingController(QObject *parent) : QObject{parent}
 
 }
 
-QVector<float> RecordingController::getBufferChart() const
-{
-    return m_bufferChart;
-}
+// QVector<float> RecordingController::getBufferChart() const
+// {
+//     return m_bufferChart;
+// }
 
 
 QVector<QString> RecordingController::getRecommendSampleRateBuffer() const
