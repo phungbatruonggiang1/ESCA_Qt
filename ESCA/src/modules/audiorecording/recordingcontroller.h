@@ -7,6 +7,7 @@
 
 
 #include "../../config/config.h"
+
 #include "audioconfigfile.h"
 #include "inputengine.h"
 #include "recordingschedule.h"
