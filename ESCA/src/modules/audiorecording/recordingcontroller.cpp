@@ -11,8 +11,6 @@ RecordingController::RecordingController(QObject *parent) : QObject{parent}
         m_inputDevice.append(m_availableAudioInputDevices.at(i).deviceName());
     }
 
-    recordingIO = new RecordingIO(formatAudioInput);
-
     for (int i = 0; i < m_availableAudioOutputDevices.size(); ++i) {
         m_outputDevice.append(m_availableAudioOutputDevices.at(i).deviceName());
     }
@@ -50,10 +48,10 @@ RecordingController::RecordingController(QObject *parent) : QObject{parent}
 
 }
 
-QVector<float> RecordingController::getBufferChart() const
-{
-    return m_bufferChart;
-}
+// QVector<float> RecordingController::getBufferChart() const
+// {
+//     return m_bufferChart;
+// }
 
 
 QVector<QString> RecordingController::getRecommendSampleRateBuffer() const
@@ -148,22 +146,29 @@ int RecordingController::inputAudioInitialize(QString inputDeviceName, QString c
 }
 
 
-void RecordingController::handleDataReady(const QList<qreal> &buffer)
-{
-    setbufferChart(buffer);
-    qInfo()<<"dataBuffer controller property:" << m_bufferChart[0];
-    // Gửi m_bufferChart lên QML ChartView
+// void RecordingController::handleDataReady(const QList<qreal> &buffer)
+// {
+//     recordingChart->updateData(buffer);
+//     setbufferChart(buffer);
+//     // m_recordingChart->up
+//     qInfo()<<"dataBuffer controller property:" << m_bufferChart[0];
+//     // Gửi m_bufferChart lên QML ChartView
 
-    m_fileFactory = new AudioFileFactory(formatAudioInput);
-    // just temporary for testing
-    QString audiofilePath = "/home/gianghandsome/ESCA/ESCA_Qt/ESCA/data/test.wav";
-    m_fileFactory->setFilePath(audiofilePath);
-
-}
+//     // m_fileFactory = new AudioFileFactory(formatAudioInput);
+//     // // just temporary for testing
+//     // QString audiofilePath = "/home/haiminh/Desktop/ESCA_Qt/ESCA/data/test.wav";
+//     // m_fileFactory->setFilePath(audiofilePath);
+// }
 
 void RecordingController::startRecording()
 {
-    connect(recordingIO, &RecordingIO::dataReady, this, &RecordingController::handleDataReady);
+    recordingIO = new RecordingIO(formatAudioInput);
+    recordingChart = new RecordingChart();
+
+    connect(recordingIO, &RecordingIO::dataReady, recordingChart, &RecordingChart::updateData);
+
+    setAudioChart(recordingChart->audioSeries());
+
     recordingIO->open(QIODevice::WriteOnly);
     m_audioInputEngine->startAudioInput(recordingIO);
 
@@ -224,16 +229,29 @@ void RecordingController::setOutputAudioDevice(QString device)
     qInfo() << "The output is: " << device;
 }
 
-QList<qreal> RecordingController::getBufferChart() const
+// QList<qreal> RecordingController::getBufferChart() const
+// {
+//     // qInfo()<<"in c++"<<m_bufferChart;
+//     return m_bufferChart;
+// }
+
+// void RecordingController::setbufferChart(const QList<qreal> &newBufferChart)
+// {
+//     if (m_bufferChart == newBufferChart)
+//         return;
+//     m_bufferChart = newBufferChart;
+//     emit bufferChartChanged();
+// }
+
+QLineSeries *RecordingController::audioChart() const
 {
-    // qInfo()<<"in c++"<<m_bufferChart;
-    return m_bufferChart;
+    return m_audioChart;
 }
 
-void RecordingController::setbufferChart(const QList<qreal> &newBufferChart)
+void RecordingController::setAudioChart(QLineSeries *newAudioChart)
 {
-    if (m_bufferChart == newBufferChart)
+    if (m_audioChart == newAudioChart)
         return;
-    m_bufferChart = newBufferChart;
-    emit bufferChartChanged();
+    m_audioChart = newAudioChart;
+    emit audioChartChanged();
 }

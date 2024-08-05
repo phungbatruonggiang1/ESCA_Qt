@@ -4,6 +4,7 @@ import QtQuick.Controls 2.15
 import QtQuick.Dialogs 1.0
 import QtCharts 2.6
 import QtMultimedia 5.15
+import CustomCharts 1.0
 
 Rectangle {
     id: frame_1
@@ -23,7 +24,7 @@ Rectangle {
 
         inputSources = RecordingObject.getInputAudioDeviceList();
         // console.log("hello"+inputSources);
-        console.log("hello", RecordingObject.bufferChart);
+        console.log("hello", RecordingObject.audioChart);
         outputSources = RecordingObject.getOutputAudioDeviceList();
         listInputDeviceModel.append({"name" : "none"});
         listOutputDeviceModel.append({"name" : "none"});
@@ -32,7 +33,7 @@ Rectangle {
         }
         for (let j=0; j<outputSources.length; ++j) {
             listOutputDeviceModel.append({"name" : outputSources[j]});
-        }                
+        }
     }
 
     Text {
@@ -164,39 +165,42 @@ Rectangle {
             // Add logic here
         }
     }
-    // ListView {
-    //     x: 580
-    //     y: 100
-    //     width: 180
-    //     height: 300
 
-    //     // Data
-    //     model: ListModel {
-    //         id: listModel
+    // ChartView {
+    //     id: lineChart
+    //     title: "Line Chart"
+    //     x:500
+    //     y:100
+    //     width: 500
+    //     height: 360
+
+    //     RecordingChart {
+    //         id: recordingChart
     //     }
 
-    //     // One element css
-    //     delegate: Item {
-    //         width: parent.width
-    //         height: 50
-    //         Row {
-    //             spacing: 5
-    //             Text {
-    //                 text: name
-    //                 font.pixelSize: 20
-    //                 color: "#FFFFFF"
-    //             }
+    //     LineSeries {
+    //         id: lineSeries
+    //         // seriesName: "Audio Data"
+    //         useOpenGL: true
+    //         XYPoint {
+    //             x: 0
+    //             y: 0
+    //         }
+
+    //         // Bind the LineSeries to the C++ audioSeries property
+    //         Component.onCompleted: {
+    //             lineSeries = RecordingObject.audioChart
     //         }
     //     }
     // }
+
     ChartView {
-        id: lineChart
+        id: minh
         title: "Line Chart"
         x:500
         y:100
         width: 500
         height: 360
-
 
         LineSeries {
             id: series
@@ -215,32 +219,45 @@ Rectangle {
             }
         }
 
-        Timer {
-            interval: 1000 // Mỗi 1000ms cập nhật một lần // em chua biet dung nhieu cho toi uu
-            running: flag
-            repeat: true
-            onTriggered: {
-
-                for (var i = 0; i<= 128; i++) {
-                    var xValue = series.count
-                    // truc x la thoi gian ( tai thoi diem chay trong for :3)
-                    var yValue = RecordingObject.bufferChart[i];
-                    // var yValue = Math.sin(xValue / 10);
-                    if (yValue >= 95 || yValue <= -95) {
-                        // console.log("yValue: " + yValue)
-                    }
-                    series.append(xValue, yValue)
-                }
-
-                // Cập nhật giá trị tối đa trên trục X nếu cần
-                if (xValue > axisX.max)
-                    axisX.max = xValue
-                axisX.min = xValue - 1028 //set lai gia tri toi da de chart chay lien tuc
-                // Cập nhật giá trị tối đa trên trục Y nếu cần
-                if (yValue > axisY.max)
-                    axisY.max = yValue
+        RecordingChart {
+            id: recordingChart
+            onAudioSeriesChanged: {
+                minh.seriesAdded(recordingChart.audioSeries)
             }
         }
+        Component.onCompleted: {
+            console.log("hello 1", recordingChart.audioSeries)
+        }
+
+
+        // Timer {
+        //     interval: 1000 // Mỗi 1000ms cập nhật một lần // em chua biet dung nhieu cho toi uu
+        //     running: flag
+        //     repeat: true
+        //     onTriggered: {
+
+        //         series.append(RecordingObject.audioChart)
+        //         console.log("hello", RecordingObject.audioChart);
+        //         for (var i = 0; i<= 128; i++) {
+        //             var xValue = series.count
+        //             // truc x la thoi gian ( tai thoi diem chay trong for :3)
+        //             var yValue = RecordingObject.bufferChart[i];
+        //             // var yValue = Math.sin(xValue / 10);
+        //             if (yValue >= 95 || yValue <= -95) {
+        //                 // console.log("yValue: " + yValue)
+        //             }
+        //             series.append(xValue, yValue)
+        //         }
+
+        //         // Cập nhật giá trị tối đa trên trục X nếu cần
+        //         if (xValue > axisX.max)
+        //             axisX.max = xValue
+        //         axisX.min = xValue - 1028 //set lai gia tri toi da de chart chay lien tuc
+        //         // Cập nhật giá trị tối đa trên trục Y nếu cần
+        //         if (yValue > axisY.max)
+        //             axisY.max = yValue
+        //     }
+        // }
     }
 
     Rectangle {

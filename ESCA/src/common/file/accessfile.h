@@ -21,8 +21,6 @@ public:
     QVector<QString> readFile();
 
 
-
-
 private:
        QString filePath;
 };

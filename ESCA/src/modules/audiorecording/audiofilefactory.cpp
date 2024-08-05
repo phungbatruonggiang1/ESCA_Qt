@@ -32,18 +32,17 @@ void AudioFileFactory::writeWavHeader(QFile &file, qint64 dataSize)
 }
 
 
-
-void AudioFileFactory::saveDataToFile(const QVector<QString> data)
+void AudioFileFactory::saveDataToFile(const QVector<qint8> &data)
 {
     QFile file(getFilePath());
     if (file.open(QIODevice::WriteOnly)) {
         // writeWavHeader(file, buffer.size() * (m_format.sampleSize() / 8));
-        writeWavHeader(file, 30000);
+        writeWavHeader(file, 3000);
 
         QDataStream out(&file);
         out.setByteOrder(QDataStream::LittleEndian);
 
-        for (auto sample : buffer) {
+        for (auto sample : data) {
             if (m_format.sampleSize() == 8) {
                 out << quint8(sample);
             } else if (m_format.sampleSize() == 16) {

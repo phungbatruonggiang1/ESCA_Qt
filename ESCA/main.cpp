@@ -28,11 +28,11 @@ int main(int argc, char *argv[])
         Qt::QueuedConnection);
     engine.load(url);
 
-
-    RecordingController recording;
+    RecordingController recordingController;
 
     // control audiocontroller
-    engine.rootContext()->setContextProperty("RecordingObject", &recording);
+    engine.rootContext()->setContextProperty("RecordingObject", &recordingController);
+    qmlRegisterType<RecordingChart>("CustomCharts", 1, 0, "RecordingChart");
 
     return app.exec();
 }

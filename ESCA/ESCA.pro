@@ -4,6 +4,7 @@ QT += multimedia
 QT += widgets
 QT += network
 QT += quick virtualkeyboard
+QT += charts
 
 # You can make your code fail to compile if it uses deprecated APIs.
 # In order to do so, uncomment the following line.
@@ -13,11 +14,11 @@ SOURCES += \
         main.cpp \
     src/common/file/accessfile.cpp \
     src/common/process/process.cpp \
-        src/components/dynamicchart/dynamicchart.cpp \
     src/modules/audiomanipulation/audiomanipulation.cpp \
         src/modules/audiorecording/audioconfigfile.cpp \
     src/modules/audiorecording/audiofilefactory.cpp \
     src/modules/audiorecording/inputengine.cpp \
+    src/modules/audiorecording/recordingchart.cpp \
         src/modules/audiorecording/recordingcontroller.cpp \
     src/modules/audiorecording/recordingio.cpp \
         src/modules/audiorecording/recordingschedule.cpp \
@@ -38,14 +39,15 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
 
 HEADERS += \
+    src/common/chartview.h \
     src/common/file/accessfile.h \
     src/common/process/process.h \
-    src/components/dynamicchart/dynamicchart.h \
     src/config/config.h \
     src/modules/audiomanipulation/audiomanipulation.h \
     src/modules/audiorecording/audioconfigfile.h \
     src/modules/audiorecording/audiofilefactory.h \
     src/modules/audiorecording/inputengine.h \
+    src/modules/audiorecording/recordingchart.h \
     src/modules/audiorecording/recordingcontroller.h \
     src/modules/audiorecording/recordingio.h \
     src/modules/audiorecording/recordingschedule.h \
