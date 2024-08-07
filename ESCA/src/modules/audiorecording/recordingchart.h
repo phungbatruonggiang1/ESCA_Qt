@@ -2,32 +2,39 @@
 #define RECORDINGCHART_H
 
 #include <QObject>
-#include <QtCharts/QChartView>
-#include <QtCharts/QLineSeries>
-
-
-QT_CHARTS_USE_NAMESPACE
+#include <QDebug>
+#include <QVariant>
 
 
 class RecordingChart : public QObject
 {
     Q_OBJECT
-    Q_PROPERTY(QLineSeries* audioSeries READ audioSeries WRITE setAudioSeries NOTIFY audioSeriesChanged FINAL)
+    Q_PROPERTY(QVector<int> audioSeries READ audioSeries WRITE setAudioSeries NOTIFY audioSeriesChanged FINAL)
+    Q_PROPERTY(int minhaudio READ minhaudio WRITE setMinhaudio NOTIFY minhaudioChanged FINAL)
 
 public:
     explicit RecordingChart(QObject *parent = nullptr);
     ~RecordingChart();
 
-    QLineSeries *audioSeries() const;
-    void setAudioSeries(QLineSeries *newAudioSeries);
+    Q_INVOKABLE QVariant updateDataQml();
 
-public slots:
-    void updateData(const QList<qreal> &data);
+    void updateData(const QVector<quint32> &data);
+
+    QVector<int> audioSeries() const;
+    void setAudioSeries(const QVector<int> &newAudioSeries);
+
+    int minhaudio() const;
+    void setMinhaudio(int newMinhaudio);
 
 signals:
     void audioSeriesChanged();
+
+    void minhaudioChanged();
+
 private:
-    QLineSeries *m_audioSeries = nullptr;
+
+    QVector<int> m_audioSeries;
+    int m_minhaudio;
 };
 
 #endif // RECORDINGCHART_H

@@ -47,8 +47,6 @@ public:
    void setAudioParameters (const QVector<QString> &configValue);
 
 
-
-
    QVector<QString> getsupportedCodecList() const;
 
    QString getSaveFileLocation() const;

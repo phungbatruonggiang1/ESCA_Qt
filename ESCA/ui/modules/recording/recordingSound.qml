@@ -18,13 +18,16 @@ Rectangle {
     property string file_to_store: 'file_to_store'
     property var inputSources: []
     property var outputSources: []
-    property var databuff: []
+    property var chartData: []
+
+    RecordingChart {
+        id: rcChart
+    }
 
     Component.onCompleted: {
-
+        chartData = RcChart.audioSeries
+        console.log("mn",chartData)
         inputSources = RecordingObject.getInputAudioDeviceList();
-        // console.log("hello"+inputSources);
-        console.log("hello", RecordingObject.audioChart);
         outputSources = RecordingObject.getOutputAudioDeviceList();
         listInputDeviceModel.append({"name" : "none"});
         listOutputDeviceModel.append({"name" : "none"});
@@ -59,29 +62,10 @@ Rectangle {
         color: "#ffffff"
         text: "file_to_store"
         font.pixelSize: 23
-        horizontalAlignment: Text.AlignLeft
-        verticalAlignment: Text.AlignVCenter
-        wrapMode: Text.NoWrap
-        font.weight: Font.Light
         anchors.centerIn: parent
         anchors.horizontalCenterOffset: -214
         anchors.verticalCenterOffset: -65
-        font.family: "Josefin Sans"
-    }
 
-    SvgPathItem {
-        id: line_21_Stroke_
-        x: 25
-        y: 91
-        width: 975
-        height: 1
-        strokeColor: "transparent"
-        strokeStyle: 1
-        joinStyle: 0
-        antialiasing: true
-        strokeWidth: 1
-        fillColor: "#ffffff"
-        path: "M 975 1 L 0 1 L 0 0 L 975 0 L 975 1 Z"
     }
 
     Rectangle {
@@ -104,8 +88,6 @@ Rectangle {
             font.pixelSize: 24
             horizontalAlignment: Text.AlignHCenter
             verticalAlignment: Text.AlignVCenter
-            wrapMode: Text.WordWrap
-            font.weight: Font.Normal
             font.family: "Itim"
         }
     }
@@ -174,28 +156,46 @@ Rectangle {
     //     width: 500
     //     height: 360
 
-    //     RecordingChart {
-    //         id: recordingChart
-    //     }
 
     //     LineSeries {
     //         id: lineSeries
-    //         // seriesName: "Audio Data"
+    //         name: "Audio Data"
     //         useOpenGL: true
-    //         XYPoint {
-    //             x: 0
-    //             y: 0
+    //         axisX: ValueAxis {
+    //             min: 0
+    //             max: 10000 // Adjust according to your data
     //         }
-
-    //         // Bind the LineSeries to the C++ audioSeries property
-    //         Component.onCompleted: {
-    //             lineSeries = RecordingObject.audioChart
+    //         axisY: ValueAxis {
+    //             min: -40000 // Adjust according to your data
+    //             max: 127
     //         }
     //     }
     // }
 
+    // RecordingChart {
+    //     id: recordingChart
+    //     onMinhaudioChanged: {
+    //         console.log("hello", recordingChart.minhaudio);
+    //         // lineSeries.clear();
+    //         // for (var i = 0; i < data.length; i++) {
+    //         //     lineSeries.append(i, data[i]);
+    //         // }
+    //         lineSeries.append(i, recordingChart.minhaudio)
+    //         i++
+    //     }
+
+    //     onAudioSeriesChanged: {
+    //         console.log("hello", recordingChart.minhaudio);
+    //         // lineSeries.clear();
+    //         // for (var i = 0; i < data.length; i++) {
+    //         //     lineSeries.append(i, data[i]);
+    //         // }
+    //         lineSeries.append(i, recordingChart.minhaudio)
+    //         i++
+    //     }
+    // }
     ChartView {
-        id: minh
+        id: chartView
         title: "Line Chart"
         x:500
         y:100
@@ -219,45 +219,36 @@ Rectangle {
             }
         }
 
-        RecordingChart {
-            id: recordingChart
-            onAudioSeriesChanged: {
-                minh.seriesAdded(recordingChart.audioSeries)
+        Timer {
+            interval: 1000 // Mỗi 1000ms cập nhật một lần
+            running: flag
+            repeat: true
+            onTriggered: {
+                console.log("hello1", RcChart.audioSeries);
+                console.log("hello2", RcChart.minhaudio);
+                console.log("hello3", rcChart.audioSeries);
+                console.log("hello3", rcChart.minhaudio);
+
+                for (var i = 0; i<= 128; i++) {
+                    var xValue = series.count
+                    // truc x la thoi gian ( tai thoi diem chay trong for :3)
+                    var yValue = rcChart.minhaudio;
+                    // var yValue = Math.sin(xValue / 10);
+                    if (yValue >= 95 || yValue <= -95) {
+                        // console.log("yValue: " + yValue)
+                    }
+                    series.append(xValue, yValue)
+                }
+
+                // Cập nhật giá trị tối đa trên trục X nếu cần
+                if (xValue > axisX.max)
+                    axisX.max = xValue
+                axisX.min = xValue - 1028 //set lai gia tri toi da de chart chay lien tuc
+                // Cập nhật giá trị tối đa trên trục Y nếu cần
+                if (yValue > axisY.max)
+                    axisY.max = yValue
             }
         }
-        Component.onCompleted: {
-            console.log("hello 1", recordingChart.audioSeries)
-        }
-
-
-        // Timer {
-        //     interval: 1000 // Mỗi 1000ms cập nhật một lần // em chua biet dung nhieu cho toi uu
-        //     running: flag
-        //     repeat: true
-        //     onTriggered: {
-
-        //         series.append(RecordingObject.audioChart)
-        //         console.log("hello", RecordingObject.audioChart);
-        //         for (var i = 0; i<= 128; i++) {
-        //             var xValue = series.count
-        //             // truc x la thoi gian ( tai thoi diem chay trong for :3)
-        //             var yValue = RecordingObject.bufferChart[i];
-        //             // var yValue = Math.sin(xValue / 10);
-        //             if (yValue >= 95 || yValue <= -95) {
-        //                 // console.log("yValue: " + yValue)
-        //             }
-        //             series.append(xValue, yValue)
-        //         }
-
-        //         // Cập nhật giá trị tối đa trên trục X nếu cần
-        //         if (xValue > axisX.max)
-        //             axisX.max = xValue
-        //         axisX.min = xValue - 1028 //set lai gia tri toi da de chart chay lien tuc
-        //         // Cập nhật giá trị tối đa trên trục Y nếu cần
-        //         if (yValue > axisY.max)
-        //             axisY.max = yValue
-        //     }
-        // }
     }
 
     Rectangle {
@@ -320,14 +311,6 @@ Rectangle {
         color: "#ffffff"
         text: "device_name"
         font.pixelSize: 23
-        horizontalAlignment: Text.AlignLeft
-        verticalAlignment: Text.AlignVCenter
-        wrapMode: Text.NoWrap
-        anchors.centerIn: parent
-        font.family: "Josefin Sans"
-        anchors.horizontalCenterOffset: -191
-        font.weight: Font.Light
-        anchors.verticalCenterOffset: 128
     }
 
     Rectangle {
@@ -379,41 +362,4 @@ Rectangle {
         font.family: "Josefin Sans"
     }
 
-    Text {
-        id: device_name_text2
-        x: 4
-        y: 4
-        width: 19
-        height: 26
-        color: "#ffffff"
-        text: ""
-        font.pixelSize: 23
-        horizontalAlignment: Text.AlignLeft
-        verticalAlignment: Text.AlignVCenter
-        wrapMode: Text.NoWrap
-        anchors.verticalCenterOffset: 43
-        anchors.centerIn: parent
-        font.weight: Font.Light
-        anchors.horizontalCenterOffset: -288
-        font.family: "Josefin Sans"
-    }
-
-    Text {
-        id: device_name_text3
-        x: 7
-        y: 7
-        width: 189
-        height: 26
-        color: "#ffffff"
-        text: ""
-        font.pixelSize: 23
-        horizontalAlignment: Text.AlignLeft
-        verticalAlignment: Text.AlignVCenter
-        wrapMode: Text.NoWrap
-        anchors.verticalCenterOffset: 43
-        anchors.centerIn: parent
-        font.weight: Font.Light
-        anchors.horizontalCenterOffset: -179
-        font.family: "Josefin Sans"
-    }
 }

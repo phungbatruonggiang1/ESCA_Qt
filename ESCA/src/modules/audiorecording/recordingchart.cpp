@@ -1,7 +1,7 @@
 #include "recordingchart.h"
 
 RecordingChart::RecordingChart(QObject *parent)
-    : QObject(parent), m_audioSeries(new QLineSeries(this))
+    : QObject(parent)
 {
 
 }
@@ -9,32 +9,52 @@ RecordingChart::~RecordingChart() {
     // delete m_audioSeries;
 }
 
-void RecordingChart::updateData(const QList<qreal> &data)
+void RecordingChart::updateData(const QVector<quint32> &data)
 {
-    if (m_audioSeries) {
-        for (const qreal &value : data) {
-            m_audioSeries->append(m_audioSeries->count(), value);
-        }
-
-        // Giữ cho biểu đồ linh hoạt, giới hạn số lượng điểm dữ liệu
-        if (m_audioSeries->count() > 100) {
-            m_audioSeries->remove(0, m_audioSeries->count() - 100);
-        }
+    for (int value : data) {
+        m_audioSeries.append(value);
     }
-    emit audioSeriesChanged();
-    // qInfo()<<"dataBuffer controller property:" << m_audioSeries;
+    this->setMinhaudio(m_audioSeries.value(0, -1));
+
+    if (!data.isEmpty()) {
+        qInfo() << "updateData rcChart c++:" << data.at(0) << m_audioSeries.value(0, -1) << minhaudio();
+    } else {
+        qInfo() << "recordingchart c++ empty";
+    }
 }
 
+QVariant RecordingChart::updateDataQml()
+{
+    // if (!m_minhaudio) {
+    //     qInfo() << "updateDataQml:" << this->minhaudio();
+    // } else {
+    //     qInfo() << "to qml empty";
+    // }
+    // return this->minhaudio();
+}
 
-QLineSeries *RecordingChart::audioSeries() const
+QVector<int> RecordingChart::audioSeries() const
 {
     return m_audioSeries;
 }
 
-void RecordingChart::setAudioSeries(QLineSeries *newAudioSeries)
+void RecordingChart::setAudioSeries(const QVector<int> &newAudioSeries)
 {
     if (m_audioSeries == newAudioSeries)
         return;
     m_audioSeries = newAudioSeries;
     emit audioSeriesChanged();
+}
+
+int RecordingChart::minhaudio() const
+{
+    return m_minhaudio;
+}
+
+void RecordingChart::setMinhaudio(int newMinhaudio)
+{
+    if (m_minhaudio == newMinhaudio)
+        return;
+    m_minhaudio = newMinhaudio;
+    emit minhaudioChanged();
 }

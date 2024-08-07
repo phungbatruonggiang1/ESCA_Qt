@@ -20,7 +20,7 @@ public:
     explicit RecordingIO(const QAudioFormat &format, QObject *parent = nullptr);
     
 signals:
-    void dataReady(const QList<qreal> &buffer);
+    void dataReady(const QVector<quint32> &buffer);
 
 protected:
     qint64 readData(char *data, qint64 maxSize) override;

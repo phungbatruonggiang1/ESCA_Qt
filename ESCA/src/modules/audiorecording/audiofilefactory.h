@@ -18,7 +18,7 @@ class AudioFileFactory : public AccessFile
 public:
     explicit AudioFileFactory(const QAudioFormat &format);
     void createFile();
-    void saveDataToFile(const QVector<qint8> &data);
+    void saveDataToFile(const QVector<quint32> &data);
     void writeWavHeader(QFile &file, qint64 dataSize);
 
     const QAudioFormat m_format;

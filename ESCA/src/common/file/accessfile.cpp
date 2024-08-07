@@ -50,7 +50,7 @@ QVector<QString> AccessFile::readFile()
     return data;
 }
 
-void AccessFile::setFilePath(const QString &newFilePath)
+void AccessFile::setFilePath(QString newFilePath)
 {
     filePath = newFilePath;
 }

@@ -29,9 +29,11 @@ int main(int argc, char *argv[])
     engine.load(url);
 
     RecordingController recordingController;
+    RecordingChart recordingChart;
 
     // control audiocontroller
     engine.rootContext()->setContextProperty("RecordingObject", &recordingController);
+    engine.rootContext()->setContextProperty("RcChart", &recordingChart);
     qmlRegisterType<RecordingChart>("CustomCharts", 1, 0, "RecordingChart");
 
     return app.exec();
