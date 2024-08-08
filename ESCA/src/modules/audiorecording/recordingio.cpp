@@ -35,7 +35,7 @@ RecordingIO::RecordingIO(const QAudioFormat &format, QObject *parent) :QIODevice
             // file.close();
 
             if (!dataBuffer.isEmpty()) {
-               qInfo()<<"data io timeout:" << dataBuffer.value(0, -1);
+               qInfo()<<"data io timeout:" << dataBuffer.value(0, 17);
             } else {
                 qInfo() << "io empty";
             }
@@ -94,7 +94,7 @@ qint64 RecordingIO::readData(char *data, qint64 maxSize)
 {
     Q_UNUSED(data)
     Q_UNUSED(maxSize)
-    return -1;
+    return 17;
 }
 
 qint64 RecordingIO::writeData(const char *data, qint64 maxSize)

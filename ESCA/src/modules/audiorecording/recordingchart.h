@@ -9,32 +9,30 @@
 class RecordingChart : public QObject
 {
     Q_OBJECT
-    Q_PROPERTY(QVector<int> audioSeries READ audioSeries WRITE setAudioSeries NOTIFY audioSeriesChanged FINAL)
-    Q_PROPERTY(int minhaudio READ minhaudio WRITE setMinhaudio NOTIFY minhaudioChanged FINAL)
 
 public:
     explicit RecordingChart(QObject *parent = nullptr);
     ~RecordingChart();
 
-    Q_INVOKABLE QVariant updateDataQml();
+    Q_PROPERTY(QVector<quint32> audioSeries READ audioSeries WRITE setAudioSeries NOTIFY audioSeriesChanged FINAL)
+    Q_PROPERTY(quint32 minhaudio READ minhaudio WRITE setMinhaudio NOTIFY minhaudioChanged FINAL)
 
     void updateData(const QVector<quint32> &data);
 
-    QVector<int> audioSeries() const;
-    void setAudioSeries(const QVector<int> &newAudioSeries);
+    QVector<quint32> audioSeries() const;
+    void setAudioSeries(const QVector<quint32> &newAudioSeries);
 
-    int minhaudio() const;
-    void setMinhaudio(int newMinhaudio);
+    quint32 minhaudio() const;
+    void setMinhaudio(quint32 newMinhaudio);
 
 signals:
     void audioSeriesChanged();
-
     void minhaudioChanged();
 
 private:
 
-    QVector<int> m_audioSeries;
-    int m_minhaudio;
+    QVector<quint32> m_audioSeries;
+    quint32 m_minhaudio;
 };
 
 #endif // RECORDINGCHART_H

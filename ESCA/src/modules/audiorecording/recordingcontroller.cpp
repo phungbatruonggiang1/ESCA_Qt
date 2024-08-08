@@ -144,21 +144,14 @@ int RecordingController::inputAudioInitialize(QString inputDeviceName, QString c
     return 0;
 }
 
-QByteArray RecordingController::audioChart() const
-{
-    return m_audioChart;
-}
-
-void RecordingController::setAudioChart(const QByteArray &newAudioChart)
-{
-    m_audioChart = newAudioChart;
-}
 
 void RecordingController::startRecording()
 {
     recordingIO = new RecordingIO(formatAudioInput);
     recordingChart = new RecordingChart();
     m_fileFactory = new AudioFileFactory(formatAudioInput);
+
+    // qmlRegisterType<RecordingChart>("MinhRecChart", 1, 0, "RecordingChart");
 
     connect(recordingIO, &RecordingIO::dataReady, this, &RecordingController::handleDataReady);
 
@@ -183,6 +176,7 @@ void RecordingController::handleDataReady(const QVector<quint32> &buffer)
 {
     // setAudioChart(buffer);
     recordingChart->updateData(buffer);
+    setAudioChart(buffer);
 
     m_fileFactory->setFilePath("/home/haiminh/Desktop/ESCA_Qt/ESCA/data/test.wav");
     m_fileFactory->saveDataToFile(buffer);
@@ -237,4 +231,17 @@ void RecordingController::setInputAudioDevice(QString device)
 void RecordingController::setOutputAudioDevice(QString device)
 {
     qInfo() << "The output is: " << device;
+}
+
+QVector<quint32> RecordingController::audioChart() const
+{
+    return m_audioChart;
+}
+
+void RecordingController::setAudioChart(const QVector<quint32> &newAudioChart)
+{
+    if (m_audioChart == newAudioChart)
+        return;
+    m_audioChart = newAudioChart;
+    emit audioChartChanged();
 }

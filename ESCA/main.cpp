@@ -3,8 +3,8 @@
 #include <QQmlContext>
 #include <QtWidgets/QApplication>
 
-
 #include "./src/modules/audiorecording/recordingcontroller.h"
+#include "./src/modules/audiorecording/recordingchart.h"
 
 int main(int argc, char *argv[])
 {
@@ -33,8 +33,9 @@ int main(int argc, char *argv[])
 
     // control audiocontroller
     engine.rootContext()->setContextProperty("RecordingObject", &recordingController);
-    engine.rootContext()->setContextProperty("RcChart", &recordingChart);
-    qmlRegisterType<RecordingChart>("CustomCharts", 1, 0, "RecordingChart");
+    engine.rootContext()->setContextProperty("RecordingChart", &recordingChart);
+
+    // qmlRegisterType<RecordingChart>("MinhRecChart", 1, 0, "RecordingChart");
 
     return app.exec();
 }

@@ -1,7 +1,7 @@
 #include "recordingchart.h"
 
 RecordingChart::RecordingChart(QObject *parent)
-    : QObject(parent)
+    : QObject(parent), m_minhaudio(0)
 {
 
 }
@@ -11,50 +11,46 @@ RecordingChart::~RecordingChart() {
 
 void RecordingChart::updateData(const QVector<quint32> &data)
 {
-    for (int value : data) {
-        m_audioSeries.append(value);
-    }
-    this->setMinhaudio(m_audioSeries.value(0, -1));
+    setAudioSeries(data);
+    setMinhaudio(data.isEmpty() ? 17 : data.first());
 
-    if (!data.isEmpty()) {
-        qInfo() << "updateData rcChart c++:" << data.at(0) << m_audioSeries.value(0, -1) << minhaudio();
+    if (!m_audioSeries.isEmpty()) {
+        qInfo() << "updateData rcChart c++:" << data.first() << m_audioSeries.first() << minhaudio();
     } else {
-        qInfo() << "recordingchart c++ empty";
+        qInfo() << "updateData c++ empty";
     }
 }
 
-QVariant RecordingChart::updateDataQml()
-{
-    // if (!m_minhaudio) {
-    //     qInfo() << "updateDataQml:" << this->minhaudio();
-    // } else {
-    //     qInfo() << "to qml empty";
-    // }
-    // return this->minhaudio();
-}
-
-QVector<int> RecordingChart::audioSeries() const
+QVector<quint32> RecordingChart::audioSeries() const
 {
     return m_audioSeries;
 }
 
-void RecordingChart::setAudioSeries(const QVector<int> &newAudioSeries)
+void RecordingChart::setAudioSeries(const QVector<quint32> &newAudioSeries)
 {
-    if (m_audioSeries == newAudioSeries)
-        return;
+    // if (m_audioSeries == newAudioSeries)
+    //     return;
     m_audioSeries = newAudioSeries;
     emit audioSeriesChanged();
+
+    if (!newAudioSeries.isEmpty()) {
+        qInfo() << "setAudioSeries c++:" << m_audioSeries.first() << minhaudio();
+    } else {
+        qInfo() << "setAudioSeries c++ empty";
+    }
 }
 
-int RecordingChart::minhaudio() const
+quint32 RecordingChart::minhaudio() const
 {
     return m_minhaudio;
 }
 
-void RecordingChart::setMinhaudio(int newMinhaudio)
+void RecordingChart::setMinhaudio(quint32 newMinhaudio)
 {
-    if (m_minhaudio == newMinhaudio)
-        return;
+    // if (m_minhaudio == newMinhaudio)
+    //     return;
     m_minhaudio = newMinhaudio;
     emit minhaudioChanged();
+
+    qInfo() << "setMinhaudio c++:" << minhaudio();
 }
