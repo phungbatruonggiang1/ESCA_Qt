@@ -182,9 +182,9 @@ void RecordingController::handleDataReady(const QVector<quint32> &buffer)
     m_fileFactory->saveDataToFile(buffer);
 
     if (!buffer.isEmpty()) {
-        qInfo() << "buffer controller:" << buffer.at(0);
+        // qInfo() << "buffer controller:" << buffer.at(0);
     } else {
-        qInfo() << "controller is empty";
+        // qInfo() << "controller is empty";
     }
 }
 

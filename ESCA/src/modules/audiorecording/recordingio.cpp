@@ -11,7 +11,7 @@ RecordingIO::RecordingIO(const QAudioFormat &format, QObject *parent) :QIODevice
 
     connect(&m_timer, &QTimer::timeout, this, [this]() {      // each timeout 3s
         QMutexLocker locker(&bufferMutex);
-        QFile file("/home/haiminh/Desktop/ESCA_Qt/ESCA/data/test.wav");
+        QFile file("/home/gianghandsome/haiminh/ESCA_Qt/ESCA/data/test.wav");
 
         if (file.open(QIODevice::WriteOnly)) {
             // writeWavHeader(file, dataBuffer.size() * (m_format.sampleSize() / 8));
@@ -148,9 +148,9 @@ qint64 RecordingIO::writeData(const char *data, qint64 maxSize)
         // qInfo() << "dataBuffer level:" << m_level;
 
         if (!dataBuffer.isEmpty()) {
-            qInfo() << "write func io:" << dataBuffer.at(0) << maxSize;
+            // qInfo() << "write func io:" << dataBuffer.at(0) << maxSize;
         } else {
-            qInfo() << "write empty";
+            // qInfo() << "write empty";
         }
     }
     return maxSize;

@@ -2,9 +2,9 @@
 #include <QQmlEngine>
 #include <QQmlContext>
 #include <QtWidgets/QApplication>
+#include <QDebug>
 
 #include "./src/modules/audiorecording/recordingcontroller.h"
-#include "./src/modules/audiorecording/recordingchart.h"
 
 int main(int argc, char *argv[])
 {
@@ -29,13 +29,9 @@ int main(int argc, char *argv[])
     engine.load(url);
 
     RecordingController recordingController;
-    RecordingChart recordingChart;
 
     // control audiocontroller
     engine.rootContext()->setContextProperty("RecordingObject", &recordingController);
-    engine.rootContext()->setContextProperty("RecordingChart", &recordingChart);
-
-    // qmlRegisterType<RecordingChart>("MinhRecChart", 1, 0, "RecordingChart");
 
     return app.exec();
 }

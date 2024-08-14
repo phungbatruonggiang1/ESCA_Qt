@@ -170,8 +170,8 @@ Rectangle {
         Connections {
             target: RecordingObject
             function onAudioChartChanged() {
-                console.log("Min audio changed:", RecordingObject.audioChart[0]);
-                console.log("Chart c++ changed:", RecordingChart.audioSeries[0]);
+                console.log("Min audio changed:", RecordingObject.audioChart);
+                // console.log("Chart c++ changed:", RecordingChart.audioSeries[0]);
 
                 var audioSeries = RecordingObject.audioChart
                 if (audioSeries.length > 0) {
