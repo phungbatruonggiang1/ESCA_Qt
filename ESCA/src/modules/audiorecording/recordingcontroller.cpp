@@ -45,14 +45,7 @@ RecordingController::RecordingController(QObject *parent) : QObject{parent}
     else {
         qInfo() << "It Hasn't configed";
     }
-
 }
-
-// QVector<float> RecordingController::getBufferChart() const
-// {
-//     return m_bufferChart;
-// }
-
 
 QVector<QString> RecordingController::getRecommendSampleRateBuffer() const
 {
@@ -141,30 +134,25 @@ int RecordingController::inputAudioInitialize(QString inputDeviceName, QString c
     }
     m_audioInputEngine = new InputEngine(inputDevice, formatAudioInput, this);
     m_audioInputEngine->setInputBufferSize(1024);
- 
+
     return 0;
 }
 
 
-void RecordingController::handleDataReady(const QVector<quint32> &buffer)
-{
-    setbufferChart(buffer);
-    qInfo()<<"dataBuffer controller property:" << m_bufferChart[0];
-    // Gửi m_bufferChart lên QML ChartView
-
-    m_fileFactory = new AudioFileFactory(formatAudioInput);
-    // just temporary for testing
-    QString audiofilePath = "/home/gianghandsome/ESCA/ESCA_Qt/ESCA/data/test.wav";
-    m_fileFactory->setFilePath(audiofilePath);
-
-}
-
 void RecordingController::startRecording()
 {
     recordingIO = new RecordingIO(formatAudioInput);
+    recordingChart = new RecordingChart();
+    m_fileFactory = new AudioFileFactory(formatAudioInput);
+
+    // qmlRegisterType<RecordingChart>("MinhRecChart", 1, 0, "RecordingChart");
+
     connect(recordingIO, &RecordingIO::dataReady, this, &RecordingController::handleDataReady);
+
     recordingIO->open(QIODevice::WriteOnly);
     m_audioInputEngine->startAudioInput(recordingIO);
+
+    // recordingChart->updateData(this->audioChart());
 
     qInfo() << "Hi Giang, this is start recording";
 }
@@ -172,6 +160,26 @@ void RecordingController::startRecording()
 void RecordingController::stopRecording()
 {
     qInfo() << "Hi Giang, this is stop recording";
+    // m_timer.stop();
+    // m_audioInput->stop();
+    // delete m_audioInput;
+    // m_audioInput = nullptr;
+}
+
+void RecordingController::handleDataReady(const QVector<quint32> &buffer)
+{
+    // setAudioChart(buffer);
+    recordingChart->updateData(buffer);
+    setAudioChart(buffer);
+
+    m_fileFactory->setFilePath("/home/haiminh/Desktop/ESCA_Qt/ESCA/data/test.wav");
+    m_fileFactory->saveDataToFile(buffer);
+
+    if (!buffer.isEmpty()) {
+        // qInfo() << "buffer controller:" << buffer.at(0);
+    } else {
+        // qInfo() << "controller is empty";
+    }
 }
 
 void RecordingController::editRecordParameters(QString device, QString path, int sampleRate, int bitsPerSample, int duration)
@@ -219,16 +227,15 @@ void RecordingController::setOutputAudioDevice(QString device)
     qInfo() << "The output is: " << device;
 }
 
-QVector<quint32> RecordingController::getBufferChart() const
+QVector<quint32> RecordingController::audioChart() const
 {
-    // qInfo()<<"in c++"<<m_bufferChart;
-    return m_bufferChart;
+    return m_audioChart;
 }
 
-void RecordingController::setbufferChart(const QVector<quint32> &newBufferChart)
+void RecordingController::setAudioChart(const QVector<quint32> &newAudioChart)
 {
-    if (m_bufferChart == newBufferChart)
+    if (m_audioChart == newAudioChart)
         return;
-    m_bufferChart = newBufferChart;
-    emit bufferChartChanged();
+    m_audioChart = newAudioChart;
+    emit audioChartChanged();
 }

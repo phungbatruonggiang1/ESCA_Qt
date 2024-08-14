@@ -2,7 +2,7 @@
 #include <QQmlEngine>
 #include <QQmlContext>
 #include <QtWidgets/QApplication>
-
+#include <QDebug>
 
 #include "./src/modules/audiorecording/recordingcontroller.h"
 #include "./src/modules/audiomanipulation/audiomanipulation.h"
@@ -29,11 +29,10 @@ int main(int argc, char *argv[])
         Qt::QueuedConnection);
     engine.load(url);
 
-
-    RecordingController recording;
+    RecordingController recordingController;
 
     // control audiocontroller
-    engine.rootContext()->setContextProperty("RecordingObject", &recording);
+    engine.rootContext()->setContextProperty("RecordingObject", &recordingController);
 
     // Should be use the qmlRegisterType<MyQMLType> or slots in C++ because it just calls function from QML to C++
     // and it's enssetially a backend of the QML

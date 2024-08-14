@@ -15,12 +15,10 @@ public:
     explicit AccessFile(QObject *parent = nullptr);
 
     QString getFilePath();
-    void setFilePath(const QString &newFilePath);
+    void setFilePath(QString newFilePath);
 
     void writeFile(const QVector<QString> &data);
     QVector<QString> readFile();
-
-
 
 
 private:

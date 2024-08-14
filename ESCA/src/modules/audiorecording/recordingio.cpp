@@ -7,31 +7,38 @@ RecordingIO::RecordingIO(const QAudioFormat &format, QObject *parent) :QIODevice
     // qDebug()<< m_buffer;
     m_timer.setInterval(3);
     m_timer.setSingleShot(false);
-    m_timer.start(500);   // 0.5s time out
+    m_timer.start(1000);   // 1s time out
 
     connect(&m_timer, &QTimer::timeout, this, [this]() {      // each timeout 3s
         QMutexLocker locker(&bufferMutex);
+        QFile file("/home/gianghandsome/haiminh/ESCA_Qt/ESCA/data/test.wav");
 
-        QFile file("/home/gianghandsome/ESCA/ESCA_Qt/ESCA/database/test.wav");
         if (file.open(QIODevice::WriteOnly)) {
-            writeWavHeader(file, dataBuffer.size() * (m_format.sampleSize() / 8));
-            QDataStream out(&file);
-            out.setByteOrder(QDataStream::LittleEndian);
+            // writeWavHeader(file, dataBuffer.size() * (m_format.sampleSize() / 8));
+            // QDataStream out(&file);
+            // out.setByteOrder(QDataStream::LittleEndian);
+            // qInfo()<<"dataBuffer to file:" << dataBuffer[0];
 
-            qInfo()<<"dataBuffer to file:" << dataBuffer[0];
+            // QVector<quint32> outputData;
+            // for (auto sample : dataBuffer) {
+            //     if (m_format.sampleSize() == 8) {
+            //         out << quint8(sample);
+            //         outputData.append(sample);
+            //     } else if (m_format.sampleSize() == 16) {
+            //         out << quint16(sample);
+            //         outputData.append(sample);
+            //     } else if (m_format.sampleSize() == 32) {
+            //         out << quint32(sample);
+            //         outputData.append(sample);
+            //     }
+            // }
+            // file.close();
 
-            for (auto sample : dataBuffer) {
-                if (m_format.sampleSize() == 8) {
-                    out << quint8(sample);
-                } else if (m_format.sampleSize() == 16) {
-                    out << quint16(sample);
-                } else if (m_format.sampleSize() == 32) {
-                    out << quint32(sample);
-                }
+            if (!dataBuffer.isEmpty()) {
+               qInfo()<<"data io timeout:" << dataBuffer.value(0, 17);
+            } else {
+                qInfo() << "io empty";
             }
-            file.close();
-
-            qInfo()<<"dataBuffer timeout:" << dataBuffer[0];
             emit dataReady(dataBuffer);
         }
 
@@ -87,18 +94,19 @@ qint64 RecordingIO::readData(char *data, qint64 maxSize)
 {
     Q_UNUSED(data)
     Q_UNUSED(maxSize)
-    return -1;
+    return 17;
 }
 
 qint64 RecordingIO::writeData(const char *data, qint64 maxSize)
 {
+
     if (m_maxAmplitude) {
         Q_ASSERT(m_format.sampleSize() % 8 == 0);
         const int channelBytes = m_format.sampleSize() / 8;
         const int sampleBytes = m_format.channelCount() * channelBytes;
         Q_ASSERT(maxSize % sampleBytes == 0);
         // const int numSamples = qMin(maxSize / sampleBytes);
-        const int numSamples = 5;
+        const int numSamples = 100;
 
         quint32 maxValue = 0;
         const unsigned char *ptr = reinterpret_cast<const unsigned char *>(data);
@@ -134,38 +142,43 @@ qint64 RecordingIO::writeData(const char *data, qint64 maxSize)
                 ptr += channelBytes;
             }
         }
-        qInfo() << "dataBuffer write:" << dataBuffer[0];
+
         maxValue = qMin(maxValue, m_maxAmplitude);
         m_level = qreal(maxValue) / m_maxAmplitude;
         // qInfo() << "dataBuffer level:" << m_level;
+
+        if (!dataBuffer.isEmpty()) {
+            // qInfo() << "write func io:" << dataBuffer.at(0) << maxSize;
+        } else {
+            // qInfo() << "write empty";
+        }
     }
     return maxSize;
 }
 
+// void RecordingIO::writeWavHeader(QFile &file, qint64 dataSize)
+// {
+//     QDataStream out(&file);
+//     out.setByteOrder(QDataStream::LittleEndian);
 
-void RecordingIO::writeWavHeader(QFile &file, qint64 dataSize)
-{
-    QDataStream out(&file);
-    out.setByteOrder(QDataStream::LittleEndian);
+//     // RIFF header
+//     out.writeRawData("RIFF", 4);
+//     out << quint32(dataSize + 36);  // File size - 8 bytes
+//     out.writeRawData("WAVE", 4);
 
-    // RIFF header
-    out.writeRawData("RIFF", 4);
-    out << quint32(dataSize + 36);  // File size - 8 bytes
-    out.writeRawData("WAVE", 4);
+//     // fmt chunk
+//     out.writeRawData("fmt ", 4);
+//     out << quint32(16);  // Chunk size
+//     out << quint16(1);   // Audio format (PCM)
+//     out << quint16(m_format.channelCount());
+//     out << quint32(m_format.sampleRate());
+//     out << quint32(m_format.sampleRate() * m_format.channelCount() * (m_format.sampleSize() / 8));
+//     out << quint16(m_format.channelCount() * (m_format.sampleSize() / 8));
+//     out << quint16(m_format.sampleSize());
 
-    // fmt chunk
-    out.writeRawData("fmt ", 4);
-    out << quint32(16);  // Chunk size
-    out << quint16(1);   // Audio format (PCM)
-    out << quint16(m_format.channelCount());
-    out << quint32(m_format.sampleRate());
-    out << quint32(m_format.sampleRate() * m_format.channelCount() * (m_format.sampleSize() / 8));
-    out << quint16(m_format.channelCount() * (m_format.sampleSize() / 8));
-    out << quint16(m_format.sampleSize());
-
-    // data chunk
-    out.writeRawData("data", 4);
-    out << quint32(dataSize);
-}
+//     // data chunk
+//     out.writeRawData("data", 4);
+//     out << quint32(dataSize);
+// }
 
 
