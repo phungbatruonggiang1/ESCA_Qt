@@ -5,6 +5,7 @@
 #include <QDebug>
 
 #include "./src/modules/audiorecording/recordingcontroller.h"
+#include "./src/modules/audiomanipulation/audiomanipulation.h"
 
 int main(int argc, char *argv[])
 {
@@ -32,6 +33,11 @@ int main(int argc, char *argv[])
 
     // control audiocontroller
     engine.rootContext()->setContextProperty("RecordingObject", &recordingController);
+
+    // Should be use the qmlRegisterType<MyQMLType> or slots in C++ because it just calls function from QML to C++
+    // and it's enssetially a backend of the QML
+    AudioManipulation audioManipulation;
+    engine.rootContext()->setContextProperty("AudioManipulationObject", &audioManipulation);
 
     return app.exec();
 }

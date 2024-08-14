@@ -47,12 +47,6 @@ RecordingController::RecordingController(QObject *parent) : QObject{parent}
     }
 }
 
-// QByteArray RecordingController::getBufferChart() const
-// {
-//     return m_bufferChart;
-// }
-
-
 QVector<QString> RecordingController::getRecommendSampleRateBuffer() const
 {
     return recommendSampleRateBuffer;
