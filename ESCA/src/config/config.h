@@ -10,7 +10,7 @@
 // audio manipulation
 #define AUDIO_FEATURES_EXTRACTOR_SRC "/home/gianghandsome/ESCA/ESCA_Audio_Features_Extractor/src"
 
-#define RECORDING_CONFIG_FILE "/home/gianghandsome/haiminh/ESCA_Qt/ESCA/database/recording_params.txt"
-#define RECORDING_STATUS_FILE "/home/gianghandsome/haiminh/ESCA_Qt/ESCA/database/recording_status.txt"
+#define RECORDING_CONFIG_FILE "/home/gianghandsome/ESCA/ESCA_Qt/ESCA/database/recording_params.txt"
+#define RECORDING_STATUS_FILE "/home/gianghandsome/ESCA/ESCA_Qt/ESCA/database/recording_status.txt"
 
 #endif // CONFIG_H
