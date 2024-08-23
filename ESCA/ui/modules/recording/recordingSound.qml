@@ -4,7 +4,6 @@ import QtQuick.Controls 2.15
 import QtQuick.Dialogs 1.0
 import QtCharts 2.6
 // import QtMultimedia 5.15
-// import MinhRecChart 1.0
 
 Rectangle {
     id: frame_1
@@ -169,11 +168,10 @@ Rectangle {
 
         Connections {
             target: RecordingObject
-            function onAudioChartChanged() {
-                console.log("Min audio changed:", RecordingObject.audioChart);
-                // console.log("Chart c++ changed:", RecordingChart.audioSeries[0]);
+            function onRecordingChartBufferChanged() {
+                console.log("Min audio changed:", RecordingObject.recordingChartBuffer());
 
-                var audioSeries = RecordingObject.audioChart
+                var audioSeries = RecordingObject.recordingChartBuffer();
                 if (audioSeries.length > 0) {
                     for (var i = 0; i < audioSeries.length; i++) {
                         var xValue = lineSeries.count
@@ -195,98 +193,7 @@ Rectangle {
                     axisY.max = yValue
             }
         }
-
-        // RecordingChart {
-        //     id: recordingChart
-        //     onMinhaudioChanged: {
-        //         console.log("hello1", RcChart.audioSeries);
-        //         console.log("hello2", RcChart.minhaudio);
-        //         console.log("hello3", rcChart.audioSeries);
-        //         console.log("hello4", rcChart.minhaudio);
-        //     }
-
-        //     onAudioSeriesChanged: {
-        //         console.log("hello1", RcChart.audioSeries);
-        //         console.log("hello2", RcChart.minhaudio);
-        //         console.log("hello3", rcChart.audioSeries);
-        //         console.log("hello4", rcChart.minhaudio);
-        //     }
-        // }
-
     }
-
-    // ChartView {
-    //     id: chartView
-    //     title: "Line Chart"
-    //     x:500
-    //     y:100
-    //     width: 500
-    //     height: 360
-
-    //     RecordingChart {
-    //         id: rcChart
-    //         onAudioSeriesChanged: {
-    //             console.log("Audio series changed:", rcChart.audioSeries)
-    //         }
-    //         onMinhaudioChanged: {
-    //             console.log("Min audio changed:", rcChart.minhaudio)
-    //         }
-    //     }
-
-    //     LineSeries {
-    //         id: series
-    //         name: "Real-time Data"
-    //         axisX: ValueAxis {
-    //             id: axisX
-    //             min: 1
-    //             max: 256 // Giá trị tối đa hiển thị trên trục X
-    //             tickCount: 11
-    //         }
-    //         axisY: ValueAxis {
-    //             id: axisY
-    //             min: -128
-    //             max: 128
-    //             tickCount: 11
-    //         }
-    //     }
-
-    //     Timer {
-    //         interval: 1000 // Mỗi 1000ms cập nhật một lần
-    //         running: flag
-    //         repeat: true
-    //         onTriggered: {
-    //             // console.log("hello1", RcChart.audioSeries);
-    //             // console.log("hello2", RcChart.minhaudio);
-    //             console.log("hello3", rcChart.audioSeries)
-    //             console.log("hello4", rcChart.minhaudio)
-    //             console.log("qml final", RecordingObject.audioChart[0])
-
-    //             var audioSeries = rcChart.audioSeries
-    //             var minAudio = rcChart.minhaudio
-
-    //             // console.log("hello17", audioSeries[0]);
-
-    //             for (var i = 0; i<= 128; i++) {
-    //                 var xValue = series.count
-    //                 // truc x la thoi gian ( tai thoi diem chay trong for :3)
-    //                 var yValue = RecordingObject.audioChart[0]
-    //                 // var yValue = Math.sin(xValue / 10);
-    //                 if (yValue >= 95 || yValue <= -95) {
-    //                     // console.log("yValue: " + yValue)
-    //                 }
-    //                 series.append(xValue, yValue)
-    //             }
-
-    //             // Cập nhật giá trị tối đa trên trục X nếu cần
-    //             if (xValue > axisX.max)
-    //                 axisX.max = xValue
-    //             axisX.min = xValue - 1028 //set lai gia tri toi da de chart chay lien tuc
-    //             // Cập nhật giá trị tối đa trên trục Y nếu cần
-    //             if (yValue > axisY.max)
-    //                 axisY.max = yValue
-    //         }
-    //     }
-    // }
 
     Rectangle {
         id: start_stop_rec

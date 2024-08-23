@@ -14,31 +14,11 @@ RecordingIO::RecordingIO(const QAudioFormat &format, QObject *parent) :QIODevice
         QFile file("/home/gianghandsome/haiminh/ESCA_Qt/ESCA/data/test.wav");
 
         if (file.open(QIODevice::WriteOnly)) {
-            // writeWavHeader(file, dataBuffer.size() * (m_format.sampleSize() / 8));
-            // QDataStream out(&file);
-            // out.setByteOrder(QDataStream::LittleEndian);
-            // qInfo()<<"dataBuffer to file:" << dataBuffer[0];
-
-            // QVector<quint32> outputData;
-            // for (auto sample : dataBuffer) {
-            //     if (m_format.sampleSize() == 8) {
-            //         out << quint8(sample);
-            //         outputData.append(sample);
-            //     } else if (m_format.sampleSize() == 16) {
-            //         out << quint16(sample);
-            //         outputData.append(sample);
-            //     } else if (m_format.sampleSize() == 32) {
-            //         out << quint32(sample);
-            //         outputData.append(sample);
-            //     }
+            // if (!dataBuffer.isEmpty()) {
+            //    qInfo()<<"data io timeout:" << dataBuffer.value(0, 17);
+            // } else {
+            //     qInfo() << "io empty";
             // }
-            // file.close();
-
-            if (!dataBuffer.isEmpty()) {
-               qInfo()<<"data io timeout:" << dataBuffer.value(0, 17);
-            } else {
-                qInfo() << "io empty";
-            }
             emit dataReady(dataBuffer);
         }
 

@@ -2,7 +2,10 @@
 #include <QDebug>
 #include <QTimer>
 
-RecordingController::RecordingController(QObject *parent) : QObject{parent}
+RecordingController::RecordingController(QObject *parent)
+    : m_fileFactory(nullptr)
+    , m_recordingChart(nullptr)
+    , recordingIO(nullptr)
 {
     QVector<QString> configValue;
     QList<QAudioDeviceInfo> m_availableAudioInputDevices = QAudioDeviceInfo::availableDevices(QAudio::AudioInput);
@@ -119,6 +122,15 @@ int RecordingController::inputAudioInitialize(QString inputDeviceName, QString c
     return 0;
 }
 
+void RecordingController::setRecoringChartBuffer()
+{
+    QVector<quint32> buffer = m_recordingChart->audioSeries();
+    m_recordingChartBuffer.clear();
+    for(int i = 0; i < buffer.size(); ++i)
+        m_recordingChartBuffer.append(buffer[i]);
+    emit recordingChartBufferChanged();
+}
+
 
 void RecordingController::startRecording()
 {
@@ -127,11 +139,10 @@ void RecordingController::startRecording()
     m_fileFactory = new AudioFileFactory(formatAudioInput);
 
     connect(recordingIO, &RecordingIO::dataReady, this, &RecordingController::handleDataReady);
+    connect(m_recordingChart, &RecordingChart::audioSeriesChanged, this, &RecordingController::setRecoringChartBuffer);
 
     recordingIO->open(QIODevice::WriteOnly);
     m_audioInputEngine->startAudioInput(recordingIO);
-
-    // recordingChart->updateData(this->audioChart());
 
     qInfo() << "Hi Giang, this is start recording";
 }
@@ -143,21 +154,18 @@ void RecordingController::stopRecording()
     // m_audioInput->stop();
     // delete m_audioInput;
     // m_audioInput = nullptr;
+    recordingIO = nullptr;
+    m_recordingChart = nullptr;
+    m_fileFactory = nullptr;
+
 }
 
 void RecordingController::handleDataReady(const QVector<quint32> &buffer)
 {
-    // setAudioChart(buffer);
     m_recordingChart->updateData(buffer);
 
     m_fileFactory->setFilePath("/home/gianghandsome/ESCA/data/test.wav");
     m_fileFactory->saveDataToFile(buffer);
-
-    if (!buffer.isEmpty()) {
-        // qInfo() << "buffer controller:" << buffer.at(0);
-    } else {
-        // qInfo() << "controller is empty";
-    }
 }
 
 void RecordingController::editRecordParameters(QString device, QString path, int sampleRate, int bitsPerSample, int duration)
