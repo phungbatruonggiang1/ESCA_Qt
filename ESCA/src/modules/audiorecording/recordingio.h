@@ -11,6 +11,8 @@
 #include <QTimer>
 #include <QFile>
 #include <QMutex>
+#include <QSignalSpy>
+#include <QtGlobal>
 
 class RecordingIO : public QIODevice
 {

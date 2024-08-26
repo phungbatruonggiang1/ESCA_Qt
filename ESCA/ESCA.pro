@@ -3,8 +3,9 @@ QT += qml
 QT += multimedia
 QT += widgets
 QT += network
-QT += quick virtualkeyboard
-QT += charts
+QT += quick
+QT += virtualkeyboard
+QT += testlib
 
 # You can make your code fail to compile if it uses deprecated APIs.
 # In order to do so, uncomment the following line.

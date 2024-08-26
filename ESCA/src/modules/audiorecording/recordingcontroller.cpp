@@ -47,12 +47,6 @@ RecordingController::RecordingController(QObject *parent) : QObject{parent}
     }
 }
 
-// QByteArray RecordingController::getBufferChart() const
-// {
-//     return m_bufferChart;
-// }
-
-
 QVector<QString> RecordingController::getRecommendSampleRateBuffer() const
 {
     return recommendSampleRateBuffer;
@@ -148,18 +142,14 @@ int RecordingController::inputAudioInitialize(QString inputDeviceName, QString c
 void RecordingController::startRecording()
 {
     recordingIO = new RecordingIO(formatAudioInput);
-    recordingChart = new RecordingChart();
-    m_fileFactory = new AudioFileFactory(formatAudioInput);
-
+    // recordingChart = new RecordingChart();
     // qmlRegisterType<RecordingChart>("MinhRecChart", 1, 0, "RecordingChart");
+    m_fileFactory = new AudioFileFactory(formatAudioInput);
 
     connect(recordingIO, &RecordingIO::dataReady, this, &RecordingController::handleDataReady);
 
     recordingIO->open(QIODevice::WriteOnly);
     m_audioInputEngine->startAudioInput(recordingIO);
-
-    // recordingChart->updateData(this->audioChart());
-
     qInfo() << "Hi Giang, this is start recording";
 }
 
@@ -175,8 +165,10 @@ void RecordingController::stopRecording()
 void RecordingController::handleDataReady(const QVector<quint32> &buffer)
 {
     // setAudioChart(buffer);
+
     recordingChart->updateData(buffer);
-    setAudioChart(buffer);
+    recordingChart->setAudioSeries(buffer);
+    setAudioChart(buffer);    
 
     m_fileFactory->setFilePath("/home/haiminh/Desktop/ESCA_Qt/ESCA/data/test.wav");
     m_fileFactory->saveDataToFile(buffer);

@@ -1,7 +1,6 @@
 #ifndef INPUTENGINE_H
 #define INPUTENGINE_H
 
-
 #include <QAudioDeviceInfo>
 #include <QAudioFormat>
 #include <QBuffer>
@@ -18,8 +17,6 @@ class QAudioInput;
 class QAudioOutput;
 class QAudioDeviceInfo;
 QT_END_NAMESPACE
-
-
 
 // struct audio properties
 
@@ -46,7 +43,6 @@ public:
    void setAudioOutputDevice(const QString device);
    void setAudioParameters (const QVector<QString> &configValue);
 
-
    QVector<QString> getsupportedCodecList() const;
 
    QString getSaveFileLocation() const;
@@ -58,28 +54,18 @@ public:
    signals:
     void inputDeviceSig(QVector<QString>& m_inputDevice);
 
-
 private:
     QAudioFormat* m_outputFormat = nullptr;
     QVector<QString> m_supportedCodecList;
 
-
-
     QAudioInput* m_audioInput = nullptr;
     QAudioOutput* m_audioOutput = nullptr;
-
-
 
     // audio properties instance
     AudioInstance audioParameters;
 
-
     QString saveFileLocation;
     int duration;
-
-
-
-
 
 };
 

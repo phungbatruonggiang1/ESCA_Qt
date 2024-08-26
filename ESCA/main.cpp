@@ -15,8 +15,15 @@ int main(int argc, char *argv[])
 #endif
     QApplication app(argc, argv);
 
+    RecordingController recordingController;
+
     QQmlApplicationEngine engine;
+
     const QUrl url(QStringLiteral("qrc:/ui/main.qml"));
+
+    qmlRegisterType<RecordingChart>("MinhRecChart", 1, 0, "MinhChart");
+    engine.rootContext()->setContextProperty("RecordingObject", &recordingController);
+
     QObject::connect(
         &engine,
         &QQmlApplicationEngine::objectCreated,
@@ -28,14 +35,7 @@ int main(int argc, char *argv[])
         Qt::QueuedConnection);
     engine.load(url);
 
-    RecordingController recordingController;
-    RecordingChart recordingChart;
-
-    // control audiocontroller
-    engine.rootContext()->setContextProperty("RecordingObject", &recordingController);
-    engine.rootContext()->setContextProperty("RecordingChart", &recordingChart);
-
-    // qmlRegisterType<RecordingChart>("MinhRecChart", 1, 0, "RecordingChart");
+    // engine.rootContext()->setContextProperty("RecChart", recordingChart);
 
     return app.exec();
 }

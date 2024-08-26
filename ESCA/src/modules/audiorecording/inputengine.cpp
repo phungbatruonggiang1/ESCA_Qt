@@ -27,7 +27,6 @@ InputEngine::InputEngine(QAudioDeviceInfo deviceInfoInput, QAudioFormat formatAu
     // qInfo() << deviceInfoInput.supportedChannelCounts();
     // qInfo() << deviceInfoInput.supportedSampleSizes();
 
-
     audioParameters.inputDevice = deviceInfoInput.deviceName();
     audioParameters.resolution = formatAudioInput.sampleSize();
     audioParameters.numberOfChannels = formatAudioInput.channelCount();
@@ -51,7 +50,6 @@ void InputEngine::startAudioInput(QIODevice *device)
 {
     m_audioInput->start(device);
 }
-
 
 void InputEngine::setAudioInputDevice(QString device)
 {
@@ -80,7 +78,6 @@ void InputEngine::setAudioParameters(const QVector<QString> &configValue)
     audioParameters.sampleRate = sampleRate;
     audioParameters.resolution = resolution;
     duration = durationFile;
-
 }
 
 

@@ -31,7 +31,7 @@ class RecordingController : public QObject
     Q_PROPERTY(QVector<QString> recommendResoultionBuffer READ getRecommendResoultionBuffer NOTIFY recommendResoultionChanged)
     Q_PROPERTY(QVector<QString> recommendCodecBuffer READ getRecommendCodecBuffer NOTIFY recommendCodecChanged)
 public:
-    explicit RecordingController(QObject *parent = 0);
+    explicit RecordingController(QObject *parent = nullptr);
     ~RecordingController();
 
     Q_INVOKABLE void startRecording();
@@ -39,7 +39,6 @@ public:
     Q_INVOKABLE void editRecordParameters(QString device, QString path, int sampleRate, int bitsPerSample, int duration);
     Q_INVOKABLE QVector<QString> loadAduioConfigureParameters();
     Q_INVOKABLE void saveAduioConfigureParameters(const QVector<QString> &configValue);
-
 
     Q_INVOKABLE QVector<QString> getInputAudioDeviceList();
     Q_INVOKABLE QVector<QString> getOutputAudioDeviceList();
@@ -99,8 +98,7 @@ private:
     // QVector<quint32> m_bufferChart;
     //save data to storage
     AudioFileFactory *m_fileFactory = nullptr;
-    RecordingChart *recordingChart;
-
+    RecordingChart* recordingChart = new RecordingChart();
     QVector<quint32> m_audioChart;
 };
 

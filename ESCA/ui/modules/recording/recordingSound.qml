@@ -4,7 +4,7 @@ import QtQuick.Controls 2.15
 import QtQuick.Dialogs 1.0
 import QtCharts 2.6
 // import QtMultimedia 5.15
-// import MinhRecChart 1.0
+import MinhRecChart 1.0
 
 Rectangle {
     id: frame_1
@@ -24,6 +24,7 @@ Rectangle {
 
         inputSources = RecordingObject.getInputAudioDeviceList();
         outputSources = RecordingObject.getOutputAudioDeviceList();
+        console.log("hello")
         // chartData = RecordingObject.audioChart;
         listInputDeviceModel.append({"name" : "none"});
         listOutputDeviceModel.append({"name" : "none"});
@@ -143,8 +144,17 @@ Rectangle {
         }
     }
 
+    MinhChart {
+        id: recordingChart
+        onAudioSeriesChanged: {
+            console.log("Min audio changed:");
+            // console.log("Chart c++ changed:", recordingChart.audioSeries[0]);
+        }
+        onMinhaudioChanged: console.log("Min audio changed:", RecordingObject.audioChart[0]);
+    }
+
     ChartView {
-        id: lineChart
+        id: chartView
         title: "Line Chart"
         x:500
         y:100
@@ -170,8 +180,9 @@ Rectangle {
         Connections {
             target: RecordingObject
             function onAudioChartChanged() {
-                console.log("Min audio changed:", RecordingObject.audioChart[0]);
-                console.log("Chart c++ changed:", RecordingChart.audioSeries[0]);
+
+                // console.log("Min audio changed:", RecordingObject.audioChart[0]);
+                // console.log("Chart c++ changed:", recordingChart.audioSeries[0]);
 
                 var audioSeries = RecordingObject.audioChart
                 if (audioSeries.length > 0) {

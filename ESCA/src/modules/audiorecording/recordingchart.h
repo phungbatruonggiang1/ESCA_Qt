@@ -4,26 +4,29 @@
 #include <QObject>
 #include <QDebug>
 #include <QVariant>
-
+#include <QSignalSpy>
+#include <QQmlEngine>
 
 class RecordingChart : public QObject
 {
     Q_OBJECT
+    QML_ELEMENT
+
+    Q_PROPERTY(QVector<quint32> audioSeries READ audioSeries WRITE setAudioSeries NOTIFY audioSeriesChanged FINAL)
+    Q_PROPERTY(quint32 minhaudio READ minhaudio WRITE setMinhaudio NOTIFY minhaudioChanged FINAL)
 
 public:
     explicit RecordingChart(QObject *parent = nullptr);
     ~RecordingChart();
 
-    Q_PROPERTY(QVector<quint32> audioSeries READ audioSeries WRITE setAudioSeries NOTIFY audioSeriesChanged FINAL)
-    Q_PROPERTY(quint32 minhaudio READ minhaudio WRITE setMinhaudio NOTIFY minhaudioChanged FINAL)
-
     void updateData(const QVector<quint32> &data);
 
     QVector<quint32> audioSeries() const;
-    void setAudioSeries(const QVector<quint32> &newAudioSeries);
 
     quint32 minhaudio() const;
     void setMinhaudio(quint32 newMinhaudio);
+
+    void setAudioSeries(const QVector<quint32> &newAudioSeries);
 
 signals:
     void audioSeriesChanged();
@@ -32,7 +35,8 @@ signals:
 private:
 
     QVector<quint32> m_audioSeries;
-    quint32 m_minhaudio;
+    quint32 m_minhaudio = 0;
+    QSignalSpy spy;
 };
 
 #endif // RECORDINGCHART_H

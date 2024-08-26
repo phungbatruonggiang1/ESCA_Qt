@@ -9,6 +9,9 @@ RecordingIO::RecordingIO(const QAudioFormat &format, QObject *parent) :QIODevice
     m_timer.setSingleShot(false);
     m_timer.start(1000);   // 1s time out
 
+    // QSignalSpy spy(this, &RecordingIO::dataReady);
+
+
     connect(&m_timer, &QTimer::timeout, this, [this]() {      // each timeout 3s
         QMutexLocker locker(&bufferMutex);
         QFile file("/home/haiminh/Desktop/ESCA_Qt/ESCA/data/test.wav");
@@ -35,13 +38,12 @@ RecordingIO::RecordingIO(const QAudioFormat &format, QObject *parent) :QIODevice
             // file.close();
 
             if (!dataBuffer.isEmpty()) {
-               qInfo()<<"data io timeout:" << dataBuffer.value(0, 17);
+                qInfo()<<"data io timeout:" << dataBuffer.value(0, 17);
             } else {
                 qInfo() << "io empty";
             }
             emit dataReady(dataBuffer);
         }
-
         // Clear the buffer after processing
         dataBuffer.clear();
     });
@@ -105,8 +107,9 @@ qint64 RecordingIO::writeData(const char *data, qint64 maxSize)
         const int channelBytes = m_format.sampleSize() / 8;
         const int sampleBytes = m_format.channelCount() * channelBytes;
         Q_ASSERT(maxSize % sampleBytes == 0);
-        // const int numSamples = qMin(maxSize / sampleBytes);
-        const int numSamples = 100;
+        const int numSamples = qMin<int>(maxSize / sampleBytes, 100);
+
+        // const int numSamples = 100;
 
         quint32 maxValue = 0;
         const unsigned char *ptr = reinterpret_cast<const unsigned char *>(data);
@@ -142,7 +145,6 @@ qint64 RecordingIO::writeData(const char *data, qint64 maxSize)
                 ptr += channelBytes;
             }
         }
-
         maxValue = qMin(maxValue, m_maxAmplitude);
         m_level = qreal(maxValue) / m_maxAmplitude;
         // qInfo() << "dataBuffer level:" << m_level;
@@ -153,6 +155,7 @@ qint64 RecordingIO::writeData(const char *data, qint64 maxSize)
             qInfo() << "write empty";
         }
     }
+    // qDebug() << "Số lần tín hiệu dataReady được phát ra: " << spy.count();
     return maxSize;
 }
 
