@@ -7,6 +7,7 @@
 #include <QList>
 
 #include "../../config/config.h"
+
 #include "audioconfigfile.h"
 #include "inputengine.h"
 #include "recordingschedule.h"
@@ -24,12 +25,17 @@ class AudioFileFactory;
 
 class RecordingController : public QObject
 {
+
     Q_OBJECT
-    Q_PROPERTY(QVector<quint32> audioChart READ audioChart WRITE setAudioChart NOTIFY audioChartChanged FINAL)
+
     Q_PROPERTY(QVector<QString> recommendSampleRateBuffer READ getRecommendSampleRateBuffer NOTIFY recommendSampleRateBufferChanged)
     Q_PROPERTY(QVector<QString> recommendChannelBuffer READ getRecommendChannelBuffer NOTIFY recommendChannelBufferChanged)
     Q_PROPERTY(QVector<QString> recommendResoultionBuffer READ getRecommendResoultionBuffer NOTIFY recommendResoultionChanged)
     Q_PROPERTY(QVector<QString> recommendCodecBuffer READ getRecommendCodecBuffer NOTIFY recommendCodecChanged)
+    Q_PROPERTY(QVector<quint32> m_recordingChartBuffer READ recordingChartBuffer NOTIFY recordingChartBufferChanged)
+
+    Q_PROPERTY(bool recStatus READ recStatus WRITE setRecStatus NOTIFY recStatusChanged FINAL)
+
 public:
     explicit RecordingController(QObject *parent = nullptr);
     ~RecordingController();
@@ -48,10 +54,10 @@ public:
     // Q_INVOKABLE void setOutputAudioDevice(QString device);
 
 
-    QVector<QString> getRecommendSampleRateBuffer() const;
-    QVector<QString> getRecommendChannelBuffer() const;
-    QVector<QString> getRecommendResoultionBuffer() const;
-    QVector<QString> getRecommendCodecBuffer() const;
+    QVector<QString> getRecommendSampleRateBuffer() const { return recommendSampleRateBuffer; }
+    QVector<QString> getRecommendChannelBuffer() const { return recommendChannelBuffer;}
+    QVector<QString> getRecommendResoultionBuffer() const { return recommendResoultionBuffer;}
+    QVector<QString> getRecommendCodecBuffer() const { return recommendCodecBuffer;}
 
 
     QString getRecordingStatus() const;
@@ -59,29 +65,34 @@ public:
 
     int inputAudioInitialize(QString inputDeviceName, QString codec, int channels, int sampleRate, int reslolution);
 
-    QVector<quint32> audioChart() const;
-    void setAudioChart(const QVector<quint32> &newAudioChart);
+    QVector<quint32> recordingChartBuffer() const { return m_recordingChartBuffer; }
+
+
+
+    bool recStatus() const;
+    void setRecStatus(bool newRecStatus);
 
 signals:
-    void bufferChartChanged();
-    void dataChartSent(const QString &);
     void recommendSampleRateBufferChanged();
     void recommendChannelBufferChanged();
     void recommendResoultionChanged();
     void recommendCodecChanged();
 
-    void audioChartChanged();
+    void recordingChartBufferChanged();
+
+    void recStatusChanged();
 
 private slots:
     void handleDataReady(const QVector<quint32> &buffer);
+    void setRecoringChartBuffer();
 
 private:
-    RecordingIO *recordingIO;
+    RecordingIO* recordingIO;
     QAudioFormat formatAudioInput;
 
-    InputEngine *m_audioInputEngine = nullptr;
-    AudioConfigFile *m_audioConfig = nullptr;
-    RecordingSchedule *m_recordingSchedule = nullptr;
+    InputEngine* m_audioInputEngine = nullptr;
+    AudioConfigFile* m_audioConfig = nullptr;
+    RecordingSchedule* m_recordingSchedule = nullptr;
 
 
     // audio status
@@ -95,11 +106,15 @@ private:
     QVector<QString> recommendResoultionBuffer;
     QVector<QString> recommendCodecBuffer;
 
-    // QVector<quint32> m_bufferChart;
     //save data to storage
-    AudioFileFactory *m_fileFactory = nullptr;
-    RecordingChart* recordingChart = new RecordingChart();
-    QVector<quint32> m_audioChart;
+
+    AudioFileFactory* m_fileFactory;
+    RecordingChart* m_recordingChart;
+
+    // data buffer in recording chart
+    QVector<quint32> m_recordingChartBuffer;
+
+    bool m_recStatus;
 };
 
 #endif // RECORDINGCONTROLLER_H

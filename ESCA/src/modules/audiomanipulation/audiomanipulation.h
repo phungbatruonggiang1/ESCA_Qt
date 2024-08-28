@@ -7,6 +7,10 @@
 #include <QTextStream>
 #include <QDebug>
 
+#include "../../config/config.h"
+#include "../../common/process/process.h"
+
+class Process;
 
 class AudioManipulation : public QObject
 {
@@ -15,16 +19,23 @@ class AudioManipulation : public QObject
 public:
     explicit AudioManipulation(QObject *parent = nullptr);
 
-    virtual void setFilePath() = 0;
-    QString getFilePath();
+    Q_INVOKABLE void extractMFCC(QString audioPath);
+    Q_INVOKABLE void extractGFCC(QString audioPath);
+    Q_INVOKABLE void extractFrequency(QString audioPath);
+    Q_INVOKABLE void splitAudio(QString source, QString destination, QString duration);
 
-    virtual void writeFile(const QString filePath, const QVector<QString> &configValue)=0;
-    virtual QVector<QString> readFile(const QString &filePath)=0;
+// public slots:
+//     void directoryChanged(const QString &path);
 
-    QString filePath;
+// signals:
+//     //    void newFileAdded(const QString &fileName);
+//     void setImageResult(const QString &imageName);
 
-    //private:
-    //    QString filePath;
+private:
+    // FeatureAudioExtractor* m_audio_extractor = nullptr;
+    Process* m_audio_extractor = nullptr;
+    // QString m_directory_result;
+    // QSet<QString> m_previousFiles;
 };
 
 #endif // AUDIOMANIPULATION_H

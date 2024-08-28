@@ -51,6 +51,7 @@ void AudioFileFactory::saveDataToFile(const QVector<quint32> &data)
                 out << quint32(sample);
             }
         }
+      
         file.close();
     }
 }

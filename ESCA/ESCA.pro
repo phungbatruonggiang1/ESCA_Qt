@@ -16,6 +16,7 @@ SOURCES += \
     src/common/file/accessfile.cpp \
     src/common/process/process.cpp \
     src/modules/audiomanipulation/audiomanipulation.cpp \
+    src/modules/audiorecording/audioconfig.cpp \
         src/modules/audiorecording/audioconfigfile.cpp \
     src/modules/audiorecording/audiofilefactory.cpp \
     src/modules/audiorecording/inputengine.cpp \
@@ -45,6 +46,7 @@ HEADERS += \
     src/common/process/process.h \
     src/config/config.h \
     src/modules/audiomanipulation/audiomanipulation.h \
+    src/modules/audiorecording/audioconfig.h \
     src/modules/audiorecording/audioconfigfile.h \
     src/modules/audiorecording/audiofilefactory.h \
     src/modules/audiorecording/inputengine.h \

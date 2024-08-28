@@ -27,7 +27,6 @@ public:
     void setMinhaudio(quint32 newMinhaudio);
 
     void setAudioSeries(const QVector<quint32> &newAudioSeries);
-
 signals:
     void audioSeriesChanged();
     void minhaudioChanged();
@@ -37,6 +36,7 @@ private:
     QVector<quint32> m_audioSeries;
     quint32 m_minhaudio = 0;
     QSignalSpy spy;
+
 };
 
 #endif // RECORDINGCHART_H

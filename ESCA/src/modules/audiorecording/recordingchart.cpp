@@ -1,6 +1,7 @@
 #include "recordingchart.h"
 
 RecordingChart::RecordingChart(QObject *parent) : QObject{parent}, spy(this, &RecordingChart::audioSeriesChanged)
+
 {
 
 }
@@ -11,13 +12,7 @@ RecordingChart::~RecordingChart() {
 void RecordingChart::updateData(const QVector<quint32> &data)
 {
     setAudioSeries(data);
-    setMinhaudio(data.isEmpty() ? 17 : data.first());
-
-    if (!m_audioSeries.isEmpty()) {
-        qInfo() << "updateData rcChart c++:" << data.first() << m_audioSeries.first() << minhaudio();
-    } else {
-        qInfo() << "updateData c++ empty";
-    }
+    qInfo() << "Hello";
 }
 
 QVector<quint32> RecordingChart::audioSeries() const
@@ -59,3 +54,4 @@ void RecordingChart::setAudioSeries(const QVector<quint32> &newAudioSeries)
         qInfo() << "setAudioSeries c++ empty";
     }
 }
+
