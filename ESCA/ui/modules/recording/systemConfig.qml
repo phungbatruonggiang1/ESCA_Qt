@@ -1,5 +1,6 @@
 import QtQuick 2.15
 import QtQuick.Controls 2.15
+import AudioConfigImport 1.0
 
 Rectangle {
     id: frame_1
@@ -85,15 +86,15 @@ Rectangle {
         height: 440
 
         Component.onCompleted: {
-            console.log("hell0"+audioConfig.listEndianz);
-            for (var i = 0; i < audioConfig.listSampleRate.length; i++){
-                sampleRateMl.append({"name" : audioConfig.listSampleRate[i]});
+            console.log("hell0"+AudioConfig.listEndianz);
+            for (var i = 0; i < AudioConfig.listSampleRate.length; i++){
+                sampleRateMl.append({"name" : AudioConfig.listSampleRate[i]});
             }
-            for (i = 0; i < audioConfig.listChannel.length; i++){
-                channelMl.append({"name" : audioConfig.listChannel[i]});
+            for (i = 0; i < AudioConfig.listChannel.length; i++){
+                channelMl.append({"name" : AudioConfig.listChannel[i]});
             }
-            for (i = 0; i < audioConfig.listEndianz.length; i++){
-                endianzMl.append({"name" : ""+audioConfig.listEndianz[i]});
+            for (i = 0; i < AudioConfig.listEndianz.length; i++){
+                endianzMl.append({"name" : ""+AudioConfig.listEndianz[i]});
             }
         }
 
@@ -105,15 +106,15 @@ Rectangle {
             height: 40
             font.pointSize: 18
             font.family: "Oxanium"
-            currentIndex: audioConfig.nearistParams[0]
+            currentIndex: AudioConfig.nearistParams[0]
             enabled: !RecordingObject.recStatus
 
-            model: audioConfig.listDevices
+            model: AudioConfig.listDevices
 
             onCurrentIndexChanged: {
                 console.log("Selected choose_device Item:", deviceCb.currentText)
-                audioConfig.changeDevice(deviceCb.currentIndex)
-                // console.log("Selected choose_device Item:", audioConfig.selectedParams);
+                AudioConfig.changeDevice(deviceCb.currentIndex)
+                // console.log("Selected choose_device Item:", AudioConfig.selectedParams);
                 // Add logic here
             }
         }
@@ -134,13 +135,13 @@ Rectangle {
             y: 124
             width: 157
             height: 40
-            currentIndex: audioConfig.nearistParams[1] >= 0 ? audioConfig.nearistParams[1] : -1
+            currentIndex: AudioConfig.nearistParams[1] >= 0 ? AudioConfig.nearistParams[1] : -1
             // currentIndex: -1
             font.pointSize: 18
             font.family: "Oxanium"
             enabled: !RecordingObject.recStatus
 
-            model: audioConfig.listCodecs
+            model: AudioConfig.listCodecs
 
             onCountChanged: {
 
@@ -173,7 +174,7 @@ Rectangle {
             y: 124
             width: 178
             height: 40
-            currentIndex: audioConfig.nearistParams[2]
+            currentIndex: AudioConfig.nearistParams[2]
             enabled: !RecordingObject.recStatus
 
             model: ListModel {
@@ -189,7 +190,7 @@ Rectangle {
             x: 590
             y: 124
             font.family: "Oxanium"
-            currentIndex: audioConfig.nearistParams[3]
+            currentIndex: AudioConfig.nearistParams[3]
             font.pointSize: 18
             enabled: !RecordingObject.recStatus
 
@@ -215,7 +216,7 @@ Rectangle {
             width: 157
             height: 40
             font.pointSize: 18
-            currentIndex: audioConfig.nearistParams[4]
+            currentIndex: AudioConfig.nearistParams[4]
             font.family: "Oxanium"
             enabled: !RecordingObject.recStatus
 
@@ -237,9 +238,9 @@ Rectangle {
         // Dialog {
         //     id: formatWarningDialog
         //     title: "Format You Choose Not Supported"
-        //     visible: audioConfig.nearistParams[5] === 0
+        //     visible: AudioConfig.nearistParams[5] === 0
         //     onVisibleChanged: {
-        //         if (!visible) saudioConfig.nearistParams[5] = 1;  // Reset visibility when dialog is closed
+        //         if (!visible) sAudioConfig.nearistParams[5] = 1;  // Reset visibility when dialog is closed
         //     }
         //     standardButtons: Dialog.Ok
 
@@ -250,7 +251,7 @@ Rectangle {
         //     }
 
         //     onAccepted: {
-        //         audioConfig.nearistParams[5] = 1;  // Hide the dialog when OK is pressed
+        //         AudioConfig.nearistParams[5] = 1;  // Hide the dialog when OK is pressed
         //     }
         // }
 
@@ -264,8 +265,8 @@ Rectangle {
             onClicked: {
                 //Load to Record Device
                 console.log("from codec: " + codecCb.currentIndex)
-                audioConfig.saveConfig(deviceCb.currentIndex, codecCb.currentIndex, sampleRateCb.currentIndex, channelsCb.currentIndex, endianzCb.currentIndex)
-                console.log("from qml: " + audioConfig.listDevices[0])
+                AudioConfig.saveConfig(deviceCb.currentIndex, codecCb.currentIndex, sampleRateCb.currentIndex, channelsCb.currentIndex, endianzCb.currentIndex)
+                console.log("from qml: " + AudioConfig.listDevices[0])
                 // console.log("click: " +devicename)
             }
         }

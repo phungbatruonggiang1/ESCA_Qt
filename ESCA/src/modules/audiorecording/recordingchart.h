@@ -4,16 +4,27 @@
 #include <QObject>
 #include <QDebug>
 #include <QVariant>
-#include <QSignalSpy>
-#include <QQmlEngine>
+
+class CircuitBuffer {
+
+public:
+    explicit CircuitBuffer();
+
+    void add(float value);
+    std::vector<float> getBuffer() const;
+
+    size_t size() const;
+
+private:
+    std::vector<float> buffer;
+    size_t head, tail;
+    bool isFull;
+};
 
 class RecordingChart : public QObject
 {
     Q_OBJECT
-    QML_ELEMENT
-
-    Q_PROPERTY(QVector<quint32> audioSeries READ audioSeries WRITE setAudioSeries NOTIFY audioSeriesChanged FINAL)
-    Q_PROPERTY(quint32 minhaudio READ minhaudio WRITE setMinhaudio NOTIFY minhaudioChanged FINAL)
+    Q_PROPERTY(QVariant audioSeries READ audioSeries WRITE setAudioSeries NOTIFY audioSeriesChanged FINAL)
 
 public:
     explicit RecordingChart(QObject *parent = nullptr);
@@ -21,21 +32,21 @@ public:
 
     void updateData(const QVector<quint32> &data);
 
-    QVector<quint32> audioSeries() const;
 
-    quint32 minhaudio() const;
-    void setMinhaudio(quint32 newMinhaudio);
+    QVariant audioSeries() const;
+    void setAudioSeries(const QVariant &newAudioSeries);
 
-    void setAudioSeries(const QVector<quint32> &newAudioSeries);
+public slots:
+    void onSendChartData(const QByteArray &data);
+
 signals:
     void audioSeriesChanged();
-    void minhaudioChanged();
 
 private:
+    QVariant m_audioSeries = {};
 
-    QVector<quint32> m_audioSeries;
-    quint32 m_minhaudio = 0;
-    QSignalSpy spy;
+    CircuitBuffer buffer;
+    int displayDataCount = 500;
 
 };
 

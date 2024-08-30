@@ -19,16 +19,14 @@ int main(int argc, char *argv[])
     QApplication app(argc, argv);
 
     RecordingController recordingController;
-    AudioConfig audioConfig;
-
+    // AudioConfig audioConfig;
 
     QQmlApplicationEngine engine;
 
     const QUrl url(QStringLiteral("qrc:/ui/main.qml"));
 
-    qmlRegisterType<RecordingChart>("MinhRecChart", 1, 0, "MinhChart");
     engine.rootContext()->setContextProperty("RecordingObject", &recordingController);
-    engine.rootContext()->setContextProperty("audioConfig", &audioConfig);
+    // engine.rootContext()->setContextProperty("audioConfig", &audioConfig);
 
     QObject::connect(
         &engine,

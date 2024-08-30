@@ -2,12 +2,9 @@ import QtQuick 2.15
 import "qrc:/ui/components/QtQuick/Studio/Components"
 import QtQuick.Controls 2.15
 import QtQuick.Dialogs 1.0
-import QtCharts 2.6
-// import QtMultimedia 5.15
-// <<<<<<< HEAD
-import MinhRecChart 1.0
-// =======
-// >>>>>>> f8ad60f473a7027eedc9abb6807dbd9b3c34e644
+import QtMultimedia 5.15
+import AudioChartImport 1.0
+
 
 Rectangle {
     id: frame_1
@@ -16,28 +13,13 @@ Rectangle {
     color: "#262e4b"
 
     property bool flag: false
-    property string device_name: ''
-    property string duration: 'duration'
-    property string file_to_store: 'file_to_store'
-    property var inputSources: []
-    property var outputSources: []
-    property var chartData: []
+    property var audioData: []
 
     Component.onCompleted: {
 
         flag = RecordingObject.recStatus;
-        inputSources = RecordingObject.getInputAudioDeviceList();
-        outputSources = RecordingObject.getOutputAudioDeviceList();
         console.log("hello")
         // chartData = RecordingObject.audioChart;
-        listInputDeviceModel.append({"name" : "none"});
-        listOutputDeviceModel.append({"name" : "none"});
-        for (let i = 0; i < inputSources.length; ++i) {
-            listInputDeviceModel.append({"name" : inputSources[i]});
-        }
-        for (let j=0; j<outputSources.length; ++j) {
-            listOutputDeviceModel.append({"name" : outputSources[j]});
-        }
     }
 
     Text {
@@ -108,112 +90,61 @@ Rectangle {
         font.family: "Itim"
     }
 
-    ComboBox {
-        id: choose_input_device
-        x: 300
-        y: 100
-        width: 195
-        height: 35
-        font.pointSize: 13
-        currentIndex: 0
+    Canvas {
+        id: audioWaveform
+        width: 800
+        height: 400
+        x: 200
+        y: 50
 
-        model: ListModel {
-            id: listInputDeviceModel
-        }
+        property int maxAmplitude: 1 // Assuming 16-bit PCM -> 32768 da chuan hoa ve 1
 
-        onCurrentIndexChanged: {
-            let selectedItem = inputSources[currentIndex] // Get the selected item
-            RecordingObject.setInputAudioDevice(selectedItem);
-            // Add logic here
-        }
-    }
+        onPaint: {
+            console.log("start paint");
+            // console.log("qml data:", AudioChart.audioSeries[0]);
 
-    ComboBox {
-        id: choose_output_device
-        x: 300
-        y: 300
-        width: 195
-        height: 35
-        font.pointSize: 13
-        currentIndex: 0
+            var ctx = getContext("2d");
+            ctx.clearRect(0, 0, width, height);
 
-        model: ListModel {
-            id: listOutputDeviceModel
-        }
-
-        onCurrentIndexChanged: {
-            var selectedItem = outputSources[currentIndex] // Get the selected item
-            RecordingObject.setOutputAudioDevice(selectedItem);
-            // Add logic here
-        }
-    }
-
-    MinhChart {
-        id: recordingChart
-        onAudioSeriesChanged: {
-            console.log("Min audio changed:");
-            // console.log("Chart c++ changed:", recordingChart.audioSeries[0]);
-        }
-        onMinhaudioChanged: console.log("Min audio changed:", RecordingObject.audioChart[0]);
-    }
-
-    ChartView {
-        id: chartView
-        title: "Line Chart"
-        x:500
-        y:100
-        width: 500
-        height: 360
-
-        LineSeries {
-            id: lineSeries
-            name: "Audio Data"
-            useOpenGL: true
-            axisX: ValueAxis {
-                id: axisX
-                min: 0
-                max: 256// Adjust according to your data
+            // Draw grid
+            ctx.strokeStyle = "#444";
+            ctx.lineWidth = 1;
+            for (var i = 0; i < width; i += width / 10) {
+                ctx.beginPath();
+                ctx.moveTo(i, 0);
+                ctx.lineTo(i, height);
+                ctx.stroke();
             }
-            axisY: ValueAxis {
-                id: axisY
-                min: -128 // Adjust according to your data
-                max: 128
+            for (var j = 0; j < height; j += height / 10) {
+                ctx.beginPath();
+                ctx.moveTo(0, j);
+                ctx.lineTo(width, j);
+                ctx.stroke();
             }
-        }
 
-        Connections {
-            target: RecordingObject
-
-            // function onAudioChartChanged() {
-
-            //     // console.log("Min audio changed:", RecordingObject.audioChart[0]);
-            //     // console.log("Chart c++ changed:", recordingChart.audioSeries[0]);
-
-            function onRecordingChartBufferChanged() {
-                console.log("Min audio changed:", RecordingObject.recordingChartBuffer());
-
-
-                var audioSeries = RecordingObject.recordingChartBuffer();
-                if (audioSeries.length > 0) {
-                    for (var i = 0; i < audioSeries.length; i++) {
-                        var xValue = lineSeries.count
-                        var yValue = audioSeries[i]
-                        lineSeries.append(xValue, yValue)
-                    }
-
-                    // Update the X axis max if necessary
-                    if (lineSeries.count > axisX.max) {
-                        axisX.max = lineSeries.count
-                        axisX.min = lineSeries.count - 256
-                    }
+            // Draw waveform
+            ctx.strokeStyle = "#00ff00";
+            ctx.lineWidth = 2;
+            ctx.beginPath();
+            for (var k = 0; k < audioData.length; k++) {
+                var x = k * width / audioData.length;
+                var y = height / 2 - (audioData[k] / maxAmplitude) * height / 2;
+                if (k === 0) {
+                    ctx.moveTo(x, y);
+                } else {
+                    ctx.lineTo(x, y);
                 }
-                if (xValue > axisX.max)
-                    axisX.max = xValue
-                axisX.min = xValue - 1028 //set lai gia tri toi da de chart chay lien tuc
-                // Cập nhật giá trị tối đa trên trục Y nếu cần
-                if (yValue > axisY.max)
-                    axisY.max = yValue
             }
+            ctx.stroke();
+        }
+    }
+
+    Connections {
+        target: AudioChart
+        function onAudioSeriesChanged() {
+            audioData = AudioChart.audioSeries;
+            audioWaveform.requestPaint();
+            console.log("qml data:", AudioChart.audioSeries[0]);
         }
     }
 
