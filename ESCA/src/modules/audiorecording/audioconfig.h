@@ -39,14 +39,13 @@ public:
     void setListEndianz(const QList<QAudioFormat::Endian> &newListEndianz);
 
     Q_INVOKABLE void changeDevice(int idx);
-
     Q_INVOKABLE void saveConfig(int device, int codec, int sampleRate, int channel, int endian);
 
-    QAudioDeviceInfo deviceInfo() const;
+    QAudioDeviceInfo deviceInfo() const { return m_deviceInfo; };
 
-    QAudioFormat settings() const;
+    QAudioFormat settings() const { return m_settings; };
 
-    QList<int> nearistParams() const;
+    QList<int> nearistParams() const { return m_nearistParams; };
 
 signals:
     void listCodecsChanged();

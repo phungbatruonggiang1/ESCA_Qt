@@ -1,6 +1,4 @@
 #include "recorddevice.h"
-#include <QFile>
-#include <QDataStream>
 
 RecordDevice::RecordDevice(const QAudioFormat &format, QObject *parent)
     :QIODevice(parent), m_format(format)

@@ -10,20 +10,20 @@
 #include "../../config/config.h"
 
 #include "audioconfigfile.h"
-#include "recordio.h"
 #include "recordingschedule.h"
-#include "recorddevice.h"
 #include "audiofilefactory.h"
 #include "recordingchart.h"
 #include "audioconfig.h"
+#include "recordio.h"
 
 class AudioEngine;
 class RecordingChart;
 class RecordingSchedule;
 class AudioConfigFile;
-class RecordDevice;
 class RecordingChart;
 class AudioFileFactory;
+class RecordIO;
+
 
 class RecordingController : public QObject
 {
@@ -50,16 +50,15 @@ private slots:
     void handleDataReady(const QByteArray &data);
 
 private:
-    RecordDevice* m_recordDevice;
+    RecordIO* m_recordIO = nullptr;
     QAudioFormat formatAudioInput;
 
-    RecordIO* m_recordIO = nullptr;
     AudioConfigFile* m_audioConfigFile = nullptr;
     RecordingSchedule* m_recordingSchedule = nullptr;
 
     //save data to storage
 
-    AudioFileFactory* m_fileFactory;
+    AudioFileFactory* m_fileFactory = nullptr;
     RecordingChart* m_recordingChart;
 
     AudioConfig* m_audioConfig;
