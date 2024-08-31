@@ -4,17 +4,12 @@
 RecordingController::RecordingController(QObject *parent)
     : m_fileFactory(nullptr)
     , m_recordingChart(new RecordingChart())
-    , m_recordDevice(nullptr)
     , m_audioConfig(new AudioConfig())
-    , m_recordIO(new RecordIO())
 {
     qmlRegisterSingletonInstance("AudioConfigImport", 1, 0, "AudioConfig", m_audioConfig);
     qmlRegisterSingletonInstance("AudioChartImport", 1, 0, "AudioChart", m_recordingChart);
 
     setRecStatus(false);
-
-    connect(m_recordIO, &RecordIO::sendData, this, &RecordingController::handleDataReady);    
-
     m_audioConfigFile = new AudioConfigFile();
     m_audioConfigFile->setFilePath(RECORDING_CONFIG_FILE);
 }
@@ -26,19 +21,16 @@ RecordingController::~RecordingController()
 
 void RecordingController::startRecording()
 {
+    m_recordIO = new RecordIO();
+    connect(m_recordIO, &RecordIO::sendData, this, &RecordingController::handleDataReady);    
     QAudioFormat format = m_audioConfig->settings();
     QAudioDeviceInfo deviceInfo = m_audioConfig->deviceInfo();
 
     setRecStatus(true);
-    m_recordDevice = new RecordDevice(format);
-    // m_recordingChart = new RecordingChart();
+    // m_recordDevice = new RecordDevice(format);
     m_fileFactory = new AudioFileFactory(format);
 
     connect(this, &RecordingController::sendChartData, m_recordingChart, &RecordingChart::onSendChartData);
-
-    // connect(m_recordingChart, &RecordingChart::audioSeriesChanged, this, &RecordingController::setRecoringChartBuffer);
-
-    m_recordDevice->open(QIODevice::WriteOnly);
 
     m_recordIO->startAudioInput(format, deviceInfo);
 
@@ -50,19 +42,17 @@ void RecordingController::stopRecording()
     setRecStatus(false);
     m_recordIO->audioInputStop();
     qInfo() << "Hi Giang, this is stop recording";
-    m_recordDevice = nullptr;
+    m_recordIO = nullptr;
     m_recordingChart = nullptr;
     m_fileFactory = nullptr;
 }
 
 void RecordingController::handleDataReady(const QByteArray &data)
 {
-    // m_recordingChart->updateData(buffer);
     emit sendChartData(data);
     qInfo()<< "handleDataReady" << data.at(0);
 
     m_fileFactory->setFilePath("/home/gianghandsome/ESCA/data/test.wav");
-    // m_fileFactory->saveDataToFile(buffer);
 }
 
 void RecordingController::setRecStatus(bool newRecStatus)

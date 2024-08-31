@@ -1,7 +1,6 @@
 #include "audioconfig.h"
 
-AudioConfig::AudioConfig(QObject *parent)
-    : QObject{parent}
+AudioConfig::AudioConfig(QObject *parent) : QObject{parent}
 {
     for (auto &deviceInfo : QAudioDeviceInfo::availableDevices(QAudio::AudioInput)) {
         cpplistDevices.append(deviceInfo);
@@ -152,19 +151,3 @@ void AudioConfig::saveConfig(int device, int codec, int sampleRate, int channel,
 
     qInfo()<< "save params: " << m_nearistParams;
 }
-
-QAudioDeviceInfo AudioConfig::deviceInfo() const
-{
-    return m_deviceInfo;
-}
-
-QAudioFormat AudioConfig::settings() const
-{
-    return m_settings;
-}
-
-QList<int> AudioConfig::nearistParams() const
-{
-    return m_nearistParams;
-}
-

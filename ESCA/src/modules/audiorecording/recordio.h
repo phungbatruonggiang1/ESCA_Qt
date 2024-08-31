@@ -18,7 +18,9 @@ class QAudioDeviceInfo;
 QT_END_NAMESPACE
 
 class RecordIO : public QObject {
+
     Q_OBJECT
+    
 public:
     explicit RecordIO(QObject *parent = nullptr);
     ~RecordIO();

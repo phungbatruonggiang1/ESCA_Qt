@@ -9,7 +9,6 @@ Process::Process(QObject* parent) : QObject(parent){
     connect(&m_process, &QProcess::readyRead, this, &Process::readyRead);
 
     m_running = false;
-
     // finished is overloaded
     connect(&m_process, QOverload<int, QProcess::ExitStatus>::of(&QProcess::finished), this, &Process::finished);
 }
@@ -39,7 +38,6 @@ void Process::errorOccured(QProcess::ProcessError error)
     if(!m_running) return;
     qInfo() << Q_FUNC_INFO << error;
     qInfo() << "Error";
-    // emit output("Error");
 }
 
 void Process::finished(int exitCode, QProcess::ExitStatus exitStatus)
@@ -49,7 +47,6 @@ void Process::finished(int exitCode, QProcess::ExitStatus exitStatus)
     Q_UNUSED(exitCode);
     Q_UNUSED(exitStatus);
     qInfo() << "Complete";
-    // emit output("Complete");
 }
 
 void Process::readyReadStandardError()
@@ -60,7 +57,6 @@ void Process::readyReadStandardError()
     QString message = "Standard Error: ";
     message.append(m_process.readAllStandardError());
     qInfo() << message;
-    // emit output(message);
 }
 
 void Process::readyReadStandardOutput()
@@ -69,7 +65,6 @@ void Process::readyReadStandardOutput()
     qInfo() << Q_FUNC_INFO;
     QByteArray data = m_process.readAllStandardOutput();
     qInfo() << QString(data.trimmed());
-    // emit output(QString(data.trimmed()));
 }
 
 void Process::started()
@@ -84,16 +79,13 @@ void Process::stateChanged(QProcess::ProcessState newState)
     switch(newState) {
     case QProcess::NotRunning:
         qInfo() << "Not Running";
-        // emit output("Not Running");
         break;
     case QProcess::Starting:
         qInfo() << "Starting";
-        // emit output("Starting");
         break;
     case QProcess::Running:
         qInfo() << "Running";
         startProcess();
-        // emit output("Running");
         break;
     }
 }

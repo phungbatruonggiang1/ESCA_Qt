@@ -78,7 +78,7 @@ void AudioManipulation::extractFrequency(QString audioPath)
 }
 
 
-// Not be implement
+// should not be implement
 void AudioManipulation::splitAudio(QString source, QString destination, QString duration)
 {
     QString statement ="cd /home/gianghandsome/training/D-ESCA_v2 \n python3 helper/split_audio_qt.py -s ";
