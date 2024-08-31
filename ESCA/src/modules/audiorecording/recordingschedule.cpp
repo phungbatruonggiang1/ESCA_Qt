@@ -1,3 +1,6 @@
 #include "recordingschedule.h"
 
-RecordingSchedule::RecordingSchedule() {}
+RecordingSchedule::RecordingSchedule()
+{
+
+}

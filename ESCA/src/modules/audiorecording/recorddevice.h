@@ -1,5 +1,5 @@
-#ifndef RECORDINGIO_H
-#define RECORDINGIO_H
+#ifndef RECORDDEVICE_H
+#define RECORDDEVICE_H
 
 #include <QObject>
 #include <qqml.h>
@@ -11,13 +11,14 @@
 #include <QTimer>
 #include <QFile>
 #include <QMutex>
+#include <QtGlobal>
 
-class RecordingIO : public QIODevice
+class RecordDevice : public QIODevice
 {
     Q_OBJECT
 
 public:
-    explicit RecordingIO(const QAudioFormat &format, QObject *parent = nullptr);
+    explicit RecordDevice(const QAudioFormat &format, QObject *parent = nullptr);
     
 signals:
     void dataReady(const QVector<quint32> &buffer);
@@ -36,7 +37,7 @@ private:
 
     QMutex bufferMutex;
     QVector<quint32> dataBuffer;
-    QTimer m_timer;
+    // QTimer m_timer;
 };
 
-#endif // RECORDINGIO_H
+#endif // RECORDDEVICE_H
