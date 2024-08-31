@@ -5,7 +5,9 @@
 
 class BasicMonitor
 {
+
     Q_OBJECT
+    
 public:
     BasicMonitor();
 };

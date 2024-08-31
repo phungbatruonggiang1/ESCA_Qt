@@ -11,8 +11,9 @@
 
 class SystemInformationController : public QObject
 {
-public:
+
     Q_OBJECT
+    
     Q_PROPERTY(int cpuPercentage READ cpuPercentage NOTIFY cpuChanged)
     Q_PROPERTY(QString cpuText READ cpuText NOTIFY cpuChanged)
     Q_PROPERTY(int ramPercentage READ ramPercentage NOTIFY ramChanged)

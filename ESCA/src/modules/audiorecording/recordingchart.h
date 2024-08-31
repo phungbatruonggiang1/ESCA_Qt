@@ -23,7 +23,9 @@ private:
 
 class RecordingChart : public QObject
 {
+    
     Q_OBJECT
+
     Q_PROPERTY(QVariant audioSeries READ audioSeries WRITE setAudioSeries NOTIFY audioSeriesChanged FINAL)
 
 public:
