@@ -65,11 +65,6 @@ void RecordingController::handleDataReady(const QByteArray &data)
     // m_fileFactory->saveDataToFile(buffer);
 }
 
-bool RecordingController::recStatus() const
-{
-    return m_recStatus;
-}
-
 void RecordingController::setRecStatus(bool newRecStatus)
 {
     if (m_recStatus == newRecStatus)

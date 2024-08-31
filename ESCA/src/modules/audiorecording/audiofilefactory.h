@@ -14,7 +14,9 @@
 
 class AudioFileFactory : public AccessFile
 {
+
     Q_OBJECT
+    
 public:
     explicit AudioFileFactory(const QAudioFormat &format);
     void createFile();
