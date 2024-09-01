@@ -20,10 +20,25 @@ class AudioFileFactory : public AccessFile
 public:
     explicit AudioFileFactory(const QAudioFormat &format);
     void createFile();
-    void saveDataToFile(const QVector<quint32> &data);
+    void saveDataToFile();
     void writeWavHeader(QFile &file, qint64 dataSize);
 
     const QAudioFormat m_format;
+
+    void startTimer();
+    void stopTimer();
+    void setFileDuration(int duration);
+    int getFileDuration() const { return m_fileDuration; };
+    void setDirectoryToSaveAduioFile(QString path);
+    QString getDirectorySaveAudioFile() const { return m_directory; };
+
+
+private:
+    QTimer* m_timer;
+    int m_fileDuration;
+    QString m_directory;
+    QVector<quint32> m_dataBuffer;
+
 };
 
 #endif // AUDIOFILEFACTORY_H

@@ -1,7 +1,11 @@
 #include "audiofilefactory.h"
 
+#include <QString>
 
-AudioFileFactory::AudioFileFactory(const QAudioFormat &format) : m_format(format)
+
+AudioFileFactory::AudioFileFactory(const QAudioFormat &format) 
+    : m_format(format)
+    , m_timer(nullptr)
 {
 
 }
@@ -31,8 +35,17 @@ void AudioFileFactory::writeWavHeader(QFile &file, qint64 dataSize)
     out << quint32(dataSize);
 }
 
+void AudioFileFactory::createFile()
+{
+    QString nameFile = m_directory,append('abc.wav'); // + time
+    setFilePath(nameFile);
+    saveDataToFile();
+    m_dataBuffer.clear();
+}
 
-void AudioFileFactory::saveDataToFile(const QVector<quint32> &data)
+
+
+void AudioFileFactory::saveDataToFile()
 {
     QFile file(getFilePath());
     if (file.open(QIODevice::WriteOnly)) {
@@ -42,7 +55,7 @@ void AudioFileFactory::saveDataToFile(const QVector<quint32> &data)
         QDataStream out(&file);
         out.setByteOrder(QDataStream::LittleEndian);
 
-        for (auto sample : data) {
+        for (auto sample : m_dataBuffer) {
             if (m_format.sampleSize() == 8) {
                 out << quint32(sample);
             } else if (m_format.sampleSize() == 16) {
@@ -54,6 +67,23 @@ void AudioFileFactory::saveDataToFile(const QVector<quint32> &data)
       
         file.close();
     }
+}
+
+void AudioFileFactory::startTimer()
+{
+    m_timer = new QTimer(this);
+    connect(m_timer, &QTimer::timeout, this, &AudioFileFactory::saveDataToFile);
+
+    m_dataBuffer.clear();
+    m_timer->start(m_fileDuration);
+}
+
+
+void AudioFileFactory::setFileDuration(int duration)
+{
+    if (m_fileDuration == duration)
+        return;
+    m_fileDuration = duration;
 }
 
 
