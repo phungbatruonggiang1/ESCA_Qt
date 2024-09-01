@@ -1,12 +1,15 @@
 #include "audiofilefactory.h"
 
-#include <QString>
 #include <QDebug>
 
 
 AudioFileFactory::AudioFileFactory(const QAudioFormat &format) 
     : m_format(format)
-    , m_timer(nullptr)
+    , m_cachingTimer(nullptr)
+    , m_fileTimer(nullptr)
+    , numberOfCaptures(0)
+    , fileDataSize(0)
+    , m_directory("/home/gianghandsome/ESCA/ESCA_Qt/ESCA/data/")
 {
 
 }
@@ -38,10 +41,27 @@ void AudioFileFactory::writeWavHeader(QFile &file, qint64 dataSize)
 
 void AudioFileFactory::createFile()
 {
-    qInfo() << "I'm creating an audio file";
-    m_directory = "/home/gianghandsome/ESCA/ESCA_Qt/ESCA/data/";
-    QString nameFile = m_directory.append("abc.wav"); // + time
+    if (!m_dataBuffer.isEmpty()) {
+        qInfo() << "Error, please check again!";
+        releaseBuffer();
+    }
+    QDateTime local(QDateTime::currentDateTime());
+    // qInfo() << "I'm creating an audio file " << local.toTime_t();
+    QString nameFile = m_directory;
+    nameFile.append("test-");
+    nameFile.append(local.toTime_t());
+    nameFile.append(".wav");
     setFilePath(nameFile);
+    fileDataSize = 0;
+    QFile file(getFilePath());
+}
+
+void AudioFileFactory::releaseBuffer()
+{
+    qInfo() << "release buffer in file factory";
+    numberOfCaptures ++;
+    fileDataSize += m_dataBuffer.size() * (m_format.sampleSize() / 8);
+    qInfo() << fileDataSize;
     saveDataToFile();
     m_dataBuffer.clear();
 }
@@ -52,8 +72,6 @@ void AudioFileFactory::saveDataToFile()
 {
     QFile file(getFilePath());
     if (file.open(QIODevice::WriteOnly)) {
-        writeWavHeader(file, m_dataBuffer.size() * (m_format.sampleSize() / 8));
-
         QDataStream out(&file);
         out.setByteOrder(QDataStream::LittleEndian);
 
@@ -66,17 +84,30 @@ void AudioFileFactory::saveDataToFile()
                 out << quint32(sample);
             }
         }
-      
         file.close();
     }
 }
 
-void AudioFileFactory::startTimer()
+void AudioFileFactory::startRecording()
 {
-    m_timer = new QTimer(this);
-    connect(m_timer, &QTimer::timeout, this, &AudioFileFactory::createFile);
+    m_fileTimer = new QTimer(this);
+    m_cachingTimer = new QTimer(this);
+    connect(m_fileTimer, &QTimer::timeout, this, &AudioFileFactory::createFile);
+    connect(m_cachingTimer, &QTimer::timeout, this, &AudioFileFactory::releaseBuffer);
+
     m_dataBuffer.clear();
-    m_timer->start(m_fileDuration);
+    m_fileTimer->start(m_fileDuration);
+    m_cachingTimer->start(1000);
+    createFile();
+}
+
+void AudioFileFactory::stopRecording() 
+{
+    releaseBuffer();
+    m_fileTimer->stop();
+    m_cachingTimer->stop();
+    disconnect(m_fileTimer, &QTimer::timeout, this, &AudioFileFactory::createFile);
+    disconnect(m_cachingTimer, &QTimer::timeout, this, &AudioFileFactory::releaseBuffer);
 }
 
 
@@ -107,7 +138,8 @@ void AudioFileFactory::appendDataToBuffer(const QByteArray &data)
         for (int i = 0; i < numberOfSamples; ++i)
             m_dataBuffer.append(samples[i]);
     }
-
 }
+
+
 
 

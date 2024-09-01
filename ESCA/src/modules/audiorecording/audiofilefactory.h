@@ -8,6 +8,7 @@
 #include <qendian.h>
 #include <QTimer>
 #include <QFile>
+#include <QDateTime>
 
 
 #include "../../common/file/accessfile.h"
@@ -25,18 +26,22 @@ public:
 
     const QAudioFormat m_format;
 
-    void startTimer();
-    void stopTimer();
+    void startRecording();
+    void stopRecording();
     void setFileDuration(int duration);
     int getFileDuration() const { return m_fileDuration; };
     void setDirectoryToSaveAduioFile(QString path);
     QString getDirectorySaveAudioFile() const { return m_directory; };
     void appendDataToBuffer(const QByteArray &data);
+    void releaseBuffer();
 
 
 private:
-    QTimer* m_timer;
+    QTimer* m_cachingTimer;
+    QTimer* m_fileTimer;
     int m_fileDuration;
+    int fileDataSize;
+    int numberOfCaptures;
     QString m_directory;
     QVector<int> m_dataBuffer;
 
