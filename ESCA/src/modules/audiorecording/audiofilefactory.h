@@ -31,13 +31,14 @@ public:
     int getFileDuration() const { return m_fileDuration; };
     void setDirectoryToSaveAduioFile(QString path);
     QString getDirectorySaveAudioFile() const { return m_directory; };
+    void appendDataToBuffer(const QByteArray &data);
 
 
 private:
     QTimer* m_timer;
     int m_fileDuration;
     QString m_directory;
-    QVector<quint32> m_dataBuffer;
+    QByteArray m_dataBuffer;
 
 };
 

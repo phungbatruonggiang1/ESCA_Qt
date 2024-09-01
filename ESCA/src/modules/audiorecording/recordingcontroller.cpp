@@ -33,6 +33,9 @@ void RecordingController::startRecording()
 
     m_recordIO->startAudioInput(format, deviceInfo);
 
+    // Currently, I fixed the duratione of audio file is 5 seconds
+    m_fileFactory->setFileDuration(5000);
+    m_fileFactory->startTimer();
     // should be check the real value of InputAudio -> setRecStatus
     // if it cannot turn on the InputAudio -> show alert to .qml
     // I refer you use try..catch pattern
@@ -52,9 +55,9 @@ void RecordingController::stopRecording()
 void RecordingController::handleDataReady(const QByteArray &data)
 {
     m_recordingChart->onSendChartData(data);
-    qInfo()<< "handleDataReady" << data.at(0);
+    // qInfo()<< "handleDataReady" << data.at(0);
 
-    m_fileFactory->setFilePath("/home/gianghandsome/ESCA/data/test.wav");
+    m_fileFactory->appendDataToBuffer(data);
 }
 
 void RecordingController::setRecStatus(bool newRecStatus)
