@@ -31,10 +31,7 @@ class RecordingChart : public QObject
 public:
     explicit RecordingChart(QObject *parent = nullptr);
     ~RecordingChart();
-
-    void updateData(const QVector<quint32> &data);
-
-
+    
     QVariant audioSeries() const;
     void setAudioSeries(const QVariant &newAudioSeries);
 

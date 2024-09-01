@@ -28,7 +28,6 @@ void RecordIO::startAudioInput(const QAudioFormat& format, const QAudioDeviceInf
     qInfo()<<"startAudioInput ";
 
     m_audioInput = new QAudioInput(deviceInfo, format, this);
-    // m_RecordIODevice = m_audioInput->start();
     qIODevice = m_audioInput->start();
 
     connect(qIODevice, &QIODevice::readyRead, this, &RecordIO::onReadyRead);
@@ -40,7 +39,7 @@ void RecordIO::onReadyRead()
     if (m_audioInput && qIODevice) {
         QByteArray data = qIODevice->readAll();
         emit sendData(data);
-        qInfo()<<"onReadyRead-audioIO"<<data.at(0);
+        // qInfo()<<"onReadyRead-audioIO"<<data.at(0);
     }
 }
 

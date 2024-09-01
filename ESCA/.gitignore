@@ -67,6 +67,9 @@ CMakeLists.txt.user*
 # Python byte code
 *.pyc
 
+# vscode file
+*.vscode
+
 # Binaries
 # --------
 *.dll
