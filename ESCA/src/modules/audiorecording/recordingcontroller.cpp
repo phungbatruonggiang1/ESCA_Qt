@@ -33,7 +33,9 @@ void RecordingController::startRecording()
 
     m_recordIO->startAudioInput(format, deviceInfo);
 
-    // should be check the real value of InputAudio
+    // should be check the real value of InputAudio -> setRecStatus
+    // if it cannot turn on the InputAudio -> show alert to .qml
+    // I refer you use try..catch pattern
     setRecStatus(true);
     qInfo() << "Hi Giang, this is start recording";
 }
@@ -44,7 +46,6 @@ void RecordingController::stopRecording()
     m_recordIO->audioInputStop();
     qInfo() << "Hi Giang, this is stop recording";
     m_recordIO = nullptr;
-    m_recordingChart = nullptr;
     m_fileFactory = nullptr;
 }
 
