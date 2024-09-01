@@ -50,15 +50,15 @@ private slots:
     void handleDataReady(const QByteArray &data);
 
 private:
-    RecordIO* m_recordIO = nullptr;
+    RecordIO* m_recordIO;
     QAudioFormat formatAudioInput;
 
-    AudioConfigFile* m_audioConfigFile = nullptr;
-    RecordingSchedule* m_recordingSchedule = nullptr;
+    AudioConfigFile* m_audioConfigFile;
+    RecordingSchedule* m_recordingSchedule;
 
     //save data to storage
 
-    AudioFileFactory* m_fileFactory = nullptr;
+    AudioFileFactory* m_fileFactory;
     RecordingChart* m_recordingChart;
 
     AudioConfig* m_audioConfig;

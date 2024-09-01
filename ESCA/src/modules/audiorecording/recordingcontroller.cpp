@@ -3,15 +3,17 @@
 
 RecordingController::RecordingController(QObject *parent)
     : m_fileFactory(nullptr)
+    , m_recordIO(nullptr)
+    , m_audioConfigFile(nullptr)
+    , m_recordingSchedule(nullptr)
     , m_recordingChart(new RecordingChart())
     , m_audioConfig(new AudioConfig())
 {
     qmlRegisterSingletonInstance("AudioConfigImport", 1, 0, "AudioConfig", m_audioConfig);
     qmlRegisterSingletonInstance("AudioChartImport", 1, 0, "AudioChart", m_recordingChart);
-
     setRecStatus(false);
-    m_audioConfigFile = new AudioConfigFile();
-    m_audioConfigFile->setFilePath(RECORDING_CONFIG_FILE);
+
+    // m_audioConfigFile->setFilePath(RECORDING_CONFIG_FILE);
 }
 
 RecordingController::~RecordingController()
@@ -22,18 +24,17 @@ RecordingController::~RecordingController()
 void RecordingController::startRecording()
 {
     m_recordIO = new RecordIO();
-    connect(m_recordIO, &RecordIO::sendData, this, &RecordingController::handleDataReady);    
+
+    connect(m_recordIO, &RecordIO::sendData, this, &RecordingController::handleDataReady);
     QAudioFormat format = m_audioConfig->settings();
     QAudioDeviceInfo deviceInfo = m_audioConfig->deviceInfo();
 
-    setRecStatus(true);
-    // m_recordDevice = new RecordDevice(format);
     m_fileFactory = new AudioFileFactory(format);
-
-    connect(this, &RecordingController::sendChartData, m_recordingChart, &RecordingChart::onSendChartData);
 
     m_recordIO->startAudioInput(format, deviceInfo);
 
+    // should be check the real value of InputAudio
+    setRecStatus(true);
     qInfo() << "Hi Giang, this is start recording";
 }
 
@@ -49,7 +50,7 @@ void RecordingController::stopRecording()
 
 void RecordingController::handleDataReady(const QByteArray &data)
 {
-    emit sendChartData(data);
+    m_recordingChart->onSendChartData(data);
     qInfo()<< "handleDataReady" << data.at(0);
 
     m_fileFactory->setFilePath("/home/gianghandsome/ESCA/data/test.wav");
