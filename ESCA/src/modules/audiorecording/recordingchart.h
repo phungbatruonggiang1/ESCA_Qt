@@ -38,7 +38,6 @@ public:
     QVariant audioSeries() const;
     void setAudioSeries(const QVariant &newAudioSeries);
 
-public slots:
     void onSendChartData(const QByteArray &data);
 
 signals:
