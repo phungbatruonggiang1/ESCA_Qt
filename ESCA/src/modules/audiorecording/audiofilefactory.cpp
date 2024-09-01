@@ -40,7 +40,7 @@ void AudioFileFactory::createFile()
 {
     qInfo() << "I'm creating an audio file";
     m_directory = "/home/gianghandsome/ESCA/ESCA_Qt/ESCA/data/";
-    QString nameFile = m_directory.append('abc.wav'); // + time
+    QString nameFile = m_directory.append("abc.wav"); // + time
     setFilePath(nameFile);
     saveDataToFile();
     m_dataBuffer.clear();
@@ -52,8 +52,7 @@ void AudioFileFactory::saveDataToFile()
 {
     QFile file(getFilePath());
     if (file.open(QIODevice::WriteOnly)) {
-        // writeWavHeader(file, buffer.size() * (m_format.sampleSize() / 8));
-        writeWavHeader(file, 100000);
+        writeWavHeader(file, m_dataBuffer.size() * (m_format.sampleSize() / 8));
 
         QDataStream out(&file);
         out.setByteOrder(QDataStream::LittleEndian);
@@ -90,11 +89,25 @@ void AudioFileFactory::setFileDuration(int duration)
 
 void AudioFileFactory::appendDataToBuffer(const QByteArray &data)
 {
-    const int32_t *samples = reinterpret_cast<const int32_t*>(data.constData());
-    int sampleCount = data.size() / sizeof(int32_t);
+    if (m_format.sampleSize() == 8) {
+        const int8_t *samples = reinterpret_cast<const int8_t*>(data.constData());
+        int numberOfSamples = data.size() / sizeof(int16_t);
+        for (int i = 0; i < numberOfSamples; ++i)
+            m_dataBuffer.append(samples[i]);
+    } 
+    else if (m_format.sampleSize() == 16) {
+        const int16_t *samples = reinterpret_cast<const int16_t*>(data.constData());
+        int numberOfSamples = data.size() / sizeof(int16_t);
+        for (int i = 0; i < numberOfSamples; ++i)
+            m_dataBuffer.append(samples[i]);
+    } 
+    else if (m_format.sampleSize() == 32) {
+        const int32_t *samples = reinterpret_cast<const int32_t*>(data.constData());
+        int numberOfSamples = data.size() / sizeof(int32_t);
+        for (int i = 0; i < numberOfSamples; ++i)
+            m_dataBuffer.append(samples[i]);
+    }
 
-    for (int i = 0; i < sampleCount; ++i)
-        m_dataBuffer.append(samples[i]);
 }
 
 

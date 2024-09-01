@@ -38,7 +38,7 @@ private:
     QTimer* m_timer;
     int m_fileDuration;
     QString m_directory;
-    QByteArray m_dataBuffer;
+    QVector<int> m_dataBuffer;
 
 };
 
