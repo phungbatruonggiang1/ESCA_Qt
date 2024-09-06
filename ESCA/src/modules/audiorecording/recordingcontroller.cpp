@@ -7,6 +7,7 @@ RecordingController::RecordingController(QObject *parent)
     , m_recordDevice(nullptr)
     , m_audioConfig(new AudioConfig())
     , m_recordIO(new RecordIO())
+    , m_audioFile()
 {
     qmlRegisterSingletonInstance("AudioConfigImport", 1, 0, "AudioConfig", m_audioConfig);
     qmlRegisterSingletonInstance("AudioChartImport", 1, 0, "AudioChart", m_recordingChart);
@@ -30,15 +31,14 @@ void RecordingController::startRecording()
     QAudioDeviceInfo deviceInfo = m_audioConfig->deviceInfo();
 
     setRecStatus(true);
-    m_recordDevice = new RecordDevice(format);
-    // m_recordingChart = new RecordingChart();
-    m_fileFactory = new AudioFileFactory(format);
 
     connect(this, &RecordingController::sendChartData, m_recordingChart, &RecordingChart::onSendChartData);
 
     // connect(m_recordingChart, &RecordingChart::audioSeriesChanged, this, &RecordingController::setRecoringChartBuffer);
 
-    m_recordDevice->open(QIODevice::WriteOnly);
+    if (!m_audioFile.startRecording("minhhihi.wav", format)) {
+        qDebug() << "Không thể ghi file";
+    }
 
     m_recordIO->startAudioInput(format, deviceInfo);
 
@@ -47,10 +47,10 @@ void RecordingController::startRecording()
 
 void RecordingController::stopRecording()
 {
+    m_audioFile.stopRecording();
     setRecStatus(false);
     m_recordIO->audioInputStop();
     qInfo() << "Hi Giang, this is stop recording";
-    m_recordDevice = nullptr;
     m_recordingChart = nullptr;
     m_fileFactory = nullptr;
 }
@@ -61,8 +61,8 @@ void RecordingController::handleDataReady(const QByteArray &data)
     emit sendChartData(data);
     qInfo()<< "handleDataReady" << data.at(0);
 
-    m_fileFactory->setFilePath("/home/gianghandsome/ESCA/data/test.wav");
-    // m_fileFactory->saveDataToFile(buffer);
+    m_audioFile.writeAudioData(data);
+    // m_fileFactory->setFilePath("/home/gianghandsome/ESCA/data/test.wav");
 }
 
 bool RecordingController::recStatus() const

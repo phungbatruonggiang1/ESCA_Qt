@@ -97,7 +97,7 @@ Rectangle {
         x: 200
         y: 50
 
-        property int maxAmplitude: 1 // Assuming 16-bit PCM -> 32768 da chuan hoa ve 1
+        property int maxAmplitude: 32769 // Assuming 16-bit PCM -> 32768 da chuan hoa ve 1
 
         onPaint: {
             console.log("start paint");

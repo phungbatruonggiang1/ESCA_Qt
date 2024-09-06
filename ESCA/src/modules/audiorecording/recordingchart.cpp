@@ -43,7 +43,7 @@ void RecordingChart::onSendChartData(const QByteArray &data)
     int sampleCount = data.size() / sizeof(int16_t);
 
     for (int i = 0; i < sampleCount; ++i) {
-        buffer.add(samples[i] / 32767.0f); // chuan hoa ve khoang [-1, 1]
+        buffer.add(samples[i] /*/ 32767.0f*/); // chuan hoa ve khoang [-1, 1]
     }
 
     // Retrieve data from buffer and prepare it for display

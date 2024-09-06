@@ -17,6 +17,7 @@ SOURCES += \
     src/modules/audiomanipulation/audiomanipulation.cpp \
     src/modules/audiorecording/audioconfig.cpp \
         src/modules/audiorecording/audioconfigfile.cpp \
+    src/modules/audiorecording/audiofile.cpp \
     src/modules/audiorecording/audiofilefactory.cpp \
     src/modules/audiorecording/recorddevice.cpp \
     src/modules/audiorecording/recordingchart.cpp \
@@ -47,6 +48,7 @@ HEADERS += \
     src/modules/audiomanipulation/audiomanipulation.h \
     src/modules/audiorecording/audioconfig.h \
     src/modules/audiorecording/audioconfigfile.h \
+    src/modules/audiorecording/audiofile.h \
     src/modules/audiorecording/audiofilefactory.h \
     src/modules/audiorecording/recorddevice.h \
     src/modules/audiorecording/recordingchart.h \
