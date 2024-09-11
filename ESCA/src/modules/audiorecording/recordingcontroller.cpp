@@ -27,7 +27,7 @@ RecordingController::~RecordingController()
 
 void RecordingController::startRecording()
 {
-    QAudioFormat format = m_audioConfig->settings();
+    QAudioFormat format = m_audioConfig->format();
     QAudioDeviceInfo deviceInfo = m_audioConfig->deviceInfo();
 
     setRecStatus(true);
@@ -47,12 +47,14 @@ void RecordingController::startRecording()
 
 void RecordingController::stopRecording()
 {
-    m_audioFile.stopRecording();
+    if (recStatus() == true) {
+        m_audioFile.stopRecording();
+        m_recordIO->audioInputStop();
+        qInfo() << "Hi Giang, this is stop recording";
+        m_recordingChart = nullptr;
+        m_fileFactory = nullptr;
+    }
     setRecStatus(false);
-    m_recordIO->audioInputStop();
-    qInfo() << "Hi Giang, this is stop recording";
-    m_recordingChart = nullptr;
-    m_fileFactory = nullptr;
 }
 
 void RecordingController::handleDataReady(const QByteArray &data)

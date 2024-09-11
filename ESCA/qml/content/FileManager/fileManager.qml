@@ -1,0 +1,363 @@
+import QtQuick 2.15
+import QtQuick.Controls 2.15
+import QtQuick.Layouts 1.15
+import QtQuick.Dialogs 1.0
+import Qt.labs.platform 1.0
+// Import folder list
+import Qt.labs.folderlistmodel 2.6
+// Import for play Audio
+import QtMultimedia 5.15
+
+Rectangle {
+    id: frame_1
+    width: 800
+    height: 440
+    color: "transparent"
+
+    // tool Bar
+    Rectangle {
+        id: rectangle_55
+        x: 0
+        y: 0
+        width: 800
+        height: 440
+        color: "#272D37"
+
+        // ListView Folder and File
+        Rectangle {
+            id: mainRect
+            x: 16
+            y: 95
+            width: 768
+            height: 290
+            color: "#272d37"
+            ListView {
+                id: listView
+                property int selectedItemIndex: -1
+                x: 0
+                y: 17
+                width: parent.width
+                height: parent.height
+                clip: true
+                model: FolderListModel {
+                    id: folderListModel
+                    showDirsFirst: true
+                    folder: "file:///home/haiminh/Desktop/ESCA_Qt/ESCA/data"
+                    property var folderStack: []
+                    onFolderChanged: {
+                        folderStack.push(folder)
+                    }
+                    function popFolderFromStack() {
+                        if (folderStack.length > 1) {
+                            folderStack.pop();
+                            folder = folderStack[folderStack.length - 1];
+                        }
+                    }
+                }
+                delegate: Rectangle {
+                    id: rectangle
+                    width: parent.width
+                    height: 60
+                    border.color: "black"
+                    Text {
+                        id: text1
+                        anchors.verticalCenter: parent.verticalCenter
+                        anchors.left: parent.left
+                        anchors.leftMargin: 20
+                        width: 158
+                        height: 22
+                        text: fileName
+                        color: "#ffffff"
+                        font.pixelSize: 20
+                    }
+                    Text {
+                        id: text2
+                        anchors.verticalCenter: parent.verticalCenter
+                        anchors.right: parent.right
+                        anchors.rightMargin: 20
+                        width: 158
+                        height: 22
+                        text: fileIsDir ? "" : ((fileSize / 1024).toFixed(2) + " KB")
+                        color: "#ffffff"
+                        font.pixelSize: 20
+                        horizontalAlignment: Text.AlignRight
+                    }
+                    MouseArea {
+                        anchors.fill: parent
+                        onClicked: {
+                            listView.selectedItemIndex = index;
+                        }
+                    }
+                    color: listView.selectedItemIndex === index ? "#aaddff" : (fileIsDir ? "#e3e3e3" : "#272d37")
+                }
+            }
+        }
+
+        Rectangle {
+            id: rectangle1
+            x: 16
+            y: 55
+            width: 768
+            height: 50
+            color: "#394251"
+
+            // backward feature
+            Image {
+                id: image
+                x: 15
+                y: 6
+                width: 40
+                height: 40
+                source: "../images/icons8-back-50.png"
+                fillMode: Image.PreserveAspectFit
+                MouseArea {
+                    anchors.fill: parent
+                    onClicked: {
+                        folderListModel.folder = folderListModel.parentFolder
+                        text3.text = folderListModel.folder
+                    }
+                }
+            }
+            // forward feature
+            Image {
+                id: image1
+                x: 60
+                y: 6
+                width: 40
+                height: 40
+                source: "../images/icons8-right-50.png"
+                fillMode: Image.PreserveAspectFit
+                MouseArea {
+                    anchors.fill: parent
+                    onClicked: {
+                        folderListModel.popFolderFromStack();
+                        text3.text = folderListModel.folder;
+                    }
+                }
+            }
+
+            // choose folder feature
+            Rectangle {
+                id: rectangle2
+                x: 110
+                y: 7
+                border.color: "black"
+                width: 612
+                height: 36
+                radius: 10
+                color: "#ffffff"
+                TextField {
+                    id: text3
+                    x: 8
+                    y: 0
+                    width: 600
+                    height: 36
+                    font.pixelSize: 18
+                    horizontalAlignment: Text.AlignLeft
+                    verticalAlignment: Text.AlignVCenter
+                    placeholderText: "Choose folder to open"
+                    maximumLength: 100
+                    background: Rectangle {
+                        border.width: 0
+                        color: "transparent"
+                    }
+                }
+                FolderDialog {
+                    id: folderDialog
+                    currentFolder: "file:///home/haiminh/Desktop"
+                    folder: "file:///home/haiminh/Desktop/ESCA_Qt/ESCA/data"
+                    onAccepted: {
+                        text3.text = folderDialog.folder
+                        folderListModel.folder = folderDialog.folder
+                    }
+                    onRejected: {
+                        console.log("Canceled")
+                    }
+                }
+                Rectangle {
+                    id: rectangle_82
+                    x: 619
+                    y: 0
+                    width: 32
+                    height: 36
+                    color: "#ffffff"
+                    radius: 8
+
+                    Image {
+                        id: folderopenregular
+                        x: 4
+                        y: 8
+                        width: 24
+                        height: 23
+                        source: "../images/folder-open-regular.svg"
+                        fillMode: Image.PreserveAspectFit
+                    }
+
+                    MouseArea {
+                        anchors.centerIn: parent
+                        anchors.fill: parent
+                        onClicked: {
+                            folderDialog.open();
+                        }
+                    }
+                }
+            }
+        }
+
+        Rectangle {
+            id: feature_rectangle
+            x: 16
+            y: 400
+            width: 768
+            height: 36
+            color: "#394251"
+            // delete feature
+            Rectangle {
+                id: rectangle4
+                x: 650
+                width: 84
+                height: 28
+                color: "#ffffff"
+                radius: 10
+                border.color: "#000000"
+                anchors.verticalCenter: parent.verticalCenter
+                Text {
+                    id: text5
+                    text: qsTr("Delete")
+                    anchors.verticalCenter: parent.verticalCenter
+                    font.pixelSize: 16
+                    horizontalAlignment: Text.AlignLeft
+                    anchors.horizontalCenter: parent.horizontalCenter
+                }
+            }
+
+            // import feature
+            Rectangle {
+                id: rectangle5
+                x: 100
+                width: 80
+                height: 28
+                color: "#ffffff"
+                radius: 10
+                border.color: "#000000"
+                anchors.verticalCenter: parent.verticalCenter
+                Text {
+                    id: text6
+                    text: qsTr("Import")
+                    anchors.verticalCenter: parent.verticalCenter
+                    font.pixelSize: 16
+                    horizontalAlignment: Text.AlignLeft
+                    anchors.horizontalCenter: parent.horizontalCenter
+                }
+            }
+
+            // share feature
+            Rectangle {
+                id: rectangle6
+                x: 200
+                width: 80
+                height: 28
+                color: "#ffffff"
+                radius: 10
+                border.color: "#000000"
+                anchors.verticalCenter: parent.verticalCenter
+                Text {
+                    id: text7
+                    text: qsTr("Share")
+                    anchors.verticalCenter: parent.verticalCenter
+                    font.pixelSize: 16
+                    horizontalAlignment: Text.AlignLeft
+                    anchors.horizontalCenter: parent.horizontalCenter
+                }
+            }
+
+            // play audio feature
+            Rectangle {
+                id: rectangle7
+                x: 495
+                width: 67
+                height: 28
+                color: "#ffffff"
+                radius: 10
+                border.color: "#000000"
+                anchors.verticalCenter: parent.verticalCenter
+                Text {
+                    id: text8
+                    text: qsTr("Play")
+                    anchors.verticalCenter: parent.verticalCenter
+                    font.pixelSize: 16
+                    horizontalAlignment: Text.AlignLeft
+                    anchors.horizontalCenter: parent.horizontalCenter
+                }
+                MouseArea {
+                    anchors.fill: parent
+                    onClicked: {
+                        if (listView.selectedItemIndex !== -1) {
+                            audioPlayer.source = folderListModel.get(listView.selectedItemIndex,"fileURL")
+                            audioPlayer.play()
+                        }
+                    }
+                }
+            }
+
+            // stop audio feature
+            Rectangle {
+                id: rectangle3
+                x: 575
+                width: 67
+                height: 28
+                color: "#ffffff"
+                radius: 10
+                border.color: "black"
+                anchors.verticalCenter: parent.verticalCenter
+                Text {
+                    id: text4
+                    text: qsTr("Stop")
+                    anchors.verticalCenter: parent.verticalCenter
+                    font.pixelSize: 16
+                    horizontalAlignment: Text.AlignLeft
+                    anchors.horizontalCenter: parent.horizontalCenter
+                }
+                MouseArea {
+                    anchors.fill: parent
+                    onClicked: {
+                        audioPlayer.stop()
+                    }
+                }
+            }
+        }
+    }
+
+    // header
+    Rectangle {
+        id: rectangle_76
+        x: 237
+        y: 8
+        width: 326
+        height: 40
+        color: "#69000822"
+        radius: 8
+        Text {
+            color: "#ffffff"
+            text: qsTr("File manager")
+            anchors.verticalCenter: parent.verticalCenter
+            font.pixelSize: 28
+            horizontalAlignment: Text.AlignHCenter
+            verticalAlignment: Text.AlignVCenter
+            wrapMode: Text.WordWrap
+            anchors.horizontalCenter: parent.horizontalCenter
+            font.weight: Font.Normal
+            font.underline: false
+            font.italic: false
+            font.family: "Itim"
+            font.bold: false
+        }
+        // anchors.horizontalCenter: rectLayout.horizontalCenter
+    }
+
+    MediaPlayer {
+        id: audioPlayer
+        source: ""
+    }
+
+}

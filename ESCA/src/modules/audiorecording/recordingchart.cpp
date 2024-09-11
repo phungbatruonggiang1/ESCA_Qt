@@ -1,4 +1,5 @@
 #include "recordingchart.h"
+#include <QDebug>
 
 CircuitBuffer::CircuitBuffer() : buffer(1000), head(0), tail(0), isFull(false) {}
 

@@ -61,7 +61,6 @@ private:
 
     AudioFileFactory* m_fileFactory;
     RecordingChart* m_recordingChart;
-
     AudioConfig* m_audioConfig;
     AudioFile m_audioFile;
     

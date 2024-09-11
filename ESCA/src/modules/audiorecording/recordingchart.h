@@ -2,8 +2,10 @@
 #define RECORDINGCHART_H
 
 #include <QObject>
-#include <QDebug>
+#include <QVector>
 #include <QVariant>
+#include <vector>
+#include <algorithm>
 
 class CircuitBuffer {
 
@@ -44,7 +46,6 @@ signals:
 
 private:
     QVariant m_audioSeries = {};
-
     CircuitBuffer buffer;
     int displayDataCount = 500;
 

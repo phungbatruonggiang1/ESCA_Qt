@@ -1,10 +1,8 @@
 import QtQuick 2.15
-import "qrc:/ui/components/QtQuick/Studio/Components"
 import QtQuick.Controls 2.15
 import QtQuick.Dialogs 1.0
 import QtMultimedia 5.15
 import AudioChartImport 1.0
-
 
 Rectangle {
     id: frame_1
