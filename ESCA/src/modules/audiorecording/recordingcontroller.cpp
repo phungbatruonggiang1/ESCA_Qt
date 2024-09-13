@@ -35,7 +35,7 @@ void RecordingController::startRecording()
 
     // Currently, I fixed the duratione of audio file is 5 seconds
     m_fileFactory->setFileDuration(5000);
-    m_fileFactory->startTimer();
+    m_fileFactory->startRecording();
     // should be check the real value of InputAudio -> setRecStatus
     // if it cannot turn on the InputAudio -> show alert to .qml
     // I refer you use try..catch pattern
