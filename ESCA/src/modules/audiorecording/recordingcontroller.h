@@ -10,21 +10,21 @@
 #include "../../config/config.h"
 
 #include "audioconfigfile.h"
-#include "recordio.h"
 #include "recordingschedule.h"
-#include "recorddevice.h"
 #include "audiofilefactory.h"
 #include "recordingchart.h"
 #include "audioconfig.h"
 #include "audiofile.h"
+#include "recordio.h"
 
 class AudioEngine;
 class RecordingChart;
 class RecordingSchedule;
 class AudioConfigFile;
-class RecordDevice;
 class RecordingChart;
 class AudioFileFactory;
+class RecordIO;
+
 
 class RecordingController : public QObject
 {
@@ -39,7 +39,7 @@ public:
     Q_INVOKABLE void startRecording();
     Q_INVOKABLE void stopRecording();   
 
-    bool recStatus() const;
+    bool recStatus() const { return m_recStatus; };
     void setRecStatus(bool newRecStatus);
 
 signals:
@@ -50,12 +50,11 @@ private slots:
     void handleDataReady(const QByteArray &data);
 
 private:
-    RecordDevice* m_recordDevice;
+    RecordIO* m_recordIO;
     QAudioFormat formatAudioInput;
 
-    RecordIO* m_recordIO = nullptr;
-    AudioConfigFile* m_audioConfigFile = nullptr;
-    RecordingSchedule* m_recordingSchedule = nullptr;
+    AudioConfigFile* m_audioConfigFile;
+    RecordingSchedule* m_recordingSchedule;
 
     //save data to storage
 

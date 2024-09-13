@@ -67,3 +67,60 @@ play dữ liệu: tìm thư viện + code Qt
 
 6 [optional]: cho phép truyền thông, chia sẻ dữ liệu giữa các thiết bị biên hoặc trong mạng thu thập dữ liệu. Hiển thị mạng cảm biến và trạng thái mạng
 7 [optional]: toàn diện quy trình điều khiển từ xa, giữa các edge.
+
+
+
+
+
+
+
+
+
+// Next plan [update at August 31, 2024]
+The recording: 
++ view chart needs to add the axis and make the theme beatifully
++ haven't carried out the saving file.wav
+
+[!Important] There are numerous features for saving audio files
+Users can recording with no set file duration, it means the file duration is from start recording to the stop recording (or shutdown machine)
+Recording with set file duration before (2 seconds, 10 senconds, 1 munite, 10 munites, 1 hour, ..etc) -> it's easy to overload buffer, you can break down into 2 timer, one is for file duration and one is the time to write to file frequently, it can avoid overflow buffer in the long duration case. -> Please be careful to design this feature.
+-> It's quite difficult to avoid overload buffer, but I can do it!
+
+
+
+The config:
++ haven't combine the audio parameters with data in RAM and the persistence storage
++ need to make the theme beatifully
++ don't have the storage to save audio files in configure theme
+
+-> Need to implement with memory saving strategy
++ suitable initilizing in back-end class
++ don't load or just load string path (image, file, ...) just in .qml file -> add onOpen() and onClose() 
+
+Next:
+File Manager: (Hai Minh)
++ Show file, and file manipulation: Remove, Play (need to add output audio), Sync and upload to clouds (I would like to develop this feature after November 2024)
+
+System monitor:
++ System resource: RAM, CPU, Storage Capacity, Network, 
++ Ram with Qt process
++ RAM with training or transfer learning or inference
+
+Result in Training pharse
+
+Recording schedule with crond or timer in Qt
+
+System + Yocto:
+PoC the communication in multi-process in Linux: socket, D-bus, shared memory, ...
+Build the inter-communication for ESCA between multi-process
+Build Yocto image for Ubuntu
+Summary the memory consumption for Qt process; AI and training process [in the past, now, in the future]
+
+
+
+Process:
+Master planining, Build a package: box, define the theme in figma, training -> inspire
+Design the system: System architecture, Class diagram, communiction diagram, finite machine, state of features, sequence diagram, user manual.
+Carry out the media related to marketing: on the website, logo, poster, slide to introduce.
+Need to more purchase numerous course related to yocto project, Linux Embedded system (I would prefer to communication and memory saving courses) 
+

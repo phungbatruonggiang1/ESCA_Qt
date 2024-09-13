@@ -98,7 +98,7 @@ Rectangle {
         property int maxAmplitude: 32769 // Assuming 16-bit PCM -> 32768 da chuan hoa ve 1
 
         onPaint: {
-            console.log("start paint");
+            // console.log("start paint");
             // console.log("qml data:", AudioChart.audioSeries[0]);
 
             var ctx = getContext("2d");
@@ -142,7 +142,7 @@ Rectangle {
         function onAudioSeriesChanged() {
             audioData = AudioChart.audioSeries;
             audioWaveform.requestPaint();
-            console.log("qml data:", AudioChart.audioSeries[0]);
+            // console.log("qml data:", AudioChart.audioSeries[0]);
         }
     }
 

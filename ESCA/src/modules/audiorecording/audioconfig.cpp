@@ -1,7 +1,6 @@
 #include "audioconfig.h"
 
-AudioConfig::AudioConfig(QObject *parent)
-    : QObject{parent}
+AudioConfig::AudioConfig(QObject *parent) : QObject{parent}
 {
     int savedDeviceIndex = m_settings.value("audio/device", 0).toInt();  // Load saved device index
     QString savedDeviceName = m_settings.value("audio/deviceName", "default").toString();  // Load saved device name

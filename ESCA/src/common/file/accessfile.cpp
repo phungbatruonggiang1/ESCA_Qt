@@ -20,7 +20,6 @@ void AccessFile::writeFile(const QVector<QString> &data)
         QTextStream out(&file);
         for(int i = 0; i < data.size(); i++) {
             out << data[i] << "\n";
-            // qInfo() << "Writing lines" << i << data[i];
         }
         file.close();
     }
@@ -40,11 +39,9 @@ QVector<QString> AccessFile::readFile()
         int lines = 0;
         while (in.readLineInto(&line))
         {
-            // qInfo() << "line read: " << line;
             data += line;
             lines++;
         }
-        // qInfo() << "line read: " << line;
         file.close();
     }
     return data;
