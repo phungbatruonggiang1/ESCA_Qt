@@ -37,9 +37,9 @@ public:
     ~RecordingController();
 
     Q_INVOKABLE void startRecording();
-    Q_INVOKABLE void stopRecording();   
+    Q_INVOKABLE void stopRecording();
 
-    bool recStatus() const { return m_recStatus; };
+    bool recStatus()/* const { return m_recStatus; }*/;
     void setRecStatus(bool newRecStatus);
 
 signals:

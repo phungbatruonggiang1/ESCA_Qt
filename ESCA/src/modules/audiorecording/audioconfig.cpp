@@ -191,22 +191,22 @@ void AudioConfig::saveConfig(int device, int codec, int sampleRate, int channel,
     qInfo()<< "is save params true: " << m_deviceInfo.isFormatSupported(m_format);
 }
 
-QAudioDeviceInfo AudioConfig::deviceInfo() const
+QAudioDeviceInfo AudioConfig::deviceInfo() /*const*/
 {
     return m_deviceInfo;
 }
 
-QAudioFormat AudioConfig::format() const
+QAudioFormat AudioConfig::format() /*const*/
 {
     return m_format;
 }
 
-QList<int> AudioConfig::nearistParams() const
+QList<int> AudioConfig::nearistParams() /*const*/
 {
     return m_nearistParams;
 }
 
-bool AudioConfig::saveDone() const
+bool AudioConfig::saveDone() /*const*/
 {
     return m_saveDone;
 }

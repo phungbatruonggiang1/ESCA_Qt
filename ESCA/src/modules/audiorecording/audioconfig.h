@@ -46,13 +46,13 @@ public:
     Q_INVOKABLE void changeDevice(int idx);
     Q_INVOKABLE void saveConfig(int device, int codec, int sampleRate, int channel, int endian);
 
-    QAudioDeviceInfo deviceInfo() const { return m_deviceInfo; };
+    QAudioDeviceInfo deviceInfo()/* const { return m_deviceInfo; }*/;
 
-    QAudioFormat format() const;
+    QAudioFormat format() /*const*/;
 
-    QList<int> nearistParams() const { return m_nearistParams; };
+    QList<int> nearistParams()/* const { return m_nearistParams; }*/;
 
-    bool saveDone() const;
+    bool saveDone() /*const*/;
     void setSaveDone(bool newSaveDone);
 
     void saveSettings();

@@ -8,7 +8,7 @@ RecordingController::RecordingController(QObject *parent)
     , m_recordingSchedule(nullptr)
     , m_recordingChart(new RecordingChart())
     , m_audioConfig(new AudioConfig())
-    , m_recordIO(new RecordIO())
+    // , m_recordIO(new RecordIO())
     , m_audioFile()
 {
     qmlRegisterSingletonInstance("AudioConfigImport", 1, 0, "AudioConfig", m_audioConfig);
@@ -41,8 +41,8 @@ void RecordingController::startRecording()
     m_recordIO = new RecordIO();
 
     connect(m_recordIO, &RecordIO::sendData, this, &RecordingController::handleDataReady);
-    QAudioFormat format = m_audioConfig->settings();
-    QAudioDeviceInfo deviceInfo = m_audioConfig->deviceInfo();
+    // QAudioFormat format = m_audioConfig->settings();
+    // QAudioDeviceInfo deviceInfo = m_audioConfig->deviceInfo();
 
     m_fileFactory = new AudioFileFactory(format);
 
@@ -83,10 +83,10 @@ void RecordingController::handleDataReady(const QByteArray &data)
     // m_fileFactory->setFilePath("/home/gianghandsome/ESCA/data/test.wav");
 }
 
-bool RecordingController::recStatus() const
+bool RecordingController::recStatus() /*const*/
 {
     return m_recStatus;
-    m_fileFactory->appendDataToBuffer(data);
+    // m_fileFactory->appendDataToBuffer(data);
 }
 
 void RecordingController::setRecStatus(bool newRecStatus)

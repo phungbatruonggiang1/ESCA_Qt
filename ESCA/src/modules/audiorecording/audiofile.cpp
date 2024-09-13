@@ -16,7 +16,7 @@ bool AudioFile::startRecording(const QString &fileName, const QAudioFormat &form
     dataSize = 0;
 
     // Set folder data
-    QDir::setCurrent("/home/haiminh/Desktop/ESCA_Qt/ESCA/data");
+    QDir::setCurrent("/home/haiminh/Desktop/minhtestmain/ESCA_Qt/ESCA/data");
 
     wavFile.setFileName(fileName);
     if (!wavFile.open(QIODevice::WriteOnly)) {
