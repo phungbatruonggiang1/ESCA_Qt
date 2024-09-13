@@ -22,7 +22,8 @@ public:
     explicit AudioFileFactory(const QAudioFormat &format);
     void createFile();
     void saveDataToFile();
-    void writeWavHeader(QFile &file, qint64 dataSize);
+    void writeWavHeader(qInt64 dataSize);
+    void updateWavHeader();
 
     const QAudioFormat m_format;
 

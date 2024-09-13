@@ -1,5 +1,6 @@
 #include "audiofilefactory.h"
 
+#include <QProcess>
 #include <QDebug>
 
 
@@ -14,9 +15,11 @@ AudioFileFactory::AudioFileFactory(const QAudioFormat &format)
 
 }
 
-void AudioFileFactory::writeWavHeader(QFile &file, qint64 dataSize)
+void AudioFileFactory::writeWavHeader(qint64 dataSize)
 {
-    QDataStream out(&file);
+    QFile file(getFilePath());
+    QDataStream out();
+
     out.setByteOrder(QDataStream::LittleEndian);
 
     // RIFF header
@@ -39,11 +42,21 @@ void AudioFileFactory::writeWavHeader(QFile &file, qint64 dataSize)
     out << quint32(dataSize);
 }
 
+void AudioFileFactory::updateWavHeader()
+{
+
+}
+
+
 void AudioFileFactory::createFile()
 {
     if (!m_dataBuffer.isEmpty()) {
         qInfo() << "Error, please check again!";
         releaseBuffer();
+    }
+
+    if (fileDataSize > 0) {
+        
     }
     QDateTime local(QDateTime::currentDateTime());
     // qInfo() << "I'm creating an audio file " << local.toTime_t();
@@ -53,8 +66,9 @@ void AudioFileFactory::createFile()
     nameFile.append(".wav");
     setFilePath(nameFile);
     fileDataSize = 0;
-    QFile file(getFilePath());
+    writeWavHeader(5000000);
 }
+    
 
 void AudioFileFactory::releaseBuffer()
 {
@@ -71,7 +85,7 @@ void AudioFileFactory::releaseBuffer()
 void AudioFileFactory::saveDataToFile()
 {
     QFile file(getFilePath());
-    if (file.open(QIODevice::WriteOnly)) {
+    if (file.open(QIODevice::Append)) {
         QDataStream out(&file);
         out.setByteOrder(QDataStream::LittleEndian);
 
