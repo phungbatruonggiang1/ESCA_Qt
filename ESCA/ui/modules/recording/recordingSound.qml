@@ -1,10 +1,8 @@
 import QtQuick 2.15
-import "qrc:/ui/components/QtQuick/Studio/Components"
 import QtQuick.Controls 2.15
 import QtQuick.Dialogs 1.0
 import QtMultimedia 5.15
 import AudioChartImport 1.0
-
 
 Rectangle {
     id: frame_1
@@ -97,7 +95,7 @@ Rectangle {
         x: 200
         y: 50
 
-        property int maxAmplitude: 1 // Assuming 16-bit PCM -> 32768 da chuan hoa ve 1
+        property int maxAmplitude: 32769 // Assuming 16-bit PCM -> 32768 da chuan hoa ve 1
 
         onPaint: {
             // console.log("start paint");

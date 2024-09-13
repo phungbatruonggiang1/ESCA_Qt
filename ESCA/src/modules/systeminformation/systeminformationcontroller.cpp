@@ -1,8 +1,6 @@
 #include "systeminformationcontroller.h"
 #include <QDebug>
 
-
-
 SystemInformationController::SystemInformationController(QObject *parent) : QObject{parent} {
     m_timer.setInterval(3);
     m_timer.setSingleShot(false);
@@ -27,7 +25,6 @@ SystemInformationController::SystemInformationController(QObject *parent) : QObj
         emit diskChanged();
     });
 }
-
 
 
 double SystemInformationController::getDisk() {

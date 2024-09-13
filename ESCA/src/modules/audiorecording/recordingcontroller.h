@@ -14,6 +14,7 @@
 #include "audiofilefactory.h"
 #include "recordingchart.h"
 #include "audioconfig.h"
+#include "audiofile.h"
 #include "recordio.h"
 
 class AudioEngine;
@@ -29,7 +30,6 @@ class RecordingController : public QObject
 {
 
     Q_OBJECT
-
     Q_PROPERTY(bool recStatus READ recStatus WRITE setRecStatus NOTIFY recStatusChanged FINAL)
 
 public:
@@ -60,8 +60,8 @@ private:
 
     AudioFileFactory* m_fileFactory;
     RecordingChart* m_recordingChart;
-
     AudioConfig* m_audioConfig;
+    AudioFile m_audioFile;
     
     bool m_recStatus;
 
