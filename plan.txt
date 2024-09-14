@@ -124,3 +124,33 @@ Design the system: System architecture, Class diagram, communiction diagram, fin
 Carry out the media related to marketing: on the website, logo, poster, slide to introduce.
 Need to more purchase numerous course related to yocto project, Linux Embedded system (I would prefer to communication and memory saving courses) 
 
+
+
+Next plan [Update at Sep 14, 2024] by truonggiangphung
+1. UI/UX: Design in Figma: Clear the screens in Figma [Hai Minh + Nghia], Follow: Giang
+2. Add code from old repo:
+System monitor:
+File Manager:
+About:
+...
+3. Review code config audio + file factory + audio chart [giang]
+4. Build Yocto [giang]
++ Yocto image base [success]
++ Yocto image with Qt [pending]
++ Yocto image with cuda and tensorflow [pending]
++ Yocto image with ESCA project
+5. Media: make a webiste, content, ... [giang, hai minh, tuan - SPARC software team]
+6. Pack eqipment into a box [double Duong]
+Hopefully, I will expect the tasks can be done before October.
+
+
+... -> Code + commit + Review + Verify -> ...
+
+From October:
+Develop the trasffer learning in Jetson Nano.
+The image which built before will run tranffer learning at standalone mode
+The image which built before will run tranffer learning with Qt and Yocto in Jetson Nano
+--Preparation--
+1. File system: Data + Code python + Libs + base training result
+2. The parammeters for model to tranffer learning
+3. Qt: Screens + Code backend C++ + 
