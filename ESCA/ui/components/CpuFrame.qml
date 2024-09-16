@@ -1,6 +1,6 @@
 import QtQuick 2.15
-import "qrc:/ui/component/QtQuick/Studio/Components"
-import "qrc:/ui/component/QtQuick/Studio/LogicHelper"
+import "qrc:/ui/components/QtQuick/Studio/Components"
+import "qrc:/ui/components/QtQuick/Studio/LogicHelper"
 
 Item {
     id: cpuFrame

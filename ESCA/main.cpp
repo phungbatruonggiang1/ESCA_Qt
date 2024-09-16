@@ -8,6 +8,7 @@
 #include "./src/modules/audiomanipulation/audiomanipulation.h"
 #include "./src/modules/audiorecording/recordingchart.h"
 #include "./src/modules/audiorecording/audioconfig.h"
+#include "./src/modules/systeminformation/systeminformationcontroller.h"
 
 int main(int argc, char *argv[])
 {
@@ -46,6 +47,9 @@ int main(int argc, char *argv[])
     // and it's enssetially a backend of the QML
     AudioManipulation audioManipulation;
     engine.rootContext()->setContextProperty("AudioManipulationObject", &audioManipulation);
+
+    SystemInformationController systemInformationController;
+    engine.rootContext()->setContextProperty("BackendObject", &systemInformationController);
 
     return app.exec();
 }
