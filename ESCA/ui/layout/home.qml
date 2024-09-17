@@ -1,5 +1,4 @@
 import QtQuick 2.12
-import "qrc:/ui/components/QtQuick/Studio/Components"
 import QtQuick.Controls 2.12
 
 Rectangle {

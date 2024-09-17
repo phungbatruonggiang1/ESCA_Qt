@@ -84,6 +84,9 @@ The recording:
 [!Important] There are numerous features for saving audio files
 Users can recording with no set file duration, it means the file duration is from start recording to the stop recording (or shutdown machine)
 Recording with set file duration before (2 seconds, 10 senconds, 1 munite, 10 munites, 1 hour, ..etc) -> it's easy to overload buffer, you can break down into 2 timer, one is for file duration and one is the time to write to file frequently, it can avoid overflow buffer in the long duration case. -> Please be careful to design this feature.
+-> It's quite difficult to avoid overload buffer, but I can do it!
+
+
 
 The config:
 + haven't combine the audio parameters with data in RAM and the persistence storage
@@ -96,7 +99,7 @@ The config:
 
 Next:
 File Manager: (Hai Minh)
-+ Show file, and file manipulation: Remove, Play (need to add output audio), Sync and upload to clouds (i would like to develop this feature after November 2024)
++ Show file, and file manipulation: Remove, Play (need to add output audio), Sync and upload to clouds (I would like to develop this feature after November 2024)
 
 System monitor:
 + System resource: RAM, CPU, Storage Capacity, Network, 
@@ -121,3 +124,33 @@ Design the system: System architecture, Class diagram, communiction diagram, fin
 Carry out the media related to marketing: on the website, logo, poster, slide to introduce.
 Need to more purchase numerous course related to yocto project, Linux Embedded system (I would prefer to communication and memory saving courses) 
 
+
+
+Next plan [Update at Sep 14, 2024] by truonggiangphung
+1. UI/UX: Design in Figma: Clear the screens in Figma [Hai Minh + Nghia], Follow: Giang
+2. Add code from old repo:
+System monitor:
+File Manager:
+About:
+...
+3. Review code config audio + file factory + audio chart [giang]
+4. Build Yocto [giang]
++ Yocto image base [success]
++ Yocto image with Qt [pending]
++ Yocto image with cuda and tensorflow [pending]
++ Yocto image with ESCA project
+5. Media: make a webiste, content, ... [giang, hai minh, tuan - SPARC software team]
+6. Pack eqipment into a box [double Duong]
+Hopefully, I will expect the tasks can be done before October.
+
+
+... -> Code + commit + Review + Verify -> ...
+
+From October:
+Develop the trasffer learning in Jetson Nano.
+The image which built before will run tranffer learning at standalone mode
+The image which built before will run tranffer learning with Qt and Yocto in Jetson Nano
+--Preparation--
+1. File system: Data + Code python + Libs + base training result
+2. The parammeters for model to tranffer learning
+3. Qt: Screens + Code backend C++ + 

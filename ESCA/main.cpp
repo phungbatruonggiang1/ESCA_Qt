@@ -17,17 +17,19 @@ int main(int argc, char *argv[])
 #if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
     QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
 #endif
-    QApplication app(argc, argv);
+    QGuiApplication app(argc, argv);
 
     RecordingController recordingController;
-    // AudioConfig audioConfig;
+    SystemInformationController systemInformationController;
 
+    // AudioConfig audioConfig;
     QQmlApplicationEngine engine;
 
-    const QUrl url(QStringLiteral("qrc:/ui/main.qml"));
+    engine.addImportPath("qrc:/qml/imports"); // Thêm phần QML vô C++
+    const QUrl url(QStringLiteral("qrc:/qml/main.qml"));
 
     engine.rootContext()->setContextProperty("RecordingObject", &recordingController);
-    // engine.rootContext()->setContextProperty("audioConfig", &audioConfig);
+    engine.rootContext()->setContextProperty("BackendObject", &systemInformationController);
 
     QObject::connect(
         &engine,
@@ -39,9 +41,6 @@ int main(int argc, char *argv[])
         },
         Qt::QueuedConnection);
     engine.load(url);
-
-    // control audiocontroller
-    // engine.rootContext()->setContextProperty("RecordingObject", recordingController);
 
     // Should be use the qmlRegisterType<MyQMLType> or slots in C++ because it just calls function from QML to C++
     // and it's enssetially a backend of the QML
