@@ -61,7 +61,8 @@ Item {
     RangeMapper {
         id: rangeMapper
         input: BackendObject.ramPercentage
-        outputMaximum: 360
+        outputMaximum: 180
+        outputMinimum: -180
     }
 
 }

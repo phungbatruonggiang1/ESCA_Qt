@@ -40,13 +40,10 @@ private:
     QTimer m_timer;
 
     unsigned long long lastTotalUser, lastTotalUserLow, lastTotalSys, lastTotalIdle;
-    double cpu_m_steps = 0;
     int cpu_usage = 0;
 
-    double ram_m_steps = 0;
     int ram_usage = 0;
 
-    double disk_m_steps = 0;
     int disk_usage = 0;
 
     unsigned int user, total = 0;
