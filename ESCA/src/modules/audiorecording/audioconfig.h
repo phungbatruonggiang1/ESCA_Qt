@@ -7,6 +7,8 @@
 #include <QAudioFormat>
 #include <QVariantMap>
 #include <QStringList>
+#include <QSettings>
+#include <QGuiApplication>
 
 class AudioConfig : public QObject
 {
@@ -20,8 +22,11 @@ class AudioConfig : public QObject
 
     Q_PROPERTY(QList<int> nearistParams READ nearistParams NOTIFY nearistParamsChanged FINAL)
 
+    Q_PROPERTY(bool saveDone READ saveDone WRITE setSaveDone NOTIFY saveDoneChanged FINAL)
+
 public:
     explicit AudioConfig(QObject *parent = nullptr);
+    ~AudioConfig();
 
     QStringList listDevices() const;
     void setListDevices(const QStringList &newListDevices);
@@ -41,11 +46,16 @@ public:
     Q_INVOKABLE void changeDevice(int idx);
     Q_INVOKABLE void saveConfig(int device, int codec, int sampleRate, int channel, int endian);
 
-    QAudioDeviceInfo deviceInfo() const { return m_deviceInfo; };
+    QAudioDeviceInfo deviceInfo()/* const { return m_deviceInfo; }*/;
 
-    QAudioFormat settings() const { return m_settings; };
+    QAudioFormat format() /*const*/;
 
-    QList<int> nearistParams() const { return m_nearistParams; };
+    QList<int> nearistParams()/* const { return m_nearistParams; }*/;
+
+    bool saveDone() /*const*/;
+    void setSaveDone(bool newSaveDone);
+
+    void saveSettings();
 
 signals:
     void listCodecsChanged();
@@ -56,9 +66,11 @@ signals:
 
     void nearistParamsChanged();
 
+    void saveDoneChanged();
+
 private:
     QAudioDeviceInfo m_deviceInfo;
-    QAudioFormat m_settings;
+    QAudioFormat m_format;
     QList<QAudioDeviceInfo> cpplistDevices;
 
     QStringList listDevicesName;
@@ -69,6 +81,8 @@ private:
     QList<QAudioFormat::Endian> m_listEndianz;
 
     QList<int> m_nearistParams = {0,0,0,0,0};
+    QSettings m_settings;
+    bool m_saveDone = true;
 };
 
 #endif // AUDIOCONFIG_H
