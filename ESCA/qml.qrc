@@ -1,6 +1,6 @@
 <RCC>
     <qresource prefix="/">
-     <file>ui/assets/backgroundElipse1.png</file>
+        <file>ui/assets/backgroundElipse1.png</file>
         <file>ui/assets/btn.png</file>
         <file>ui/assets/Gravity Forces Blue Icon Game Presentation(10).svg</file>
         <file>ui/assets/outlineElipse1.png</file>
@@ -18,7 +18,6 @@
         <file>ui/assets/folder-open-regular.svg</file>
         <file>ui/assets/no_image.jpg</file>
         <file>ui/assets/gear-solid.svg</file>
-
         <file>ui/components/QtQuick/Studio/Components/ArcArrow.qml</file>
         <file>ui/components/QtQuick/Studio/Components/ArcItem.qml</file>
         <file>ui/components/QtQuick/Studio/Components/BorderItem.qml</file>
@@ -107,38 +106,27 @@
         <file>ui/components/RamFrame.qml</file>
         <file>ui/components/TopBar.qml</file>
         <file>ui/components/UsageTextElement.qml</file>
-
         <file>ui/main.qml</file>
         <file>ui/layout/home.qml</file>
-
         <file>ui/modules/recording/recordingSound.qml</file>
         <file>ui/modules/recording/systemConfig.qml</file>
-
-
         <file>ui/modules/systeminformation/systemInformation.qml</file>
         <file>ui/modules/systeminformation/realTimeMonitor.qml</file>
-
-
         <file>ui/modules/systeminformation/gpuMonitor.qml</file>
         <file>ui/modules/systeminformation/ramMonitor.qml</file>
         <file>ui/modules/systeminformation/about.qml</file>
-
         <file>ui/modules/audiomanipulation/processData.qml</file>
-
         <file>ui/modules/inference/realTimeInference_data.qml</file>
         <file>ui/modules/inference/realTimeInference_result.qml</file>
-
         <file>ui/modules/basetraining/baseLearning_data.qml</file>
         <file>ui/modules/basetraining/baseLearning_parameterConfigure.qml</file>
         <file>ui/modules/basetraining/baseLearning_result.qml</file>
         <file>ui/modules/basetraining/baseLearning_traning.qml</file>
-
         <file>ui/modules/transferlearning/transferLearning.qml</file>
         <file>ui/modules/transferlearning/transferLearning_data.qml</file>
         <file>ui/modules/transferlearning/transferLearning_parameterConfigure.qml</file>
         <file>ui/modules/transferlearning/transferLearning_result.qml</file>
         <file>ui/modules/transferlearning/transferLearning_traning.qml</file>
-
-
+        <file>ui/modules/systeminformation/aiJobMonitor.qml</file>
     </qresource>
 </RCC>

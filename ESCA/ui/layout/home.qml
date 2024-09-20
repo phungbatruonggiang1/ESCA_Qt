@@ -390,7 +390,7 @@ Rectangle {
             anchors.fill: parent
             anchors.leftMargin: 0
             onClicked: {
-                loader.source = "/ui/layout/about.qml"
+                loader.source = "/ui/modules/systeminformation/about.qml"
             }
         }
     }
