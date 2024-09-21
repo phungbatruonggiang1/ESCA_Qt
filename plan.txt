@@ -154,3 +154,41 @@ The image which built before will run tranffer learning with Qt and Yocto in Jet
 1. File system: Data + Code python + Libs + base training result
 2. The parammeters for model to tranffer learning
 3. Qt: Screens + Code backend C++ + 
+
+
+Plans for new-comers.
++ Cross-compile Qt for Jetson Nano, Rasberry Pi 4, Rasberry Pi 3.
++ Complete the functions: 
+file managers: can play, stop, delete. For now, concentrate in deleting the file. Play, stop will be implemeted after designing the audio output
+show the results: it's a independence icon in the home screen about result. Results of training, results of monitor, other results - connect to mongoDB in data center to fectch data - Design the database 
+system monitor: will be updated by Hai Minh Nguyen
++ Draw class diagrams and inter-communication between classes
+
+
+Next plans for ESCA team
+1. Design database (MySQL + NoSQL for ESCA) - Giang + N.Duong [expect to be done at the end of October]
++ Design database
++ Statistic the API: equipment management, audio management, result management
++ Implement web-service in data center: upload data, download data, get images or fetch API to get result, ... 
++ Using show result in Qt to fetch and display data - Hai
+2. Design the screens [Figma + Qt Design Creator] - H.Minh + Nghia [done before this October, please break down numerous phases]
++ Phase 1: Home, reco rding module, result of training, system monitoring, audio manipulation + file manager
++ Phase 2: Prepare data, base training, transfer learning, inference
++ Phase 3: At the rest of functions
+3. Output Audio - Giang + H.Minh
++ Play the audio file to speaker which connected to the target machine
+4 Combine with audio manipulation + file manager + play the audio files + upload/download data + synchronization - T.Duong
+5. System monitor: N.Duong, Nghia
+Check the memory consumption, CPU, GPU performance, network connection, peripheral connection and show the machine info.
+6. Build yocto: Giang
++ Yocto [standalone]
++ Yocto + cuda + tensorflow [not done yet]
++ yocto + Qt [not done yet]
++ yocto for ESCA -> create a repo [expect complete before November]
+7. Run AI code in Jetson nano + Rasberry Pi - Hai Minh
++ Run code
++ list the input output for each function
++ communication between Qt and AI tasks via D-BUS and persistence file -> research more about inter-process communication
++ manage the processes by Qt -> research more QProcess
+
+
