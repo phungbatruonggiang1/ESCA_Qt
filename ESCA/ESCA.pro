@@ -18,7 +18,8 @@ SOURCES += \
     src/modules/audiorecording/recordingcontroller.cpp \
     src/modules/audiorecording/recordingschedule.cpp \
     src/modules/audiorecording/recordio.cpp \
-    src/modules/systeminformation/systeminformationcontroller.cpp
+    src/modules/systeminformation/systeminformationcontroller.cpp \
+    src/modules/filemanager/filemanager.cpp
 
 # RESOURCES += qml.qrc
 RESOURCES += \
@@ -51,7 +52,9 @@ HEADERS += \
     src/modules/audiorecording/recordingschedule.h \
  \    # src/modules/systeminformation/basicmonitor.h
     src/modules/audiorecording/recordio.h \
-    src/modules/systeminformation/systeminformationcontroller.h
+    src/modules/filemanager/FileIO.h \
+    src/modules/systeminformation/systeminformationcontroller.h \
+    src/modules/filemanager/filemanager.h
 
 DISTFILES += \
     qml/content/AudioManipulation/processData.qml \

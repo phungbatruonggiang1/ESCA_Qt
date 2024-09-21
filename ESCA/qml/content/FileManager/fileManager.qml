@@ -7,6 +7,8 @@ import Qt.labs.platform 1.0
 import Qt.labs.folderlistmodel 2.6
 // Import for play Audio
 import QtMultimedia 5.15
+// Import for delete file
+import FileIO 1.0
 
 Rectangle {
     id: frame_1
@@ -34,6 +36,7 @@ Rectangle {
             ListView {
                 id: listView
                 property int selectedItemIndex: -1
+                property string selectedFileName: ""
                 x: 0
                 y: 17
                 width: parent.width
@@ -42,7 +45,7 @@ Rectangle {
                 model: FolderListModel {
                     id: folderListModel
                     showDirsFirst: true
-                    folder: "file:///home/haiminh/Desktop/ESCA_Qt/ESCA/data"
+                    folder: "file:///home/zenodu/Projects/ESCA_Qt/ESCA/data"
                     property var folderStack: []
                     onFolderChanged: {
                         folderStack.push(folder)
@@ -86,9 +89,26 @@ Rectangle {
                         anchors.fill: parent
                         onClicked: {
                             listView.selectedItemIndex = index;
+                            listView.selectedFileName = fileName;
                         }
                     }
                     color: listView.selectedItemIndex === index ? "#aaddff" : (fileIsDir ? "#e3e3e3" : "#272d37")
+                }
+
+                MouseArea {
+                    id: mouseArea
+                    x: 652
+                    y: 325
+                    width: 91
+                    height: 29
+                }
+
+                MouseArea {
+                    id: mouseArea1
+                    x: 652
+                    y: 292
+                    width: 81
+                    height: 27
                 }
             }
         }
@@ -164,8 +184,8 @@ Rectangle {
                 }
                 FolderDialog {
                     id: folderDialog
-                    currentFolder: "file:///home/haiminh/Desktop"
-                    folder: "file:///home/haiminh/Desktop/ESCA_Qt/ESCA/data"
+                    currentFolder: "file:///home/zenodu/Desktop"
+                    folder: "file:///home/zenodu/Projects/ESCA_Qt/ESCA/data"
                     onAccepted: {
                         text3.text = folderDialog.folder
                         folderListModel.folder = folderDialog.folder
@@ -211,6 +231,7 @@ Rectangle {
             width: 768
             height: 36
             color: "#394251"
+
             // delete feature
             Rectangle {
                 id: rectangle4
@@ -223,12 +244,39 @@ Rectangle {
                 anchors.verticalCenter: parent.verticalCenter
                 Text {
                     id: text5
+                    color: "#000000"
                     text: qsTr("Delete")
                     anchors.verticalCenter: parent.verticalCenter
                     font.pixelSize: 16
                     horizontalAlignment: Text.AlignLeft
                     anchors.horizontalCenter: parent.horizontalCenter
                 }
+                MouseArea {
+                    anchors.fill: parent
+                    onClicked: {
+                        if (listView.selectedFileName !== "") {
+                            var filePath = folderListModel.folder + "/" + listView.selectedFileName;
+                            filePath = filePath.replace("file://", "");
+                            console.log("Trying delete file:", filePath);
+
+                            if (fileIO.fileExists(filePath)) {
+                                var success = fileIO.removeFile(filePath);
+                                if (success) {
+                                    console.log("Delete done:", filePath);
+                                    folderListModel.refresh(); // Lam moi danh sach sau khi xoa
+                                } else {
+                                    console.log("Failed to delete file:", filePath);
+                                }
+                            } else {
+                                console.log("File doesn't exist: ", filePath);
+                            }
+                        } else {
+                            console.log("No file is selected");
+                        }
+
+                    }
+                }
+
             }
 
             // import feature
@@ -355,9 +403,15 @@ Rectangle {
         // anchors.horizontalCenter: rectLayout.horizontalCenter
     }
 
+    // Khai báo MediaPlayer
     MediaPlayer {
         id: audioPlayer
         source: ""
+    }
+
+    // Khai báo FileIO
+    FileIO {
+        id: fileIO
     }
 
 }
