@@ -19,9 +19,9 @@ std::vector<float> CircuitBuffer::getBuffer() const
     if (isFull) {
         result.insert(result.end(), buffer.begin() + tail, buffer.end());
         result.insert(result.end(), buffer.begin(), buffer.begin() + head);
-    } else {
+    } 
+    else 
         result.insert(result.end(), buffer.begin(), buffer.begin() + head);
-    }
 
     return result;
 }
@@ -58,7 +58,7 @@ void RecordingChart::onSendChartData(const QByteArray &data)
     }
 
     setAudioSeries(QVariant::fromValue(displayData));
-    qInfo()<< "onSendChartData" << audioSeries();
+    // qInfo()<< "onSendChartData" << audioSeries();
 }
 
 QVariant RecordingChart::audioSeries() const

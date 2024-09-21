@@ -9,7 +9,9 @@
 
 class AudioConfigFile : public AccessFile
 {
+    
     Q_OBJECT
+
 public:
     explicit AudioConfigFile(QObject *parent = nullptr);
 

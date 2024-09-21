@@ -1,7 +1,6 @@
 #include "audioconfig.h"
 
-AudioConfig::AudioConfig(QObject *parent)
-    : QObject{parent}
+AudioConfig::AudioConfig(QObject *parent) : QObject{parent}
 {
     int savedDeviceIndex = m_settings.value("audio/device", 0).toInt();  // Load saved device index
     QString savedDeviceName = m_settings.value("audio/deviceName", "default").toString();  // Load saved device name
@@ -192,22 +191,22 @@ void AudioConfig::saveConfig(int device, int codec, int sampleRate, int channel,
     qInfo()<< "is save params true: " << m_deviceInfo.isFormatSupported(m_format);
 }
 
-QAudioDeviceInfo AudioConfig::deviceInfo() const
+QAudioDeviceInfo AudioConfig::deviceInfo() /*const*/
 {
     return m_deviceInfo;
 }
 
-QAudioFormat AudioConfig::format() const
+QAudioFormat AudioConfig::format() /*const*/
 {
     return m_format;
 }
 
-QList<int> AudioConfig::nearistParams() const
+QList<int> AudioConfig::nearistParams() /*const*/
 {
     return m_nearistParams;
 }
 
-bool AudioConfig::saveDone() const
+bool AudioConfig::saveDone() /*const*/
 {
     return m_saveDone;
 }

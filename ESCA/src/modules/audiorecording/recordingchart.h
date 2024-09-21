@@ -25,20 +25,18 @@ private:
 
 class RecordingChart : public QObject
 {
+    
     Q_OBJECT
+
     Q_PROPERTY(QVariant audioSeries READ audioSeries WRITE setAudioSeries NOTIFY audioSeriesChanged FINAL)
 
 public:
     explicit RecordingChart(QObject *parent = nullptr);
     ~RecordingChart();
-
-    void updateData(const QVector<quint32> &data);
-
-
+    
     QVariant audioSeries() const;
     void setAudioSeries(const QVariant &newAudioSeries);
 
-public slots:
     void onSendChartData(const QByteArray &data);
 
 signals:

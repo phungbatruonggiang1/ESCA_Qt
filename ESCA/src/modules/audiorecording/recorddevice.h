@@ -15,6 +15,7 @@
 
 class RecordDevice : public QIODevice
 {
+
     Q_OBJECT
 
 public:
@@ -28,16 +29,12 @@ protected:
     qint64 writeData(const char *data, qint64 maxSize) override;
 
 private:
-    void writeWavHeader(QFile &file, qint64 dataSize);
-
     const QAudioFormat m_format;
     quint32 m_maxAmplitude = 0;
     qreal m_level = 0.0; // 0.0 <= m_level <= 1.0
-    static const int sampleCount = 400;
 
     QMutex bufferMutex;
     QVector<quint32> dataBuffer;
-    // QTimer m_timer;
 };
 
 #endif // RECORDDEVICE_H
