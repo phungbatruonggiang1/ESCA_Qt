@@ -1,15 +1,17 @@
 import QtQuick 2.15
 import QtQuick.Controls 2.15
 
+import "../component"
+
 Rectangle {
-    width: parent
-    height: parent
+    width: 800
+    height: 440
     color: "#272d37"
 
     // graph
     CpuFrame{
-        x: 387
-        y: 125
+        x: 277
+        y: 95
         width: 250
         height: 250
         MouseArea {
@@ -21,11 +23,12 @@ Rectangle {
     }
 
     RamFrame{
-        y: 187
+        x: 542
+        y: 164
         width: 250
         height: 250
         anchors.right: parent.right
-        anchors.rightMargin: 47
+        anchors.rightMargin: 8
         MouseArea {
             anchors.fill: parent
             onClicked: {
@@ -33,12 +36,13 @@ Rectangle {
                 }
         }
     }
+
     GpuFrame{
-        y: 187
+        y: 164
         width: 250
         height: 250
         anchors.left: parent.left
-        anchors.leftMargin: 50
+        anchors.leftMargin: 21
         MouseArea {
             anchors.fill: parent
             onClicked: {
@@ -51,8 +55,8 @@ Rectangle {
 
     Text {
         id: diskUsage
-        x: 64
-        y: 80
+        x: 21
+        y: 8
         width: 272
         height: 40
         color: "#ffffff"
@@ -67,8 +71,8 @@ Rectangle {
 
     Text {
         id: internetStatus
-        x: 64
-        y: 126
+        x: 21
+        y: 54
         width: 260
         height: 40
         color: "#ffffff"
@@ -82,8 +86,8 @@ Rectangle {
     }
     Text {
         id: runnningTime
-        x: 679
-        y: 80
+        x: 532
+        y: 8
         width: 260
         height: 40
         color: "#ffffff"
@@ -98,8 +102,8 @@ Rectangle {
 
     Text {
         id: connectionPort
-        x: 679
-        y: 120
+        x: 532
+        y: 48
         width: 260
         height: 40
         color: "#ffffff"

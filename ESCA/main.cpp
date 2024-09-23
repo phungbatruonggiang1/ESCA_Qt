@@ -36,6 +36,8 @@ int main(int argc, char *argv[])
     engine.rootContext()->setContextProperty("RecordingObject", &recordingController);
     engine.rootContext()->setContextProperty("BackendObject", &systemInformationController);
 
+    engine.rootContext()->setContextProperty("BackendObject", &systemInformationController);
+
     QObject::connect(
         &engine,
         &QQmlApplicationEngine::objectCreated,
@@ -52,8 +54,6 @@ int main(int argc, char *argv[])
     AudioManipulation audioManipulation;
     engine.rootContext()->setContextProperty("AudioManipulationObject", &audioManipulation);
 
-    SystemInformationController systemInformationController;
-    engine.rootContext()->setContextProperty("BackendObject", &systemInformationController);
     return app.exec();
 }
 
