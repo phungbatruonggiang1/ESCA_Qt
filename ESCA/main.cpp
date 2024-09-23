@@ -52,7 +52,8 @@ int main(int argc, char *argv[])
     AudioManipulation audioManipulation;
     engine.rootContext()->setContextProperty("AudioManipulationObject", &audioManipulation);
 
-    registerTypes();
+    SystemInformationController systemInformationController;
+    engine.rootContext()->setContextProperty("BackendObject", &systemInformationController);
     return app.exec();
 }
 

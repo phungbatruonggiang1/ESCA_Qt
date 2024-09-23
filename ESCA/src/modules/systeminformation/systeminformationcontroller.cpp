@@ -8,16 +8,13 @@ SystemInformationController::SystemInformationController(QObject *parent) : QObj
     connect(&m_timer, &QTimer::timeout, this, [this]() {
 
         // For cpu
-        cpu_m_steps = getCpu();
-        cpu_usage = cpu_m_steps;
+        cpu_usage = getCpu();
 
         // For ram
-        ram_m_steps = getRam();
-        ram_usage = ram_m_steps;
+        ram_usage = getRam();
 
         // For disk
-        disk_m_steps = getDisk();
-        disk_usage = disk_m_steps;
+        disk_usage = getDisk();
 
         // Both
         emit cpuChanged();
@@ -99,13 +96,13 @@ double SystemInformationController::getCpu()
 // end
 
 
-int SystemInformationController::cpuPercentage() const { return (cpu_m_steps-50); }
+int SystemInformationController::cpuPercentage() const { return cpu_usage; }
 
 QString SystemInformationController::cpuText() const {
     return QString::number(cpu_usage) + "%";
 }
 
-int SystemInformationController::ramPercentage() const { return (ram_m_steps-50); }
+int SystemInformationController::ramPercentage() const { return ram_usage; }
 
 QString SystemInformationController::ramText() const {
     return QString::number(ram_usage) + "%";
