@@ -9,6 +9,11 @@
 #include "./src/modules/audiorecording/recordingchart.h"
 #include "./src/modules/audiorecording/audioconfig.h"
 #include "./src/modules/systeminformation/systeminformationcontroller.h"
+#include "./src/modules/filemanager/FileIO.h"
+
+void registerTypes() {
+    qmlRegisterType<FileIO>("FileIO", 1, 0, "FileIO");
+}
 
 int main(int argc, char *argv[])
 {
@@ -49,6 +54,7 @@ int main(int argc, char *argv[])
 
     SystemInformationController systemInformationController;
     engine.rootContext()->setContextProperty("BackendObject", &systemInformationController);
-
     return app.exec();
 }
+
+
