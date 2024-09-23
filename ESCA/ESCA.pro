@@ -57,6 +57,8 @@ HEADERS += \
     src/modules/filemanager/filemanager.h
 
 DISTFILES += \
+    ../../../ESCA_Qt/ESCA/ui/components/GpuFrame.qml \
+    ../../../QT-GUI/ui/component/UsageTextElement.qml \
     qml/content/AudioManipulation/processData.qml \
     qml/content/BaseTraining/baseLearning.qml \
     qml/content/BaseTraining/baseLearning_data.qml \
@@ -72,6 +74,8 @@ DISTFILES += \
     qml/content/RecordModule/Recording.qml \
     qml/content/SystemInformation/SysInfoModule.qml \
     qml/content/SystemInformation/about.qml \
+    qml/content/SystemInformation/aiJobMonitor.qml \
+    qml/content/SystemInformation/cpuMonitor.qml \
     qml/content/SystemInformation/gpuMonitor.qml \
     qml/content/SystemInformation/ramMonitor.qml \
     qml/content/SystemInformation/realTimeMonitor.qml \
@@ -80,4 +84,5 @@ DISTFILES += \
     qml/content/TransferLearning/transferLearning_data.qml \
     qml/content/TransferLearning/transferLearning_parameterConfigure.qml \
     qml/content/TransferLearning/transferLearning_result.qml \
-    qml/content/TransferLearning/transferLearning_traning.qml
+    qml/content/TransferLearning/transferLearning_traning.qml \
+    qml/content/component/RamFrame.qml
