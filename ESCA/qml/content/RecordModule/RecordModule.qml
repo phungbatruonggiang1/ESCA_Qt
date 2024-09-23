@@ -26,6 +26,26 @@ Rectangle {
             id: statusLight
         }
 
+        Button {
+            id: startBtn
+            x: 40
+            y: 318
+            text: qsTr("Start")
+            onClicked: {
+                RecordingObject.startRecording()
+            }
+        }
+
+        Button {
+            id: stopBtn
+            x: 40
+            y: 376
+            text: qsTr("Stop")
+            onClicked:
+                RecordingObject.stopRecording()
+        }
+
+
         Column {
             id: column
             x: 0
@@ -55,7 +75,7 @@ Rectangle {
                     anchors.fill: parent
                     onClicked: {
                         selectedBtn = "visualize"
-                        contentLoader.setSource("Recording.qml");
+                        contentLoader.setSource("AudioChart.qml");
                     }
                 }
             }
@@ -84,29 +104,6 @@ Rectangle {
             }
 
             Rectangle {
-                id: timerRec
-                width: 180
-                height: 60
-                color: "#00ffffff"
-                Text {
-                    color:  selectedBtn === "timer" ? Constants.focusColor : "#ffffff"
-                    text: qsTr("Timer")
-                    font.pixelSize: 22
-                    font.family: "Oxanium"
-                    anchors.centerIn: parent
-                }
-
-                MouseArea {
-                    id: mouseArea2
-                    anchors.fill: parent
-                    onClicked: {
-                        selectedBtn = "timer"
-                        contentLoader.setSource("AudioChart.qml");
-                    }
-                }
-            }
-
-            Rectangle {
                 id: fileManagerRec
                 width: 180
                 height: 60
@@ -128,22 +125,45 @@ Rectangle {
                     }
                 }
             }
+
+            Rectangle {
+                id: timerRec
+                width: 180
+                height: 60
+                color: "#00ffffff"
+                Text {
+                    color:  selectedBtn === "timer" ? Constants.focusColor : "#ffffff"
+                    text: qsTr("Timer")
+                    font.pixelSize: 22
+                    font.family: "Oxanium"
+                    anchors.centerIn: parent
+                }
+
+                MouseArea {
+                    id: mouseArea2
+                    anchors.fill: parent
+                    onClicked: {
+                        selectedBtn = "timer"
+                        contentLoader.setSource("AudioChart.qml");
+                    }
+                }
+            }
         }
     }
 
     Rectangle {
         id: contentRec
         x: 207
-        y: 12
-        width: 800
-        height: 440
+        y: 0
+        width: 809
+        height: 460
         color: "#2a2a2a"
-        radius: 20
+        radius: 21
 
         Loader {
             id: contentLoader
             anchors.fill: parent
-            source: "Recording.qml"
+            source: "AudioChart.qml"
         }
     }
 }
