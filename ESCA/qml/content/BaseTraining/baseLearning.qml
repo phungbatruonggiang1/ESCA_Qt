@@ -1,6 +1,6 @@
 import QtQuick 2.15
 import QtQuick.Controls 2.15
-import "qrc:/ui/component/QtQuick/Studio/Components"
+import "../component"
 import QtQuick.Dialogs 1.0
 
 
@@ -14,7 +14,6 @@ Rectangle {
         property alias model_name_to_outputText: model_name_to_output.text
         property alias select_folder_to_storedText: select_folder_to_stored.text
         property alias executionText: execution.text
-
 
         Rectangle {
             id: rectangle

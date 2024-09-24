@@ -5,8 +5,8 @@ import "../component"
 import Qt.labs.folderlistmodel 2.6
 
 Rectangle {
-    width: 1024
-    height: 500
+    width: 800
+    height: 440
     color: "#272d37"
 
     // filemanager
@@ -25,15 +25,15 @@ Rectangle {
             property int selectedItemIndex: -1
 
             // property of list View
-            x: 0
-            y: 17
+            x: 8
+            y: -40
             width: parent.width
             height: parent.height
             clip: true
             model: FolderListModel {
                 id: folderListModel
                 showDirsFirst: true
-                folder: "file:///home/haiminh/Desktop/ESCA/result/monitor"
+                folder: "home/haiminh/Desktop/ESCA/result/monitor"
 
                 // If add filters then remove
                 // nameFilters: ["*.mp3", "*.flac"]
@@ -108,10 +108,10 @@ Rectangle {
     // Image render
     Image {
         id: image
-        x: 489
-        y: 81
-        width: 535
-        height: 365
+        x: 509
+        y: 39
+        width: 419
+        height: 362
         source: "../images/defaultLearningImg.png"
         fillMode: Image.PreserveAspectFit
         Connections {
@@ -126,8 +126,8 @@ Rectangle {
     }
     Rectangle {
         id: rectangle4
-        x: 37
-        y: 81
+        x: 39
+        y: 14
         width: 211
         height: 43
         color: "#69000822"
@@ -156,8 +156,8 @@ Rectangle {
     }
     Rectangle {
         id: rectangle5
-        x: 254
-        y: 81
+        x: 256
+        y: 14
         width: 211
         height: 43
         color: "#69000822"

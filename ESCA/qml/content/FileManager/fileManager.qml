@@ -21,8 +21,8 @@ Rectangle {
         id: rectangle_55
         x: 0
         y: 0
-        width: 800
-        height: 440
+        width: 801
+        height: 480
         color: "#272D37"
 
         // ListView Folder and File
@@ -380,7 +380,7 @@ Rectangle {
     Rectangle {
         id: rectangle_76
         x: 237
-        y: 8
+        y: 14
         width: 326
         height: 40
         color: "#69000822"
