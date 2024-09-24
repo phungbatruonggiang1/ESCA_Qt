@@ -1,6 +1,6 @@
 import QtQuick 2.15
 import QtQuick.Controls 2.15
-import "qrc:/ui/components/QtQuick/Studio/Components"
+import "../component"
 // Import folder list
 import Qt.labs.folderlistmodel 2.6
 
@@ -72,7 +72,7 @@ Rectangle {
             clip: true
             model: FolderListModel {
                 id: folderListModel
-                folder: "file:///home/sparc/ESCA/data"
+                folder: "file:///home/haiminh/Desktop/Anomaly_Detection/D-ESCA_v2"
                 showDirsFirst: true
 
                 // If add filters then remove

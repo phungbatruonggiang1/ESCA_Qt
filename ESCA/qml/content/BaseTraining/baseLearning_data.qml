@@ -1,6 +1,6 @@
 import QtQuick 2.12
 import QtQuick.Controls 2.12
-import "qrc:/ui/component/QtQuick/Studio/Components"
+import "../component"
 import QtQuick.Dialogs 1.0
 // import Qt.labs.platform 1.0
 

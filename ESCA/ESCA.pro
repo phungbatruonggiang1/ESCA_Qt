@@ -75,9 +75,6 @@ DISTFILES += \
     qml/content/SystemInformation/SysInfoModule.qml \
     qml/content/SystemInformation/about.qml \
     qml/content/SystemInformation/aiJobMonitor.qml \
-    qml/content/SystemInformation/cpuMonitor.qml \
-    qml/content/SystemInformation/gpuMonitor.qml \
-    qml/content/SystemInformation/ramMonitor.qml \
     qml/content/SystemInformation/realTimeMonitor.qml \
     qml/content/SystemInformation/systemInformation.qml \
     qml/content/TransferLearning/transferLearning.qml \

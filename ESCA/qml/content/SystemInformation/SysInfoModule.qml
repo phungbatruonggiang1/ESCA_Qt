@@ -7,6 +7,8 @@ Rectangle {
     height: 460
     color: "#272d37"
 
+    property string selectedButton: "about"  // Biến để lưu trang hiện tại
+
     // HEADER
     Rectangle {
         id: about
@@ -14,7 +16,7 @@ Rectangle {
         y: 8
         width: 113
         height: 52
-        color: "#394251"
+        color: selectedButton === "about" ? "#2c3138" : "#394251"  // Thay đổi màu khi được chọn
         radius: 8
 
         Text {
@@ -30,6 +32,7 @@ Rectangle {
             anchors.fill: parent
             onClicked: {
                 loader.source = "about.qml"
+                selectedButton = "about"  // Cập nhật trạng thái
             }
         }
     }
@@ -40,12 +43,12 @@ Rectangle {
         y: 8
         width: 291
         height: 52
-        color: "#69000822"
+        color: selectedButton === "systemInformation" ? "#2c3138" : "#394251"
         radius: 8
         Text {
             id: text3
             color: "#ffffff"
-            text: qsTr("System Infomation")
+            text: qsTr("System Information")
             anchors.fill: parent
             font.pixelSize: 28
             horizontalAlignment: Text.AlignHCenter
@@ -56,6 +59,7 @@ Rectangle {
             anchors.fill: parent
             onClicked: {
                 loader.source = "systemInformation.qml"
+                selectedButton = "systemInformation"
             }
         }
     }
@@ -65,7 +69,7 @@ Rectangle {
         y: 8
         width: 285
         height: 52
-        color: "#394251"
+        color: selectedButton === "realTimeMonitor" ? "#2c3138" : "#394251"
         radius: 8
 
         Text {
@@ -81,6 +85,7 @@ Rectangle {
             anchors.fill: parent
             onClicked: {
                 loader.source = "realTimeMonitor.qml"
+                selectedButton = "realTimeMonitor"
             }
         }
     }
@@ -91,7 +96,7 @@ Rectangle {
         y: 8
         width: 227
         height: 52
-        color: "#394251"
+        color: selectedButton === "aiJobMonitor" ? "#2c3138" : "#394251"
         radius: 8
         Text {
             id: text2
@@ -106,9 +111,11 @@ Rectangle {
             anchors.fill: parent
             onClicked: {
                 loader.source = "aiJobMonitor.qml"
+                selectedButton = "aiJobMonitor"
             }
         }
     }
+
     Rectangle {
         id: rectangle2
         x: 41
@@ -133,8 +140,7 @@ Rectangle {
         Loader {
             id: loader
             anchors.fill: parent
-            source: "systemInformation.qml"
+            source: "about.qml"  // Trang mặc định
         }
     }
-
 }

@@ -11,10 +11,6 @@
 #include "./src/modules/systeminformation/systeminformationcontroller.h"
 #include "./src/modules/filemanager/FileIO.h"
 
-void registerTypes() {
-    qmlRegisterType<FileIO>("FileIO", 1, 0, "FileIO");
-}
-
 int main(int argc, char *argv[])
 {
     qputenv("QT_IM_MODULE", QByteArray("qtvirtualkeyboard"));
@@ -36,7 +32,7 @@ int main(int argc, char *argv[])
     engine.rootContext()->setContextProperty("RecordingObject", &recordingController);
     engine.rootContext()->setContextProperty("BackendObject", &systemInformationController);
 
-    engine.rootContext()->setContextProperty("BackendObject", &systemInformationController);
+    qmlRegisterType<FileIO>("FileIO", 1, 0, "FileIO");
 
     QObject::connect(
         &engine,

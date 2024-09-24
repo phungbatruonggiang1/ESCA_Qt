@@ -14,12 +14,12 @@ Rectangle {
         y: 95
         width: 250
         height: 250
-        MouseArea {
-            anchors.fill: parent
-            onClicked: {
-                    loader.source = "cpuMonitor.qml"
-                }
-        }
+//        MouseArea {
+//            anchors.fill: parent
+//            onClicked: {
+//                    loader.source = "cpuMonitor.qml"
+//                }
+//        }
     }
 
     RamFrame{
@@ -29,12 +29,12 @@ Rectangle {
         height: 250
         anchors.right: parent.right
         anchors.rightMargin: 8
-        MouseArea {
-            anchors.fill: parent
-            onClicked: {
-                    loader.source = "ramMonitor.qml"
-                }
-        }
+//        MouseArea {
+//            anchors.fill: parent
+//            onClicked: {
+//                    loader.source = "ramMonitor.qml"
+//                }
+//        }
     }
 
     GpuFrame{
@@ -43,12 +43,12 @@ Rectangle {
         height: 250
         anchors.left: parent.left
         anchors.leftMargin: 21
-        MouseArea {
-            anchors.fill: parent
-            onClicked: {
-                    loader.source = "gpuMonitor.qml"
-                }
-        }
+//        MouseArea {
+//            anchors.fill: parent
+//            onClicked: {
+//                    loader.source = "gpuMonitor.qml"
+//                }
+//        }
     }
 
     // TEMP COMPONENT
