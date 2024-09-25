@@ -7,8 +7,7 @@ import Qt.labs.platform 1.0
 import Qt.labs.folderlistmodel 2.6
 // Import for play Audio
 import QtMultimedia 5.15
-// Import for delete file
-import FileIO 1.0
+
 
 Rectangle {
     id: frame_1
@@ -409,9 +408,6 @@ Rectangle {
         source: ""
     }
 
-    // Khai báo FileIO
-    FileIO {
-        id: fileIO
-    }
+
 
 }

@@ -52,7 +52,7 @@ HEADERS += \
     src/modules/audiorecording/recordingschedule.h \
  \    # src/modules/systeminformation/basicmonitor.h
     src/modules/audiorecording/recordio.h \
-    src/modules/filemanager/FileIO.h \
+    src/modules/filemanager/DeleteFile.h \
     src/modules/systeminformation/systeminformationcontroller.h \
     src/modules/filemanager/filemanager.h
 
