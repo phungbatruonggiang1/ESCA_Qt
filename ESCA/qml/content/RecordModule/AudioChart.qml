@@ -82,7 +82,7 @@ Rectangle {
         function onAudioSeriesChanged() {
             audioData = AudioChart.audioSeries;  // Lấy dữ liệu audio từ AudioChart
             audioWaveform.requestPaint();  // Yêu cầu canvas vẽ lại
-            console.log("Audio data received:", AudioChart.audioSeries.length);
+            // console.log("Audio data received:", AudioChart.audioSeries);
         }
     }
 }

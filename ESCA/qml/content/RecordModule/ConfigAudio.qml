@@ -5,6 +5,7 @@ import AudioConfigImport 1.0
 Rectangle {
     width: 800
     height: 440
+    color: "#161525"
 
     property int channelset: AudioConfig.nearistParams[3]
 
@@ -14,6 +15,9 @@ Rectangle {
         console.log("hell1"+AudioConfig.listChannel);
         for (var i = 0; i < AudioConfig.listSampleRate.length; i++){
             sampleRateMl.append({"name" : AudioConfig.listSampleRate[i]});
+        }
+        for (i = 0; i < AudioConfig.listSampleSize.length; i++){
+            sampleSizeMl.append({"name" : AudioConfig.listSampleSize[i]});
         }
         for (i = 0; i < AudioConfig.listChannel.length; i++){
             channelMl.append({"name" : AudioConfig.listChannel[i]});
@@ -26,7 +30,7 @@ Rectangle {
     ComboBox {
         id: deviceCb
         x: 57
-        y: 35
+        y: 32
         width: 686
         height: 40
         font.pointSize: 18
@@ -47,17 +51,18 @@ Rectangle {
 
     Text {
         id: text1
-        x: 374
+        x: 355
         y: 8
-        width: 53
+        width: 92
         height: 26
-        text: qsTr("device")
-        font.pixelSize: 12
+        color: "#ffffff"
+        text: qsTr("Device Name")
+        font.pixelSize: 15
     }
 
     ComboBox {
         id: codecCb
-        x: 44
+        x: 57
         y: 124
         width: 157
         height: 40
@@ -71,27 +76,29 @@ Rectangle {
 
     Text {
         id: codecTx
-        x: 44
+        x: 57
         y: 98
         width: 53
         height: 26
-        text: qsTr("codec")
-        font.pixelSize: 12
+        color: "#ffffff"
+        text: qsTr("Codec")
+        font.pixelSize: 15
     }
 
     Text {
         id: text3
-        x: 298
+        x: 311
         y: 98
         width: 53
         height: 26
-        text: qsTr("samplerate")
-        font.pixelSize: 12
+        color: "#ffffff"
+        text: qsTr("Sample Rate")
+        font.pixelSize: 15
     }
 
     ComboBox {
         id: sampleRateCb
-        x: 298
+        x: 311
         y: 124
         width: 178
         height: 40
@@ -108,8 +115,10 @@ Rectangle {
 
     ComboBox {
         id: channelsCb
-        x: 590
+        x: 586
         y: 124
+        width: 157
+        height: 40
         font.family: "Oxanium"
         currentIndex: AudioConfig.nearistParams[3]
         font.pointSize: 18
@@ -122,19 +131,20 @@ Rectangle {
 
     Text {
         id: channelTx
-        x: 590
+        x: 586
         y: 98
         width: 53
         height: 26
-        text: qsTr("channels")
-        font.pixelSize: 12
+        color: "#ffffff"
+        text: qsTr("Channels")
+        font.pixelSize: 15
     }
 
     ComboBox {
         id: endianzCb
-        x: 309
-        y: 233
-        width: 157
+        x: 311
+        y: 213
+        width: 178
         height: 40
         font.pointSize: 18
         currentIndex: AudioConfig.nearistParams[4]
@@ -148,12 +158,13 @@ Rectangle {
 
     Text {
         id: text5
-        x: 309
-        y: 207
+        x: 311
+        y: 187
         width: 53
         height: 26
-        text: qsTr("endianz")
-        font.pixelSize: 12
+        color: "#ffffff"
+        text: qsTr("Endianz")
+        font.pixelSize: 15
     }
 
     Dialog {
@@ -178,6 +189,7 @@ Rectangle {
                 codecCb.currentIndex = AudioConfig.nearistParams[1]
                 sampleRateCb.currentIndex = AudioConfig.nearistParams[2]
                 endianzCb.currentIndex = AudioConfig.nearistParams[4]
+                sampleSizeCb.currentIndex = AudioConfig.nearistParams[5]
             }
         }
 
@@ -208,8 +220,10 @@ Rectangle {
 
     Button {
         id: button
-        x: 343
-        y: 363
+        x: 322
+        y: 346
+        width: 158
+        height: 52
         text: qsTr("Save")
         enabled: !RecordingObject.recStatus
 
@@ -220,12 +234,64 @@ Rectangle {
                 minhDialog.visible = true;
             }
             else {
-                AudioConfig.saveConfig(deviceCb.currentIndex, codecCb.currentIndex, sampleRateCb.currentIndex, channelsCb.currentIndex, endianzCb.currentIndex)
+                AudioConfig.saveConfig(deviceCb.currentIndex, codecCb.currentIndex, sampleRateCb.currentIndex, channelsCb.currentIndex, endianzCb.currentIndex, sampleSizeCb.currentIndex, durationCb.currentIndex)
                 console.log("audioConfig.listChannel[0]: " + AudioConfig.listChannel[0])
                 // console.log("click: " +devicename)
             }
 
             console.log("nearistParams[3]: ", AudioConfig.nearistParams[3]);
         }
+    }
+
+    ComboBox {
+        id: sampleSizeCb
+        x: 57
+        y: 213
+        width: 157
+        height: 40
+        enabled: !RecordingObject.recStatus
+        currentIndex: AudioConfig.nearistParams[5]
+        font.family: "Oxanium"
+        font.pointSize: 18
+
+        model: ListModel {
+            id: sampleSizeMl
+        }
+    }
+
+    ComboBox {
+        id: durationCb
+        x: 586
+        y: 213
+        width: 157
+        height: 40
+        enabled: !RecordingObject.recStatus
+        currentIndex: AudioConfig.nearistParams[6]
+        font.family: "Oxanium"
+        font.pointSize: 18
+
+        model: AudioConfig.listDuration
+    }
+
+    Text {
+        id: sampleSizeTx
+        x: 57
+        y: 187
+        width: 53
+        height: 26
+        color: "#ffffff"
+        text: qsTr("Sample Size")
+        font.pixelSize: 15
+    }
+
+    Text {
+        id: durationText
+        x: 586
+        y: 187
+        width: 53
+        height: 26
+        color: "#ffffff"
+        text: qsTr("Duration")
+        font.pixelSize: 15
     }
 }

@@ -2,25 +2,41 @@
 #include <QDebug>
 
 RecordingController::RecordingController(QObject *parent)
-    : m_fileFactory(nullptr)
-    , m_recordIO(nullptr)
-    , m_audioConfigFile(nullptr)
-    , m_recordingSchedule(nullptr)
+    : QObject(parent)
+    , m_recordIO(new RecordIO())
     , m_recordingChart(new RecordingChart())
     , m_audioConfig(new AudioConfig())
-    // , m_recordIO(new RecordIO())
-    , m_audioFile()
+    , m_audioFile(nullptr)
+    , m_audioFileThread(nullptr)
+    , m_recordingSchedule(nullptr)
+    , m_recStatus(false)
 {
     qmlRegisterSingletonInstance("AudioConfigImport", 1, 0, "AudioConfig", m_audioConfig);
     qmlRegisterSingletonInstance("AudioChartImport", 1, 0, "AudioChart", m_recordingChart);
     setRecStatus(false);
 
-    // m_audioConfigFile->setFilePath(RECORDING_CONFIG_FILE);
+    connect(m_recordIO, &RecordIO::sendData, this, &RecordingController::handleDataReady);
+    connect(this, &RecordingController::sendChartData, m_recordingChart, &RecordingChart::onSendChartData);
+
 }
 
 RecordingController::~RecordingController()
 {
     // m_recordIO->audioInputStop();
+    stopRecording();
+
+    // Dừng và dọn dẹp thread nếu còn chạy
+    if (m_audioFileThread && m_audioFileThread->isRunning()) {
+        m_audioFileThread->quit();
+        m_audioFileThread->wait();
+    }
+
+    delete m_audioFile; // Nếu đã được khởi tạo
+    delete m_audioFileThread;
+    delete m_recordingChart;
+    delete m_recordIO;
+    delete m_audioConfig;
+    qDebug() << "RecordingController destroyed.";
 }
 
 void RecordingController::startRecording()
@@ -28,32 +44,30 @@ void RecordingController::startRecording()
     QAudioFormat format = m_audioConfig->format();
     QAudioDeviceInfo deviceInfo = m_audioConfig->deviceInfo();
 
-    setRecStatus(true);
+    // m_outputDir = m_audioConfig->outputDir();
 
-    connect(this, &RecordingController::sendChartData, m_recordingChart, &RecordingChart::onSendChartData);
+    m_audioFile = new AudioFile(m_outputDir, format, 10.0);
+    m_audioFileThread = new QThread();
+    m_audioFile->moveToThread(m_audioFileThread);   // cho AudioFile vào thread riêng
 
-    // connect(m_recordingChart, &RecordingChart::audioSeriesChanged, this, &RecordingController::setRecoringChartBuffer);
+    // Kết nối các signal và slot để quản lý thread và AudioFile
+    connect(m_audioFileThread, &QThread::started, m_audioFile, &AudioFile::startRecording);
+    connect(m_audioFile, &AudioFile::destroyed, m_audioFileThread, &QThread::quit);
+    connect(m_audioFile, &AudioFile::destroyed, m_audioFileThread, &QObject::deleteLater);
 
-    if (!m_audioFile.startRecording("minhhihi.wav", format)) {
-        qDebug() << "Không thể ghi file";
-    }
+    // Start thread
+    m_audioFileThread->start();
 
-    m_recordIO = new RecordIO();
-
-    connect(m_recordIO, &RecordIO::sendData, this, &RecordingController::handleDataReady);
-    // QAudioFormat format = m_audioConfig->settings();
-    // QAudioDeviceInfo deviceInfo = m_audioConfig->deviceInfo();
-
-    m_fileFactory = new AudioFileFactory(format);
-
+    // Bắt đầu RecordingIO
     m_recordIO->startAudioInput(format, deviceInfo);
 
     // Currently, I fixed the duratione of audio file is 5 seconds
-    m_fileFactory->setFileDuration(5000);
-    m_fileFactory->startRecording();
+    // m_fileFactory->setFileDuration(5000);
+    // m_fileFactory->startRecording();
     // should be check the real value of InputAudio -> setRecStatus
     // if it cannot turn on the InputAudio -> show alert to .qml
     // I refer you use try..catch pattern
+
     setRecStatus(true);
     qInfo() << "Hi Giang, this is start recording";
 }
@@ -61,32 +75,44 @@ void RecordingController::startRecording()
 void RecordingController::stopRecording()
 {
     if (recStatus() == true) {
-        m_audioFile.stopRecording();
+        m_audioFile->stopRecording();
         m_recordIO->audioInputStop();
         qInfo() << "Hi Giang, this is stop recording";
-        m_recordingChart = nullptr;
-        m_fileFactory = nullptr;
+        // m_recordingChart = nullptr;
+        // m_recordIO = nullptr;
     }
-    setRecStatus(false);
-    m_recordIO->audioInputStop();
-    qInfo() << "Hi Giang, this is stop recording";
-    m_recordIO = nullptr;
-    m_fileFactory = nullptr;
+    setRecStatus(false);   
 }
 
 void RecordingController::handleDataReady(const QByteArray &data)
 {
-    m_recordingChart->onSendChartData(data);
-    // qInfo()<< "handleDataReady" << data.at(0);
 
-    m_audioFile.writeAudioData(data);
-    // m_fileFactory->setFilePath("/home/gianghandsome/ESCA/data/test.wav");
+    QString duration = m_audioConfig->duration();
+    qDebug()<<"handleDataReady for:" <<duration;
+    if (duration == "10s"){
+        // Chuyển tiếp dữ liệu cho AudioFile để xử lý buffering và ghi file
+        if (m_audioFile) {
+            QMetaObject::invokeMethod(m_audioFile, "writeAudioData",
+                                      Qt::QueuedConnection,
+                                      Q_ARG(QByteArray, data));
+        }
+    }
+    else {
+        if (m_audioFile) {
+            QMetaObject::invokeMethod(m_audioFile, "writeDataForever",
+                                      Qt::QueuedConnection,
+                                      Q_ARG(QByteArray, data));
+        }
+    }
+
+
+
+    m_recordingChart->onSendChartData(data);
 }
 
 bool RecordingController::recStatus() /*const*/
 {
     return m_recStatus;
-    // m_fileFactory->appendDataToBuffer(data);
 }
 
 void RecordingController::setRecStatus(bool newRecStatus)

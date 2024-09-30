@@ -69,7 +69,7 @@ void AudioFileFactory::createFile()
     // writeWavHeader(5000000);
 }
     
-
+// lưu data từ buffer vào file wav sau đó clear buffer
 void AudioFileFactory::releaseBuffer()
 {
     qInfo() << "release buffer in file factory";
@@ -79,8 +79,6 @@ void AudioFileFactory::releaseBuffer()
     saveDataToFile();
     m_dataBuffer.clear();
 }
-
-
 
 void AudioFileFactory::saveDataToFile()
 {
