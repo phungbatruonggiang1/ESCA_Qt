@@ -52,14 +52,15 @@ Item {
         y: 73
         width: 176
         height: 121
-        _45Text: BackendObject.ramText
+        _45Text: backendObject.ramText
         minutesRemainingText: "RAM Usage"
     }
 
     RangeMapper {
         id: rangeMapper
-        input: BackendObject.ramPercentage
-        outputMaximum: 360
+        input: backendObject.ramPercentage
+        outputMaximum: 180
+        outputMinimum: -180
     }
 
 }

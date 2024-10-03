@@ -15,7 +15,7 @@ Rectangle {
         ListElement { name: "Record"; screenPath: "../RecordModule/RecordModule.qml" }
         ListElement { name: "Manipulation"; screenPath: "../Processing.qml" }
         ListElement { name: "BaseTraining"; screenPath: "../BaseTraining/RecordModule.qml" }
-        ListElement { name: "SystemInfo"; screenPath: "../SystemInformation/SysInfoModule.qml" }
+        ListElement { name: "SystemOverview"; screenPath: "../System/SystemModule.qml" }
         ListElement { name: "Inference"; screenPath: "../Inference/realTimeInference_data.qml" }
         ListElement { name: "TransferLearning"; screenPath: "../TransferLearning/transferLearning.qml" }
         ListElement { name: "Help"; screenPath: "../RecordModule/RecordModule.qml" }

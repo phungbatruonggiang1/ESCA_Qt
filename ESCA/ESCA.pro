@@ -18,8 +18,9 @@ SOURCES += \
     src/modules/audiorecording/recordingcontroller.cpp \
     src/modules/audiorecording/recordingschedule.cpp \
     src/modules/audiorecording/recordio.cpp \
-    src/modules/systeminformation/systeminformationcontroller.cpp \
-    src/modules/filemanager/filemanager.cpp
+    src/modules/filemanager/filemanager.cpp \
+    src/modules/system/peripheralmonitorcontroller.cpp \
+    src/modules/system/systemresourcecontroller.cpp
 
 # RESOURCES += qml.qrc
 RESOURCES += \
@@ -53,8 +54,9 @@ HEADERS += \
  \    # src/modules/systeminformation/basicmonitor.h
     src/modules/audiorecording/recordio.h \
     src/modules/filemanager/FileIO.h \
-    src/modules/systeminformation/systeminformationcontroller.h \
-    src/modules/filemanager/filemanager.h
+    src/modules/filemanager/filemanager.h \
+    src/modules/system/peripheralmonitorcontroller.h \
+    src/modules/system/systemresourcecontroller.h
 
 DISTFILES += \
     ../../../ESCA_Qt/ESCA/ui/components/GpuFrame.qml \
@@ -72,14 +74,14 @@ DISTFILES += \
     qml/content/RecordModule/ConfigAudio.qml \
     qml/content/RecordModule/RecordModule.qml \
     qml/content/RecordModule/Recording.qml \
-    qml/content/SystemInformation/SysInfoModule.qml \
-    qml/content/SystemInformation/about.qml \
-    qml/content/SystemInformation/aiJobMonitor.qml \
-    qml/content/SystemInformation/cpuMonitor.qml \
-    qml/content/SystemInformation/gpuMonitor.qml \
-    qml/content/SystemInformation/ramMonitor.qml \
-    qml/content/SystemInformation/realTimeMonitor.qml \
-    qml/content/SystemInformation/systemInformation.qml \
+    qml/content/System/SystemModule.qml \
+    qml/content/System/about.qml \
+    qml/content/System/aiJobMonitor.qml \
+    qml/content/System/cpuMonitor.qml \
+    qml/content/System/gpuMonitor.qml \
+    qml/content/System/ramMonitor.qml \
+    qml/content/System/realTimeMonitor.qml \
+    qml/content/System/systemInformation.qml \
     qml/content/TransferLearning/transferLearning.qml \
     qml/content/TransferLearning/transferLearning_data.qml \
     qml/content/TransferLearning/transferLearning_parameterConfigure.qml \

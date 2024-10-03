@@ -8,7 +8,7 @@
 #include "./src/modules/audiomanipulation/audiomanipulation.h"
 #include "./src/modules/audiorecording/recordingchart.h"
 #include "./src/modules/audiorecording/audioconfig.h"
-#include "./src/modules/systeminformation/systeminformationcontroller.h"
+#include "./src/modules/system/systemresourcecontroller.h"
 #include "./src/modules/filemanager/FileIO.h"
 
 void registerTypes() {
@@ -23,20 +23,16 @@ int main(int argc, char *argv[])
     QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
 #endif
     QGuiApplication app(argc, argv);
-
-    RecordingController recordingController;
-    SystemInformationController systemInformationController;
-
     // AudioConfig audioConfig;
     QQmlApplicationEngine engine;
 
     engine.addImportPath("qrc:/qml/imports"); // Thêm phần QML vô C++
     const QUrl url(QStringLiteral("qrc:/qml/main.qml"));
 
+    RecordingController recordingController;
     engine.rootContext()->setContextProperty("RecordingObject", &recordingController);
-    engine.rootContext()->setContextProperty("BackendObject", &systemInformationController);
 
-    engine.rootContext()->setContextProperty("BackendObject", &systemInformationController);
+    qmlRegisterType<SystemResourceController>("SystemResource", 1, 0, "SystemResourceController");
 
     QObject::connect(
         &engine,
