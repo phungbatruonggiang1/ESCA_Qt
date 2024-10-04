@@ -43,7 +43,7 @@ private:
     QByteArray m_buffer2;
     bool m_usingBuffer1;
 
-    void createNewFile();
+    void createFile();
     void writeWavHeader(quint32 dataSize);
     void finalizeWavHeader(quint32 dataSize);
 

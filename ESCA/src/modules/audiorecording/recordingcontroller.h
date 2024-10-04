@@ -48,6 +48,8 @@ private:
 
     QThread *m_audioFileThread;
 
+    QAudioFormat format;
+
     QMutex m_mutex;
 
     QString m_outputDir;

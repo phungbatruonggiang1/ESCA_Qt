@@ -4,7 +4,7 @@ import AudioChartImport 1.0
 
 Rectangle {
     width: 800
-    height: 440
+    height: 480
     color: "#1e1e1e"
     radius: 20
 

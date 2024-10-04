@@ -9,6 +9,7 @@ RecordingController::RecordingController(QObject *parent)
     , m_audioFile(nullptr)
     , m_audioFileThread(nullptr)
     , m_recordingSchedule(nullptr)
+    , format(m_audioConfig->format())
     , m_recStatus(false)
 {
     qmlRegisterSingletonInstance("AudioConfigImport", 1, 0, "AudioConfig", m_audioConfig);
@@ -17,6 +18,8 @@ RecordingController::RecordingController(QObject *parent)
 
     connect(m_recordIO, &RecordIO::sendData, this, &RecordingController::handleDataReady);
     connect(this, &RecordingController::sendChartData, m_recordingChart, &RecordingChart::onSendChartData);
+
+    qInfo()<<"format in ini: "<<m_audioConfig->format();
 
 }
 
@@ -30,8 +33,7 @@ RecordingController::~RecordingController()
         m_audioFileThread->quit();
         m_audioFileThread->wait();
     }
-
-    delete m_audioFile; // Nếu đã được khởi tạo
+    delete m_audioFile;
     delete m_audioFileThread;
     delete m_recordingChart;
     delete m_recordIO;
@@ -41,8 +43,10 @@ RecordingController::~RecordingController()
 
 void RecordingController::startRecording()
 {
-    QAudioFormat format = m_audioConfig->format();
+    // QAudioFormat format = m_audioConfig->format();
     QAudioDeviceInfo deviceInfo = m_audioConfig->deviceInfo();
+
+    qInfo() << "format before thread" << format;
 
     // m_outputDir = m_audioConfig->outputDir();
 
@@ -69,7 +73,7 @@ void RecordingController::startRecording()
     // I refer you use try..catch pattern
 
     setRecStatus(true);
-    qInfo() << "Hi Giang, this is start recording";
+    qInfo() << "Start recording with format" << format;
 }
 
 void RecordingController::stopRecording()
@@ -88,7 +92,7 @@ void RecordingController::handleDataReady(const QByteArray &data)
 {
 
     QString duration = m_audioConfig->duration();
-    qDebug()<<"handleDataReady for:" <<duration;
+    // qDebug()<<"handleDataReady for:" <<duration;
     if (duration == "10s"){
         // Chuyển tiếp dữ liệu cho AudioFile để xử lý buffering và ghi file
         if (m_audioFile) {
@@ -104,8 +108,6 @@ void RecordingController::handleDataReady(const QByteArray &data)
                                       Q_ARG(QByteArray, data));
         }
     }
-
-
 
     m_recordingChart->onSendChartData(data);
 }

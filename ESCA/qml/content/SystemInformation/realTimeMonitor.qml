@@ -4,18 +4,27 @@ import QtQuick.Controls 2.15
 import "../component"
 
 Rectangle {
-    width: 800
-    height: 440
+    id: rectangle
+    width: 1024
+    height: 480
     color: "#272d37"
 
     // graph
     CpuFrame{
         x: 277
-        y: 95
+        y: 100
         width: 250
         height: 250
-//        MouseArea {
-//            anchors.fill: parent
+        anchors.left: parent.left
+        anchors.right: parent.right
+        anchors.top: parent.top
+        anchors.bottom: parent.bottom
+        anchors.topMargin: 103
+        anchors.bottomMargin: 126
+        anchors.rightMargin: 385
+        anchors.leftMargin: 386
+        //        MouseArea {
+        //            anchors.fill: parent
 //            onClicked: {
 //                    loader.source = "cpuMonitor.qml"
 //                }
@@ -23,13 +32,13 @@ Rectangle {
     }
 
     RamFrame{
-        x: 542
-        y: 164
+        x: 689
+        y: 169
         width: 250
         height: 250
         anchors.right: parent.right
-        anchors.rightMargin: 8
-//        MouseArea {
+        anchors.rightMargin: 85
+        //        MouseArea {
 //            anchors.fill: parent
 //            onClicked: {
 //                    loader.source = "ramMonitor.qml"
@@ -38,11 +47,11 @@ Rectangle {
     }
 
     GpuFrame{
-        y: 164
+        y: 169
         width: 250
         height: 250
         anchors.left: parent.left
-        anchors.leftMargin: 21
+        anchors.leftMargin: 79
 //        MouseArea {
 //            anchors.fill: parent
 //            onClicked: {
@@ -55,64 +64,64 @@ Rectangle {
 
     Text {
         id: diskUsage
-        x: 21
-        y: 8
-        width: 272
+        x: 74
+        y: 32
+        width: 313
         height: 40
         color: "#ffffff"
         text: BackendObject.diskText
-        font.pixelSize: 20
+        font.pixelSize: 23
         horizontalAlignment: Text.AlignLeft
         verticalAlignment: Text.AlignVCenter
         wrapMode: Text.Wrap
-        font.family: "Roboto"
+        font.family: "Oxanium"
         font.weight: Font.Normal
     }
 
     Text {
         id: internetStatus
-        x: 21
-        y: 54
+        x: 74
+        y: 78
         width: 260
         height: 40
         color: "#ffffff"
         text: "Monitor: ASUS VA27EHF"
-        font.pixelSize: 20
+        font.pixelSize: 23
         horizontalAlignment: Text.AlignLeft
         verticalAlignment: Text.AlignVCenter
         wrapMode: Text.Wrap
-        font.family: "Roboto"
+        font.family: "Oxanium"
         font.weight: Font.Normal
     }
     Text {
         id: runnningTime
-        x: 532
-        y: 8
+        x: 684
+        y: 38
         width: 260
         height: 40
         color: "#ffffff"
         text: "Microphone: AT2020"
-        font.pixelSize: 20
+        font.pixelSize: 23
         horizontalAlignment: Text.AlignLeft
         verticalAlignment: Text.AlignVCenter
         wrapMode: Text.Wrap
-        font.family: "Roboto"
+        font.family: "Oxanium"
         font.weight: Font.Normal
     }
 
     Text {
         id: connectionPort
-        x: 532
-        y: 48
-        width: 260
+        x: 684
+        y: 78
+        width: 279
         height: 40
         color: "#ffffff"
         text: "Speaker: MEGUO 2023"
-        font.pixelSize: 20
+        font.pixelSize: 23
         horizontalAlignment: Text.AlignLeft
         verticalAlignment: Text.AlignVCenter
         wrapMode: Text.Wrap
-        font.family: "Roboto"
+        font.family: "Oxanium"
         font.weight: Font.Normal
     }
 }

@@ -7,7 +7,7 @@ import "../component"
 
 Rectangle {
     width: Constants.width
-    height: Constants.height - 140
+    height: Constants.height - 100
     color: Constants.backgroundColor
 
     property string selectedBtn: "visualize"
@@ -18,7 +18,7 @@ Rectangle {
         x: 13
         y: 10
         width: 180
-        height: 440
+        height: 482
         color: "#161525"
         radius: 20
 
@@ -29,17 +29,19 @@ Rectangle {
         Button {
             id: startBtn
             x: 40
-            y: 318
+            y: 367
             text: qsTr("Start")
             onClicked: {
-                RecordingObject.startRecording()
+                if (!recStatus) {
+                    RecordingObject.startRecording()
+                }
             }
         }
 
         Button {
             id: stopBtn
             x: 40
-            y: 376
+            y: 420
             text: qsTr("Stop")
             onClicked:
                 RecordingObject.stopRecording()
@@ -156,7 +158,7 @@ Rectangle {
         x: 207
         y: 0
         width: 809
-        height: 460
+        height: 492
         color: "#2a2a2a"
         radius: 21
 

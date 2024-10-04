@@ -19,7 +19,7 @@ Item {
         horizontalAlignment: Text.AlignHCenter
         verticalAlignment: Text.AlignVCenter
         wrapMode: Text.Wrap
-        font.family: "Roboto"
+        font.family: "Oxanium"
         font.weight: Font.Normal
     }
 
@@ -31,11 +31,11 @@ Item {
         height: 46
         color: "#ffffff"
         text: "Minutes Remaining"
-        font.pixelSize: 15
+        font.pixelSize: 18
         horizontalAlignment: Text.AlignHCenter
         verticalAlignment: Text.AlignVCenter
         wrapMode: Text.Wrap
-        font.family: "Roboto"
+        font.family: "Oxanium"
         font.weight: Font.Normal
     }
 }

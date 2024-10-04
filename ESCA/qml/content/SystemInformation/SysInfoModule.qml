@@ -27,6 +27,7 @@ Rectangle {
             font.pixelSize: 28
             horizontalAlignment: Text.AlignHCenter
             verticalAlignment: Text.AlignVCenter
+            font.family: "Oxanium"
         }
         MouseArea {
             anchors.fill: parent
@@ -53,6 +54,7 @@ Rectangle {
             font.pixelSize: 28
             horizontalAlignment: Text.AlignHCenter
             verticalAlignment: Text.AlignVCenter
+            font.family: "Oxanium"
         }
 
         MouseArea {
@@ -80,6 +82,7 @@ Rectangle {
             font.pixelSize: 28
             horizontalAlignment: Text.AlignHCenter
             verticalAlignment: Text.AlignVCenter
+            font.family: "Oxanium"
         }
         MouseArea {
             anchors.fill: parent
@@ -106,6 +109,7 @@ Rectangle {
             font.pixelSize: 28
             horizontalAlignment: Text.AlignHCenter
             verticalAlignment: Text.AlignVCenter
+            font.family: "Oxanium"
         }
         MouseArea {
             anchors.fill: parent

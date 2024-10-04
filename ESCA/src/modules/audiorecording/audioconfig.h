@@ -21,6 +21,7 @@ class AudioConfig : public QObject
     Q_PROPERTY(QList<QAudioFormat::Endian> listEndianz READ listEndianz WRITE setListEndianz NOTIFY listEndianzChanged FINAL)
     Q_PROPERTY(QList<int> listSampleSize READ listSampleSize WRITE setListSampleSize NOTIFY listSampleSizeChanged FINAL)
     Q_PROPERTY(QStringList listDuration READ listDuration NOTIFY listDurationChanged FINAL)
+    Q_PROPERTY(QStringList listOutput READ listOutput WRITE setListOutput NOTIFY listOutputChanged FINAL)
 
     Q_PROPERTY(QList<int> nearistParams READ nearistParams NOTIFY nearistParamsChanged FINAL)
 
@@ -65,6 +66,9 @@ public:
     QStringList listDuration() const;
     void setlistDuration(const QStringList &newListDuration);
 
+    QStringList listOutput() const;
+    void setListOutput(const QStringList &newListOutput);
+
 signals:
     void listCodecsChanged();
     void listSampleRateChanged();
@@ -79,13 +83,18 @@ signals:
 
     void listDurationChanged();
 
+    void listOutputChanged();
+
 private:
     QAudioDeviceInfo m_deviceInfo;
+    QAudioDeviceInfo m_OutputInfo;
     QAudioFormat m_format;
     QList<QAudioDeviceInfo> cpplistDevices;
+    QList<QAudioDeviceInfo> cpplistOutput;
 
     QStringList listDevicesName;
     QStringList m_listDevices;
+    QStringList m_listOutput;
     QList<int> m_listSampleRate;
     QList<int> m_listChannel;
     QStringList m_listCodecs;
@@ -93,9 +102,10 @@ private:
     QList<int> m_listSampleSize;
     QStringList m_listDuration = {"10s", "Forever"};
 
-    QList<int> m_nearistParams = {0,0,0,0,0,0,0};
+    QList<int> m_nearistParams;
     QSettings m_settings;
     bool m_saveDone = true;
+
 
 };
 

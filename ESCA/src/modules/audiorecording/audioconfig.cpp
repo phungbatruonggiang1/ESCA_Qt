@@ -5,35 +5,49 @@ AudioConfig::AudioConfig(QObject *parent) : QObject{parent}
     int savedDeviceIndex = m_settings.value("audio/device", 0).toInt();  // Load saved device index
     QString savedDeviceName = m_settings.value("audio/deviceName", "default").toString();  // Load saved device name
 
-    m_nearistParams[0] = savedDeviceIndex;
-    m_nearistParams[1] = m_settings.value("audio/codec", 0).toInt();
-    m_nearistParams[2] = m_settings.value("audio/sampleRate", 0).toInt();
-    m_nearistParams[3] = m_settings.value("audio/channel", 0).toInt();
-    m_nearistParams[4] = m_settings.value("audio/endian", 0).toInt();
-    m_nearistParams[5] = m_settings.value("audio/sampleSize", 0).toInt();
-    m_nearistParams[6] = m_settings.value("audio/duration", 0).toInt();
+    m_nearistParams.clear();
+    m_nearistParams.append(savedDeviceIndex);
+    m_nearistParams.append(m_settings.value("audio/codec", 0).toInt());
+    m_nearistParams.append(m_settings.value("audio/sampleRate", 0).toInt());
+    m_nearistParams.append(m_settings.value("audio/channel", 0).toInt());
+    m_nearistParams.append(m_settings.value("audio/endian", 0).toInt());
+    m_nearistParams.append(m_settings.value("audio/sampleSize", 0).toInt());
+    m_nearistParams.append(m_settings.value("audio/duration", 0).toInt());
+
+    emit nearistParamsChanged();
 
     qInfo() << "m_nearistParams: "<<m_nearistParams;
 
     for (auto &deviceInfo : QAudioDeviceInfo::availableDevices(QAudio::AudioInput)) {
         cpplistDevices.append(deviceInfo);
-        listDevicesName.append(deviceInfo.deviceName());
+        m_listDevices.append(deviceInfo.deviceName());
+        // emit listDevicesChanged();
+        // qDebug() << m_listDevices.length();
+    }
+    qDebug() << m_listDevices.length();
+
+    for (auto &outputInfo : QAudioDeviceInfo::availableDevices(QAudio::AudioOutput)) {
+        cpplistOutput.append(outputInfo);
+        m_listOutput.append(outputInfo.deviceName());
         // qDebug() << deviceInfo.deviceName();
     }
 
     // Check if the device index is valid and if the name matches the saved one
-    if (savedDeviceIndex >= 0 && savedDeviceIndex < cpplistDevices.size() && cpplistDevices[savedDeviceIndex].deviceName() == savedDeviceName) {
-        m_deviceInfo = cpplistDevices[0];  // Use the saved index if valid
+    if (savedDeviceIndex >= 0 && savedDeviceIndex < cpplistDevices.size() &&
+        cpplistDevices[savedDeviceIndex].deviceName() == savedDeviceName) {
+        m_deviceInfo = cpplistDevices[savedDeviceIndex];
     } else {
         // If device index is invalid or device name doesn't match, find the device by name
+        bool found = false;
         for (const auto &device : cpplistDevices) {
             if (device.deviceName() == savedDeviceName) {
                 m_deviceInfo = device;
+                found = true;
                 break;
             }
         }
-        if (m_deviceInfo.deviceName() != savedDeviceName) {
-            m_deviceInfo = cpplistDevices[0];  // Default to the first device if no match found
+        if (!found) {
+            m_deviceInfo = cpplistDevices.first();  // Default to the first device if no match found
         }
     }
 
@@ -41,12 +55,10 @@ AudioConfig::AudioConfig(QObject *parent) : QObject{parent}
     m_format.setSampleRate(m_deviceInfo.supportedSampleRates().at(m_nearistParams[2]));
     m_format.setChannelCount(m_deviceInfo.supportedChannelCounts().at(m_nearistParams[3]));
     m_format.setByteOrder(m_deviceInfo.supportedByteOrders().at(m_nearistParams[4]));
-    m_format.setSampleSize(m_deviceInfo.supportedByteOrders().at(m_nearistParams[5]));
+    m_format.setSampleSize(m_deviceInfo.supportedSampleSizes().at(m_nearistParams[5]));
     m_format.setSampleType(QAudioFormat::SignedInt);
 
-    qInfo() << "m_format: "<<m_format;
-    qInfo() << "1: "<< m_format.sampleRate();
-
+    setListDevices(m_listDevices);
     setListSampleRate(m_deviceInfo.supportedSampleRates());
     setListChannel(m_deviceInfo.supportedChannelCounts());
     setListCodecs(m_deviceInfo.supportedCodecs());
@@ -54,6 +66,9 @@ AudioConfig::AudioConfig(QObject *parent) : QObject{parent}
     setListSampleSize(m_deviceInfo.supportedSampleSizes());
 
     connect(QGuiApplication::instance(), &QGuiApplication::aboutToQuit, this, &AudioConfig::saveSettings);
+
+    qInfo() << "Initialized m_nearistParams from settings:" << m_nearistParams << m_deviceInfo.supportedSampleSizes();
+    qInfo() << "m_format: "<<m_format << m_format.sampleSize();
 }
 
 AudioConfig::~AudioConfig()
@@ -74,37 +89,37 @@ void AudioConfig::changeDevice(int idx)
     setListCodecs(m_deviceInfo.supportedCodecs());
     if (!m_deviceInfo.supportedCodecs().empty()) {
         m_format.setCodec(m_deviceInfo.supportedCodecs().at(0));
-        m_nearistParams[1] = 0;  // Cập nhật index codec
+        // m_nearistParams[1] = 0;
     }
 
     setListSampleRate(m_deviceInfo.supportedSampleRates());
     if (!m_deviceInfo.supportedSampleRates().empty()) {
         m_format.setSampleRate(m_deviceInfo.supportedSampleRates().at(0));
-        m_nearistParams[2] = 0;  // Cập nhật index sample rate
+        // m_nearistParams[2] = 0;
     }
 
     setListChannel(m_deviceInfo.supportedChannelCounts());
     if (!m_deviceInfo.supportedChannelCounts().empty()) {
         m_format.setChannelCount(m_deviceInfo.supportedChannelCounts().at(0));
-        m_nearistParams[3] = 0;  // Cập nhật index channel
+        // m_nearistParams[3] = 0;
     }
 
     setListEndianz(m_deviceInfo.supportedByteOrders());
     if (!m_deviceInfo.supportedByteOrders().empty()) {
         m_format.setByteOrder(m_deviceInfo.supportedByteOrders().at(0));
-        m_nearistParams[4] = 0;  // Cập nhật index endian
+        // m_nearistParams[4] = 0;
     }
 
     setListSampleSize(m_deviceInfo.supportedSampleSizes());
     if (!m_deviceInfo.supportedSampleSizes().empty()) {
         m_format.setSampleSize(m_deviceInfo.supportedSampleSizes().at(0));
-        m_nearistParams[5] = 0;  // Cập nhật index sample size
+        // m_nearistParams[5] = 0;
     }
 }
 
 QStringList AudioConfig::listDevices() const
 {
-    return listDevicesName;
+    return m_listDevices;
 }
 void AudioConfig::setListDevices(const QStringList &newListDevices)
 {
@@ -112,6 +127,19 @@ void AudioConfig::setListDevices(const QStringList &newListDevices)
         return;
     m_listDevices = newListDevices;
     emit listDevicesChanged();
+}
+
+QStringList AudioConfig::listOutput() const
+{
+    return m_listOutput;
+}
+
+void AudioConfig::setListOutput(const QStringList &newListOutput)
+{
+    if (m_listOutput == newListOutput)
+        return;
+    m_listOutput = newListOutput;
+    emit listOutputChanged();
 }
 
 QList<int> AudioConfig::listSampleRate() const
@@ -185,7 +213,7 @@ void AudioConfig::saveConfig(int device, int codec, int sampleRate, int channel,
 {
     m_nearistParams = {device, codec, sampleRate, channel, endian, sampleSize, duration};
 
-    qInfo()<< "save params qml: " << m_nearistParams << listChannel();
+    qInfo()<< "save params qml: " << m_nearistParams;
 
     // int checkVar = 0;
     m_deviceInfo = cpplistDevices[device];
@@ -199,7 +227,7 @@ void AudioConfig::saveConfig(int device, int codec, int sampleRate, int channel,
 
         setSaveDone(false);
 
-        qWarning() << "Default format not supported -use nearist format";
+        qWarning() << "Default format not supported - use nearist format";
         m_format = m_deviceInfo.nearestFormat(m_format);
 
         m_nearistParams[1] = m_deviceInfo.supportedCodecs().indexOf(m_format.codec());
@@ -207,12 +235,15 @@ void AudioConfig::saveConfig(int device, int codec, int sampleRate, int channel,
         m_nearistParams[3] = m_deviceInfo.supportedChannelCounts().indexOf(m_format.channelCount());
         m_nearistParams[4] = m_deviceInfo.supportedByteOrders().indexOf(m_format.byteOrder());
         m_nearistParams[5] = m_deviceInfo.supportedSampleSizes().indexOf(m_format.sampleSize());
+        emit nearistParamsChanged();
     }
 
-    QString iniFilePath = m_settings.fileName();
-    qDebug() << "INI File Path:" << iniFilePath;
-    qInfo()<< "save params c++: " << m_nearistParams;
-    qInfo()<< "is save params true: " << m_deviceInfo.isFormatSupported(m_format);
+    // saveSettings();
+
+    // QString iniFilePath = m_settings.fileName();
+    // qDebug() << "INI File Path:" << iniFilePath;
+    // qInfo()<< "save params c++: " << m_nearistParams;
+    // qInfo()<< "is save params true: " << m_deviceInfo.isFormatSupported(m_format);
 }
 
 QAudioDeviceInfo AudioConfig::deviceInfo() /*const*/
@@ -280,8 +311,6 @@ void AudioConfig::saveSettings()
     } else {
         qInfo() << "Settings saved successfully.";
     }
-    qInfo() << "Configuration saved on exit." << m_settings.value("audio/device");
+    qInfo() << "Configuration saved on exit." << m_settings.value("audio/device") <<m_settings.value("audio/sampleSize");
 }
-
-
 
