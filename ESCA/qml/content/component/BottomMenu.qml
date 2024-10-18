@@ -4,11 +4,11 @@ import ProjectImport 1.0
 
 Rectangle {
     width: Constants.width
-    height: 90
+    height: 50
     anchors.bottom: parent.bottom
     color: Constants.darkColor
 
-    property int selectedIndex: -1
+    property int selectedIndex: 0
 
     ListModel {
         id: buttonModel
@@ -23,7 +23,7 @@ Rectangle {
 
     Row {
         width: parent.width
-        height: 90
+        height: 50
         anchors.centerIn: parent
         spacing: 8
 

@@ -41,7 +41,7 @@ Item {
                 begin: -180
                 capStyle: 32
                 strokeWidth: 9
-                strokeColor: "#e9e755"
+                strokeColor: "#00DFFE"
                 fillColor: "#00000000"
             }
         }

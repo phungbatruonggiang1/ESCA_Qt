@@ -4,7 +4,7 @@ import AudioChartImport 1.0
 
 Rectangle {
     width: 800
-    height: 440
+    height: 480
     color: "#1e1e1e"
     radius: 20
 
@@ -82,7 +82,7 @@ Rectangle {
         function onAudioSeriesChanged() {
             audioData = AudioChart.audioSeries;  // Lấy dữ liệu audio từ AudioChart
             audioWaveform.requestPaint();  // Yêu cầu canvas vẽ lại
-            console.log("Audio data received:", AudioChart.audioSeries.length);
+            // console.log("Audio data received:", AudioChart.audioSeries);
         }
     }
 }

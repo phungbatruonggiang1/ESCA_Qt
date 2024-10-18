@@ -3,21 +3,48 @@
 #include <QAudioFormat>
 #include <QByteArray>
 #include <QDir>
+#include <QMutex>
+#include <QDataStream>
+#include <QDateTime>
 
-class AudioFile {
+
+class AudioFile : public QObject{
+
+    Q_OBJECT
+
 public:
-    AudioFile();
+    AudioFile(const QString &outputDir,
+              const QAudioFormat &format,
+              double durationSeconds = 10.0,
+              QObject *parent = nullptr);
+
     ~AudioFile();
 
-    bool startRecording(const QString &fileName, const QAudioFormat &format);
-    void writeAudioData(const QByteArray &data);
+public slots:
+    void startRecording();
     void stopRecording();
 
-private:
-    QFile wavFile;
-    QAudioFormat audioFormat;
-    qint64 dataSize;
+    void writeAudioData(const QByteArray &data);
+    void writeDataForever(const QByteArray &data);
 
-    void writeWavHeader();
-    void finalizeWavHeader();
+
+private:
+    QString m_outputDir;
+    QAudioFormat m_audioFormat;
+    double m_durationSeconds;
+    quint32 m_chunkSize;
+
+    QFile m_outFile;    
+    // int m_fileIndex;
+    quint32 dataSize;
+    QMutex m_mutex;
+
+    QByteArray m_buffer1;
+    QByteArray m_buffer2;
+    bool m_usingBuffer1;
+
+    void createFile();
+    void writeWavHeader(quint32 dataSize);
+    void finalizeWavHeader(quint32 dataSize);
+
 };

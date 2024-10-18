@@ -45,7 +45,7 @@ Rectangle {
                 model: FolderListModel {
                     id: folderListModel
                     showDirsFirst: true
-                    folder: "file:///home/zenodu/Projects/ESCA_Qt/ESCA/data"
+                    folder: "file:///home/haiminh/Desktop/ESCA_Qt/ESCA/data"
                     property var folderStack: []
                     onFolderChanged: {
                         folderStack.push(folder)
@@ -184,8 +184,8 @@ Rectangle {
                 }
                 FolderDialog {
                     id: folderDialog
-                    currentFolder: "file:///home/zenodu/Desktop"
-                    folder: "file:///home/zenodu/Projects/ESCA_Qt/ESCA/data"
+                    currentFolder: "file:///home/haiminh/Desktop/ESCA_Qt/ESCA/data"
+                    folder: "file:///home/haiminh/Desktop/ESCA_Qt/ESCA/data"
                     onAccepted: {
                         text3.text = folderDialog.folder
                         folderListModel.folder = folderDialog.folder

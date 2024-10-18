@@ -8,7 +8,7 @@ Rectangle {
 
     Text {
         id: text1
-        color: "#ffffff"
+        color: "#00DFFE"
         text: qsTr("D-ESCA3")
         anchors.fill: parent
         font.pixelSize: 36

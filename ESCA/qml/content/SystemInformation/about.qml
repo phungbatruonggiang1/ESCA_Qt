@@ -45,7 +45,8 @@ Rectangle {
         y: 287
         color: "#ffffff"
         text: qsTr("Environmental Sound Collection and Analysis embedded applications")
-        font.pixelSize: 18
+        font.pixelSize: 20
+        font.family: "Oxanium"
     }
     Text {
         id: text5
@@ -53,7 +54,8 @@ Rectangle {
         y: 328
         color: "#ffffff"
         text: qsTr("HUST Industry-Academia Collaboration Project")
-        font.pixelSize: 23
+        font.pixelSize: 25
+        font.family: "Oxanium"
     }
 
     Text {
@@ -63,6 +65,7 @@ Rectangle {
         color: "#ffffff"
         text: qsTr("© Copyright by ESCA3 2023")
         font.pixelSize: 12
+        font.family: "Oxanium"
     }
 
 }

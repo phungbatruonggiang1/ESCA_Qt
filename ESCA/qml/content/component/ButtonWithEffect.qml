@@ -3,17 +3,9 @@ import QtQuick 2.15
 Rectangle {
     id: recordRec
     width: 140
-    height: 90
+    height: 50
     color: "#000000"
     radius: 1000
-
-    Image {
-        id: rcdImg
-        x: 57
-        y: 9
-        source: model.index === selectedIndex ? "../images/rcdFocus.png" : "../images/rcd.png"
-        fillMode: Image.PreserveAspectFit
-    }
 
     Text {
         id: buttonTx
@@ -22,8 +14,8 @@ Rectangle {
         font.pointSize: 14
         font.styleName: "Regular"
         font.family: "Oxanium"
-        anchors.verticalCenterOffset: 24
-        anchors.horizontalCenterOffset: 0
+        anchors.verticalCenterOffset: 0
+        anchors.horizontalCenterOffset: 3
         color: model.index === selectedIndex ? "#00DFFE" : "#7F7E8C"
     }
 
