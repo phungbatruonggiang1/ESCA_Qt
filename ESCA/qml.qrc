@@ -1,35 +1,3 @@
 <RCC>
-    <qresource prefix="/">
-        <file>ui/assets/backgroundElipse1.png</file>
-        <file>ui/assets/btn.png</file>
-        <file>ui/assets/Gravity Forces Blue Icon Game Presentation(10).svg</file>
-        <file>ui/assets/outlineElipse1.png</file>
-        <file>ui/assets/rec.png</file>
-        <file>ui/assets/robot.png</file>
-        <file>ui/assets/zoro.png</file>
-        <file>ui/assets/defaultLearningImg.png</file>
-        <file>ui/assets/exResourceMonitoring.png</file>
-        <file>ui/assets/chart-line-solid.svg</file>
-        <file>ui/assets/laptop-file-solid.svg</file>
-        <file>ui/assets/shuffle-solid.svg</file>
-        <file>ui/assets/microphone-solid.svg</file>
-        <file>ui/assets/lightbulb-regular.svg</file>
-        <file>ui/assets/microchip-solid.svg</file>
-        <file>ui/assets/folder-open-regular.svg</file>
-        <file>ui/assets/no_image.jpg</file>
-        <file>ui/assets/gear-solid.svg</file>
-        <file>ui/components/BottomBar.qml</file>
-        <file>ui/components/CpuFrame.qml</file>
-        <file>ui/components/GpuFrame.qml</file>
-        <file>ui/components/RamFrame.qml</file>
-        <file>ui/components/TopBar.qml</file>
-        <file>ui/components/UsageTextElement.qml</file>
-        <file>ui/main.qml</file>
-        <file>ui/layout/home.qml</file>
-        <file>ui/modules/recording/recordingSound.qml</file>
-        <file>ui/modules/recording/systemConfig.qml</file>
-        <file>ui/components/ButtonWithEffect.qml</file>
-        <file>ui/components/StatusLight.qml</file>
-        <file>ui/layout/RecordModule.qml</file>
-    </qresource>
+    <qresource prefix="/"/>
 </RCC>

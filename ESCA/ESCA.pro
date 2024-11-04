@@ -6,8 +6,10 @@ QT += qml multimedia widgets network quick virtualkeyboard
 
 SOURCES += \
     main.cpp \
-    src/common/file/accessfile.cpp \
     src/common/process/process.cpp \
+    src/modules/aiprocess/aicontroller.cpp \
+    src/modules/aiprocess/dbusmanager.cpp \
+    src/modules/aiprocess/pythonprocessmanager.cpp \
     src/modules/audiomanipulation/audiomanipulation.cpp \
     src/modules/audiorecording/audioconfig.cpp \
     src/modules/audiorecording/audiofile.cpp \
@@ -36,10 +38,12 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
 
 HEADERS += \
-    src/common/chartview.h \
-    src/common/file/accessfile.h \
+    # src/common/chartview.h \
     src/common/process/process.h \
     src/config/config.h \
+    src/modules/aiprocess/aicontroller.h \
+    src/modules/aiprocess/dbusmanager.h \
+    src/modules/aiprocess/pythonprocessmanager.h \
     src/modules/audiomanipulation/audiomanipulation.h \
     src/modules/audiorecording/audioconfig.h \
     src/modules/audiorecording/audiofile.h \

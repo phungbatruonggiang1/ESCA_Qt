@@ -10,7 +10,7 @@ Rectangle {
         id: frame_27
         width: 1024
         height: 500
-        color: "#262e4b"
+        color: "#2a2a2a"
         property alias model_name_to_outputText: model_name_to_output.text
         property alias select_folder_to_storedText: select_folder_to_stored.text
         property alias executionText: execution.text

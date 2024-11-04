@@ -7,7 +7,7 @@ Rectangle {
     id: rectangle
     width: 1024
     height: 480
-    color: "#272d37"
+    color: "#2a2a2a"
 
     // graph
     CpuFrame{

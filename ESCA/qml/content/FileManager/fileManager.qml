@@ -14,7 +14,7 @@ Rectangle {
     id: frame_1
     width: 800
     height: 440
-    color: "transparent"
+    color: "#2a2a2a"
 
     // tool Bar
     Rectangle {
@@ -23,7 +23,7 @@ Rectangle {
         y: 0
         width: 801
         height: 480
-        color: "#272D37"
+        color: "#2a2a2a"
 
         // ListView Folder and File
         Rectangle {

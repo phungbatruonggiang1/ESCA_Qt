@@ -5,7 +5,7 @@ import "../component"
 Rectangle {
     width: 1000
     height: 420
-    color: "#272d37"  
+    color: "#2a2a2a"
 
     // TEMP COMPONENT
 

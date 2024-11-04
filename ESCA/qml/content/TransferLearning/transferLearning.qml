@@ -15,7 +15,7 @@ Rectangle {
         y: 0
         width: 1024
         height: 500
-        color: "#272D37"
+        color: "#2a2a2a"
     }
 
     Image {

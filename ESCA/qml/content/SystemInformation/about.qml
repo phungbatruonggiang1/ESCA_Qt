@@ -7,7 +7,7 @@ import Qt.labs.folderlistmodel 2.6
 Rectangle {
     width: 1024
     height: 500
-    color: "#272d37"
+    color: "#2a2a2a"
 
     Image {
         id: image1

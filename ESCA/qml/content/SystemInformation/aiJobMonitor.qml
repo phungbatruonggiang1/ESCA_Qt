@@ -7,7 +7,7 @@ import Qt.labs.folderlistmodel 2.6
 Rectangle {
     width: 800
     height: 440
-    color: "#272d37"
+    color: "#2a2a2a"
 
     // filemanager
 

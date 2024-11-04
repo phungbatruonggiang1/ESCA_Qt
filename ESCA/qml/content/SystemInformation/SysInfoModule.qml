@@ -5,7 +5,7 @@ Rectangle {
     id: rectangle4
     width: 1024
     height: 460
-    color: "#272d37"
+    color: "#2a2a2a"
 
     property string selectedButton: "about"  // Biến để lưu trang hiện tại
 

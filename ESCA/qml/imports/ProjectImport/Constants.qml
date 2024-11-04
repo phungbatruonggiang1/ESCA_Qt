@@ -5,7 +5,7 @@ QtObject {
     readonly property int width: 1024
     readonly property int height: 600
     readonly property string darkColor: "#000000"
-    readonly property color backgroundColor: "#1F1F1F"
+    readonly property color backgroundColor: "#2a2a2a"
     readonly property color defaultColor: "#7F7E8C"
     readonly property color focusColor: "#00DFFE"
 

@@ -8,7 +8,7 @@ import "../component"
 Rectangle {
     width: Constants.width
     height: Constants.height - 100
-    color: Constants.backgroundColor
+    color: "#000000"
 
     property string selectedBtn: "visualize"
     property bool recStatus: RecordingObject.recStatus
@@ -16,9 +16,9 @@ Rectangle {
     Rectangle {
         id: rectangle
         x: 13
-        y: 10
+        y: 0
         width: 180
-        height: 482
+        height: 500
         color: "#161525"
         radius: 20
 
@@ -157,8 +157,8 @@ Rectangle {
         id: contentRec
         x: 207
         y: 0
-        width: 809
-        height: 492
+        width: 802
+        height: 500
         color: "#2a2a2a"
         radius: 21
 
