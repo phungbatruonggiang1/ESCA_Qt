@@ -10,6 +10,7 @@
 #include "./src/modules/audiorecording/audioconfig.h"
 #include "./src/modules/systeminformation/systeminformationcontroller.h"
 #include "./src/modules/filemanager/FileIO.h"
+#include "./src/modules/aiprocess/aicontroller.h"
 
 int main(int argc, char *argv[])
 {
@@ -22,6 +23,7 @@ int main(int argc, char *argv[])
 
     RecordingController recordingController;
     SystemInformationController systemInformationController;
+    AIController aiController;
 
     // AudioConfig audioConfig;
     QQmlApplicationEngine engine;
@@ -31,6 +33,7 @@ int main(int argc, char *argv[])
 
     engine.rootContext()->setContextProperty("RecordingObject", &recordingController);
     engine.rootContext()->setContextProperty("BackendObject", &systemInformationController);
+    engine.rootContext()->setContextProperty("AIObject", &aiController);
 
     qmlRegisterType<FileIO>("FileIO", 1, 0, "FileIO");
 

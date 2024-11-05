@@ -18,6 +18,12 @@ public:
     void setScriptPath(const QString &path);
     QString scriptPath() const;
 
+signals:
+    void resultReceived(const QByteArray &result);
+
+private slots:
+    void handleStandardOutput();
+
 private:
     QString m_scriptPath;
 };

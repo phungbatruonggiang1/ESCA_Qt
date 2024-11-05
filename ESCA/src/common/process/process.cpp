@@ -6,7 +6,7 @@ Process::Process(QObject* parent) : QObject(parent){
     connect(&m_process, &QProcess::readyReadStandardOutput, this, &Process::readyReadStandardOutput);
     connect(&m_process, &QProcess::started, this, &Process::started);
     connect(&m_process, &QProcess::stateChanged, this, &Process::stateChanged);
-    connect(&m_process, &QProcess::readyRead, this, &Process::readyRead);
+    // connect(&m_process, &QProcess::readyRead, this, &Process::readyRead);
 
     m_running = false;
     // finished is overloaded
@@ -23,7 +23,6 @@ void Process::start()
     qInfo() << Q_FUNC_INFO;
     m_running = true;
     m_process.start(getProcess());
-
 }
 
 void Process::stop()
@@ -63,7 +62,8 @@ void Process::readyReadStandardOutput()
 {
     if(!m_running) return;
     qInfo() << Q_FUNC_INFO;
-    QByteArray data = m_process.readAllStandardOutput();
+    QByteArray data = m_process.readAll().trimmed();
+    // QByteArray data = m_process.readAllStandardOutput();
     qInfo() << QString(data.trimmed());
 }
 
@@ -96,8 +96,7 @@ void Process::readyRead()
     qInfo() << Q_FUNC_INFO;
     QByteArray data = m_process.readAll().trimmed();
     qInfo() << data;
-    // emit output(data);
-
+    // emit sendLog(data);
 }
 
 QString Process::statement() const

@@ -3,18 +3,13 @@ import QtQuick.Controls 2.12
 import QtQuick.Dialogs 1.0
 // import Qt.labs.platform 1.0
 
-
-
 Rectangle {
     id: frame_1
     width: 1024
     height: 500
     color: "#000000"
 
-    property string datasource: ''
-    property string model: ''
-    // HEADER
-    // End header
+    property bool aiStatus: AIObject.isRunning
 
     Rectangle {
         id: rectangle
@@ -23,6 +18,7 @@ Rectangle {
         width: 985
         height: 128
         color: "#2a2a2a"
+        radius: 20
 
         Text {
             id: select_folder_to_store2
@@ -201,6 +197,12 @@ Rectangle {
             width: 137
             height: 74
             text: qsTr("Start")
+
+            onClicked: {
+                if (!aiStatus) {
+                    AIObject.startAIProcess();
+                }
+            }
         }
     }
 
@@ -211,5 +213,17 @@ Rectangle {
         width: 985
         height: 354
         color: "#2a2a2a"
+        radius: 20
+
+        Text {
+            id: minhtestTx
+            x: 333
+            y: 62
+            width: 96
+            height: 42
+            text: AIObject.inferenceResult
+            font.pixelSize: 24
+            font.family: "Oxanium"
+        }
     }
 }

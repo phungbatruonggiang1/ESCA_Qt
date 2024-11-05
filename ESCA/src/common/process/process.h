@@ -18,6 +18,9 @@ public:
     QString statement() const;
     void setStatement(const QString &newStatement);
 
+signals:
+    void sendLog(QByteArray data);
+
 public slots:
     void start();
     void stop();
@@ -32,12 +35,15 @@ private slots:
     void readyRead();
 
 
-private:
+protected:
     QProcess m_process;
-    QString m_statement;
-    bool m_running;
     QString getProcess();
     void startProcess();
+
+private:
+    QString m_statement;
+    bool m_running;
+
 };
 
 #endif // PROCESS_H
