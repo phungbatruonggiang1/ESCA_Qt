@@ -192,3 +192,27 @@ Check the memory consumption, CPU, GPU performance, network connection, peripher
 + manage the processes by Qt -> research more QProcess
 
 
+
+
+I would like summary about the Yocto project at the moment and plan the yocto for ESCA in the fucture.
+Add successfully meta-qt5 in the Yocto project
+Add cuda toolkit - just build for testing
+
+Next:
+Add an example Qt for yocto project and poweron, testing
+Add ESCA project to Yocto project and run with the user priviledge
+Compile ESCA like a user service and add into the multi-user target that manage by systemd in order to startup when poweron machine
+
+
+
+---------------------------------
+Maintance the function:
+Recording
+Inference -> test cuda toolkit and other libs on jetson nano
+Monitoring
+File management
+Extract audio features. -> test python on Jetson Nano
+
+Let's check the memory consumption -> statistic and analysis
+
+
