@@ -5,7 +5,6 @@
 #include <qqml.h>
 #include <QtCore/QIODevice>
 #include <QtCore/QVector>
-#include <QtCharts/QChartGlobal>
 #include <QAudioFormat>
 #include <qendian.h>
 #include <QTimer>
