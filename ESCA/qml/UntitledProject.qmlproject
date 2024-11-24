@@ -74,7 +74,6 @@ Project {
         QT_AUTO_SCREEN_SCALE_FACTOR: "1"
         QML_COMPAT_RESOLVE_URLS_ON_ASSIGNMENT: "1"
         QMLSCENE_CORE_PROFILE: "true" // Required for macOS, but can create issues on embedded Linux
-        QT_IM_MODULE: "qtvirtualkeyboard"
         QT_VIRTUALKEYBOARD_DESKTOP_DISABLE: 1
         QT_LOGGING_RULES: "qt.qml.connections=false"
         QT_ENABLE_HIGHDPI_SCALING: "0"
