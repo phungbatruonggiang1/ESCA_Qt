@@ -4,7 +4,6 @@
 import QtQuick 2.15
 import QtQuick.Controls 2.15
 import ProjectImport 1.0 // IMport component: Constants, Animation, ...
-import QtQuick.VirtualKeyboard 2.15
 import "component"
 
 ApplicationWindow {
@@ -30,20 +29,5 @@ ApplicationWindow {
         id: mainmenu
     }
 
-    InputPanel {
-        id: inputPanel
-        y: Constants.showKeyboard ? parent.height - height : parent.height
-        Behavior on y {     // animation chuyển động trượt lênS
-            NumberAnimation {
-                duration: 200
-                easing.type: Easing.InOutQuad
-            }
-        }
-        anchors.leftMargin: Constants.width/10
-        anchors.rightMargin: Constants.width/10
-        anchors.left: parent.left
-        anchors.right: parent.right
-
-    }
 }
 
