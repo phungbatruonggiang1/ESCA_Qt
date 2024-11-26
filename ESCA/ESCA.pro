@@ -8,8 +8,9 @@ SOURCES += \
     main.cpp \
     src/common/process/process.cpp \
     src/modules/aiprocess/aicontroller.cpp \
-    src/modules/aiprocess/dbusmanager.cpp \
-    src/modules/aiprocess/pythonprocessmanager.cpp \
+    src/modules/aiprocess/configurationmanager.cpp \
+    src/modules/aiprocess/processmanager.cpp \
+    src/modules/aiprocess/sharedmemorymanager.cpp \
     src/modules/audiomanipulation/audiomanipulation.cpp \
     src/modules/audiorecording/audioconfig.cpp \
     src/modules/audiorecording/audiofile.cpp \
@@ -42,8 +43,9 @@ HEADERS += \
     src/common/process/process.h \
     src/config/config.h \
     src/modules/aiprocess/aicontroller.h \
-    src/modules/aiprocess/dbusmanager.h \
-    src/modules/aiprocess/pythonprocessmanager.h \
+    src/modules/aiprocess/configurationmanager.h \
+    src/modules/aiprocess/processmanager.h \
+    src/modules/aiprocess/sharedmemorymanager.h \
     src/modules/audiomanipulation/audiomanipulation.h \
     src/modules/audiorecording/audioconfig.h \
     src/modules/audiorecording/audiofile.h \

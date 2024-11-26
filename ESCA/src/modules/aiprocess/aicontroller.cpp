@@ -1,61 +1,56 @@
-// AIController.cpp
 #include "aicontroller.h"
 #include <QDebug>
 
-AIController::AIController(QObject *parent)
-    : QObject(parent),
-    m_dbusManager(new DBusManager(this)),
-    m_pythonProcessManager(new PythonProcessManager(this))
+AIController::AIController(QObject *parent) : QObject(parent)
 {
-/*    // Kết nối các tín hiệu từ DBusManager đến các slot của AIController
-    connect(m_dbusManager, &DBusManager::detectionResult, this, &AIController::onDetectionResult);
-    connect(m_dbusManager, &DBusManager::error, this, &AIController::onProcessError);
+    // configManager = new ConfigurationManager(this);
+    // sharedMemoryManager = new SharedMemoryManager(this);
+    processManager = new ProcessManager(this);
 
-    // Kết nối tín hiệu từ PythonProcessManager
-    connect(m_pythonProcessManager, &PythonProcessManager::processError, this, &AIController::onProcessError);
-    connect(m_pythonProcessManager, &PythonProcessManager::processOutput, this, &AIController::onProcessError); */// Tùy chỉnh nếu cần
-
-    connect(m_pythonProcessManager, &PythonProcessManager::resultReceived, this, &AIController::onDetectionResult);
-
+    // Kết nối tín hiệu từ ProcessManager tới AIController
+    connect(processManager, &ProcessManager::resultReceived, this, &AIController::handleInferenceResult);
 }
 
 AIController::~AIController()
 {
-    stopAIProcess();
+    stop();
 }
 
-void AIController::startAIProcess()
+void AIController::start()
 {
-    qInfo() << "Starting AI Process...";   
-    m_pythonProcessManager->startPythonService();
+    // Đọc cấu hình
+    // if (!configManager->loadConfig("python_ai/ai_module/config/config.json")) {
+    //     qWarning() << "Failed to load configuration.";
+    //     return;
+    // }
 
-    setIsRunning(true);
-
+    processManager->startPythonService();
 }
 
-void AIController::stopAIProcess()
+void AIController::stop()
 {
-    qInfo() << "Stopping AI Process...";
-    m_pythonProcessManager->stopPythonService();
+    // // Dừng ghi âm
+    // audioRecorder->stopRecording();
 
-    setIsRunning(false);
+    // // Dừng tiến trình Python
+    // processManager->stopProcess();
+    processManager->stopPythonService();
 }
 
-void AIController::initiateDetection(const QString &parameter)
+void AIController::handleInferenceResult(const float predValue)
 {
-    // m_dbusManager->startDetection(parameter);
-}
+    if (predValue) {
+        m_predValue.push_back(predValue);
 
-void AIController::onDetectionResult(const QByteArray &result)
-{
-    qDebug() << "Detection Result:" << result;
-    setInferenceResult(result+"");
-}
+        if (m_predValue.size() > 50) { // Giới hạn số cột hiển thị
+            m_predValue.removeFirst();
+        }
 
-void AIController::onProcessError(const QString &error)
-{
-    qDebug() << "Process Error:" << error;
-    emit errorOccurred(error);
+        emit predValueChanged();
+        // qDebug() << "Data arr: "<<m_predValue;
+    } else {
+        // qDebug() << "Data loi ne cau =0, hoac toan chu b";
+    }
 }
 
 bool AIController::isRunning() const
@@ -71,28 +66,8 @@ void AIController::setIsRunning(bool newIsRunning)
     emit isRunningChanged();
 }
 
-QString AIController::inferenceResult() const
+QVector<float> AIController::predValue() const
 {
-    return m_inferenceResult;
+    return m_predValue;
 }
 
-void AIController::setInferenceResult(const QString &newInferenceResult)
-{
-    if (m_inferenceResult == newInferenceResult)
-        return;
-    m_inferenceResult = newInferenceResult;
-    emit inferenceResultChanged();
-}
-
-QString AIController::errMessage() const
-{
-    return m_errMessage;
-}
-
-void AIController::setErrMessage(const QString &newErrMessage)
-{
-    if (m_errMessage == newErrMessage)
-        return;
-    m_errMessage = newErrMessage;
-    emit errMessageChanged();
-}

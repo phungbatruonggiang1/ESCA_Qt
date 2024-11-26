@@ -78,7 +78,8 @@ void AudioFile::createFile()
 {
     QDateTime local(QDateTime::currentDateTime());
     // qInfo() << "I'm creating an audio file " << local.toTime_t();
-    QString fileName = QString("%1/test-%2.wav").arg("/home/haiminh/Desktop/ESCA_Qt/ESCA/data").arg(local.toTime_t());
+    // QString fileName = QString("%1/test-%2.wav").arg("/home/haiminh/Desktop/ESCA_Qt/AI_Module/result/rt_test_result/record").arg(local.toTime_t());
+    QString fileName = QString("%1/basefile.wav%2").arg("/home/haiminh/Desktop/ESCA_Qt/ESCA/data").arg(local.toTime_t());
 
     m_outFile.setFileName(fileName);
     if (!m_outFile.open(QIODevice::WriteOnly)) {
@@ -88,7 +89,7 @@ void AudioFile::createFile()
 
     // Write WAV header with dataSize = 0 (updated sau)
     writeWavHeader(0);
-    qDebug() << "Created file:" << fileName;
+    // qDebug() << "Created file:" << fileName;
 }
 
 void AudioFile::writeWavHeader(quint32 dataSize) {
@@ -180,7 +181,7 @@ void AudioFile::writeAudioData(const QByteArray &data) {
         // Ghi dữ liệu vào file
         m_outFile.write(currentBuffer.left(m_chunkSize));
         m_outFile.flush(); // Đảm bảo dữ liệu được ghi ngay lập tức
-        qDebug() << "Wrote" << m_chunkSize << "bytes to file:" << m_outFile.fileName();
+        // qDebug() << "Wrote" << m_chunkSize << "bytes to file:" << m_outFile.fileName();
 
         // Fill in dataSize into header, finalize current file's WAV header
         finalizeWavHeader(m_outFile.size()-44);

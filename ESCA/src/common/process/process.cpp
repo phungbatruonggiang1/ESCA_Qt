@@ -51,7 +51,7 @@ void Process::finished(int exitCode, QProcess::ExitStatus exitStatus)
 void Process::readyReadStandardError()
 {
     if(!m_running) return;
-    qInfo() << Q_FUNC_INFO;
+    // qInfo() << Q_FUNC_INFO;
     QByteArray data = m_process.readAllStandardError();
     QString message = "Standard Error: ";
     message.append(m_process.readAllStandardError());
@@ -61,7 +61,7 @@ void Process::readyReadStandardError()
 void Process::readyReadStandardOutput()
 {
     if(!m_running) return;
-    qInfo() << Q_FUNC_INFO;
+    // qInfo() << Q_FUNC_INFO;
     QByteArray data = m_process.readAll().trimmed();
     // QByteArray data = m_process.readAllStandardOutput();
     qInfo() << QString(data.trimmed());

@@ -1,175 +1,360 @@
 import QtQuick 2.15
 import QtQuick.Controls 2.15
-import QtCharts 2.6
-import QtMultimedia 5.15
-
+import QtQuick.Layouts 1.15
 
 Rectangle {
-    id: rectangle
-    x: 0
-    y: -1
+    id: realtimeConfigWindow
     width: 1024
     height: 500
-    color: "#272d37"
+    color: "#151515" // Nền đen
+    radius: 10
+    border.color: "#414141"
 
-//    Item {
-//        Text
-//        {
-//            anchors.top: parent.top
-//            color: "white"
-//            text: "Audio data received from C++: "
-//        }
-//    }
+    // Bố cục chính
+    ColumnLayout {
+        x: 106
+        y: 31
+        width: 812
+        height: 89
+        spacing: 15
 
-//    ChartView {
-//        x: 111
-//        y: 71
-//        title: "Line Chart"
-//        width: 800
-//        height: 400
-//        anchors.centerIn: parent
-//        antialiasing: true
-
-//        LineSeries {
-//            id: series
-//            name: "Real-time Data"
-//            axisX: ValueAxis {
-//                id: axisX
-//                min: 1
-//                max: 1028   // Giá trị tối đa hiển thị trên trục X
-//                tickCount: 11
-//            }
-//            axisY: ValueAxis {
-//                id: axisY
-//                min: -105
-//                max: 105
-//                tickCount: 11
-//            }
-//        }
-
-//        Timer {
-//            interval: 1 // Mỗi 10ms cập nhật một lần // em chua biet dung nhieu cho toi uu
-//            running: true
-//            repeat: true
-//            onTriggered: {
-
-//                for (let i = 1028; i >= 0; i--) {
-//                    var xValue = series.count; // truc x la thoi gian ( tai thoi diem chay trong for :3)
-//                    var yValue = audioDataFromCpp[i];
-////                  var yValue = Math.sin(xValue / 10);
-//                    series.append(xValue, yValue);
-//                }
-//                // Cập nhật giá trị tối đa trên trục X nếu cần
-//                if (xValue > axisX.max)
-//                    axisX.max = xValue;
-//                axisX.min = xValue - 1028;   //set lai gia tri toi da de chart chay lien tuc
-//                // Cập nhật giá trị tối đa trên trục Y nếu cần
-//                if (yValue > axisY.max)
-//                    axisY.max = yValue;
-//            }
-//        }
-//    }
-    Rectangle {
-        id: rectangle3
-        x: 82
-        y: 8
-        width: 380
-        height: 52
-        color: "#69000822"
-        radius: 8
+        // Tiêu đề
         Text {
-            id: text3
-            color: "#ffffff"
-            text: qsTr("Data")
-            anchors.fill: parent
-            font.pixelSize: 33
+            text: "REALTIME Configuration"
+            font.pixelSize: 24
+            font.family: "Oxanium"
+            font.bold: true
+            color: "#FFFFFF"
             horizontalAlignment: Text.AlignHCenter
-            verticalAlignment: Text.AlignVCenter
+            Layout.alignment: Qt.AlignHCenter
         }
 
-        MouseArea {
-            anchors.fill: parent
-            onClicked: {
-                    loader.source = "realTimeInference_data.qml"
+        RowLayout {
+            Layout.fillWidth: true
+            spacing: 10
+
+            Text {
+                text: "Log Path:"
+                color: "#FFFFFF"
+                Layout.alignment: Qt.AlignLeft
+                Layout.minimumWidth: 200
+                font.pointSize: 14
+                font.family: "Oxanium"
+            }
+
+            Rectangle {
+                width: 600
+                height: 30
+                color: "#222222"
+                radius: 5
+                border.color: "#FFFFFF"
+
+                TextInput {
+                    id: logPathInput
+                    anchors.fill: parent
+                    anchors.margins: 5
+                    text: ConfigManager.logPath
+                    color: "#FFFFFF"
+                    onTextChanged: {
+                        ConfigManager.logPath = text
+                        ConfigManager.saveConfig("/home/haiminh/Desktop/Anomaly_Detection/D-ESCA_v2/config/default.json")
+                    }
                 }
+            }
         }
-    }
-    Rectangle {
-        id: result
-        x: 541
-        y: 8
-        width: 414
-        height: 52
-        color: "#394251"
-        radius: 8
 
-        Text {
-            id: text1
-            color: "#ffffff"
-            text: qsTr("Result")
-            anchors.fill: parent
-            font.pixelSize: 33
-            horizontalAlignment: Text.AlignHCenter
-            verticalAlignment: Text.AlignVCenter
+        // Hàng cho từng tham số
+    }
+
+    ColumnLayout {
+        x: 152
+        y: 140
+        spacing: 15
+
+        RowLayout {
+            Layout.fillWidth: true
+            spacing: 10
+
+            Text {
+                text: "Manual Threshold:"
+                color: "#FFFFFF"
+                Layout.alignment: Qt.AlignLeft
+                Layout.minimumWidth: 200
+                font.pointSize: 14
+                font.family: "Oxanium"
+            }
+
+            Rectangle {
+                width: 100
+                height: 30
+                color: "#222222"
+                radius: 5
+                border.color: "#FFFFFF"
+
+                TextInput {
+                    id: manualThresholdInput
+                    anchors.fill: parent
+                    anchors.margins: 5
+                    text: ConfigManager.manualThreshold.toString()
+                    color: "#FFFFFF"
+                    onTextChanged: {
+                        var value = parseFloat(text)
+                        if (!isNaN(value) && value >= 0 && value <= 1) {
+                            ConfigManager.manualThreshold = value
+                            ConfigManager.saveConfig("/home/haiminh/Desktop/Anomaly_Detection/D-ESCA_v2/config/default.json")
+                        }
+                    }
+                }
+            }
         }
-        MouseArea {
-            anchors.fill: parent
-            onClicked: {
-                loader.source = "realTimeInference_result.qml"
+
+        RowLayout {
+            Layout.fillWidth: true
+            spacing: 10
+
+            Text {
+                text: "Runtime (ms):"
+                color: "#FFFFFF"
+                Layout.alignment: Qt.AlignLeft
+                Layout.minimumWidth: 200
+                font.pointSize: 14
+                font.family: "Oxanium"
+            }
+
+            Rectangle {
+                width: 100
+                height: 30
+                color: "#222222"
+                radius: 5
+                border.color: "#FFFFFF"
+
+                TextInput {
+                    id: runtimeInput
+                    anchors.fill: parent
+                    anchors.margins: 5
+                    text: ConfigManager.runtime.toString()
+                    color: "#FFFFFF"
+                    onTextChanged: {
+                        var value = parseInt(text)
+                        if (!isNaN(value) && value >= 100 && value <= 10000) {
+                            ConfigManager.runtime = value
+                            ConfigManager.saveConfig("/home/haiminh/Desktop/Anomaly_Detection/D-ESCA_v2/config/default.json")
+                        }
+                    }
+                }
+            }
+        }
+
+        RowLayout {
+            Layout.fillWidth: true
+            spacing: 10
+
+            Text {
+                text: "Device Index Input:"
+                color: "#FFFFFF"
+                Layout.alignment: Qt.AlignLeft
+                Layout.minimumWidth: 200
+                font.pointSize: 14
+                font.family: "Oxanium"
+            }
+
+            Rectangle {
+                width: 100
+                height: 30
+                color: "#222222"
+                radius: 5
+                border.color: "#FFFFFF"
+
+                TextInput {
+                    id: deviceIndexInput
+                    anchors.fill: parent
+                    anchors.margins: 5
+                    text: ConfigManager.deviceIndexInput.toString()
+                    color: "#FFFFFF"
+                    onTextChanged: {
+                        var value = parseInt(text)
+                        if (!isNaN(value) && value >= 0 && value <= 32) {
+                            ConfigManager.deviceIndexInput = value
+                            ConfigManager.saveConfig("/home/haiminh/Desktop/Anomaly_Detection/D-ESCA_v2/config/default.json")
+                        }
+                    }
+                }
+            }
+        }
+
+        RowLayout {
+            Layout.fillWidth: true
+            spacing: 10
+
+            Text {
+                text: "Transfer Learning:"
+                font.pointSize: 14
+                font.family: "Oxanium"
+                color: "#FFFFFF"
+                Layout.alignment: Qt.AlignLeft
+                Layout.minimumWidth: 200
+            }
+
+            CheckBox {
+                id: transferLearningCheckbox
+                checked: ConfigManager.transferLearning
+                onCheckedChanged: {
+                    ConfigManager.transferLearning = checked
+                    ConfigManager.saveConfig("/home/haiminh/Desktop/Anomaly_Detection/D-ESCA_v2/config/default.json")
+                }
             }
         }
     }
-    Rectangle {
-        id: rectangle2
-        x: 50
-        y: 65
-        width: 934
-        height: 2
-        color: "#ffffff"
-    }
-    Rectangle {
-        id: rectangle4
-        x: 38
-        y: 82
-        width: 949
-        height: 400
-        color: "#1b2a42"
 
-    }
+    ColumnLayout {
+        x: 551
+        y: 140
+        spacing: 15
 
-    Rectangle {
-        id: rectangle6
-        x: 38
-        y: 215
-        width: 52
-        height: 99
-        color: "#a9acc6"
-        radius: 50
-        Text {
-            id: text4
-            text: qsTr("<")
-            anchors.verticalCenter: parent.verticalCenter
-            font.pixelSize: 70
-            anchors.horizontalCenter: parent.horizontalCenter
+        RowLayout {
+            Layout.fillWidth: true
+            spacing: 10
+
+            Text {
+                text: "Channels:"
+                color: "#FFFFFF"
+                Layout.alignment: Qt.AlignLeft
+                Layout.minimumWidth: 200
+                font.pointSize: 14
+                font.family: "Oxanium"
+            }
+
+            Rectangle {
+                width: 100
+                height: 30
+                color: "#222222"
+                radius: 5
+                border.color: "#FFFFFF"
+
+                TextInput {
+                    id: channelsInput
+                    anchors.fill: parent
+                    anchors.margins: 5
+                    text: ConfigManager.channels.toString()
+                    color: "#FFFFFF"
+                    onTextChanged: {
+                        var value = parseInt(text)
+                        if (!isNaN(value) && value >= 1 && value <= 8) {
+                            ConfigManager.channels = value
+                            ConfigManager.saveConfig("/home/haiminh/Desktop/Anomaly_Detection/D-ESCA_v2/config/default.json")
+                        }
+                    }
+                }
+            }
         }
+
+        RowLayout {
+            Layout.fillWidth: true
+            spacing: 10
+
+            Text {
+                text: "Sampling Rate:"
+                color: "#FFFFFF"
+                Layout.alignment: Qt.AlignLeft
+                Layout.minimumWidth: 200
+                font.pointSize: 14
+                font.family: "Oxanium"
+            }
+
+            Rectangle {
+                width: 100
+                height: 30
+                color: "#222222"
+                radius: 5
+                border.color: "#FFFFFF"
+
+                TextInput {
+                    id: samplingRateInput
+                    anchors.fill: parent
+                    anchors.margins: 5
+                    text: ConfigManager.samplingRate.toString()
+                    color: "#FFFFFF"
+                    onTextChanged: {
+                        var value = parseInt(text)
+                        if (!isNaN(value) && value >= 8000 && value <= 96000) {
+                            ConfigManager.samplingRate = value
+                            ConfigManager.saveConfig("/home/haiminh/Desktop/Anomaly_Detection/D-ESCA_v2/config/default.json")
+                        }
+                    }
+                }
+            }
+        }
+
+        RowLayout {
+            Layout.fillWidth: true
+            spacing: 10
+
+            Text {
+                text: "Second:"
+                color: "#FFFFFF"
+                Layout.alignment: Qt.AlignLeft
+                Layout.minimumWidth: 200
+                font.pointSize: 14
+                font.family: "Oxanium"
+            }
+
+            Rectangle {
+                width: 100
+                height: 30
+                color: "#222222"
+                radius: 5
+                border.color: "#FFFFFF"
+
+                TextInput {
+                    id: secondInput
+                    anchors.fill: parent
+                    anchors.margins: 5
+                    text: ConfigManager.second.toString()
+                    color: "#FFFFFF"
+                    onTextChanged: {
+                        var value = parseInt(text)
+                        if (!isNaN(value) && value >= 1 && value <= 60) {
+                            ConfigManager.second = value
+                            ConfigManager.saveConfig("/home/haiminh/Desktop/Anomaly_Detection/D-ESCA_v2/config/default.json")
+                        }
+                    }
+                }
+            }
+        }
+
+        RowLayout {
+            Layout.fillWidth: true
+            spacing: 10
+
+            Text {
+                text: "Import File:"
+                color: "#FFFFFF"
+                Layout.alignment: Qt.AlignLeft
+                Layout.minimumWidth: 200
+                font.pointSize: 14
+                font.family: "Oxanium"
+            }
+
+            CheckBox {
+                id: importFileCheckbox
+                checked: ConfigManager.importFile
+                onCheckedChanged: {
+                    ConfigManager.importFile = checked
+                    ConfigManager.saveConfig("/home/haiminh/Desktop/Anomaly_Detection/D-ESCA_v2/config/default.json")
+                }
+            }
+        }
+
     }
 
-    Rectangle {
-        id: rectangle8
-        x: 935
-        y: 215
-        width: 52
-        height: 99
-        color: "#a9acc6"
-        radius: 50
-        Text {
-            id: text6
-            text: qsTr(">")
-            anchors.verticalCenter: parent.verticalCenter
-            font.pixelSize: 70
-            anchors.horizontalCenter: parent.horizontalCenter
+    Button {
+        id: button
+        x: 447
+        y: 371
+        text: qsTr("Inference Screen")
+
+        onClicked: {
+            screenLoader.source = "./realTimeInference_data.qml"
         }
     }
 }
-
-

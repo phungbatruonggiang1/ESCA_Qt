@@ -11,16 +11,24 @@ RecordingController::RecordingController(QObject *parent)
     , m_recordingSchedule(nullptr)
     , format(m_audioConfig->format())
     , m_recStatus(false)
+    , sharedMemoryManager(new SharedMemoryManager(this))
 {
     qmlRegisterSingletonInstance("AudioConfigImport", 1, 0, "AudioConfig", m_audioConfig);
     qmlRegisterSingletonInstance("AudioChartImport", 1, 0, "AudioChart", m_recordingChart);
     setRecStatus(false);
+
+    m_audioFile = new AudioFile(m_outputDir, format, 2.0);
+    m_audioFileThread = new QThread();
 
     connect(m_recordIO, &RecordIO::sendData, this, &RecordingController::handleDataReady);
     connect(this, &RecordingController::sendChartData, m_recordingChart, &RecordingChart::onSendChartData);
 
     qInfo()<<"format in ini: "<<m_audioConfig->format();
 
+    if (!sharedMemoryManager->init_ipc()) {
+        qDebug()<< "Failed to initialize IPC.";
+        delete sharedMemoryManager;
+    }
 }
 
 RecordingController::~RecordingController()
@@ -46,12 +54,10 @@ void RecordingController::startRecording()
     // QAudioFormat format = m_audioConfig->format();
     QAudioDeviceInfo deviceInfo = m_audioConfig->deviceInfo();
 
+    m_recordIO->startAudioInput(format, deviceInfo);
     qInfo() << "format before thread" << format;
 
-    // m_outputDir = m_audioConfig->outputDir();
-
-    m_audioFile = new AudioFile(m_outputDir, format, 10.0);
-    m_audioFileThread = new QThread();
+    // m_outputDir = m_audioConfig->outputDir();    
     m_audioFile->moveToThread(m_audioFileThread);   // cho AudioFile vào thread riêng
 
     // Kết nối các signal và slot để quản lý thread và AudioFile
@@ -63,17 +69,13 @@ void RecordingController::startRecording()
     m_audioFileThread->start();
 
     // Bắt đầu RecordingIO
-    m_recordIO->startAudioInput(format, deviceInfo);
 
-    // Currently, I fixed the duratione of audio file is 5 seconds
-    // m_fileFactory->setFileDuration(5000);
-    // m_fileFactory->startRecording();
-    // should be check the real value of InputAudio -> setRecStatus
-    // if it cannot turn on the InputAudio -> show alert to .qml
-    // I refer you use try..catch pattern
 
     setRecStatus(true);
     qInfo() << "Start recording with format" << format;
+
+    sharedMemoryManager->start();
+    qDebug() << "Producer is running. Press Ctrl+C to exit.";
 }
 
 void RecordingController::stopRecording()
@@ -90,23 +92,39 @@ void RecordingController::stopRecording()
 
 void RecordingController::handleDataReady(const QByteArray &data)
 {
+    // audioBuffer.append(data);
+    QByteArray &currentBuffer = m_usingBuffer1 ? audioBuffer1 : audioBuffer2;
+    currentBuffer.append(data);
 
-    QString duration = m_audioConfig->duration();
-    // qDebug()<<"handleDataReady for:" <<duration;
-    if (duration == "10s"){
-        // Chuyển tiếp dữ liệu cho AudioFile để xử lý buffering và ghi file
-        if (m_audioFile) {
-            QMetaObject::invokeMethod(m_audioFile, "writeAudioData",
-                                      Qt::QueuedConnection,
-                                      Q_ARG(QByteArray, data));
+    if (currentBuffer.size() >= chunkSize) {
+        // Ghi dữ liệu vào file
+
+        // Chuyển buffer
+        m_usingBuffer1 = !m_usingBuffer1;
+
+        sharedMemoryManager->getAudioData(currentBuffer);
+        // qDebug()<<"Buffer: "<< currentBuffer;
+
+        QString duration = m_audioConfig->duration();
+        // qDebug()<<"handleDataReady for:" <<duration;
+        if (duration == "10s"){
+            // Chuyển tiếp dữ liệu cho AudioFile để xử lý buffering và ghi file
+            if (m_audioFile) {
+                QMetaObject::invokeMethod(m_audioFile, "writeAudioData",
+                                          Qt::QueuedConnection,
+                                          Q_ARG(QByteArray, currentBuffer));
+            }
         }
-    }
-    else {
-        if (m_audioFile) {
-            QMetaObject::invokeMethod(m_audioFile, "writeDataForever",
-                                      Qt::QueuedConnection,
-                                      Q_ARG(QByteArray, data));
+        else {
+            if (m_audioFile) {
+                QMetaObject::invokeMethod(m_audioFile, "writeDataForever",
+                                          Qt::QueuedConnection,
+                                          Q_ARG(QByteArray, currentBuffer));
+            }
         }
+
+        // Xóa dữ liệu đã ghi
+        currentBuffer.remove(0, chunkSize);
     }
 
     m_recordingChart->onSendChartData(data);

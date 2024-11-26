@@ -16,6 +16,7 @@
 #include "audioconfig.h"
 #include "audiofile.h"
 #include "recordio.h"
+#include "../aiprocess/sharedmemorymanager.h"
 
 class RecordingController : public QObject
 {
@@ -45,14 +46,18 @@ private:
     RecordingChart* m_recordingChart;
     AudioConfig* m_audioConfig;
     AudioFile* m_audioFile;
+    SharedMemoryManager* sharedMemoryManager;
 
     QThread *m_audioFileThread;
-
     QAudioFormat format;
-
     QMutex m_mutex;
-
     QString m_outputDir;
+
+    QByteArray audioBuffer1;
+    QByteArray audioBuffer2;
+    bool m_usingBuffer1;
+
+    const size_t chunkSize = 44100 * 2 * 2;
     
     bool m_recStatus;
 };

@@ -9,6 +9,7 @@
 #include <QStringList>
 #include <QSettings>
 #include <QGuiApplication>
+// #include <yaml-cpp/yaml.h>
 
 class AudioConfig : public QObject
 {

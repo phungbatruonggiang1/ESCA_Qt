@@ -63,7 +63,8 @@ Rectangle {
         y: 140
         width: 686
         height: 40
-        model: AudioConfig.listOutput
+        // model: AudioConfig.listOutput
+
         // enabled: !RecordingObject.recStatus
         enabled: false
         font.family: "Oxanium"
@@ -84,7 +85,7 @@ Rectangle {
         width: 147
         height: 26
         color: "#ffffff"
-        text: qsTr("Output Device Name")
+        text: qsTr("Output Folder Name")
         font.pixelSize: 15
         font.family: "Oxanium"
     }
