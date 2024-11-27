@@ -8,12 +8,13 @@ Rectangle {
 
     Text {
         id: text1
-        color: "#00DFFE"
-        text: qsTr("D-ESCA3")
+        color: "#FFFFFF"
+        text: qsTr("Environmental Sound Collection and Analysis embedded application")
         anchors.fill: parent
-        font.pixelSize: 36
+        font.pixelSize: 18
         horizontalAlignment: Text.AlignHCenter
         verticalAlignment: Text.AlignVCenter
-        font.family: "Oxanium"
+        font.family: "Josefin Sans"
+        font.bold: true
     }
 }

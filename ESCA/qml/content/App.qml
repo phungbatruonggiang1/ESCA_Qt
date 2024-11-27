@@ -5,6 +5,7 @@ import QtQuick 2.15
 import QtQuick.Controls 2.15
 import ProjectImport 1.0 // IMport component: Constants, Animation, ...
 import "component"
+import "Base"
 
 ApplicationWindow {
     width: Constants.width
@@ -24,9 +25,8 @@ ApplicationWindow {
         id: topbar
     }
 
-    // Bottom bar
-    BottomMenu {
-        id: mainmenu
+    HomeButton {
+        id: homeButton
     }
 
 }
