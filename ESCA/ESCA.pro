@@ -64,6 +64,7 @@ DISTFILES += \
     ../../../ESCA_Qt/ESCA/ui/components/GpuFrame.qml \
     ../../../QT-GUI/ui/component/UsageTextElement.qml \
     qml/content/AudioManipulation/processData.qml \
+    qml/content/Base/FullScreen.qml \
     qml/content/BaseTraining/baseLearning.qml \
     qml/content/BaseTraining/baseLearning_data.qml \
     qml/content/BaseTraining/baseLearning_parameterConfigure.qml \

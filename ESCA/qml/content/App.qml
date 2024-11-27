@@ -17,7 +17,7 @@ ApplicationWindow {
         id: screenLoader
         anchors.top: topbar.bottom
         anchors.bottom: mainmenu.top
-        source: "./RecordModule/RecordModule.qml"
+        source: "./Base/FullScreen.qml"
     }
 
     TopBar {
