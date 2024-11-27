@@ -32,7 +32,6 @@ Rectangle {
         height: 60
         color: "#69000822"
         radius: 8
-        anchors.horizontalCenter: rectLayout.horizontalCenter
         Text {
             color: "#ffffff"
             text: qsTr("Process Data")
