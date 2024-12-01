@@ -1,6 +1,8 @@
 import QtQuick 2.15
 import QtQuick.Controls 2.15
 import AudioConfigImport 1.0
+import QtQuick.Dialogs 1.0
+import Qt.labs.platform 1.0
 
 Rectangle {
     width: 800
@@ -57,27 +59,6 @@ Rectangle {
         font.family: "Oxanium"
     }
 
-    ComboBox {
-        id: deviceOutCb
-        x: 56
-        y: 140
-        width: 686
-        height: 40
-        // model: AudioConfig.listOutput
-
-        // enabled: !RecordingObject.recStatus
-        enabled: false
-        font.family: "Oxanium"
-        font.pointSize: 18
-        currentIndex: AudioConfig.nearistParams[0]
-
-        onCurrentIndexChanged: {
-            // console.log("Selected choose_device Item:", deviceOutCb.currentText)
-            // console.log("Selected choose_device Item:", audioConfig.selectedParams);
-            // Add logic here
-        }
-    }
-
     Text {
         id: deviceOutTx
         x: 326
@@ -85,10 +66,73 @@ Rectangle {
         width: 147
         height: 26
         color: "#ffffff"
-        text: qsTr("Output Folder Name")
+        text: qsTr("Output Folder")
         font.pixelSize: 15
         font.family: "Oxanium"
     }
+    Rectangle {
+                id: rectangle2
+                x: 56
+                y: 140
+                border.color: "black"
+                width: 686
+                height: 40
+                radius: 10
+                color: "#ffffff"
+                TextField {
+                    id: text31
+                    x: 8
+                    y: 0
+                    width: 600
+                    height: 36
+                    font.pixelSize: 18
+                    horizontalAlignment: Text.AlignLeft
+                    verticalAlignment: Text.AlignVCenter
+                    placeholderText: "Choose folder to open"
+                    maximumLength: 100
+                    background: Rectangle {
+                        border.width: 0
+                        color: "transparent"
+                    }
+                }
+                FolderDialog {
+                    id: folderDialog
+                    onAccepted: {
+                        text31.text = folderDialog.folder
+                        console.log("hi Giang, show the folder url: ", folderDialog.folder);
+                    }
+                    onRejected: {
+                        console.log("Canceled")
+                    }
+                }
+                Rectangle {
+                    id: rectangle_82
+                    x: 619
+                    y: 0
+                    width: 32
+                    height: 36
+                    color: "#ffffff"
+                    radius: 8
+
+                    Image {
+                        id: folderopenregular
+                        x: 4
+                        y: 8
+                        width: 24
+                        height: 23
+                        source: "../images/folder-open-regular.svg"
+                        fillMode: Image.PreserveAspectFit
+                    }
+
+                    MouseArea {
+                        anchors.centerIn: parent
+                        anchors.fill: parent
+                        onClicked: {
+                            folderDialog.open();
+                        }
+                    }
+                }
+            }
 
     ComboBox {
         id: codecCb
@@ -123,7 +167,7 @@ Rectangle {
         width: 90
         height: 26
         color: "#ffffff"
-        text: qsTr("Sample Rate")
+        text: qsTr("Sample Rate (Hz)")
         font.pixelSize: 15
         font.family: "Oxanium"
     }
@@ -238,7 +282,7 @@ Rectangle {
         width: 84
         height: 26
         color: "#ffffff"
-        text: qsTr("Sample Size")
+        text: qsTr("Sample Size (bits)")
         font.pixelSize: 15
         font.family: "Oxanium"
     }
@@ -250,12 +294,12 @@ Rectangle {
         width: 53
         height: 26
         color: "#ffffff"
-        text: qsTr("Duration")
+        text: qsTr("Duration (seconds)")
         font.pixelSize: 15
         font.family: "Oxanium"
     }
-
-    Dialog {
+/*
+     Dialog {
         id: formatWarningDialog
         title: "Format You Choose Not Supported"
         visible: !AudioConfig.saveDone
@@ -314,6 +358,7 @@ Rectangle {
         }
         onAccepted: minhDialog.visible = false
     }
+    */
 
     Button {
         id: button

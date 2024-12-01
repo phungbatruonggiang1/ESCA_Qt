@@ -17,7 +17,6 @@ ApplicationWindow {
     Loader {
         id: screenLoader
         anchors.top: topbar.bottom
-        anchors.bottom: mainmenu.top
         source: "./Base/FullScreen.qml"
     }
 
