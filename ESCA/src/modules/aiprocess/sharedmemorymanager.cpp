@@ -1,4 +1,4 @@
-#include "sharedmemorymanager.h"
+    #include "sharedmemorymanager.h"
 #include <cstring>
 #include <iostream>
 #include <csignal>

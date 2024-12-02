@@ -9,7 +9,10 @@
 #include <QStringList>
 #include <QSettings>
 #include <QGuiApplication>
-// #include <yaml-cpp/yaml.h>
+#include <QFile>
+#include <QJsonDocument>
+#include <QJsonObject>
+#include <QJsonArray>
 
 class AudioConfig : public QObject
 {
