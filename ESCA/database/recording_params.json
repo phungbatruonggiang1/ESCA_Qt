@@ -1,0 +1,10 @@
+{
+    "channel": 0,
+    "codec": 0,
+    "device": 7,
+    "deviceName": "default",
+    "duration": 1,
+    "endian": 0,
+    "sampleRate": 3,
+    "sampleSize": 1
+}

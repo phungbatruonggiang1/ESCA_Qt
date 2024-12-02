@@ -1,8 +1,0 @@
-default
-none
-iubnnkjr
-2
-44100
-8
-30
-pcm
