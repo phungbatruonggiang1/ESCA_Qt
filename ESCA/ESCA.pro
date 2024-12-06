@@ -19,7 +19,8 @@ SOURCES += \
     src/modules/audiorecording/recordingschedule.cpp \
     src/modules/audiorecording/recordio.cpp \
     src/modules/systeminformation/systeminformationcontroller.cpp \
-    src/modules/filemanager/filemanager.cpp
+    src/modules/filemanager/filemanager.cpp \
+    src/modules/filemanager/deletefile.cpp 
 
 # RESOURCES += qml.qrc
 RESOURCES += \
@@ -54,7 +55,7 @@ HEADERS += \
     src/modules/audiorecording/recordio.h \
     src/modules/filemanager/DeleteFile.h \
     src/modules/systeminformation/systeminformationcontroller.h \
-    src/modules/filemanager/filemanager.h
+    src/modules/filemanager/filemanager.h 
 
 DISTFILES += \
     qml/content/AudioManipulation/processData.qml \

@@ -1,26 +1,18 @@
-// #ifndef FILEMANAGER_H
-// #define FILEMANAGER_H
-// #include <QObject>
-// #include <QDebug>
-// #include <QFile>
-// #include <QString>
-// #include <QTextStream>
+#ifndef FILEMANAGER_H
+#define FILEMANAGER_H
 
-// class FileManager : public QObject {
-    
-//     Q_OBJECT
+#include <QObject>
+#include <QFile>
+#include <QList>
 
-// public:
-//     explicit FileManager(QObject *parent = nullptr);
+#include "DeleteFile.h"
 
-//     Q_INVOKABLE QStringList getFileList() const;
-//     Q_INVOKABLE void deleteFile(const QString &fileName);
+class FolderListModel;
+class DeleteFile;
 
-// signals:
-//     void fileListChanged();
+class FileManager : public QObject
+{
 
-// private:
-//     QStringList fileList;
-// };
+};
 
-// #endif // FILEMANAGER_H
+#endif // FILEMANAGER_H

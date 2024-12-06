@@ -50,9 +50,10 @@ int main(int argc, char *argv[])
     AudioManipulation audioManipulation;
     engine.rootContext()->setContextProperty("AudioManipulationObject", &audioManipulation);
 
-    FileIO fileIO;
-    engine.rootContext()->setContextProperty("fileIO", &fileIO);
+    DeleteFile deleteFile;
+    engine.rootContext()->setContextProperty("deleteFile", &deleteFile);
 
+    
     
     return app.exec();
 }

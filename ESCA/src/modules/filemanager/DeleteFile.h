@@ -18,11 +18,11 @@ private:
     QList<QFileInfo> fileList;
 };
 
-class FileIO : public QObject {
+class DeleteFile : public QObject {
     Q_OBJECT
 
 public:
-    explicit FileIO(QObject *parent = nullptr);
+    explicit DeleteFile(QObject *parent = nullptr);
 
     Q_INVOKABLE bool fileExists(const QString &filePath);
     Q_INVOKABLE bool removeFile(const QString &filePath);
