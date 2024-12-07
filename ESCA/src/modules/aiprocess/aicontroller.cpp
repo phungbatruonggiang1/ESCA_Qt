@@ -29,11 +29,6 @@ void AIController::start()
 
 void AIController::stop()
 {
-    // // Dừng ghi âm
-    // audioRecorder->stopRecording();
-
-    // // Dừng tiến trình Python
-    // processManager->stopProcess();
     processManager->stopPythonService();
 }
 
@@ -45,7 +40,6 @@ void AIController::handleInferenceResult(const float predValue)
         if (m_predValue.size() > 50) { // Giới hạn số cột hiển thị
             m_predValue.removeFirst();
         }
-
         emit predValueChanged();
         // qDebug() << "Data arr: "<<m_predValue;
     } else {
