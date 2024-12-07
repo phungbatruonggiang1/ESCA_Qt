@@ -105,6 +105,7 @@ private:
     QList<QAudioFormat::Endian> m_listEndianz;
     QList<int> m_listSampleSize;
     QStringList m_listDuration = {"10s", "Forever"};
+    QString audioStorage;
 
     QList<int> m_nearistParams;
     QSettings m_settings;

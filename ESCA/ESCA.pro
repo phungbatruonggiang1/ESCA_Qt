@@ -64,6 +64,8 @@ DISTFILES += \
     ../../../ESCA_Qt/ESCA/ui/components/GpuFrame.qml \
     ../../../QT-GUI/ui/component/UsageTextElement.qml \
     qml/content/AudioManipulation/processData.qml \
+    qml/content/Base/HomeButton.qml \
+    qml/content/Base/FullScreen.qml \
     qml/content/BaseTraining/baseLearning.qml \
     qml/content/BaseTraining/baseLearning_data.qml \
     qml/content/BaseTraining/baseLearning_parameterConfigure.qml \
@@ -86,4 +88,4 @@ DISTFILES += \
     qml/content/TransferLearning/transferLearning_parameterConfigure.qml \
     qml/content/TransferLearning/transferLearning_result.qml \
     qml/content/TransferLearning/transferLearning_traning.qml \
-    qml/content/component/RamFrame.qml
+    qml/content/component/RamFrame.qml \

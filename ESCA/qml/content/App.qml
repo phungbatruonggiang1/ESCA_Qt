@@ -5,6 +5,7 @@ import QtQuick 2.15
 import QtQuick.Controls 2.15
 import ProjectImport 1.0 // IMport component: Constants, Animation, ...
 import "component"
+import "Base"
 
 ApplicationWindow {
     width: Constants.width
@@ -16,17 +17,15 @@ ApplicationWindow {
     Loader {
         id: screenLoader
         anchors.top: topbar.bottom
-        anchors.bottom: mainmenu.top
-        source: "./RecordModule/RecordModule.qml"
+        source: "./Base/FullScreen.qml"
     }
 
     TopBar {
         id: topbar
     }
 
-    // Bottom bar
-    BottomMenu {
-        id: mainmenu
+    HomeButton {
+        id: homeButton
     }
 
 }
