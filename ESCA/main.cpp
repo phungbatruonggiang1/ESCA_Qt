@@ -19,6 +19,9 @@ int main(int argc, char *argv[])
     // QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
 #endif
     QGuiApplication app(argc, argv);
+    QCoreApplication::setOrganizationName("HUST-SIST-SPARC");
+    QCoreApplication::setOrganizationDomain("sparc.com");
+    QCoreApplication::setApplicationName("ESCA");
 
     RecordingController recordingController;
     SystemInformationController systemInformationController;

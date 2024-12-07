@@ -1,13 +1,14 @@
 import QtQuick 2.15
 import QtQuick.Controls 2.15
 import AudioConfigImport 1.0
-import QtQuick.Dialogs 1.0
-import Qt.labs.platform 1.0
+import QtQuick.Dialogs 1.3
+// import Qt.labs.platform 1.0
 
 Rectangle {
     width: 800
     height: 480
     color: "#161525"
+    property alias deviceCbRightPadding: deviceCb.rightPadding
 
     Component.onCompleted: {
 
@@ -59,14 +60,55 @@ Rectangle {
         font.family: "Oxanium"
     }
 
+    Rectangle {
+        id: deviceOutCb
+        x: 56
+        y: 140
+        width: 686
+        height: 40
+        color: "#e0e0e0"
+
+        // model: AudioConfig.listOutput
+
+        Text {
+            id: outputFolderTx
+            text: "Click here to Choose"
+            anchors.centerIn: parent
+            font.pixelSize: 20
+            anchors.rightMargin: 20
+            anchors.bottomMargin: 18
+            font.family: "Oxanium"
+        }
+
+        FileDialog {
+            id: fileDialog
+            title: "Chọn một file"            
+            onAccepted: {
+                outputFolderTx.text = fileDialog.folder + "/"
+                console.log("File đã c  họn: " + fileDialog.fileUrl)
+            }
+            onRejected: {
+                console.log("Chọn file bị hủy")
+            }
+        }
+
+        MouseArea {
+            id: mouseArea
+            anchors.fill: parent
+            onClicked: {
+                fileDialog.open();
+            }
+        }
+    }
+    
     Text {
         id: deviceOutTx
-        x: 326
-        y: 114
-        width: 147
+        x: 329
+        y: 115
+        width: 140
         height: 26
         color: "#ffffff"
-        text: qsTr("Output Folder")
+        text: qsTr("Stored Audio Folder")
         font.pixelSize: 15
         font.family: "Oxanium"
     }
@@ -304,7 +346,7 @@ Rectangle {
         title: "Format You Choose Not Supported"
         visible: !AudioConfig.saveDone
         standardButtons: Dialog.Ok
-        anchors.centerIn: parent
+//        anchors.centerIn: parent
 
         Label {
             text: "The selected format is not supported for recording - USE NEARIST FORMAT."
@@ -349,7 +391,7 @@ Rectangle {
         title: "Format You Choose Not Supported"
         visible: false
         standardButtons: Dialog.Ok
-        anchors.centerIn: parent
+//        anchors.centerIn: parent
 
         Label {
             text: "Unknown field port, please choose another device"

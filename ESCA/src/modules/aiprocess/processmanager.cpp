@@ -1,4 +1,3 @@
-// ProcessManager.cpp
 #include "processmanager.h"
 #include <QDebug>
 
@@ -45,13 +44,14 @@ void ProcessManager::handleStandardOutput()
     // if(!m_running) return;
     // qInfo() << Q_FUNC_INFO;
 
+    // QByteArray data = m_process.readAllStandardOutput().trimmed();
     QByteArray data = m_process.readAllStandardOutput().trimmed();
     QString outputStr = QString::fromUtf8(data);
     QString pred = outputStr.split("Pred: ").last();
     float fredValue = pred.left(20).toFloat();
 
-    if (!data.isEmpty()) {
-        qInfo() << "Received from Python:" << data;
+    if (!data.isEmpty() && fredValue != 0.0) {
+        qInfo() << "Received from Python:" <<data;
         qInfo() << "Predict Result:" << fredValue;
         emit resultReceived(fredValue);
     }

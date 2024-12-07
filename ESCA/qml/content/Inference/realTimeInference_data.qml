@@ -185,8 +185,6 @@ Rectangle {
             text: qsTr("Data")
 
             onClicked: {
-                predValue = AIObject.predValue;
-                minhtestTx.text = predValue.toString
             }
         }
 
@@ -325,7 +323,7 @@ Rectangle {
                 var barWidth = chartWidth / predValue.length;
                 for (i = 0; i < predValue.length; i++) {
                     x = margin + i * barWidth;
-                    var barHeight = (Math.abs(predValue[i]) / 0.05) * chartHeight;
+                    var barHeight = (Math.abs(predValue[i]) / 0.03) * chartHeight;
                     y = predValue[i] >= 0
                             ? predChart.height - margin - barHeight // Positive values
                             : predChart.height - margin;          // Negative values start from X-axis

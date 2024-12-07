@@ -34,7 +34,6 @@ AudioFile::AudioFile(const QString &outputDir,
     // initial buffer with size fix with 1 chunksize; 1 buffer is 1 file
     m_buffer1.reserve(m_chunkSize);
     m_buffer2.reserve(m_chunkSize);
-
 }
 
 AudioFile::~AudioFile() {

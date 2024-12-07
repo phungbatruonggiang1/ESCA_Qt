@@ -123,7 +123,7 @@ def main():
             # print("a step 3: ", a, a.shape)
 
             if a.shape != (1, 32, 32, 1):
-                print(f"Input shape Error: {a.shape}")
+                #print(f"Input shape Error: {a.shape}")
                 return
     
             # Tính MSE giữa input và output của autoencoder (sử dụng mô hình đã huấn luyện)
@@ -135,8 +135,8 @@ def main():
             
             # Thực hiện V operation để mở khóa semaphore
             semaphore.release()
-
-            # Hiển thị dữ liệu nhị phân (20 byte đầu tiên)
+            
+            #print(pred, flush=True)
             print(f"Processing time: {end_time - start_time} seconds and Pred: {pred}")            
         
         except sysv_ipc.BusyError:
@@ -148,7 +148,7 @@ def main():
             except sysv_ipc.ExistentialError:
                 pass
 
-        time.sleep(0.01)  # 100ms
+        #time.sleep(0.01)  # 100ms
 
 if __name__ == "__main__":
     try:
