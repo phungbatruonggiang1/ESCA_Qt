@@ -2,7 +2,7 @@
 
 AudioConfig::AudioConfig(QObject *parent) : QObject{parent}
 {
-    QFile configFile("/home/haiminh/Desktop/ESCA_Qt/ESCA/database/recording_params.json");
+    QFile configFile("/usr/share/qt5esca-1.0/database/recording_params.json");
 
     if (configFile.open(QIODevice::ReadOnly)) {
         QByteArray data = configFile.readAll();
