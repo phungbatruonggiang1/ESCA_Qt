@@ -1,8 +1,15 @@
 #include "audioconfig.h"
+#include <QDir>
 
 AudioConfig::AudioConfig(QObject *parent) : QObject{parent}
 {
-    QFile configFile("/home/haiminh/Desktop/ESCA_Qt/ESCA/database/recording_params.json");
+    appDataPath = QStandardPaths::writableLocation(QStandardPaths::HomeLocation)+ QDir::separator() + "config.json";
+    qDebug()<< "Config File is exist!" << appDataPath;
+    QFile configFile(appDataPath);
+
+    if (!configFile.exists()) {
+        qDebug()<< "Config File is  not exist!";
+    }
 
     if (configFile.open(QIODevice::ReadOnly)) {
         QByteArray data = configFile.readAll();
@@ -10,60 +17,64 @@ AudioConfig::AudioConfig(QObject *parent) : QObject{parent}
 
         if (jsonDoc.isObject()) {
             QJsonObject json = jsonDoc.object();
-            int savedDeviceIndex = json.value("device").toInt();  // Load saved device index
-            QString savedDeviceName = json.value("deviceName").toString("default");  // Load saved device name
 
-            // qDebug() << "audio: "<<savedDeviceName;
-            // int savedDeviceIndex = m_settings.value("audio/device", 0).toInt();
-            // QString savedDeviceName = m_settings.value("audio/deviceName", "default").toString();
+            // Truy cập phần RECORD
+            if (json.contains("RECORD") && json["RECORD"].isObject()) {
+                QJsonObject record = json["RECORD"].toObject();
 
-            m_nearistParams.clear();
-            m_nearistParams.append(savedDeviceIndex);
-            m_nearistParams.append(json.value("codec").toInt());
-            m_nearistParams.append(json.value("sampleRate").toInt());
-            m_nearistParams.append(json.value("channel").toInt());
-            m_nearistParams.append(json.value("endian").toInt());
-            m_nearistParams.append(json.value("sampleSize").toInt());
-            m_nearistParams.append(json.value("duration").toInt());
+                qDebug()<<"RECORD"<< record;
 
-            emit nearistParamsChanged();
+                int savedDeviceIndex = record.value("DEVICE").toInt();  // Load saved device index
+                QString savedDeviceName = record.value("DEVICENAME").toString("default");  // Load saved device name
 
-            qInfo() << "m_nearistParams: "<<m_nearistParams;
+                m_nearistParams.clear();
+                m_nearistParams.append(savedDeviceIndex);
+                m_nearistParams.append(record.value("CODEC").toInt());
+                m_nearistParams.append(record.value("SAMPLERATE").toInt());
+                m_nearistParams.append(record.value("CHANNEL").toInt());
+                m_nearistParams.append(record.value("ENDIAN").toInt());
+                m_nearistParams.append(record.value("SAMPLESIZE").toInt());
+                m_nearistParams.append(record.value("DURATION").toInt());
 
-            for (auto &deviceInfo : QAudioDeviceInfo::availableDevices(QAudio::AudioInput)) {
-                cpplistDevices.append(deviceInfo);
-                m_listDevices.append(deviceInfo.deviceName());
-                // emit listDevicesChanged();
-                // qDebug() << m_listDevices.length();
-            }
-            qDebug() << m_listDevices.length();
+                emit nearistParamsChanged();
 
-            for (auto &outputInfo : QAudioDeviceInfo::availableDevices(QAudio::AudioOutput)) {
-                cpplistOutput.append(outputInfo);
-                m_listOutput.append(outputInfo.deviceName());
-                // qDebug() << deviceInfo.deviceName();
-            }
+                qInfo() << "Loaded m_nearistParams from RECORD:" << m_nearistParams;
 
-            // Check if the device index is valid and if the name matches the saved one
-            if (savedDeviceIndex >= 0 && savedDeviceIndex < cpplistDevices.size() &&
-                cpplistDevices[savedDeviceIndex].deviceName() == savedDeviceName) {
-                m_deviceInfo = cpplistDevices[savedDeviceIndex];
-            } else {
-                // If device index is invalid or device name doesn't match, find the device by name
-                bool found = false;
-                for (const auto &device : cpplistDevices) {
-                    if (device.deviceName() == savedDeviceName) {
-                        m_deviceInfo = device;
-                        found = true;
-                        break;
+                // Tải danh sách thiết bị đầu vào
+                for (auto &deviceInfo : QAudioDeviceInfo::availableDevices(QAudio::AudioInput)) {
+                    cpplistDevices.append(deviceInfo);
+                    m_listDevices.append(deviceInfo.deviceName());
+                }
+
+                // Tải danh sách thiết bị đầu ra
+                for (auto &outputInfo : QAudioDeviceInfo::availableDevices(QAudio::AudioOutput)) {
+                    cpplistOutput.append(outputInfo);
+                    m_listOutput.append(outputInfo.deviceName());
+                }
+
+                // Kiểm tra tính hợp lệ của thiết bị
+                if (savedDeviceIndex >= 0 && savedDeviceIndex < cpplistDevices.size() &&
+                    cpplistDevices[savedDeviceIndex].deviceName() == savedDeviceName) {
+                    m_deviceInfo = cpplistDevices[savedDeviceIndex];
+                } else {
+                    // Nếu không tìm thấy thiết bị, tìm theo tên
+                    bool found = false;
+                    for (const auto &device : cpplistDevices) {
+                        if (device.deviceName() == savedDeviceName) {
+                            m_deviceInfo = device;
+                            found = true;
+                            break;
+                        }
+                    }
+                    if (!found) {
+                        m_deviceInfo = cpplistDevices.first();  // Mặc định chọn thiết bị đầu tiên
                     }
                 }
-                if (!found) {
-                    m_deviceInfo = cpplistDevices.first();  // Default to the first device if no match found
-                }
+            } else {
+                qWarning() << "RECORD section not found in config.";
             }
         } else {
-            qWarning() << "Failed to load configuration from JSON.";
+            qWarning() << "Invalid JSON format in config file.";
         }
         configFile.close();
     } else {
@@ -238,7 +249,6 @@ void AudioConfig::saveConfig(int device, int codec, int sampleRate, int channel,
     m_format.setSampleType(QAudioFormat::SignedInt);
 
     if (!m_deviceInfo.isFormatSupported(m_format)) {
-
         setSaveDone(false);
 
         qWarning() << "Default format not supported - use nearist format";
@@ -251,7 +261,8 @@ void AudioConfig::saveConfig(int device, int codec, int sampleRate, int channel,
         m_nearistParams[5] = m_deviceInfo.supportedSampleSizes().indexOf(m_format.sampleSize());
         emit nearistParamsChanged();
     }
-    // saveSettings();
+    qInfo()<< "save format Config qml: " << m_format;
+    saveSettings();
 }
 
 QAudioDeviceInfo AudioConfig::deviceInfo()
@@ -289,27 +300,38 @@ void AudioConfig::setSaveDone(bool newSaveDone)
 
 void AudioConfig::saveSettings()
 {
-    QJsonObject json;
+    QFile configFile(appDataPath);
+    QJsonDocument jsonDoc;
+    QJsonObject root;
 
-    // Save all parameters to the JSON object
-    json["device"] = m_nearistParams[0];
-    json["codec"] = m_nearistParams[1];
-    json["sampleRate"] = m_nearistParams[2];
-    json["channel"] = m_nearistParams[3];
-    json["endian"] = m_nearistParams[4];
-    json["sampleSize"] = m_nearistParams[5];
-    json["duration"] = m_nearistParams[6];
-    json["deviceName"] = m_deviceInfo.deviceName();
-
-    QJsonDocument jsonDoc(json);
-
-    qDebug()<< json << "dev name: "<<json["deviceName"];
-
-    QFile configFile("/home/haiminh/Desktop/ESCA_Qt/ESCA/database/recording_params.json");
-    if (configFile.open(QIODevice::WriteOnly)) {
-        configFile.write(jsonDoc.toJson());
+    // Đọc nội dung file JSON hiện tại (nếu có)
+    if (configFile.open(QIODevice::ReadOnly)) {
+        QByteArray data = configFile.readAll();
+        jsonDoc = QJsonDocument::fromJson(data);
+        root = jsonDoc.object(); // Lấy root object
         configFile.close();
-        qInfo() << "Settings saved successfully.";
+    }
+
+    // Cập nhật hoặc thêm mới phần RECORD
+    QJsonObject recordConfig = root.value("RECORD").toObject();
+    recordConfig["DEVICE"] = m_nearistParams[0];
+    recordConfig["CODEC"] = m_nearistParams[1];
+    recordConfig["SAMPLERATE"] = m_nearistParams[2];
+    recordConfig["CHANNEL"] = m_nearistParams[3];
+    recordConfig["ENDIAN"] = m_nearistParams[4];
+    recordConfig["SAMPLESIZE"] = m_nearistParams[5];
+    recordConfig["DURATION"] = m_nearistParams[6];
+    recordConfig["DEVICENAME"] = m_deviceInfo.deviceName();
+
+    // Chỉ ghi đè phần RECORD
+    root["RECORD"] = recordConfig;
+
+    // Ghi lại file JSON với nội dung đã cập nhật
+    jsonDoc.setObject(root);
+    if (configFile.open(QIODevice::WriteOnly)) {
+        configFile.write(jsonDoc.toJson(QJsonDocument::Indented)); // Lưu với định dạng đẹp
+        configFile.close();
+        qInfo() << "Settings saved successfully. Updated RECORD section.";
     } else {
         qWarning() << "Failed to open config file for saving.";
     }

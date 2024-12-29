@@ -137,16 +137,16 @@ Rectangle {
                         color: "transparent"
                     }
                 }
-                FolderDialog {
-                    id: folderDialog
-                    onAccepted: {
-                        text31.text = folderDialog.folder
-                        console.log("hi Giang, show the folder url: ", folderDialog.folder);
-                    }
-                    onRejected: {
-                        console.log("Canceled")
-                    }
-                }
+                // FolderDialog {
+                //     id: folderDialog
+                //     onAccepted: {
+                //         text31.text = folderDialog.folder
+                //         console.log("hi Giang, show the folder url: ", folderDialog.folder);
+                //     }
+                //     onRejected: {
+                //         console.log("Canceled")
+                //     }
+                // }
                 Rectangle {
                     id: rectangle_82
                     x: 619
@@ -170,7 +170,7 @@ Rectangle {
                         anchors.centerIn: parent
                         anchors.fill: parent
                         onClicked: {
-                            folderDialog.open();
+                            // folderDialog.open();
                         }
                     }
                 }

@@ -7,9 +7,7 @@
 #include <QDataStream>
 #include <QDateTime>
 
-
 class AudioFile : public QObject{
-
     Q_OBJECT
 
 public:
@@ -26,7 +24,6 @@ public slots:
 
     void writeAudioData(const QByteArray &data);
     void writeDataForever(const QByteArray &data);
-
 
 private:
     QString m_outputDir;

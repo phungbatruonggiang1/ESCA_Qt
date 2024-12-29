@@ -7,6 +7,7 @@ QT += qml multimedia widgets network quick
 SOURCES += \
     main.cpp \
     src/common/process/process.cpp \
+    src/config/configapp.cpp \
     src/modules/aiprocess/aicontroller.cpp \
     src/modules/aiprocess/configurationmanager.cpp \
     src/modules/aiprocess/processmanager.cpp \
@@ -35,13 +36,14 @@ QML_DESIGNER_IMPORT_PATH =
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
-else: unix:!android: target.path = /opt/$${TARGET}/bin
+else: unix:!android: target.path = /home/haiminh/Desktop
 !isEmpty(target.path): INSTALLS += target
 
 HEADERS += \
     # src/common/chartview.h \
     src/common/process/process.h \
     src/config/config.h \
+    src/config/configapp.h \
     src/modules/aiprocess/aicontroller.h \
     src/modules/aiprocess/configurationmanager.h \
     src/modules/aiprocess/processmanager.h \

@@ -2,7 +2,7 @@ import QtQuick 2.15
 import QtQuick.Controls 2.15
 import "../component"
 // Import folder list
-import Qt.labs.folderlistmodel 2.6
+// import Qt.labs.folderlistmodel 2.6
 
 Rectangle {
     width: 800
@@ -30,34 +30,34 @@ Rectangle {
             width: parent.width
             height: parent.height
             clip: true
-            model: FolderListModel {
-                id: folderListModel
-                showDirsFirst: true
-                folder: "home/haiminh/Desktop/ESCA/result/monitor"
+            // model: FolderListModel {
+            //     id: folderListModel
+            //     showDirsFirst: true
+            //     folder: "home/haiminh/Desktop/ESCA/result/monitor"
 
-                // If add filters then remove
-                // nameFilters: ["*.mp3", "*.flac"]
+            //     // If add filters then remove
+            //     // nameFilters: ["*.mp3", "*.flac"]
 
 
-                // ------------------ Hander forward feature ------------------
-                // Add a stack property to store navigation history
-                property var folderStack: []
+            //     // ------------------ Hander forward feature ------------------
+            //     // Add a stack property to store navigation history
+            //     property var folderStack: []
 
-                onFolderChanged: {
-                    // Push the current folder onto the stack when it changes
-                    folderStack.push(folder)
-                }
+            //     onFolderChanged: {
+            //         // Push the current folder onto the stack when it changes
+            //         folderStack.push(folder)
+            //     }
 
-                function popFolderFromStack() {
-                    // Pop a folder from the stack
-                    if (folderStack.length > 1) {
-                        folderStack.pop();
-                        folder = folderStack[folderStack.length - 1];
-                    }
-                }
+            //     function popFolderFromStack() {
+            //         // Pop a folder from the stack
+            //         if (folderStack.length > 1) {
+            //             folderStack.pop();
+            //             folder = folderStack[folderStack.length - 1];
+            //         }
+            //     }
 
-                // ------------------------- end ------------------------------
-            }
+            //     // ------------------------- end ------------------------------
+            // }
 
             delegate: Rectangle {
                 width: parent.width

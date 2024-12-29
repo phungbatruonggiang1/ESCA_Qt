@@ -13,11 +13,11 @@
 #include <QJsonDocument>
 #include <QJsonObject>
 #include <QJsonArray>
+#include <QStandardPaths>
 
 class AudioConfig : public QObject
 {
-    Q_OBJECT
-    
+    Q_OBJECT    
     Q_PROPERTY(QStringList listDevices READ listDevices WRITE setListDevices NOTIFY listDevicesChanged FINAL)
     Q_PROPERTY(QList<int> listSampleRate READ listSampleRate WRITE setListSampleRate NOTIFY listSampleRateChanged FINAL)
     Q_PROPERTY(QList<int> listChannel READ listChannel WRITE setListChannel NOTIFY listChannelChanged FINAL)
@@ -110,7 +110,7 @@ private:
     QList<int> m_nearistParams;
     QSettings m_settings;
     bool m_saveDone = true;
-
+    QString appDataPath;
 
 };
 

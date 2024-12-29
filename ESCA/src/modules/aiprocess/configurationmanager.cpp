@@ -4,7 +4,7 @@
 
 ConfigurationManager::ConfigurationManager(QObject *parent) : QObject(parent),
     m_transferLearning(false),
-    m_logPath("/home/haiminh/Desktop/Anomaly_Detection/D-ESCA_v2/Results/rt_test_results"),
+    m_logPath("/home/haiminh/Desktop/rt_test_results"),
     m_manualThreshold(0.0026),
     m_runtime(1000),
     m_deviceIndexInput(12),

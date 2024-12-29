@@ -2,7 +2,7 @@
     "channel": 0,
     "codec": 0,
     "device": 7,
-    "deviceName": "default",
+    "deviceName": "vdownmix",
     "duration": 0,
     "endian": 0,
     "sampleRate": 3,

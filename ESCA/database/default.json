@@ -59,11 +59,16 @@
     },
     "RECORD": {
         "ABNOMALY": false,
-        "CHANNELS": 1,
+        "CHANNEL": 1,
         "DATASET_PATH": "./dataset_mic_laptop_16k",
-        "DEVICE_INDEX_INPUT": 12,
         "SAMPLING_RATE": 44100,
-        "SECOND": 5
+        "CODEC": 0,
+        "DEVICE":7,
+        "DEVICENAME": "vdownmix",
+        "DURATION": 0,
+        "ENDIAN":0,
+        "SAMPLERATE":3,
+        "SAMPLESIZE":1    
     },
     "TRAINING": {
         "EPOCH": 10,
@@ -83,5 +88,7 @@
         "TFRECORDS": [
             "./park_dataset_demo/target/Target3"
         ]
-    }
+    },
+    
+    
 }

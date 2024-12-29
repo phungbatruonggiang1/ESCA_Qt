@@ -14,13 +14,13 @@ AudioFile::AudioFile(const QString &outputDir,
     // m_fileIndex(0),
     m_usingBuffer1(true)
 {
-    // QDir dir("/home/haiminh/Desktop/ESCA_Qt/ESCA/data");
     QDir dir(m_outputDir);
     if (!dir.exists()) {
         if (!dir.mkpath(".")) {
             qWarning() << "Failed to create output directory:" << m_outputDir;
         }
     }
+    // QString filePath
 
     // Tính toán chunkSize dựa trên cấu hình âm thanh và duration
     // chunkSize = sampleRate * bitsPerSample/8 * numChannels * durationSeconds
@@ -78,7 +78,7 @@ void AudioFile::createFile()
     QDateTime local(QDateTime::currentDateTime());
     // qInfo() << "I'm creating an audio file " << local.toTime_t();
     // QString fileName = QString("%1/test-%2.wav").arg("/home/haiminh/Desktop/ESCA_Qt/AI_Module/result/rt_test_result/record").arg(local.toTime_t());
-    QString fileName = QString("%1/basefile.wav%2").arg("/home/haiminh/Desktop/ESCA_Qt/ESCA/data").arg(local.toTime_t());
+    QString fileName = QString("%1/basefile.wav%2").arg(m_outputDir).arg(local.toTime_t());
 
     m_outFile.setFileName(fileName);
     if (!m_outFile.open(QIODevice::WriteOnly)) {
@@ -88,7 +88,7 @@ void AudioFile::createFile()
 
     // Write WAV header with dataSize = 0 (updated sau)
     writeWavHeader(0);
-    // qDebug() << "Created file:" << fileName;
+    qDebug() << "Created file:" << fileName;
 }
 
 void AudioFile::writeWavHeader(quint32 dataSize) {
@@ -167,6 +167,7 @@ void AudioFile::writeWavHeader(quint32 dataSize) {
 void AudioFile::writeDataForever(const QByteArray &data) {
     m_outFile.write(data);
     dataSize += data.size();
+    // qDebug()<< "writeAudioData in audiofile: "<<data.at(0);
 }
 
 void AudioFile::writeAudioData(const QByteArray &data) {

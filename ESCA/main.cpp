@@ -4,6 +4,7 @@
 #include <QtWidgets/QApplication>
 #include <QDebug>
 
+
 #include "./src/modules/audiorecording/recordingcontroller.h"
 #include "./src/modules/audiomanipulation/audiomanipulation.h"
 #include "./src/modules/audiorecording/recordingchart.h"
@@ -12,6 +13,7 @@
 #include "./src/modules/filemanager/FileIO.h"
 #include "./src/modules/aiprocess/aicontroller.h"
 #include "./src/modules/aiprocess/configurationmanager.h"
+#include "./src/config/configapp.h"
 
 int main(int argc, char *argv[])
 {
@@ -23,6 +25,18 @@ int main(int argc, char *argv[])
     QCoreApplication::setOrganizationDomain("sparc.com");
     QCoreApplication::setApplicationName("ESCA");
 
+    QString homeDir = QStandardPaths::writableLocation(QStandardPaths::HomeLocation);
+    // Tạo thư mục nếu chưa tồn tại
+    QDir().mkpath(homeDir);
+
+    QString filePath = homeDir + QDir::separator() + "config.json";
+    QFile configPath(filePath);
+
+    if (!configPath.exists()) {
+        ConfigApp configApp(filePath);
+        configApp.generateConfig();
+    }
+
     RecordingController recordingController;
     SystemInformationController systemInformationController;
     AIController aiController;
@@ -32,7 +46,7 @@ int main(int argc, char *argv[])
 
     // Khởi tạo ConfigurationManager và tải cấu hình
     ConfigurationManager configManager;
-    configManager.loadConfig("/home/haiminh/Desktop/Anomaly_Detection/D-ESCA_v2/config/default.json");
+    configManager.loadConfig(filePath);
 
     engine.addImportPath("qrc:/qml/imports"); // Thêm phần QML vô C++
     const QUrl url(QStringLiteral("qrc:/qml/main.qml"));
