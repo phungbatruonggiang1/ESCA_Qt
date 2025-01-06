@@ -1,14 +1,14 @@
 import QtQuick 2.15
 import QtQuick.Controls 2.15
 import QtQuick.Layouts 1.15
-import QtQuick.Dialogs 1.0
-import Qt.labs.platform 1.0
+import QtQuick.Dialogs 1.3 // Sửa từ 1.0 sang 1.3
 // Import folder list
 import Qt.labs.folderlistmodel 2.6
 // Import for play Audio
 import QtMultimedia 5.15
 // Import for delete file
 import FileIO 1.0
+import Qt.labs.settings 1.1
 
 Rectangle {
     id: frame_1
@@ -45,7 +45,8 @@ Rectangle {
                 model: FolderListModel {
                     id: folderListModel
                     showDirsFirst: true
-                    folder: "file:///home/haiminh/Desktop/ESCA_Qt/ESCA/data"
+                    // folder: "file:///home"
+                    folder: appSettings.defaultFolder || "file:///home"
                     property var folderStack: []
                     onFolderChanged: {
                         folderStack.push(folder)
@@ -88,6 +89,10 @@ Rectangle {
                     MouseArea {
                         anchors.fill: parent
                         onClicked: {
+                            if(fileIsDir){
+                                folderListModel.folder = fileURL
+                                text3.text = folderListModel.folder
+                            }
                             listView.selectedItemIndex = index;
                             listView.selectedFileName = fileName;
                         }
@@ -111,6 +116,11 @@ Rectangle {
                     height: 27
                 }
             }
+        }
+
+        Settings {
+            id: appSettings
+            property alias defaultFolder: folderListModel.folder
         }
 
         Rectangle {
@@ -181,14 +191,16 @@ Rectangle {
                         border.width: 0
                         color: "transparent"
                     }
+                    text: folderListModel.folder
                 }
-                FolderDialog {
-                    id: folderDialog
-                    currentFolder: "file:///home/haiminh/Desktop/ESCA_Qt/ESCA/data"
-                    folder: "file:///home/haiminh/Desktop/ESCA_Qt/ESCA/data"
+                FileDialog { // Thay thế FolderDialog bằng FileDialog
+                    id: fileDialog
+                    // currentFolder: StandardPaths.writableLocation(StandardPaths.PicturesLocation)
+                    title: "Choose a folder"
+                    selectFolder: true // Thêm thuộc tính để chọn thư mục
                     onAccepted: {
-                        text3.text = folderDialog.folder
-                        folderListModel.folder = folderDialog.folder
+                        text3.text = fileDialog.fileUrl
+                        folderListModel.folder = fileDialog.fileUrl
                     }
                     onRejected: {
                         console.log("Canceled")
@@ -217,7 +229,7 @@ Rectangle {
                         anchors.centerIn: parent
                         anchors.fill: parent
                         onClicked: {
-                            folderDialog.open();
+                            fileDialog.open();
                         }
                     }
                 }
@@ -259,8 +271,8 @@ Rectangle {
                             filePath = filePath.replace("file://", "");
                             console.log("Trying delete file:", filePath);
 
-                            if (fileIO.fileExists(filePath)) {
-                                var success = fileIO.removeFile(filePath);
+                            if (FileIO.fileExist(filePath)) {
+                                var success = FileIO.deleteFile(filePath);
                                 if (success) {
                                     console.log("Delete done:", filePath);
                                     folderListModel.refresh(); // Lam moi danh sach sau khi xoa
@@ -409,9 +421,17 @@ Rectangle {
         source: ""
     }
 
-    // Khai báo FileIO
-    FileIO {
-        id: fileIO
+    function fileExist(filePath) {
+        var file = new XMLHttpRequest();
+        file.open("HEAD", filePath, false);
+        file.send();
+        return file.status !== 404;
     }
 
+    function deleteFile(filePath) {
+        var file = new XMLHttpRequest();
+        file.open("DELETE", filePath, false);
+        file.send();
+        return file.status >= 200 && file.status < 300;
+    }
 }

@@ -1,32 +1,18 @@
 import QtQuick 2.15
 import QtQuick.Controls 2.15
 import AudioConfigImport 1.0
-import QtQuick.Dialogs 1.3
-import Qt.labs.platform 1.0
+import QtQuick.Dialogs 1.2
+//import Qt.labs.platform 1.0
 
 Rectangle {
     width: 800
     height: 480
     color: "#161525"
-    property alias deviceCbRightPadding: deviceCb.rightPadding
 
     Component.onCompleted: {
 
         // console.log("nearistParams[0]: ", deviceIndex);
         console.log("AudioConfig.nearistParams[5]: "+AudioConfig.nearistParams[5]);
-        for (var i = 0; i < AudioConfig.listSampleRate.length; i++){
-            sampleRateMl.append({"name" : AudioConfig.listSampleRate[i]});
-        }
-        for (i = 0; i < AudioConfig.listSampleSize.length; i++){
-            sampleSizeMl.append({"name" : AudioConfig.listSampleSize[i]});
-        }
-        for (i = 0; i < AudioConfig.listChannel.length; i++){
-            channelMl.append({"name" : AudioConfig.listChannel[i]});
-        }
-        for (i = 0; i < AudioConfig.listEndianz.length; i++){
-            endianzMl.append({"name" : ""+AudioConfig.listEndianz[i]});
-        }
-
         testtext.text = "" + AudioConfig.nearistParams;
     }
 
@@ -60,47 +46,7 @@ Rectangle {
         font.family: "Oxanium"
     }
 
-    Rectangle {
-        id: deviceOutCb
-        x: 56
-        y: 140
-        width: 686
-        height: 40
-        color: "#e0e0e0"
 
-        // model: AudioConfig.listOutput
-
-        Text {
-            id: outputFolderTx
-            text: "Click here to Choose"
-            anchors.centerIn: parent
-            font.pixelSize: 20
-            anchors.rightMargin: 20
-            anchors.bottomMargin: 18
-            font.family: "Oxanium"
-        }
-
-        FileDialog {
-            id: fileDialog
-            title: "Chọn một file"            
-            onAccepted: {
-                outputFolderTx.text = fileDialog.folder + "/"
-                console.log("File đã c  họn: " + fileDialog.fileUrl)
-            }
-            onRejected: {
-                console.log("Chọn file bị hủy")
-            }
-        }
-
-        MouseArea {
-            id: mouseArea
-            anchors.fill: parent
-            onClicked: {
-                fileDialog.open();
-            }
-        }
-    }
-    
     Text {
         id: deviceOutTx
         x: 329
@@ -113,68 +59,72 @@ Rectangle {
         font.family: "Oxanium"
     }
     Rectangle {
-                id: rectangle2
-                x: 56
-                y: 140
-                border.color: "black"
-                width: 686
-                height: 40
-                radius: 10
-                color: "#ffffff"
-                TextField {
-                    id: text31
-                    x: 8
-                    y: 0
-                    width: 600
-                    height: 36
-                    font.pixelSize: 18
-                    horizontalAlignment: Text.AlignLeft
-                    verticalAlignment: Text.AlignVCenter
-                    placeholderText: "Choose folder to open"
-                    maximumLength: 100
-                    background: Rectangle {
-                        border.width: 0
-                        color: "transparent"
-                    }
-                }
-                // FolderDialog {
-                //     id: folderDialog
-                //     onAccepted: {
-                //         text31.text = folderDialog.folder
-                //         console.log("hi Giang, show the folder url: ", folderDialog.folder);
-                //     }
-                //     onRejected: {
-                //         console.log("Canceled")
-                //     }
-                // }
-                Rectangle {
-                    id: rectangle_82
-                    x: 619
-                    y: 0
-                    width: 32
-                    height: 36
-                    color: "#ffffff"
-                    radius: 8
+        id: rectangle2
+        x: 56
+        y: 140
+        width: 686
+        height: 40
+        enabled: !RecordingObject.recStatus
+        color: "#ffffff"
 
-                    Image {
-                        id: folderopenregular
-                        x: 4
-                        y: 8
-                        width: 24
-                        height: 23
-                        source: "../images/folder-open-regular.svg"
-                        fillMode: Image.PreserveAspectFit
-                    }
+        TextField {
+            id: textOutput
+            x: 21
+            y: 5
+            width: 600
+            height: 30
+            font.pixelSize: 18
+            horizontalAlignment: Text.AlignLeft
+            verticalAlignment: Text.AlignVCenter
+            font.family: "Oxanium"
+            placeholderTextColor: "#626262"
+            text: AudioConfig.listOutput
+            maximumLength: 100
+        }
 
-                    MouseArea {
-                        anchors.centerIn: parent
-                        anchors.fill: parent
-                        onClicked: {
-                            // folderDialog.open();
-                        }
-                    }
+        FileDialog {
+            id: folderDialog
+            title: "Choose a folder"
+            selectFolder: true // This is the key to select folders instead of files
+            selectExisting: true // Make sure we select an existing one
+            nameFilters: ["*"] // Display all folders
+            onAccepted: {
+                textOutput.text = folderDialog.fileUrl // Update the text with the folder URL
+                console.log("Selected folder: " + folderDialog.fileUrl)
+            }
+            onRejected: {
+                console.log("Folder selection cancelled")
+            }
+        }
+
+        Rectangle {
+            id: rectangle_82
+            x: 641
+            y: 2
+            width: 32
+            height: 36
+            color: "#ffffff"
+            radius: 8
+
+            Image {
+                id: folderopenregular
+                x: 4
+                y: 8
+                width: 24
+                height: 23
+                source: "../images/folder-open-regular.svg"
+                fillMode: Image.PreserveAspectFit
+            }
+
+            MouseArea {
+                anchors.centerIn: parent
+                anchors.fill: parent
+                onClicked: {
+                    folderDialog.open();
                 }
             }
+        }
+    }
 
     ComboBox {
         id: codecCb
@@ -223,9 +173,7 @@ Rectangle {
         currentIndex: AudioConfig.nearistParams[2]
         enabled: !RecordingObject.recStatus
 
-        model: ListModel {
-            id: sampleRateMl
-        }
+        model: AudioConfig.listSampleRateStr
 
         font.pointSize: 18
         font.family: "Oxanium"
@@ -242,9 +190,7 @@ Rectangle {
         font.pointSize: 18
         enabled: !RecordingObject.recStatus
 
-        model: ListModel {
-            id: channelMl
-        }
+        model: AudioConfig.listChannelStr
     }
 
     Text {
@@ -270,9 +216,7 @@ Rectangle {
         font.family: "Oxanium"
         enabled: !RecordingObject.recStatus
 
-        model: ListModel {
-            id: endianzMl
-        }
+        model: AudioConfig.listEndianzStr
     }
 
     Text {
@@ -298,9 +242,7 @@ Rectangle {
         font.family: "Oxanium"
         font.pointSize: 18
 
-        model: ListModel {
-            id: sampleSizeMl
-        }
+        model: AudioConfig.listSampleSizeStr
     }
 
     ComboBox {
@@ -340,13 +282,13 @@ Rectangle {
         font.pixelSize: 15
         font.family: "Oxanium"
     }
-/*
-     Dialog {
+
+    Dialog {
         id: formatWarningDialog
         title: "Format You Choose Not Supported"
         visible: !AudioConfig.saveDone
-        standardButtons: Dialog.Ok
-//        anchors.centerIn: parent
+        // standardButtons: Dialog.Ok
+        //        anchors.centerIn: parent
 
         Label {
             text: "The selected format is not supported for recording - USE NEARIST FORMAT."
@@ -390,8 +332,8 @@ Rectangle {
         id: minhDialog
         title: "Format You Choose Not Supported"
         visible: false
-        standardButtons: Dialog.Ok
-//        anchors.centerIn: parent
+        // standardButtons: Dialog.Ok
+        //        anchors.centerIn: parent
 
         Label {
             text: "Unknown field port, please choose another device"
@@ -400,7 +342,6 @@ Rectangle {
         }
         onAccepted: minhDialog.visible = false
     }
-    */
 
     Button {
         id: button
@@ -420,12 +361,13 @@ Rectangle {
                 minhDialog.visible = true;
             }
             else {
-                AudioConfig.saveConfig(deviceCb.currentIndex, codecCb.currentIndex, sampleRateCb.currentIndex, channelsCb.currentIndex, endianzCb.currentIndex, sampleSizeCb.currentIndex, durationCb.currentIndex)
+                AudioConfig.saveConfig(deviceCb.currentIndex, codecCb.currentIndex, sampleRateCb.currentIndex, channelsCb.currentIndex, endianzCb.currentIndex, sampleSizeCb.currentIndex, durationCb.currentIndex, textOutput.text)
                 // console.log("audioConfig.listChannel[0]: " + AudioConfig.listChannel[0])
                 // console.log("click: " +devicename)
             }
             testtext.text = "" + AudioConfig.nearistParams;
             console.log("AudioConfig.nearistParams[5]: ", AudioConfig.nearistParams[5]);
+            textOutput.text = AudioConfig.listOutput;
         }
     }
 
