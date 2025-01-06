@@ -191,6 +191,7 @@ void AudioConfig::setListChannel(const QList<int> &newListChannel)
     emit listChannelChanged();
 }
 
+
 QStringList AudioConfig::listCodecs() const
 {
     return m_listCodecs;
