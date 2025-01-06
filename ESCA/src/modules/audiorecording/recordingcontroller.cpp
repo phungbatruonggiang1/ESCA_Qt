@@ -17,8 +17,8 @@ RecordingController::RecordingController(QObject *parent)
     qmlRegisterSingletonInstance("AudioChartImport", 1, 0, "AudioChart", m_recordingChart);
     setRecStatus(false);
 
-    m_outputDir = QStandardPaths::writableLocation(QStandardPaths::HomeLocation);
-    m_audioFile = new AudioFile(m_outputDir, format, 2.0);
+    // m_outputDir = QStandardPaths::writableLocation(QStandardPaths::HomeLocation);
+
     m_audioFileThread = new QThread();
 
     connect(m_recordIO, &RecordIO::sendData, this, &RecordingController::handleDataReady);
@@ -54,12 +54,14 @@ void RecordingController::startRecording()
 {
     QAudioFormat format = m_audioConfig->format();
     QAudioDeviceInfo deviceInfo = m_audioConfig->deviceInfo();
+    m_outputDir = m_audioConfig->listOutput();
+    qDebug()<< "m_outputDir"<< m_outputDir;
+
+    m_audioFile = new AudioFile(m_outputDir, format, 2.0);
 
     m_recordIO->startAudioInput(format, deviceInfo);
     qInfo() << "format before thread" << format;
 
-
-    // m_outputDir = m_audioConfig->outputDir();    
     m_audioFile->moveToThread(m_audioFileThread);   // cho AudioFile vào thread riêng
 
     // Kết nối các signal và slot để quản lý thread và AudioFile
@@ -71,7 +73,6 @@ void RecordingController::startRecording()
     m_audioFileThread->start();
 
     // Bắt đầu RecordingIO
-
 
     setRecStatus(true);
     qInfo() << "Start recording with format" << format;

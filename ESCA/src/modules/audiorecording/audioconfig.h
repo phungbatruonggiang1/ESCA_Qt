@@ -1,4 +1,4 @@
-    #ifndef AUDIOCONFIG_H
+#ifndef AUDIOCONFIG_H
 #define AUDIOCONFIG_H
 
 #include <QObject>
@@ -17,15 +17,25 @@
 
 class AudioConfig : public QObject
 {
-    Q_OBJECT    
+    Q_OBJECT
     Q_PROPERTY(QStringList listDevices READ listDevices WRITE setListDevices NOTIFY listDevicesChanged FINAL)
+
     Q_PROPERTY(QList<int> listSampleRate READ listSampleRate WRITE setListSampleRate NOTIFY listSampleRateChanged FINAL)
+    Q_PROPERTY(QStringList listSampleRateStr READ listSampleRateStr NOTIFY listSampleRateStrChanged FINAL)
+
     Q_PROPERTY(QList<int> listChannel READ listChannel WRITE setListChannel NOTIFY listChannelChanged FINAL)
+    Q_PROPERTY(QStringList listChannelStr READ listChannelStr NOTIFY listChannelStrChanged FINAL)
+
     Q_PROPERTY(QStringList listCodecs READ listCodecs WRITE setListCodecs NOTIFY listCodecsChanged FINAL)
+
     Q_PROPERTY(QList<QAudioFormat::Endian> listEndianz READ listEndianz WRITE setListEndianz NOTIFY listEndianzChanged FINAL)
+    Q_PROPERTY(QStringList listEndianzStr READ listEndianzStr NOTIFY listEndianzStrChanged FINAL)
+
     Q_PROPERTY(QList<int> listSampleSize READ listSampleSize WRITE setListSampleSize NOTIFY listSampleSizeChanged FINAL)
+    Q_PROPERTY(QStringList listSampleSizeStr READ listSampleSizeStr NOTIFY listSampleSizeStrChanged FINAL)
+
     Q_PROPERTY(QStringList listDuration READ listDuration NOTIFY listDurationChanged FINAL)
-    Q_PROPERTY(QStringList listOutput READ listOutput WRITE setListOutput NOTIFY listOutputChanged FINAL)
+    Q_PROPERTY(QString listOutput READ listOutput WRITE setListOutput NOTIFY listOutputChanged FINAL)
 
     Q_PROPERTY(QList<int> nearistParams READ nearistParams NOTIFY nearistParamsChanged FINAL)
 
@@ -54,7 +64,7 @@ public:
     void setListSampleSize(const QList<int> &newListSampleSize);
 
     Q_INVOKABLE void changeDevice(int idx);
-    Q_INVOKABLE void saveConfig(int device, int codec, int sampleRate, int channel, int endian, int sampleSize, int duration);
+    Q_INVOKABLE void saveConfig(int device, int codec, int sampleRate, int channel, int endian, int sampleSize, int duration, QString outputDir);
 
     QAudioDeviceInfo deviceInfo();
     QAudioFormat format();
@@ -70,8 +80,16 @@ public:
     QStringList listDuration() const;
     void setlistDuration(const QStringList &newListDuration);
 
-    QStringList listOutput() const;
-    void setListOutput(const QStringList &newListOutput);
+    QString listOutput() const;
+    void setListOutput(const QString &newListOutput);
+
+    QStringList listSampleRateStr() const;
+
+    QStringList listChannelStr() const;
+
+    QStringList listEndianzStr() const;
+
+    QStringList listSampleSizeStr() const;
 
 signals:
     void listCodecsChanged();
@@ -89,6 +107,14 @@ signals:
 
     void listOutputChanged();
 
+    void listSampleRateStrChanged();
+
+    void listChannelStrChanged();
+
+    void listEndianzStrChanged();
+
+    void listSampleSizeStrChanged();
+
 private:
     QAudioDeviceInfo m_deviceInfo;
     QAudioDeviceInfo m_OutputInfo;
@@ -98,7 +124,7 @@ private:
 
     QStringList listDevicesName;
     QStringList m_listDevices;
-    QStringList m_listOutput;
+    QString m_listOutput;
     QList<int> m_listSampleRate;
     QList<int> m_listChannel;
     QStringList m_listCodecs;
@@ -112,6 +138,10 @@ private:
     bool m_saveDone = true;
     QString appDataPath;
 
+    QStringList m_listSampleRateStr;
+    QStringList m_listChannelStr;
+    QStringList m_listEndianzStr;
+    QStringList m_listSampleSizeStr;
 };
 
 #endif // AUDIOCONFIG_H

@@ -7,8 +7,11 @@ AudioConfig::AudioConfig(QObject *parent) : QObject{parent}
     qDebug()<< "Config File is exist!" << appDataPath;
     QFile configFile(appDataPath);
 
+    m_listOutput = QStandardPaths::writableLocation(QStandardPaths::HomeLocation);
+    qDebug()<< "Home Location" << listOutput();
+
     if (!configFile.exists()) {
-        qDebug()<< "Config File is  not exist!";
+        qDebug()<< "Config File is not exist!";
     }
 
     if (configFile.open(QIODevice::ReadOnly)) {
@@ -47,10 +50,10 @@ AudioConfig::AudioConfig(QObject *parent) : QObject{parent}
                 }
 
                 // Tải danh sách thiết bị đầu ra
-                for (auto &outputInfo : QAudioDeviceInfo::availableDevices(QAudio::AudioOutput)) {
-                    cpplistOutput.append(outputInfo);
-                    m_listOutput.append(outputInfo.deviceName());
-                }
+                // for (auto &outputInfo : QAudioDeviceInfo::availableDevices(QAudio::AudioOutput)) {
+                //     cpplistOutput.append(outputInfo);
+                //     m_listOutput.append(outputInfo.deviceName());
+                // }
 
                 // Kiểm tra tính hợp lệ của thiết bị
                 if (savedDeviceIndex >= 0 && savedDeviceIndex < cpplistDevices.size() &&
@@ -118,22 +121,22 @@ void AudioConfig::changeDevice(int idx)
 
     setListCodecs(m_deviceInfo.supportedCodecs());
     if (!m_deviceInfo.supportedCodecs().empty()) {
-        m_format.setCodec(m_deviceInfo.supportedCodecs().at(0));        
+        m_format.setCodec(m_deviceInfo.supportedCodecs().at(0));
     }
 
     setListSampleRate(m_deviceInfo.supportedSampleRates());
     if (!m_deviceInfo.supportedSampleRates().empty()) {
-        m_format.setSampleRate(m_deviceInfo.supportedSampleRates().at(0));        
+        m_format.setSampleRate(m_deviceInfo.supportedSampleRates().at(0));
     }
 
     setListChannel(m_deviceInfo.supportedChannelCounts());
     if (!m_deviceInfo.supportedChannelCounts().empty()) {
-        m_format.setChannelCount(m_deviceInfo.supportedChannelCounts().at(0));        
+        m_format.setChannelCount(m_deviceInfo.supportedChannelCounts().at(0));
     }
 
     setListEndianz(m_deviceInfo.supportedByteOrders());
     if (!m_deviceInfo.supportedByteOrders().empty()) {
-        m_format.setByteOrder(m_deviceInfo.supportedByteOrders().at(0));        
+        m_format.setByteOrder(m_deviceInfo.supportedByteOrders().at(0));
     }
 
     setListSampleSize(m_deviceInfo.supportedSampleSizes());
@@ -154,16 +157,23 @@ void AudioConfig::setListDevices(const QStringList &newListDevices)
     emit listDevicesChanged();
 }
 
-QStringList AudioConfig::listOutput() const
+QString AudioConfig::listOutput() const
 {
     return m_listOutput;
 }
 
-void AudioConfig::setListOutput(const QStringList &newListOutput)
+void AudioConfig::setListOutput(const QString &newListOutput)
 {
-    if (m_listOutput == newListOutput)
-        return;
-    m_listOutput = newListOutput;
+    QUrl fileUrl(newListOutput);
+    if (fileUrl.isValid() && fileUrl.scheme() == "file") {
+        QString path = fileUrl.toLocalFile();
+        m_listOutput = path;
+        qDebug()<<"setListOutput"+path;
+    } else {
+        m_listOutput = newListOutput;
+        qDebug()<<"setListOutput"+newListOutput;
+    }
+
     emit listOutputChanged();
 }
 
@@ -190,7 +200,6 @@ void AudioConfig::setListChannel(const QList<int> &newListChannel)
     m_listChannel = newListChannel;
     emit listChannelChanged();
 }
-
 
 QStringList AudioConfig::listCodecs() const
 {
@@ -235,9 +244,10 @@ QStringList AudioConfig::listDuration() const
     return m_listDuration;
 }
 
-void AudioConfig::saveConfig(int device, int codec, int sampleRate, int channel, int endian, int sampleSize, int duration)
+void AudioConfig::saveConfig(int device, int codec, int sampleRate, int channel, int endian, int sampleSize, int duration, QString outputDir)
 {
     m_nearistParams = {device, codec, sampleRate, channel, endian, sampleSize, duration};
+    setListOutput(outputDir);
 
     qInfo()<< "save params qml: " << m_nearistParams;
 
@@ -338,3 +348,41 @@ void AudioConfig::saveSettings()
     }
 }
 
+
+QStringList AudioConfig::listSampleRateStr() const
+{
+    // return m_listSampleRateStr;
+    QStringList result;
+    for (int rate : m_listSampleRate) {
+        result.append(QString::number(rate));
+    }
+    return result;
+}
+
+QStringList AudioConfig::listChannelStr() const
+{
+    // return m_listChannelStr;
+    QStringList result;
+    for (int channel : m_listChannel) {
+        result.append(QString::number(channel));
+    }
+    return result;
+}
+
+QStringList AudioConfig::listEndianzStr() const
+{
+    QStringList result;
+    for (QAudioFormat::Endian endian : m_listEndianz) {
+        result.append(endian == QAudioFormat::BigEndian ? "BigEndian" : "LittleEndian");
+    }
+    return result;
+}
+
+QStringList AudioConfig::listSampleSizeStr() const
+{
+    QStringList result;
+    for (int size : m_listSampleSize) {
+        result.append(QString::number(size));
+    }
+    return result;
+}
