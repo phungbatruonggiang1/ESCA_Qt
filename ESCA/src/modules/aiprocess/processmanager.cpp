@@ -24,8 +24,8 @@ void ProcessManager::startPythonService()
 
     qDebug() << "Current working directory:" << QDir::currentPath();
 
-    setStatement("python3 ~/Desktop/ESCA_Qt/python_ai/inference/shared_memory_reader.py");
-    // setStatement("python3 ../../../../python_ai/inference/shared_memory_reader.py");
+    setStatement("python3 ~/Desktop/ESCA_Qt/python_ai/inference.py");
+    // setStatement("python3 ../../../../python_ai/inference.py");
 
     qInfo() << statement();
 

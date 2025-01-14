@@ -211,7 +211,7 @@ Rectangle {
             anchors.fill: parent
             anchors.leftMargin: 0
             onClicked: {
-                screenLoader.source = "../TransferLearning/transferLearning.qml"
+                screenLoader.source = "../TransferLearning/TransferModule.qml"
             }
         }
     }

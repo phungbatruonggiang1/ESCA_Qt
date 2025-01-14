@@ -14,6 +14,8 @@
 #include "./src/modules/aiprocess/aicontroller.h"
 #include "./src/modules/aiprocess/configurationmanager.h"
 #include "./src/config/configapp.h"
+#include "./src/modules/transferlearning/transfercontroller.h"
+#include "./src/modules/transferlearning/transferconfig.h"
 
 int main(int argc, char *argv[])
 {
@@ -40,13 +42,16 @@ int main(int argc, char *argv[])
     RecordingController recordingController;
     SystemInformationController systemInformationController;
     AIController aiController;
+    TransferController transferController;
 
     // AudioConfig audioConfig;
     QQmlApplicationEngine engine;
 
-    // Khởi tạo ConfigurationManager và tải cấu hình
+    // Khởi tạo ConfigurationManager và tải cấu hình của Inference
     ConfigurationManager configManager;
     configManager.loadConfig(filePath);
+    TransferConfig transferConfig;
+    transferConfig.loadConfig(filePath);
 
     engine.addImportPath("qrc:/qml/imports"); // Thêm phần QML vô C++
     const QUrl url(QStringLiteral("qrc:/qml/main.qml"));
@@ -54,8 +59,10 @@ int main(int argc, char *argv[])
     engine.rootContext()->setContextProperty("RecordingObject", &recordingController);
     engine.rootContext()->setContextProperty("BackendObject", &systemInformationController);
     engine.rootContext()->setContextProperty("AIObject", &aiController);
+    engine.rootContext()->setContextProperty("TransferObject", &transferController);
 
     engine.rootContext()->setContextProperty("ConfigManager", &configManager);
+    engine.rootContext()->setContextProperty("TransferConfig", &transferConfig);
 
     qmlRegisterType<FileIO>("FileIO", 1, 0, "FileIO");
 

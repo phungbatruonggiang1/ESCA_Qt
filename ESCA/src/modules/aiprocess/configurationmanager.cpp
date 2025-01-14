@@ -63,7 +63,6 @@ bool ConfigurationManager::loadConfig(const QString &filePath) {
     return true;
 }
 
-
 bool ConfigurationManager::saveConfig(const QString &filePath) const {
     QFile file(filePath);
 

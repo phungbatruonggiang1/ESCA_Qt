@@ -22,7 +22,10 @@ SOURCES += \
     src/modules/audiorecording/recordingschedule.cpp \
     src/modules/audiorecording/recordio.cpp \
     src/modules/systeminformation/systeminformationcontroller.cpp \
-    src/modules/filemanager/filemanager.cpp
+    src/modules/filemanager/filemanager.cpp \
+    src/modules/transferlearning/transferconfig.cpp \
+    src/modules/transferlearning/transfercontroller.cpp \
+    src/modules/transferlearning/transferprocmng.cpp
 
 # RESOURCES += qml.qrc
 RESOURCES += \
@@ -60,7 +63,10 @@ HEADERS += \
     src/modules/audiorecording/recordio.h \
     src/modules/filemanager/FileIO.h \
     src/modules/systeminformation/systeminformationcontroller.h \
-    src/modules/filemanager/filemanager.h
+    src/modules/filemanager/filemanager.h \
+    src/modules/transferlearning/transferconfig.h \
+    src/modules/transferlearning/transfercontroller.h \
+    src/modules/transferlearning/transferprocmng.h
 
 DISTFILES += \
     ../../../ESCA_Qt/ESCA/ui/components/GpuFrame.qml \
@@ -85,9 +91,4 @@ DISTFILES += \
     qml/content/SystemInformation/aiJobMonitor.qml \
     qml/content/SystemInformation/realTimeMonitor.qml \
     qml/content/SystemInformation/systemInformation.qml \
-    qml/content/TransferLearning/transferLearning.qml \
-    qml/content/TransferLearning/transferLearning_data.qml \
-    qml/content/TransferLearning/transferLearning_parameterConfigure.qml \
-    qml/content/TransferLearning/transferLearning_result.qml \
-    qml/content/TransferLearning/transferLearning_traning.qml \
     qml/content/component/RamFrame.qml \
