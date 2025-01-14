@@ -32,7 +32,7 @@
             "CHANNELS": 32,
             "F_MIN": 100,
             "HOP_TIME": 0.06,
-            "WINDOW_TIME": 0.12   
+            "WINDOW_TIME": 0.12
         },
         "MEL": {
             "NFFT": 2048,
@@ -44,6 +44,7 @@
         "TYPE": "mel"
     },
     "REALTIME": {
+        "BUFFER_SIZE": 176400,
         "CHANNELS": 1,
         "DEVICE_INDEX_INPUT": 12,
         "IMPORT_FILE": false,
@@ -52,18 +53,21 @@
         "RUNTIME": 1000,
         "SAMPLING_RATE": 44100,
         "SECOND": 2,
-        "TRANSFER_LEARNING": false,
-        "SHARED_MEMORY_KEY": "0xDEADBEEF",
         "SEMAPHORE_KEY": "0xBEEFDEAD",
-        "BUFFER_SIZE": 176400
+        "SHARED_MEMORY_KEY": "0xDEADBEEF",
+        "TRANSFER_LEARNING": false
     },
     "RECORD": {
         "ABNOMALY": false,
-        "CHANNELS": 1,
+        "CHANNEL": 0,
+        "CODEC": 0,
         "DATASET_PATH": "./dataset_mic_laptop_16k",
-        "DEVICE_INDEX_INPUT": 12,
-        "SAMPLING_RATE": 44100,
-        "SECOND": 5
+        "DEVICE": 0,
+        "DEVICENAME": "default",
+        "DURATION": 0,
+        "ENDIAN": 0,
+        "SAMPLERATE": 0,
+        "SAMPLESIZE": 1
     },
     "TRAINING": {
         "EPOCH": 10,

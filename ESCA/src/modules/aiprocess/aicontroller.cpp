@@ -25,11 +25,13 @@ void AIController::start()
     // }
 
     processManager->startPythonService();
+    setIsRunning(true);
 }
 
 void AIController::stop()
 {
     processManager->stopPythonService();
+    setIsRunning(false);
 }
 
 void AIController::handleInferenceResult(const float predValue)

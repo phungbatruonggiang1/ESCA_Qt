@@ -16,10 +16,9 @@ class ConfigManager:
         return cls._instance
 
 
-
     def _load_default_config(self):
         """Load default configuration from JSON file"""
-        default_path = Path(__file__).parent / "default.json"
+        default_path = "/home/haiminh/config.json"
         with open(default_path, 'r') as f:
             self._config = json.load(f)
 
@@ -47,14 +46,6 @@ class ConfigManager:
             return value
         except (KeyError, TypeError):
             return default
-
-    def set(self, key: str, value: Any):
-        """Set value in config using dot notation"""
-        keys = key.split('.')
-        d = self._config
-        for k in keys[:-1]:
-            d = d.setdefault(k, {})
-        d[keys[-1]] = value
 
     @property
     def config(self) -> Dict:
