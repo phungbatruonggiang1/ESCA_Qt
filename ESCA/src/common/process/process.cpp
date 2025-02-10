@@ -65,6 +65,7 @@ void Process::readyReadStandardOutput()
     QByteArray data = m_process.readAll().trimmed();
     // QByteArray data = m_process.readAllStandardOutput();
     qInfo() << QString(data.trimmed());
+
 }
 
 void Process::started()
@@ -88,15 +89,6 @@ void Process::stateChanged(QProcess::ProcessState newState)
         startProcess();
         break;
     }
-}
-
-void Process::readyRead()
-{
-    if(!m_running) return;
-    qInfo() << Q_FUNC_INFO;
-    QByteArray data = m_process.readAll().trimmed();
-    qInfo() << data;
-    // emit sendLog(data);
 }
 
 QString Process::statement() const

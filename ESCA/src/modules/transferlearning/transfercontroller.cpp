@@ -2,17 +2,25 @@
 #include <QDebug>
 
 TransferController::TransferController(QObject *parent)
-    :QObject(parent),
+    :QObject(parent),    
     m_rawLog(""),
     m_epoch(0),
     m_totalEpoch(0)
 {
-    // configManager = new ConfigurationManager(this);
-    // sharedMemoryManager = new SharedMemoryManager(this);
     transferProcMng = new TransferProcMng(this);
+    m_histogram = new HistogramManager(this);
+    m_prManager = new PRManager(this);
+    m_rocManager = new ROCManager(this);
+
+    qmlRegisterSingletonInstance("TransHistoImport", 1, 0, "TransHisto", m_histogram);
+    qmlRegisterSingletonInstance("TransPRImport", 1, 0, "TransPR", m_prManager);
+    qmlRegisterSingletonInstance("TransROCImport", 1, 0, "TransROC", m_rocManager);
 
     // Kết nối tín hiệu từ TransferProcMng tới TransferController
     connect(transferProcMng, &TransferProcMng::logUpdated, this, &TransferController::handleLogUpdated);
+    connect(transferProcMng, &TransferProcMng::histogramUpdated, m_histogram, &HistogramManager::updateEpochData);
+    connect(transferProcMng, &TransferProcMng::prCurveUpdated, m_prManager, &PRManager::computePRCurve);
+    connect(transferProcMng, &TransferProcMng::rocCurveUpdated, m_rocManager, &ROCManager::computeROCCurve);
 }
 
 TransferController::~TransferController()
@@ -135,3 +143,5 @@ QString TransferController::stepType() const
 {
     return m_stepType;
 }
+
+

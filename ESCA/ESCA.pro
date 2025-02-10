@@ -23,6 +23,9 @@ SOURCES += \
     src/modules/audiorecording/recordio.cpp \
     src/modules/systeminformation/systeminformationcontroller.cpp \
     src/modules/filemanager/filemanager.cpp \
+    src/modules/transferlearning/histogrammanager.cpp \
+    src/modules/transferlearning/prmanager.cpp \
+    src/modules/transferlearning/rocmanager.cpp \
     src/modules/transferlearning/transferconfig.cpp \
     src/modules/transferlearning/transfercontroller.cpp \
     src/modules/transferlearning/transferprocmng.cpp
@@ -64,6 +67,9 @@ HEADERS += \
     src/modules/filemanager/FileIO.h \
     src/modules/systeminformation/systeminformationcontroller.h \
     src/modules/filemanager/filemanager.h \
+    src/modules/transferlearning/histogrammanager.h \
+    src/modules/transferlearning/prmanager.h \
+    src/modules/transferlearning/rocmanager.h \
     src/modules/transferlearning/transferconfig.h \
     src/modules/transferlearning/transfercontroller.h \
     src/modules/transferlearning/transferprocmng.h

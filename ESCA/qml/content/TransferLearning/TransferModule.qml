@@ -149,7 +149,7 @@ Rectangle {
                     anchors.fill: parent
                     onClicked: {
                         selectedBtn = "results"
-                        contentLoader.setSource("transferResult.qml");
+                        contentLoader.setSource("TransferResult.qml");
                     }
                 }
             }
@@ -163,7 +163,6 @@ Rectangle {
         width: 802
         height: 500
         color: "#2a2a2a"
-        radius: 21
 
         Loader {
             id: contentLoader

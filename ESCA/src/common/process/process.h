@@ -8,7 +8,6 @@
 
 class Process : public QObject
 {
-
     Q_OBJECT
 
 public:
@@ -32,8 +31,6 @@ private slots:
     void readyReadStandardOutput();
     void started();
     void stateChanged(QProcess::ProcessState newState);
-    void readyRead();
-
 
 protected:
     QProcess m_process;
