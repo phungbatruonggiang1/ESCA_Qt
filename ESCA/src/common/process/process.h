@@ -23,10 +23,10 @@ signals:
 public slots:
     void start();
     void stop();
+    void finished(int exitCode, QProcess::ExitStatus exitStatus);
 
 private slots:
     void errorOccured(QProcess::ProcessError error);
-    void finished(int exitCode, QProcess::ExitStatus exitStatus);
     void readyReadStandardError();
     void readyReadStandardOutput();
     void started();

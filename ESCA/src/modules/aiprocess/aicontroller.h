@@ -13,20 +13,21 @@ public:
     explicit AIController(QObject *parent = nullptr);
     ~AIController();
 
-    Q_PROPERTY(bool isRunning READ isRunning WRITE setIsRunning NOTIFY isRunningChanged FINAL)
+    Q_PROPERTY(bool inferenceStatus READ inferenceStatus WRITE setinferenceStatus NOTIFY inferenceStatusChanged FINAL)
     Q_PROPERTY(QVector<float> predValue READ predValue NOTIFY predValueChanged FINAL)
 
     Q_INVOKABLE void start();
     Q_INVOKABLE void stop();
 
-    bool isRunning() const;
-    void setIsRunning(bool newIsRunning);
 
     QVector<float> predValue() const;
 
+    bool inferenceStatus() const;
+    void setinferenceStatus(bool newInferenceStatus);
+
 signals:
-    void isRunningChanged();
     void predValueChanged();
+    void inferenceStatusChanged();
 
 private slots:
     void handleInferenceResult(const float predValue);
@@ -36,8 +37,8 @@ private:
     // SharedMemoryManager* sharedMemoryManager;
     ProcessManager* processManager;
 
-    bool m_isRunning = false;
     QVector<float> m_predValue;
+    bool m_inferenceStatus = false;
 };
 
 #endif // AICONTROLLER_H

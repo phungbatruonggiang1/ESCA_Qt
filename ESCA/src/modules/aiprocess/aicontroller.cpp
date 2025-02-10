@@ -25,13 +25,13 @@ void AIController::start()
     // }
 
     processManager->startPythonService();
-    setIsRunning(true);
+    setinferenceStatus(true);
 }
 
 void AIController::stop()
 {
     processManager->stopPythonService();
-    setIsRunning(false);
+    setinferenceStatus(false);
 }
 
 void AIController::handleInferenceResult(const float predValue)
@@ -49,21 +49,20 @@ void AIController::handleInferenceResult(const float predValue)
     }
 }
 
-bool AIController::isRunning() const
-{
-    return m_isRunning;
-}
-
-void AIController::setIsRunning(bool newIsRunning)
-{
-    if (m_isRunning == newIsRunning)
-        return;
-    m_isRunning = newIsRunning;
-    emit isRunningChanged();
-}
-
 QVector<float> AIController::predValue() const
 {
     return m_predValue;
 }
 
+bool AIController::inferenceStatus() const
+{
+    return m_inferenceStatus;
+}
+
+void AIController::setinferenceStatus(bool newInferenceStatus)
+{
+    if (m_inferenceStatus == newInferenceStatus)
+        return;
+    m_inferenceStatus = newInferenceStatus;
+    emit inferenceStatusChanged();
+}
