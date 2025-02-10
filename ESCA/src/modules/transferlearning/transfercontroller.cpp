@@ -21,6 +21,9 @@ TransferController::TransferController(QObject *parent)
     connect(transferProcMng, &TransferProcMng::histogramUpdated, m_histogram, &HistogramManager::updateEpochData);
     connect(transferProcMng, &TransferProcMng::prCurveUpdated, m_prManager, &PRManager::computePRCurve);
     connect(transferProcMng, &TransferProcMng::rocCurveUpdated, m_rocManager, &ROCManager::computeROCCurve);
+
+    // Kết nối tín hiệu khi process hoàn thành
+    QObject::connect(transferProcMng, &TransferProcMng::finished, this, &TransferController::stop);
 }
 
 TransferController::~TransferController()
@@ -35,28 +38,14 @@ void TransferController::start()
     //     qWarning() << "Failed to load configuration.";
     //     return;
     // }
-
     transferProcMng->startPythonService();
-    setIsRunning(true);
+    setTlStatus(true);
 }
 
 void TransferController::stop()
 {
     transferProcMng->stopPythonService();
-    setIsRunning(false);
-}
-
-bool TransferController::isRunning() const
-{
-    return m_isRunning;
-}
-
-void TransferController::setIsRunning(bool newIsRunning)
-{
-    if (m_isRunning == newIsRunning)
-        return;
-    m_isRunning = newIsRunning;
-    emit isRunningChanged();
+    setTlStatus(false);
 }
 
 QString TransferController::rawLog() const
@@ -89,7 +78,6 @@ int TransferController::totalEpoch() const
 //                     .arg(reconstructionLoss)
 //                     .arg(modelLoss)
 //                     .arg(supervisedLoss);
-
 
 //     emit rawLogChanged();
 //     emit totalEpochChanged();
@@ -144,4 +132,15 @@ QString TransferController::stepType() const
     return m_stepType;
 }
 
+bool TransferController::tlStatus() const
+{
+    return m_tlStatus;
+}
 
+void TransferController::setTlStatus(bool newTlStatus)
+{
+    if (m_tlStatus == newTlStatus)
+        return;
+    m_tlStatus = newTlStatus;
+    emit tlStatusChanged();
+}

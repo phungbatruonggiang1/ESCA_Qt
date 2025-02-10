@@ -17,7 +17,7 @@ public:
     explicit TransferController(QObject *parent = nullptr);
     ~TransferController();
 
-    Q_PROPERTY(bool isRunning READ isRunning WRITE setIsRunning NOTIFY isRunningChanged FINAL)
+    Q_PROPERTY(bool tlStatus READ tlStatus WRITE setTlStatus NOTIFY tlStatusChanged FINAL)
 
     Q_PROPERTY(QString rawLog READ rawLog NOTIFY rawLogChanged)
     Q_PROPERTY(int epoch READ epoch NOTIFY epochChanged)
@@ -29,9 +29,6 @@ public:
 
     Q_INVOKABLE void start();
     Q_INVOKABLE void stop();
-
-    bool isRunning() const;
-    void setIsRunning(bool newIsRunning);
 
     QString rawLog() const;
 
@@ -45,9 +42,10 @@ public:
 
     QString stepType() const;
 
-signals:
-    void isRunningChanged();
+    bool tlStatus() const;
+    void setTlStatus(bool newTlStatus);
 
+signals:
     void rawLogChanged();
 
     void epochChanged();
@@ -60,6 +58,8 @@ signals:
 
     void stepTypeChanged();
 
+    void tlStatusChanged();
+
 public slots:
     // void handleLogUpdated(const QString &log, int epoch, int totalEpoch, const QVariantMap &details);
     void handleLogUpdated(int epoch, int totalEpoch, const QString &stepType, const QVariantMap &details);
@@ -70,7 +70,6 @@ private:
     PRManager* m_prManager;
     ROCManager* m_rocManager;
 
-    bool m_isRunning = false;
     QString m_rawLog;
     int m_epoch;
     int m_totalEpoch;
@@ -78,6 +77,7 @@ private:
     QVariantList m_logList;
     QString m_stepType;
 
+    bool m_tlStatus = false;
 };
 
 #endif // TransferController_H

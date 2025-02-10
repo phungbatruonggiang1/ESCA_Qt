@@ -3,7 +3,7 @@
 
 TransferProcMng::TransferProcMng(QObject *parent)
     : Process(parent)
-    // m_scriptPath("/home/haiminh/Desktop/rt_test.py -cfg /home/haiminh/Desktop/params.yaml -f /home/haiminh/Desktop/temp.csv") // Đường dẫn mặc định
+// m_scriptPath("/home/haiminh/Desktop/rt_test.py -cfg /home/haiminh/Desktop/params.yaml -f /home/haiminh/Desktop/temp.csv") // Đường dẫn mặc định
 {
     connect(&m_process, &QProcess::readyRead, this, &TransferProcMng::handleStandardOutput);
 }
@@ -36,27 +36,53 @@ void TransferProcMng::stopPythonService()
 
 void TransferProcMng::handleStandardOutput()
 {
+    int currentEpoch = 0;
     // Đọc tất cả dữ liệu có sẵn từ tiến trình
     QByteArray data = m_process.readAll();
     m_buffer += QString::fromUtf8(data);
     // qInfo()<<"Full log: "<<m_buffer;
 
-    // Biểu thức chính quy cho từng loại log
-    QRegularExpression progRegex(R"(\[PROG\](.*?)(?=\r?\n|$))");
     QRegularExpression histRegex(R"(\[HIST\]\s*([\d,\.eE+-]+))");
     QRegularExpression prRegex(R"(\[PR\](\[\[.*?\]\])(?=\r?\n|$))");
     QRegularExpression rocRegex(R"(\[ROC\](\[\[.*?\]\])(?=\r?\n|$))");
 
     int lastMatchEnd = 0;
 
-    // 1. Xử lý Progress Log
-    QRegularExpressionMatchIterator progIt = progRegex.globalMatch(m_buffer);
-    while (progIt.hasNext()) {
-        QRegularExpressionMatch match = progIt.next();
-        QString progress = match.captured(1).trimmed();
-        qDebug() << "Progress:" << progress;
-        emit progressUpdated(progress);
-        lastMatchEnd = match.capturedEnd();
+    // 1. Xử lý Progress Log    
+    QRegularExpression epochRegex("Epoch\\s+(\\d+)/(\\d+)");
+    QRegularExpression stepRegex("(Train step|Val step|Test step)");
+    QRegularExpression lossRegex("total_loss:\\s+([\\-\\d\\.e+]+)\\s+-\\s+reconstruction_loss:\\s+([\\-\\d\\.e+]+)\\s+-\\s+model_loss:\\s+([\\-\\d\\.e+]+)\\s+-\\s+supervised_loss:\\s+([\\-\\d\\.e+]+)");
+
+    // Dùng globalMatch để lấy tất cả các match của epoch
+    QRegularExpressionMatchIterator epochIt = epochRegex.globalMatch(m_buffer);
+
+    while (epochIt.hasNext()) {
+        QRegularExpressionMatch epochMatch = epochIt.next();
+        currentEpoch = epochMatch.captured(1).toInt();
+        int currentTotalEpoch = epochMatch.captured(2).toInt();
+
+        // Tìm step type và loss tương ứng, bắt đầu tìm từ vị trí sau match của epoch hiện tại
+        int searchPos = epochMatch.capturedEnd();
+
+        // Lấy tất cả các bước (step) trong block của epoch hiện tại
+        QRegularExpressionMatchIterator stepIt = stepRegex.globalMatch(m_buffer, searchPos);
+        QString stepTypes;
+        while (stepIt.hasNext()) {
+            QRegularExpressionMatch stepMatch = stepIt.next();
+            stepTypes = stepMatch.captured(1);
+        }
+
+        // Tìm thông tin loss: sử dụng match từ vị trí searchPos
+        QRegularExpressionMatch lossMatch = lossRegex.match(m_buffer, searchPos);
+        QVariantMap details;
+        if (lossMatch.hasMatch()) {
+            details.insert("total_loss", lossMatch.captured(1).toDouble());
+            details.insert("reconstruction_loss", lossMatch.captured(2).toDouble());
+            details.insert("model_loss", lossMatch.captured(3).toDouble());
+            details.insert("supervised_loss", lossMatch.captured(4).toDouble());
+        }
+
+        emit logUpdated(currentEpoch, currentTotalEpoch, stepTypes, details);
     }
 
     // 2. Xử lý Histogram Log
@@ -113,8 +139,8 @@ void TransferProcMng::handleStandardOutput()
                 tpr.append(val.toDouble());
             }
             emit rocCurveUpdated(fpr, tpr);
-            qInfo() << "fpr:" << fpr;
-            qInfo() << "tpr:" <<tpr;
+            // qInfo() << "fpr:" << fpr;
+            // qInfo() << "tpr:" <<tpr;
         } else {
             qWarning() << "Invalid ROC JSON:" << match.captured(1);
         }
@@ -122,79 +148,12 @@ void TransferProcMng::handleStandardOutput()
     }
 }
 
-// void TransferProcMng::handleStandardOutput()
-// {
-//     QByteArray data = m_process.readAllStandardOutput().trimmed();
-//     QString outputStr = QString::fromUtf8(data);
-
-//     if (!data.isEmpty()) {
-//         qInfo() << "Received from Python:" << outputStr;
-
-//         // QRegularExpression epochRegex("Epoch (\\d+)/(\\d+)");
-//         QRegularExpression stepRegex("(Train step|Val step|Test step)");
-//         QRegularExpression lossRegex("total_loss: ([\\-\\d\\.e+]+) - reconstruction_loss: ([\\-\\d\\.e+]+) - model_loss: ([\\-\\d\\.e+]+) - supervised_loss: ([\\-\\d\\.e+]+)");
-
-//         int currentEpoch = m_epoch;
-//         int currentTotalEpoch = m_totalEpoch;
-//         QString stepType;
-//         QVariantMap details;
-
-//         // Phân tích epoch
-//         // QRegularExpressionMatch epochMatch = epochRegex.match(outputStr);
-//         // if (epochMatch.hasMatch()) {
-//         //     epoch = epochMatch.captured(1).toInt();
-//         // }
-//         // QRegularExpressionMatch epochMatch = epochRegex.match(outputStr);
-//         // if (epochMatch.hasMatch()) {
-//         //     currentEpoch = epochMatch.captured(1).toInt();
-//         //     // m_totalEpoch = epochMatch.captured(2).toInt();
-//         //     if (currentEpoch != m_epoch) {
-//         //         m_epoch = currentEpoch; // Chỉ cập nhật nếu có giá trị mới
-//         //         // emit epochUpdated(m_epoch);
-//         //     }
-//         // }
-
-//         // Regex để tìm epoch
-//         QRegularExpression epochRegex("Epoch (\\d+)/(\\d+)");
-//         QRegularExpressionMatch epochMatch = epochRegex.match(outputStr);
-//         if (epochMatch.hasMatch()) {
-//             currentEpoch = epochMatch.captured(1).toInt();
-//             currentTotalEpoch = epochMatch.captured(2).toInt();
-
-//             if (currentEpoch != m_epoch || currentTotalEpoch != m_totalEpoch) {
-//                 m_epoch = currentEpoch;
-//                 m_totalEpoch = currentTotalEpoch;
-//                 // emit epochUpdated(m_epoch, m_totalEpoch);
-//             }
-//         }
-
-//         // Phân tích step type
-//         QRegularExpressionMatch stepMatch = stepRegex.match(outputStr);
-//         if (stepMatch.hasMatch()) {
-//             stepType = stepMatch.captured(1);
-//         }
-
-//         // Phân tích các giá trị loss
-//         QRegularExpressionMatch lossMatch = lossRegex.match(outputStr);
-//         if (lossMatch.hasMatch()) {
-//             details.insert("total_loss", lossMatch.captured(1).toDouble());
-//             details.insert("reconstruction_loss", lossMatch.captured(2).toDouble());
-//             details.insert("model_loss", lossMatch.captured(3).toDouble());
-//             details.insert("supervised_loss", lossMatch.captured(4).toDouble());
-//         }
-
-//         emit logUpdated(m_epoch, m_totalEpoch, stepType, details); // Gửi signal tới Controller
-//     }
-// }
-
-
 void TransferProcMng::handleProcessFinished(int exitCode, QProcess::ExitStatus exitStatus)
 {
     qInfo() << "Python process finished with exit code:" << exitCode;
     if (exitStatus == QProcess::CrashExit) {
         qWarning() << "Python process crashed!";
     }
-    // Có thể xử lý khi tiến trình kết thúc hoặc có lỗi
 }
 
 void TransferProcMng::setScriptPath(const QString &path)

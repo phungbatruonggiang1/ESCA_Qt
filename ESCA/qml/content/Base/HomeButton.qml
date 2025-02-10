@@ -1,8 +1,7 @@
 import QtQuick 2.15
 import QtQuick.Controls 2.15
-import ProjectImport 1.0 // IMport component: Constants, Animation, ...
+import ProjectImport 1.0 // Import component: Constants, Animation, ...
 import "../component"
-
 
 Rectangle {
     id: bottomBarRec
@@ -13,6 +12,15 @@ Rectangle {
     anchors.bottomMargin: 0
 
     property bool recStatus: RecordingObject.recStatus
+    property bool infStatus: AIObject.inferenceStatus
+    property bool tlStatus: TransferObject.tlStatus
+
+    function getStatusText() {
+        if (tlStatus) return qsTr("Transfer Learning");
+        if (recStatus && infStatus) return qsTr("Inferencing");
+        if (recStatus) return qsTr("Recording");
+        return "Feel Free!";
+    }
 
     Image {
         id: logoImg
@@ -37,7 +45,7 @@ Rectangle {
     }
 
     Rectangle {
-        x: 747
+        x: 820
         y: 9
         width: 269
         height: 33
@@ -58,10 +66,8 @@ Rectangle {
             width: 238
             height: 34
             color: "#ffffff"
-            text: qsTr("Transfer Learning Running")
+            text: getStatusText()
             font.pixelSize: 20
         }
     }
-
-
 }
