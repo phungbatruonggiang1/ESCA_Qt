@@ -13,8 +13,8 @@ RecordingController::RecordingController(QObject *parent)
     , m_recStatus(false)
     , sharedMemoryManager(new SharedMemoryManager(this))
 {
-    qmlRegisterSingletonInstance("AudioConfigImport", 1, 0, "AudioConfig", m_audioConfig);
     qmlRegisterSingletonInstance("AudioChartImport", 1, 0, "AudioChart", m_recordingChart);
+    qmlRegisterSingletonInstance("AudioConfigImport", 1, 0, "AudioConfig", m_audioConfig);
     setRecStatus(false);
 
     // m_outputDir = QStandardPaths::writableLocation(QStandardPaths::HomeLocation);

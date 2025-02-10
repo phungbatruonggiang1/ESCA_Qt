@@ -1,5 +1,7 @@
 import QtQuick 2.15
 import QtQuick.Controls 2.15
+import ProjectImport 1.0 // IMport component: Constants, Animation, ...
+import "../component"
 
 
 Rectangle {
@@ -9,6 +11,8 @@ Rectangle {
     color: "#000000"
     anchors.bottom: parent.bottom
     anchors.bottomMargin: 0
+
+    property bool recStatus: RecordingObject.recStatus
 
     Image {
         id: logoImg
@@ -31,4 +35,33 @@ Rectangle {
             }
         }
     }
+
+    Rectangle {
+        x: 747
+        y: 9
+        width: 269
+        height: 33
+        color: "#000000"
+
+        StatusLight {
+            id: statusLight
+            x: 0
+            y: 3
+            width: 23
+            height: 25
+        }
+
+        Text {
+            id: text1
+            x: 23
+            y: 0
+            width: 238
+            height: 34
+            color: "#ffffff"
+            text: qsTr("Transfer Learning Running")
+            font.pixelSize: 20
+        }
+    }
+
+
 }

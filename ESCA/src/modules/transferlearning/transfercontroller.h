@@ -3,9 +3,12 @@
 
 #include <QObject>
 #include <QString>
+#include <QQmlEngine>
+
 #include "transferprocmng.h"
-// #include "sharedmemorymanager.h"
-// #include "configurationmanager.h"
+#include "histogrammanager.h"
+#include "prmanager.h"
+#include "rocmanager.h"
 
 class TransferController : public QObject
 {
@@ -22,8 +25,7 @@ public:
     Q_PROPERTY(QString details READ details NOTIFY detailsChanged)
     Q_PROPERTY(QString stepType READ stepType NOTIFY stepTypeChanged)
 
-
-    Q_PROPERTY(QVariantList logList READ logList NOTIFY logListChanged)
+    Q_PROPERTY(QVariantList logList READ logList NOTIFY logListChanged)    
 
     Q_INVOKABLE void start();
     Q_INVOKABLE void stop();
@@ -37,7 +39,6 @@ public:
 
     int totalEpoch() const;
 
-
     QString details() const;
 
     QVariantList logList() const;
@@ -46,14 +47,12 @@ public:
 
 signals:
     void isRunningChanged();
-    void predValueChanged();
 
     void rawLogChanged();
 
     void epochChanged();
 
     void totalEpochChanged();
-
 
     void detailsChanged();
 
@@ -64,10 +63,12 @@ signals:
 public slots:
     // void handleLogUpdated(const QString &log, int epoch, int totalEpoch, const QVariantMap &details);
     void handleLogUpdated(int epoch, int totalEpoch, const QString &stepType, const QVariantMap &details);
+
 private:
-    // ConfigurationManager* configManager;
-    // SharedMemoryManager* sharedMemoryManager;
     TransferProcMng* transferProcMng;
+    HistogramManager* m_histogram;
+    PRManager* m_prManager;
+    ROCManager* m_rocManager;
 
     bool m_isRunning = false;
     QString m_rawLog;
@@ -76,6 +77,7 @@ private:
     QString m_details;
     QVariantList m_logList;
     QString m_stepType;
+
 };
 
 #endif // TransferController_H

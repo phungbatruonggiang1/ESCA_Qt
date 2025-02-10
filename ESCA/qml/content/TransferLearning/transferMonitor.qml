@@ -6,7 +6,7 @@ Rectangle {
     width: 800
     height: 500
     color: "#2a2a2a"
-    radius: 20
+    radius: 0
 
     property int totalepoch: TransferObject.totalEpoch
     property int epoch: TransferObject.epoch

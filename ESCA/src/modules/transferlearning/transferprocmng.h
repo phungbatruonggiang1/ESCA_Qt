@@ -5,7 +5,10 @@
 #include "../ESCA/src/common/process/process.h"
 #include <QDir>
 #include <QRegularExpression>
-
+#include <QRegularExpressionMatchIterator>
+#include <QJsonArray>
+#include <QJsonDocument>
+#include <QJsonObject>
 
 class TransferProcMng : public Process
 {
@@ -25,9 +28,12 @@ signals:
     // void resultReceived(const float predValue);
     // void logUpdated(QString, int, int, QVariantMap);
     void logUpdated(int, int, QString, QVariantMap);
+    void progressUpdated(QString);
+    void histogramUpdated(QVector<double>);
+    void prCurveUpdated(const QVector<double>& recall, const QVector<double>& precision);
+    void rocCurveUpdated(const QVector<double>& fpr, const QVector<double>& tpr);
 
-
-private slots:
+public slots:
     void handleStandardOutput();
     void handleProcessFinished(int exitCode, QProcess::ExitStatus exitStatus);
 
@@ -36,6 +42,7 @@ private:
     int m_epoch = 0;
     int m_totalEpoch = 0;
     QVariantMap m_details;
+    QString m_buffer;  // Dùng buffer để ghép dữ liệu khi bị cắt
 
 };
 
