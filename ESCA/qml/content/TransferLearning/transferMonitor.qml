@@ -10,6 +10,19 @@ Rectangle {
     property int totalEpoch: TransferObject.totalEpoch
     property int epoch: TransferObject.epoch
     property int tlStatus: TransferObject.tlStatus
+    // Hàm cập nhật nội dung log dựa theo trạng thái tlStatus
+    function updateLogOnTlStatusChange(status) {
+        if (status === true) {
+            // Khi chuyển sang true: thêm dòng "Initial...."
+            logArea.clear()
+            logArea.append("Initial....")
+        } else {
+            // Khi chuyển sang false (Stop): xóa nội dung TextArea (reset về ban đầu)
+            // logArea.clear()
+            progressTx.text = "0%"
+            progressBar.value = 0
+        }
+    }
 
     Column {
         anchors.fill: parent
@@ -44,6 +57,7 @@ Rectangle {
                 }
 
                 ProgressBar {
+                    id: progressBar
                     width: 400
                     height: 25
                     from: 0
@@ -52,6 +66,7 @@ Rectangle {
                 }
 
                 Text {
+                    id: progressTx
                     text: Math.round((epoch / totalEpoch) * 100) + "%"
                     font.pointSize: 18
                     color: "#ffffff"
@@ -89,7 +104,12 @@ Rectangle {
     Connections {
         target: TransferObject
         onEpochChanged: {
-            logArea.append("Epoch " + epoch + "/" + totalEpoch + " | Step: " + TransferObject.stepType + "\n" + TransferObject.details + "\n")
+            // Ví dụ: Append thêm dòng thông báo khi epoch thay đổi
+            logArea.clear()
+            logArea.append(TransferObject.logText)
+        }
+        onTlStatusChanged: {
+            updateLogOnTlStatusChange(TransferObject.tlStatus);
         }
     }
 }

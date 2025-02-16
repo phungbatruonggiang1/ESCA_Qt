@@ -12,6 +12,7 @@ Rectangle {
 
     property string selectedBtn: "monitor"
     property bool tlStatus: TransferObject.tlStatus
+    property string logContent: ""
 
     Rectangle {
         id: rectangle
@@ -34,7 +35,7 @@ Rectangle {
             onClicked: {
                 // loader.source = "/ui/layout/splitingScreen.qml"
 
-                if (!tlStatus) {
+                if (!tlStatus) {                    
                     TransferObject.start();
                 }
             }

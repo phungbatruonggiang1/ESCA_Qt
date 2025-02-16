@@ -6,6 +6,11 @@ TransferProcMng::TransferProcMng(QObject *parent)
 // m_scriptPath("/home/haiminh/Desktop/rt_test.py -cfg /home/haiminh/Desktop/params.yaml -f /home/haiminh/Desktop/temp.csv") // Đường dẫn mặc định
 {
     connect(&m_process, &QProcess::readyRead, this, &TransferProcMng::handleStandardOutput);
+    connect(&m_process,
+            static_cast<void (QProcess::*)(int, QProcess::ExitStatus)>(&QProcess::finished),
+            this,
+            &TransferProcMng::handleProcessFinished);
+
 }
 
 TransferProcMng::~TransferProcMng()
@@ -19,7 +24,7 @@ void TransferProcMng::startPythonService()
 
     qDebug() << "Current working directory:" << QDir::currentPath();
 
-    setStatement("export PYTHONPATH=~/Desktop/Anomaly_Detection/D-ESCA_v2:$PYTHONPATH && python3 ~/Desktop/Anomaly_Detection/D-ESCA_v2/tools/tl_training.py");
+    setStatement("export PYTHONPATH=~/Desktop/D-ESCA_v2:$PYTHONPATH && python3 ~/Desktop/D-ESCA_v2/tools/tl_training.py");
     // setStatement("python3 ../../../../python_ai/inference/shared_memory_reader.py");
 
     qInfo() << statement();
@@ -36,115 +41,110 @@ void TransferProcMng::stopPythonService()
 
 void TransferProcMng::handleStandardOutput()
 {
-    int currentEpoch = 0;
-    // Đọc tất cả dữ liệu có sẵn từ tiến trình
+    // Đọc dữ liệu mới từ tiến trình và thêm vào m_buffer
     QByteArray data = m_process.readAll();
     m_buffer += QString::fromUtf8(data);
-    // qInfo()<<"Full log: "<<m_buffer;
 
-    QRegularExpression histRegex(R"(\[HIST\]\s*([\d,\.eE+-]+))");
-    QRegularExpression prRegex(R"(\[PR\](\[\[.*?\]\])(?=\r?\n|$))");
-    QRegularExpression rocRegex(R"(\[ROC\](\[\[.*?\]\])(?=\r?\n|$))");
+    // Xử lý theo từng dòng hoàn chỉnh (dựa vào ký tự newline)
+    int newlineIndex = m_buffer.indexOf('\n');
+    while (newlineIndex != -1) {
+        // Lấy 1 dòng (không bao gồm ký tự newline) và xóa khỏi buffer
+        QString line = m_buffer.left(newlineIndex).trimmed();
+        m_buffer.remove(0, newlineIndex + 1);
 
-    int lastMatchEnd = 0;
-
-    // 1. Xử lý Progress Log    
-    QRegularExpression epochRegex("Epoch\\s+(\\d+)/(\\d+)");
-    QRegularExpression stepRegex("(Train step|Val step|Test step)");
-    QRegularExpression lossRegex("total_loss:\\s+([\\-\\d\\.e+]+)\\s+-\\s+reconstruction_loss:\\s+([\\-\\d\\.e+]+)\\s+-\\s+model_loss:\\s+([\\-\\d\\.e+]+)\\s+-\\s+supervised_loss:\\s+([\\-\\d\\.e+]+)");
-
-    // Dùng globalMatch để lấy tất cả các match của epoch
-    QRegularExpressionMatchIterator epochIt = epochRegex.globalMatch(m_buffer);
-
-    while (epochIt.hasNext()) {
-        QRegularExpressionMatch epochMatch = epochIt.next();
-        currentEpoch = epochMatch.captured(1).toInt();
-        int currentTotalEpoch = epochMatch.captured(2).toInt();
-
-        // Tìm step type và loss tương ứng, bắt đầu tìm từ vị trí sau match của epoch hiện tại
-        int searchPos = epochMatch.capturedEnd();
-
-        // Lấy tất cả các bước (step) trong block của epoch hiện tại
-        QRegularExpressionMatchIterator stepIt = stepRegex.globalMatch(m_buffer, searchPos);
-        QString stepTypes;
-        while (stepIt.hasNext()) {
-            QRegularExpressionMatch stepMatch = stepIt.next();
-            stepTypes = stepMatch.captured(1);
+        if (line.isEmpty()) {
+            newlineIndex = m_buffer.indexOf('\n');
+            continue;
         }
 
-        // Tìm thông tin loss: sử dụng match từ vị trí searchPos
-        QRegularExpressionMatch lossMatch = lossRegex.match(m_buffer, searchPos);
-        QVariantMap details;
-        if (lossMatch.hasMatch()) {
-            details.insert("total_loss", lossMatch.captured(1).toDouble());
-            details.insert("reconstruction_loss", lossMatch.captured(2).toDouble());
-            details.insert("model_loss", lossMatch.captured(3).toDouble());
-            details.insert("supervised_loss", lossMatch.captured(4).toDouble());
+        // Kiểm tra nếu log là "[FINISHED]"
+        if (line == "[FINISHED]") {
+            // stopPythonService();
+            emit transFinished(); // Signal thông báo Python đã hoàn thành
         }
+        // Xử lý theo tiền tố của dòng
+        if (line.startsWith("[PROG]")) {
+            // Dòng log progress
+            QString progText = line.mid(6).trimmed();
+            emit epochSummaryUpdated(progText);
 
-        emit logUpdated(currentEpoch, currentTotalEpoch, stepTypes, details);
-    }
-
-    // 2. Xử lý Histogram Log
-    QRegularExpressionMatchIterator histIt = histRegex.globalMatch(m_buffer);
-    while (histIt.hasNext()) {
-        QRegularExpressionMatch match = histIt.next();
-        QString dataStr = match.captured(1);  // Lấy phần số ra
-
-        QStringList valuesStr = dataStr.split(",", Qt::SkipEmptyParts);
-        QVector<double> values;
-        for (const QString &val : valuesStr) {
-            values.append(val.toDouble());
-        }
-        // qDebug() << "Histogram Values:" << values;
-        emit histogramUpdated(values);
-        lastMatchEnd = match.capturedEnd();
-    }
-
-    // 3. Xử lý PR Curve Log
-    QRegularExpressionMatchIterator prIt = prRegex.globalMatch(m_buffer);
-    while (prIt.hasNext()) {
-        QRegularExpressionMatch match = prIt.next();
-        QJsonDocument doc = QJsonDocument::fromJson(match.captured(1).toUtf8());        
-        if (doc.isArray()) {
-            QJsonArray arr = doc.array();
-            QVector<double> recall, precision;
-            for (const QJsonValue &val : arr[0].toArray()) {
-                recall.append(val.toDouble());
+        } else if (line.startsWith("[HIST]")) {
+            // Dòng log Histogram
+            QString dataStr = line.mid(6).trimmed();
+            QStringList valuesStr = dataStr.split(",", Qt::SkipEmptyParts);
+            QVector<double> values;
+            values.reserve(valuesStr.size());
+            for (const QString &val : valuesStr) {
+                bool ok;
+                double d = val.toDouble(&ok);
+                if (ok)
+                    values.append(d);
             }
-            for (const QJsonValue &val : arr[1].toArray()) {
-                precision.append(val.toDouble());
-            }
-            emit prCurveUpdated(recall, precision);
-            // qInfo() << "PR recall:" << recall;
-            // qInfo() << "PR precision:" <<precision;
-        } else {
-            qWarning() << "Invalid PR JSON:" << match.captured(1);
-        }
-        lastMatchEnd = match.capturedEnd();
-    }
+            emit histogramUpdated(values);
 
-    // 4. Xử lý ROC Curve Log
-    QRegularExpressionMatchIterator rocIt = rocRegex.globalMatch(m_buffer);
-    while (rocIt.hasNext()) {
-        QRegularExpressionMatch match = rocIt.next();
-        QJsonDocument doc = QJsonDocument::fromJson(match.captured(1).toUtf8());
-        if (doc.isArray()) {
-            QJsonArray arr = doc.array();
-            QVector<double> fpr, tpr;
-            for (const QJsonValue &val : arr[0].toArray()) {
-                fpr.append(val.toDouble());
+        } else if (line.startsWith("[PR]")) {
+            // Dòng log PR curve (JSON)
+            QString jsonStr = line.mid(4).trimmed();
+            QJsonDocument doc = QJsonDocument::fromJson(jsonStr.toUtf8());
+            if (doc.isArray()) {
+                QJsonArray arr = doc.array();
+                if (arr.size() >= 2) {
+                    QVector<double> recall, precision;
+                    QJsonArray recallArray = arr.at(0).toArray();
+                    QJsonArray precisionArray = arr.at(1).toArray();
+                    recall.reserve(recallArray.size());
+                    precision.reserve(precisionArray.size());
+                    for (const QJsonValue &val : recallArray)
+                        recall.append(val.toDouble());
+                    for (const QJsonValue &val : precisionArray)
+                        precision.append(val.toDouble());
+                    emit prCurveUpdated(recall, precision);
+                } else {
+                    qWarning() << "PR JSON array không đủ phần tử:" << jsonStr;
+                }
+            } else {
+                qWarning() << "PR JSON không hợp lệ:" << jsonStr;
             }
-            for (const QJsonValue &val : arr[1].toArray()) {
-                tpr.append(val.toDouble());
+
+        } else if (line.startsWith("[ROC]")) {
+            // Dòng log ROC curve (JSON)
+            QString jsonStr = line.mid(5).trimmed();
+            QJsonDocument doc = QJsonDocument::fromJson(jsonStr.toUtf8());
+            if (doc.isArray()) {
+                QJsonArray arr = doc.array();
+                if (arr.size() >= 2) {
+                    QVector<double> fpr, tpr;
+                    QJsonArray fprArray = arr.at(0).toArray();
+                    QJsonArray tprArray = arr.at(1).toArray();
+                    fpr.reserve(fprArray.size());
+                    tpr.reserve(tprArray.size());
+                    for (const QJsonValue &val : fprArray)
+                        fpr.append(val.toDouble());
+                    for (const QJsonValue &val : tprArray)
+                        tpr.append(val.toDouble());
+                    emit rocCurveUpdated(fpr, tpr);
+                } else {
+                    qWarning() << "ROC JSON array không đủ phần tử:" << jsonStr;
+                }
+            } else {
+                qWarning() << "ROC JSON không hợp lệ:" << jsonStr;
             }
-            emit rocCurveUpdated(fpr, tpr);
-            // qInfo() << "fpr:" << fpr;
-            // qInfo() << "tpr:" <<tpr;
-        } else {
-            qWarning() << "Invalid ROC JSON:" << match.captured(1);
+
+        } else if (line.startsWith("[EPOCH]")) {
+            // Dòng log Epoch dạng "[EPOCH] 1/81"
+            QString remainder = line.mid(7).trimmed();
+            QStringList parts = remainder.split('/');
+            if (parts.size() == 2) {
+                int currentEpoch = parts[0].toInt();
+                int totalEpoch = parts[1].toInt();
+                emit epochProgressUpdated(currentEpoch, totalEpoch);
+            } else {
+                qWarning() << "Dữ liệu [EPOCH] không đúng định dạng:" << line;
+            }
         }
-        lastMatchEnd = match.capturedEnd();
+
+        // Tìm dòng tiếp theo
+        newlineIndex = m_buffer.indexOf('\n');
     }
 }
 
@@ -154,6 +154,7 @@ void TransferProcMng::handleProcessFinished(int exitCode, QProcess::ExitStatus e
     if (exitStatus == QProcess::CrashExit) {
         qWarning() << "Python process crashed!";
     }
+    emit transFinished();
 }
 
 void TransferProcMng::setScriptPath(const QString &path)

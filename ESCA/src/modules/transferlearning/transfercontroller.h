@@ -19,50 +19,34 @@ public:
 
     Q_PROPERTY(bool tlStatus READ tlStatus WRITE setTlStatus NOTIFY tlStatusChanged FINAL)
 
-    Q_PROPERTY(QString rawLog READ rawLog NOTIFY rawLogChanged)
-    Q_PROPERTY(int epoch READ epoch NOTIFY epochChanged)
-    Q_PROPERTY(int totalEpoch READ totalEpoch NOTIFY totalEpochChanged)
-    Q_PROPERTY(QString details READ details NOTIFY detailsChanged)
-    Q_PROPERTY(QString stepType READ stepType NOTIFY stepTypeChanged)
-
-    Q_PROPERTY(QVariantList logList READ logList NOTIFY logListChanged)    
+    Q_PROPERTY(int epoch READ epoch WRITE setEpoch NOTIFY epochChanged)
+    Q_PROPERTY(int totalEpoch READ totalEpoch WRITE setTotalEpoch NOTIFY totalEpochChanged)
+    Q_PROPERTY(QString logText READ logText WRITE setLogText NOTIFY logTextChanged)
 
     Q_INVOKABLE void start();
     Q_INVOKABLE void stop();
 
-    QString rawLog() const;
-
-    int epoch() const;
-
-    int totalEpoch() const;
-
-    QString details() const;
-
-    QVariantList logList() const;
-
-    QString stepType() const;
-
     bool tlStatus() const;
     void setTlStatus(bool newTlStatus);
 
+    int epoch() const;
+    void setEpoch(int newEpoch);
+
+    int totalEpoch() const;
+    void setTotalEpoch(int newTotalEpoch);
+
+    QString logText() const;
+    void setLogText(const QString &newLogText);
+
 signals:
-    void rawLogChanged();
-
-    void epochChanged();
-
-    void totalEpochChanged();
-
-    void detailsChanged();
-
-    void logListChanged();
-
-    void stepTypeChanged();
-
     void tlStatusChanged();
+    void epochChanged();
+    void totalEpochChanged();
+    void logTextChanged();
 
 public slots:
-    // void handleLogUpdated(const QString &log, int epoch, int totalEpoch, const QVariantMap &details);
-    void handleLogUpdated(int epoch, int totalEpoch, const QString &stepType, const QVariantMap &details);
+    void updateEpochProgress(int currentEpoch, int totalEpoch);
+    void updateLogSummary(const QString &summary);
 
 private:
     TransferProcMng* transferProcMng;
@@ -70,14 +54,10 @@ private:
     PRManager* m_prManager;
     ROCManager* m_rocManager;
 
-    QString m_rawLog;
+    bool m_tlStatus = false;
     int m_epoch;
     int m_totalEpoch;
-    QString m_details;
-    QVariantList m_logList;
-    QString m_stepType;
-
-    bool m_tlStatus = false;
+    QString m_logText;
 };
 
 #endif // TransferController_H

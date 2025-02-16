@@ -6,7 +6,7 @@ Rectangle {
     id: realtimeConfigWindow
     width: 1024
     height: 500
-    color: "#151515" // Nền đen
+    color: "#151515"
     radius: 10
     border.color: "#414141"
 
@@ -62,8 +62,6 @@ Rectangle {
                 }
             }
         }
-
-        // Hàng cho từng tham số
     }
 
     ColumnLayout {
@@ -101,7 +99,7 @@ Rectangle {
                         var value = parseFloat(text)
                         if (!isNaN(value) && value >= 0 && value <= 1) {
                             ConfigManager.manualThreshold = value
-                            ConfigManager.saveConfig("/home/haiminh/Desktop/Anomaly_Detection/D-ESCA_v2/config/default.json")
+                            ConfigManager.saveConfig()
                         }
                     }
                 }
@@ -340,11 +338,10 @@ Rectangle {
                 checked: ConfigManager.importFile
                 onCheckedChanged: {
                     ConfigManager.importFile = checked
-                    ConfigManager.saveConfig("/home/haiminh/Desktop/Anomaly_Detection/D-ESCA_v2/config/default.json")
+                    ConfigManager.saveConfig()
                 }
             }
         }
-
     }
 
     Button {

@@ -25,7 +25,6 @@ void ProcessManager::startPythonService()
     qDebug() << "Current working directory:" << QDir::currentPath();
 
     setStatement("python3 ~/Desktop/ESCA_Qt/python_ai/inference.py");
-    // setStatement("python3 ../../../../python_ai/inference.py");
 
     qInfo() << statement();
 
@@ -41,19 +40,19 @@ void ProcessManager::stopPythonService()
 
 void ProcessManager::handleStandardOutput()
 {
-    // if(!m_running) return;
-    // qInfo() << Q_FUNC_INFO;
+    QByteArray data = m_process.readAllStandardOutput();
+    if (data.isEmpty()) return; // Tránh xử lý khi không có dữ liệu
 
-    // QByteArray data = m_process.readAllStandardOutput().trimmed();
-    QByteArray data = m_process.readAllStandardOutput().trimmed();
     QString outputStr = QString::fromUtf8(data);
-    QString pred = outputStr.split("Pred: ").last();
-    float fredValue = pred.left(20).toFloat();
 
-    if (!data.isEmpty() && fredValue != 0.0) {
-        qInfo() << "Received from Python:" <<data;
-        qInfo() << "Predict Result:" << fredValue;
-        emit resultReceived(fredValue);
+    bool ok;
+    float predValue = outputStr.toFloat(&ok); // Lấy trực tiếp giá trị số từ stdout
+
+    if (ok && predValue != 0.0f) {
+        qInfo() << "Predict Result:" << predValue;
+        emit resultReceived(predValue);
+    } else {
+        qWarning() << "Invalid data from Python:" << outputStr;
     }
 }
 

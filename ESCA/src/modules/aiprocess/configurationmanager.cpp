@@ -1,6 +1,8 @@
 // ConfigurationManager.cpp
 #include "configurationmanager.h"
 #include <QDebug>
+#include <QStandardPaths>
+#include <QDir>
 
 ConfigurationManager::ConfigurationManager(QObject *parent) : QObject(parent),
     m_transferLearning(false),
@@ -13,17 +15,17 @@ ConfigurationManager::ConfigurationManager(QObject *parent) : QObject(parent),
     m_samplingRate(44100),
     m_importFile(false)
 {
-
+    m_filePath = QStandardPaths::writableLocation(QStandardPaths::HomeLocation) + QDir::separator() + "config.json";
 }
 
 ConfigurationManager::~ConfigurationManager()
 {
 }
 
-bool ConfigurationManager::loadConfig(const QString &filePath) {
-    QFile file(filePath);
+bool ConfigurationManager::loadConfig() {
+    QFile file(m_filePath);
     if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
-        qWarning() << "Không thể mở file cấu hình:" << filePath;
+        qWarning() << "Không thể mở file cấu hình:" << m_filePath;
         loadDefaults(); // Sử dụng giá trị mặc định nếu không mở được file
         return false;
     }
@@ -63,14 +65,12 @@ bool ConfigurationManager::loadConfig(const QString &filePath) {
     return true;
 }
 
-bool ConfigurationManager::saveConfig(const QString &filePath) const {
-    QFile file(filePath);
-
-    // Đọc file JSON hiện tại
+bool ConfigurationManager::saveConfig() const {
+    QFile file(m_filePath);
     QJsonObject rootObject;
     if (file.exists()) {
         if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
-            qWarning() << "Không thể mở file cấu hình để đọc:" << filePath;
+            qWarning() << "Không thể mở file cấu hình để đọc:" << m_filePath;
             return false;
         }
 
@@ -100,14 +100,13 @@ bool ConfigurationManager::saveConfig(const QString &filePath) const {
 
     // Ghi lại file JSON
     if (!file.open(QIODevice::WriteOnly | QIODevice::Text)) {
-        qWarning() << "Không thể mở file cấu hình để ghi:" << filePath;
+        qWarning() << "Không thể mở file cấu hình để ghi:" << m_filePath;
         return false;
     }
 
     QJsonDocument doc(rootObject);
     file.write(doc.toJson());
     file.close();
-
     qDebug() << "Đã lưu cấu hình đầy đủ thành công.";
     return true;
 }
@@ -196,7 +195,6 @@ void ConfigurationManager::setImportFile(bool importFile)
     }
 }
 
-// Phương thức hỗ trợ
 void ConfigurationManager::loadDefaults()
 {
     // Giá trị mặc định đã được khởi tạo trong constructor

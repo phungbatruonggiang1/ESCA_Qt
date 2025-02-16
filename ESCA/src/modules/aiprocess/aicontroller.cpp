@@ -6,7 +6,6 @@ AIController::AIController(QObject *parent) : QObject(parent)
     // configManager = new ConfigurationManager(this);
     // sharedMemoryManager = new SharedMemoryManager(this);
     processManager = new ProcessManager(this);
-
     // Kết nối tín hiệu từ ProcessManager tới AIController
     connect(processManager, &ProcessManager::resultReceived, this, &AIController::handleInferenceResult);
 }
@@ -36,10 +35,10 @@ void AIController::stop()
 
 void AIController::handleInferenceResult(const float predValue)
 {
-    if (predValue) {
+    if (predValue != 0.0f) {
         m_predValue.push_back(predValue);
 
-        if (m_predValue.size() > 50) { // Giới hạn số cột hiển thị
+        if (m_predValue.size() > 200) { // Giới hạn số cột hiển thị
             m_predValue.removeFirst();
         }
         emit predValueChanged();

@@ -10,7 +10,6 @@
 class ConfigurationManager : public QObject
 {
     Q_OBJECT
-
     // Các thuộc tính của phần REALTIME
     Q_PROPERTY(bool transferLearning READ transferLearning WRITE setTransferLearning NOTIFY transferLearningChanged)
     Q_PROPERTY(QString logPath READ logPath WRITE setLogPath NOTIFY logPathChanged)
@@ -49,8 +48,8 @@ public:
     void setImportFile(bool importFile);
 
     // Phương thức tải và lưu cấu hình
-    Q_INVOKABLE bool loadConfig(const QString& filePath);
-    Q_INVOKABLE bool saveConfig(const QString& filePath) const;
+    Q_INVOKABLE bool loadConfig();
+    Q_INVOKABLE bool saveConfig() const;
 
 signals:
     void transferLearningChanged();
@@ -64,7 +63,6 @@ signals:
     void importFileChanged();
 
 private:
-    // Các biến thành viên
     bool m_transferLearning;
     QString m_logPath;
     double m_manualThreshold;
@@ -76,7 +74,8 @@ private:
     bool m_importFile;
     // QJsonObject m_fullConfig;
 
-    // Phương thức hỗ trợ
+    QString m_filePath;
+
     void loadDefaults();
     void applyConfig(const QJsonObject& realtime);
     QJsonObject generateConfig() const;
