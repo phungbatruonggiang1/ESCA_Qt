@@ -19,8 +19,7 @@ AudioFile::AudioFile(const QString &outputDir,
         if (!dir.mkpath(".")) {
             qWarning() << "Failed to create output directory:" << m_outputDir;
         }
-    }
-    // QString filePath
+    }    
 
     // Tính toán chunkSize dựa trên cấu hình âm thanh và duration
     // chunkSize = sampleRate * bitsPerSample/8 * numChannels * durationSeconds
@@ -40,7 +39,6 @@ AudioFile::~AudioFile() {
     stopRecording();
     if (m_outFile.isOpen()) {
         m_outFile.close();
-
     }
 }
 
@@ -77,7 +75,6 @@ void AudioFile::createFile()
 {
     QDateTime local(QDateTime::currentDateTime());
     // qInfo() << "I'm creating an audio file " << local.toTime_t();
-    // QString fileName = QString("%1/test-%2.wav").arg("/home/haiminh/Desktop/ESCA_Qt/AI_Module/result/rt_test_result/record").arg(local.toTime_t());
     QString fileName = QString("%1/basefile.wav%2").arg(m_outputDir).arg(local.toTime_t());
 
     m_outFile.setFileName(fileName);
@@ -165,10 +162,28 @@ void AudioFile::writeWavHeader(quint32 dataSize) {
 }
 
 void AudioFile::writeDataForever(const QByteArray &data) {
-    m_outFile.write(data);
-    dataSize += data.size();
-    // qDebug()<< "writeAudioData in audiofile: "<<data.at(0);
+    QMutexLocker locker(&m_mutex);
+
+    if (!m_outFile.isOpen()) {
+        qWarning() << "writeDataForever: File is not open!";
+        return;
+    }
+
+    if (data.isEmpty()) {
+        qWarning() << "writeDataForever: Empty data received!";
+        return;
+    }
+
+    qint64 bytesWritten = m_outFile.write(data);
+    if (bytesWritten == -1) {
+        qWarning() << "writeDataForever: Failed to write data!";
+        return;
+    }
+
+    m_outFile.flush();
+    dataSize += static_cast<quint32>(bytesWritten);
 }
+
 
 void AudioFile::writeAudioData(const QByteArray &data) {
 

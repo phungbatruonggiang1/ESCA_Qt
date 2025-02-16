@@ -1,9 +1,8 @@
 #include <QQmlApplicationEngine>
 #include <QQmlEngine>
 #include <QQmlContext>
-#include <QtWidgets/QApplication>
+// #include <QtWidgets/QApplication>
 #include <QDebug>
-
 
 #include "./src/modules/audiorecording/recordingcontroller.h"
 #include "./src/modules/audiomanipulation/audiomanipulation.h"
@@ -19,9 +18,7 @@
 
 int main(int argc, char *argv[])
 {
-#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
-    // QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
-#endif
+
     QGuiApplication app(argc, argv);
     QCoreApplication::setOrganizationName("HUST-SIST-SPARC");
     QCoreApplication::setOrganizationDomain("sparc.com");
@@ -49,7 +46,7 @@ int main(int argc, char *argv[])
 
     // Khởi tạo ConfigurationManager và tải cấu hình của Inference
     ConfigurationManager configManager;
-    configManager.loadConfig(filePath);
+    configManager.loadConfig();
     TransferConfig transferConfig;
     transferConfig.loadConfig(filePath);
 

@@ -25,13 +25,14 @@ public:
     QString scriptPath() const;
 
 signals:
-    // void resultReceived(const float predValue);
-    // void logUpdated(QString, int, int, QVariantMap);
     void logUpdated(int, int, QString, QVariantMap);
+    void epochProgressUpdated(int, int);
+    void epochSummaryUpdated(QString);
     void progressUpdated(QString);
     void histogramUpdated(QVector<double>);
     void prCurveUpdated(const QVector<double>& recall, const QVector<double>& precision);
     void rocCurveUpdated(const QVector<double>& fpr, const QVector<double>& tpr);
+    void transFinished();
 
 public slots:
     void handleStandardOutput();

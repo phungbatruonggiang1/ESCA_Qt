@@ -19,8 +19,6 @@ RecordingController::RecordingController(QObject *parent)
 
     // m_outputDir = QStandardPaths::writableLocation(QStandardPaths::HomeLocation);
 
-    m_audioFileThread = new QThread();
-
     connect(m_recordIO, &RecordIO::sendData, this, &RecordingController::handleDataReady);
     connect(this, &RecordingController::sendChartData, m_recordingChart, &RecordingChart::onSendChartData);
 
@@ -59,6 +57,14 @@ void RecordingController::startRecording()
 
     m_audioFile = new AudioFile(m_outputDir, format, 2.0);
 
+    // Đảm bảo thread chưa chạy thì start lại
+    if (!m_audioFileThread) {
+        m_audioFileThread = new QThread();
+    } else if (m_audioFileThread->isRunning()) {
+        m_audioFileThread->quit();
+        m_audioFileThread->wait();
+    }
+
     m_recordIO->startAudioInput(format, deviceInfo);
     qInfo() << "format before thread" << format;
 
@@ -72,13 +78,11 @@ void RecordingController::startRecording()
     // Start thread
     m_audioFileThread->start();
 
-    // Bắt đầu RecordingIO
-
     setRecStatus(true);
     qInfo() << "Start recording with format" << format;
 
     sharedMemoryManager->start();
-    qDebug() << "Producer is running. Press Ctrl+C to exit.";
+    qDebug() << "Producer Record is running.";
 }
 
 void RecordingController::stopRecording()
@@ -86,7 +90,7 @@ void RecordingController::stopRecording()
     if (recStatus() == true) {
         m_audioFile->stopRecording();
         m_recordIO->audioInputStop();
-        qInfo() << "Hi Giang, this is stop recording";
+        qInfo() << "Stop recording";
         // m_recordingChart = nullptr;
         // m_recordIO = nullptr;
     }
@@ -109,7 +113,7 @@ void RecordingController::handleDataReady(const QByteArray &data)
 
         QString duration = m_audioConfig->duration();
         // qDebug()<<"handleDataReady for:" <<duration;
-        if (duration == "10s"){
+        if (duration == "2s"){
             // Chuyển tiếp dữ liệu cho AudioFile để xử lý buffering và ghi file
             if (m_audioFile) {
                 QMetaObject::invokeMethod(m_audioFile, "writeAudioData",
@@ -125,10 +129,11 @@ void RecordingController::handleDataReady(const QByteArray &data)
             }
         }
 
-        // Xóa dữ liệu đã ghi
-        currentBuffer.remove(0, chunkSize);
+        // Chỉ xóa buffer nếu dữ liệu thực sự được ghi
+        if (currentBuffer.size() >= chunkSize) {
+            currentBuffer.remove(0, chunkSize);
+        }
     }
-
     m_recordingChart->onSendChartData(data);
 }
 

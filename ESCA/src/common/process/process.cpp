@@ -10,7 +10,7 @@ Process::Process(QObject* parent) : QObject(parent){
 
     m_running = false;
     // finished is overloaded
-    connect(&m_process, QOverload<int, QProcess::ExitStatus>::of(&QProcess::finished), this, &Process::finished);
+    // connect(&m_process, QOverload<int, QProcess::ExitStatus>::of(&QProcess::finished), this, &Process::finished);
 }
 
 QString Process::operatingSystem()
