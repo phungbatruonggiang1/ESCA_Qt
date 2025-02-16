@@ -146,7 +146,7 @@ def main():
                 return
     
             # Tính MSE giữa input và output của autoencoder (sử dụng mô hình đã huấn luyện)
-            pred = np.mean((a - model.predict(a))**2)
+            pred = np.mean((a - model.predict(a, verbose=0))**2)
 
             type = 1 if pred > threshold else 0
     
@@ -156,7 +156,8 @@ def main():
             semaphore.release()
             
             #print(pred, flush=True)
-            print(f"Processing time: {end_time - start_time} seconds and Pred: {pred}")            
+            # print(f"Processing time: {end_time - start_time} seconds and Pred: {pred}")   
+            print(pred, flush=True)            
         
         except sysv_ipc.BusyError:
             print("Semaphore is busy. Skipping this cycle.")
