@@ -23,9 +23,7 @@ void ProcessManager::startPythonService()
     }
 
     qDebug() << "Current working directory:" << QDir::currentPath();
-
     setStatement("python3 ~/Desktop/ESCA_Qt/python_ai/inference.py");
-
     qInfo() << statement();
 
     startProcess();

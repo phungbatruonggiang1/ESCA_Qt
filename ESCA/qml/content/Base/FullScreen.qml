@@ -270,7 +270,7 @@ Rectangle {
             id: system_config_ma
             anchors.fill: parent
             onClicked: {
-                screenLoader.source = "/ui/layout/systemConfig.qml"
+                screenLoader.source = "../RecordModule/ConfigAudio.qml"
             }
         }
     }

@@ -10,7 +10,6 @@ Rectangle {
     color: "#161525"
 
     Component.onCompleted: {
-
         // console.log("nearistParams[0]: ", deviceIndex);
         console.log("AudioConfig.nearistParams[5]: "+AudioConfig.nearistParams[5]);
         testtext.text = "" + AudioConfig.nearistParams;

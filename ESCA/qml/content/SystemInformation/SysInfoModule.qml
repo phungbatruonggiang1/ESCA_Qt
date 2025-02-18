@@ -12,9 +12,9 @@ Rectangle {
     // HEADER
     Rectangle {
         id: about
-        x: 50
+        x: 61
         y: 8
-        width: 113
+        width: 218
         height: 52
         color: selectedButton === "about" ? "#2c3138" : "#394251"  // Thay đổi màu khi được chọn
         radius: 8
@@ -40,7 +40,7 @@ Rectangle {
 
     Rectangle {
         id: rectangle3
-        x: 169
+        x: 333
         y: 8
         width: 291
         height: 52
@@ -65,9 +65,10 @@ Rectangle {
             }
         }
     }
+
     Rectangle {
         id: rectangle
-        x: 466
+        x: 680
         y: 8
         width: 285
         height: 52
@@ -89,33 +90,6 @@ Rectangle {
             onClicked: {
                 loader.source = "realTimeMonitor.qml"
                 selectedButton = "realTimeMonitor"
-            }
-        }
-    }
-
-    Rectangle {
-        id: rectangle1
-        x: 757
-        y: 8
-        width: 227
-        height: 52
-        color: selectedButton === "aiJobMonitor" ? "#2c3138" : "#394251"
-        radius: 8
-        Text {
-            id: text2
-            color: "#ffffff"
-            text: qsTr("AI job monitor")
-            anchors.fill: parent
-            font.pixelSize: 28
-            horizontalAlignment: Text.AlignHCenter
-            verticalAlignment: Text.AlignVCenter
-            font.family: "Oxanium"
-        }
-        MouseArea {
-            anchors.fill: parent
-            onClicked: {
-                loader.source = "aiJobMonitor.qml"
-                selectedButton = "aiJobMonitor"
             }
         }
     }

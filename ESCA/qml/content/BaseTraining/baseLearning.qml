@@ -3,9 +3,8 @@ import QtQuick.Controls 2.15
 import "../component"
 import QtQuick.Dialogs 1.0
 
-
 Rectangle {
-            property bool connected: false
+    property bool connected: false
     Rectangle {
         id: frame_27
         width: 1024
@@ -31,16 +30,6 @@ Rectangle {
             y: 97
             fillMode: Image.PreserveAspectCrop
             source: "/ui/assets/defaultLearningImg.png"    // default img
-
-            Connections {
-                target: DisplayResult
-
-                function onSetLossImage(imageName) {
-                    // console.log("Hi Giang")
-                    console.log(imageName);
-                    image_render.source ="file://" + imageName;
-                }
-            }
         }
 
         Rectangle {
@@ -73,15 +62,6 @@ Rectangle {
 
                 onClicked: {
                     connected = !connected;
-                    DisplayResult.selectResult('Hanoi');
-
-//                    if (connected) {
-//                        fileWatcher.connect(onSetImage);
-//                        console.log("Connection established");
-//                    } else {
-//                        fileWatcher.disconnect(onSetImage);
-//                        console.log("Connection closed");
-//                    }
                 }
             }
         }
@@ -118,8 +98,6 @@ Rectangle {
             anchors.horizontalCenterOffset: -329
             font.family: "Josefin Sans"
         }
-
-
 
         Rectangle {
             id: rectangle_76
@@ -167,20 +145,6 @@ Rectangle {
             height: 36
             color: "#6935416c"
             radius: 8
-
-            FileDialog {
-                id: choose_folder_save_file
-                title: "Please choose a file"
-                onAccepted: {
-                    console.log("You choose: " + choose_file_save_record.fileUrl)
-                    // handle choose file
-                    folder_to_store.text = "" + choose_file_save_record.folder;
-                }
-                onRejected: {
-                    console.log("Canceled")
-                    //                Qt.quit()
-                }
-            }
 
             MouseArea {
                 id: mouseArea1

@@ -3,6 +3,12 @@
 
 #include <QObject>
 #include <QJsonObject>
+#include <QFile>
+#include <QJsonDocument>
+#include <QJsonArray>
+#include <QDebug>
+#include <QStandardPaths>
+#include <QDir>
 
 class TransferConfig : public QObject
 {
@@ -69,6 +75,7 @@ private:
     double m_beta;
 
     void loadDefaults();
+    QString m_filePath;
 };
 
 #endif // TRANSFERCONFIG_H

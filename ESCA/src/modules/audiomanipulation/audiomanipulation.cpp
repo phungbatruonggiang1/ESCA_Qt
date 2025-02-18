@@ -77,7 +77,6 @@ void AudioManipulation::extractFrequency(QString audioPath)
     m_audio_extractor->start();
 }
 
-
 // should not be implement
 void AudioManipulation::splitAudio(QString source, QString destination, QString duration)
 {
