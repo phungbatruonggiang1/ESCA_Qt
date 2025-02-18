@@ -26,7 +26,7 @@ Rectangle {
             ctx.fillText("Amplitude Time Series Chart (s)", audioWaveform.width / 2 - 130, audioWaveform.height - 10);
 
             // Draw Y-axis grid and labels
-            var yAxisValues = [-32767, -20, -10, 0, 10, 20, 32767];
+            var yAxisValues = [-32767, -1, -1, 0, 1, 1, 32767];
             var yAxisStep = (audioWaveform.height - 60) / (yAxisValues.length - 1);
             ctx.font = "13px Oxanium";
             ctx.strokeStyle = "#5A5A5A";
@@ -55,38 +55,21 @@ Rectangle {
                 ctx.stroke();
             }
 
-            // Draw waveform in two parts: one for normal values and another for over-threshold
+            // Draw waveform (only one color)
             ctx.lineWidth = 2;
-
-            // Normal segments
-            ctx.strokeStyle = "#00FFFF";
+            ctx.strokeStyle = "#00FFFF"; // Cyan color
             ctx.beginPath();
-            var isThresholdExceeded = false;
-            for (var k = 0; k < audioData.length; k++) {
-                x = xMin + k * xRange / (audioData.length - 1);
-                y = audioWaveform.height / 2 - (audioData[k] / maxAmplitude) * (audioWaveform.height / 2 - 60);
 
-                if (Math.abs(audioData[k]) <= threshold) {
-                    if (isThresholdExceeded) {
-                        ctx.stroke();  // End previous red path
-                        ctx.beginPath();  // Start a new path for normal values
-                        ctx.strokeStyle = "#00FFFF";
-                        isThresholdExceeded = false;
-                        ctx.moveTo(x, y);
-                    }
-                    ctx.lineTo(x, y);
+            for (var k = 0; k < audioData.length; k++) {
+                 x = xMin + k * xRange / (audioData.length - 1);
+                 y = audioWaveform.height / 2 - (audioData[k] / maxAmplitude) * (audioWaveform.height / 2 - 60);
+                if (k === 0) {
+                    ctx.moveTo(x, y);
                 } else {
-                    if (!isThresholdExceeded) {
-                        ctx.stroke();  // End previous normal path
-                        ctx.beginPath();  // Start a new path for threshold-exceeding values
-                        ctx.strokeStyle = "red";
-                        isThresholdExceeded = true;
-                        ctx.moveTo(x, y);
-                    }
                     ctx.lineTo(x, y);
                 }
             }
-            ctx.stroke();  // Final stroke to complete any remaining path
+            ctx.stroke(); // Final stroke
         }
     }
 

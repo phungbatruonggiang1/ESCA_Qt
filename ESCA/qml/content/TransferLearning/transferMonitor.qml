@@ -13,14 +13,14 @@ Rectangle {
     // Hàm cập nhật nội dung log dựa theo trạng thái tlStatus
     function updateLogOnTlStatusChange(status) {
         if (status === true) {
-            // Khi chuyển sang true: thêm dòng "Initial...."
             logArea.clear()
-            logArea.append("Initial....")
+            logArea.append("Initial Training....")
         } else {
             // Khi chuyển sang false (Stop): xóa nội dung TextArea (reset về ban đầu)
             // logArea.clear()
             progressTx.text = "0%"
             progressBar.value = 0
+            notificationManager.open();
         }
     }
 

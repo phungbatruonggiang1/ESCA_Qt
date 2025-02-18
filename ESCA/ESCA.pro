@@ -15,7 +15,6 @@ SOURCES += \
     src/modules/audiomanipulation/audiomanipulation.cpp \
     src/modules/audiorecording/audioconfig.cpp \
     src/modules/audiorecording/audiofile.cpp \
-    src/modules/audiorecording/audiofilefactory.cpp \
     src/modules/audiorecording/recorddevice.cpp \
     src/modules/audiorecording/recordingchart.cpp \
     src/modules/audiorecording/recordingcontroller.cpp \
@@ -42,7 +41,7 @@ QML_DESIGNER_IMPORT_PATH =
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
-else: unix:!android: target.path = /home/sparclab/Desktop
+else: unix:!android: target.path = /home/haiminh/Desktop
 !isEmpty(target.path): INSTALLS += target
 
 HEADERS += \
@@ -57,7 +56,6 @@ HEADERS += \
     src/modules/audiomanipulation/audiomanipulation.h \
     src/modules/audiorecording/audioconfig.h \
     src/modules/audiorecording/audiofile.h \
-    src/modules/audiorecording/audiofilefactory.h \
     src/modules/audiorecording/recorddevice.h \
     src/modules/audiorecording/recordingchart.h \
     src/modules/audiorecording/recordingcontroller.h \
@@ -81,10 +79,6 @@ DISTFILES += \
     qml/content/Base/HomeButton.qml \
     qml/content/Base/FullScreen.qml \
     qml/content/BaseTraining/baseLearning.qml \
-    qml/content/BaseTraining/baseLearning_data.qml \
-    qml/content/BaseTraining/baseLearning_parameterConfigure.qml \
-    qml/content/BaseTraining/baseLearning_result.qml \
-    qml/content/BaseTraining/baseLearning_traning.qml \
     qml/content/FileManager/fileManager.qml \
     qml/content/Inference/realTimeInference_data.qml \
     qml/content/Inference/realTimeInference_result.qml \
@@ -94,7 +88,7 @@ DISTFILES += \
     qml/content/RecordModule/Recording.qml \
     qml/content/SystemInformation/SysInfoModule.qml \
     qml/content/SystemInformation/about.qml \
-    qml/content/SystemInformation/aiJobMonitor.qml \
     qml/content/SystemInformation/realTimeMonitor.qml \
     qml/content/SystemInformation/systemInformation.qml \
+    qml/content/component/NotificationManager.qml \
     qml/content/component/RamFrame.qml \

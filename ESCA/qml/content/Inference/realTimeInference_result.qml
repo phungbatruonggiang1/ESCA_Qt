@@ -1,6 +1,9 @@
 import QtQuick 2.15
 import QtQuick.Controls 2.15
 import QtQuick.Layouts 1.15
+import Qt.labs.folderlistmodel 2.6
+import Qt.labs.platform 1.1
+import QtQuick.Dialogs 1.3
 
 Rectangle {
     id: realtimeConfigWindow
@@ -13,9 +16,9 @@ Rectangle {
     // Bố cục chính
     ColumnLayout {
         x: 106
-        y: 31
+        y: 40
         width: 812
-        height: 89
+        height: 150
         spacing: 15
 
         // Tiêu đề
@@ -57,16 +60,77 @@ Rectangle {
                     color: "#FFFFFF"
                     onTextChanged: {
                         ConfigManager.logPath = text
-                        ConfigManager.saveConfig("/home/haiminh/Desktop/Anomaly_Detection/D-ESCA_v2/config/default.json")
+                        ConfigManager.saveConfig()
                     }
                 }
+            }
+        }
+        RowLayout {
+            Layout.fillWidth: true
+            spacing: 10
+
+            Text {
+                text: "Model:"
+                color: "#FFFFFF"
+                Layout.alignment: Qt.AlignLeft
+                Layout.minimumWidth: 200
+                font.pointSize: 14
+                font.family: "Oxanium"
+            }
+
+            Rectangle {
+                width: 600
+                height: 30
+                color: "#222222"
+                radius: 5
+                border.color: "#FFFFFF"
+
+                TextInput {
+                    id: modelInput
+                    anchors.fill: parent
+                    anchors.margins: 5
+                    text: ConfigManager.modelPath
+                    color: "#FFFFFF"
+                    onTextChanged: {
+                        ConfigManager.modelPath = text
+                        ConfigManager.saveConfig()
+                    }
+                }
+                Rectangle {
+                    x: 566
+                    y: 3
+                    width: 25
+                    height: 25
+                    color: "#cccccc"
+
+                    MouseArea {
+                        id: mouseArea
+                        anchors.fill: parent
+                        onClicked: {
+                            fileDialog.open()
+                        }
+                    }
+                }
+               FileDialog { // Thay thế FolderDialog bằng FileDialog
+                   id: fileDialog
+                   // currentFolder: StandardPaths.writableLocation(StandardPaths.PicturesLocation)
+                   title: "Choose a folder"
+                   selectFolder: true // Thêm thuộc tính để chọn thư mục
+                   selectExisting: true
+                   onAccepted: {
+                       modelInput.text = fileDialog.fileUrl
+                   }
+                   onRejected: {
+                       console.log("Canceled")
+                   }
+               }
             }
         }
     }
 
     ColumnLayout {
         x: 152
-        y: 140
+        y: 218
         spacing: 15
 
         RowLayout {
@@ -136,7 +200,7 @@ Rectangle {
                         var value = parseInt(text)
                         if (!isNaN(value) && value >= 100 && value <= 10000) {
                             ConfigManager.runtime = value
-                            ConfigManager.saveConfig("/home/haiminh/Desktop/Anomaly_Detection/D-ESCA_v2/config/default.json")
+                            ConfigManager.saveConfig()
                         }
                     }
                 }
@@ -148,65 +212,28 @@ Rectangle {
             spacing: 10
 
             Text {
-                text: "Device Index Input:"
+                text: "Import File:"
                 color: "#FFFFFF"
                 Layout.alignment: Qt.AlignLeft
                 Layout.minimumWidth: 200
                 font.pointSize: 14
                 font.family: "Oxanium"
-            }
-
-            Rectangle {
-                width: 100
-                height: 30
-                color: "#222222"
-                radius: 5
-                border.color: "#FFFFFF"
-
-                TextInput {
-                    id: deviceIndexInput
-                    anchors.fill: parent
-                    anchors.margins: 5
-                    text: ConfigManager.deviceIndexInput.toString()
-                    color: "#FFFFFF"
-                    onTextChanged: {
-                        var value = parseInt(text)
-                        if (!isNaN(value) && value >= 0 && value <= 32) {
-                            ConfigManager.deviceIndexInput = value
-                            ConfigManager.saveConfig("/home/haiminh/Desktop/Anomaly_Detection/D-ESCA_v2/config/default.json")
-                        }
-                    }
-                }
-            }
-        }
-
-        RowLayout {
-            Layout.fillWidth: true
-            spacing: 10
-
-            Text {
-                text: "Transfer Learning:"
-                font.pointSize: 14
-                font.family: "Oxanium"
-                color: "#FFFFFF"
-                Layout.alignment: Qt.AlignLeft
-                Layout.minimumWidth: 200
             }
 
             CheckBox {
-                id: transferLearningCheckbox
-                checked: ConfigManager.transferLearning
+                id: importFileCheckbox
+                checked: ConfigManager.importFile
                 onCheckedChanged: {
-                    ConfigManager.transferLearning = checked
-                    ConfigManager.saveConfig("/home/haiminh/Desktop/Anomaly_Detection/D-ESCA_v2/config/default.json")
+                    ConfigManager.importFile = checked
+                    ConfigManager.saveConfig()
                 }
             }
         }
     }
 
     ColumnLayout {
-        x: 551
-        y: 140
+        x: 519
+        y: 218
         spacing: 15
 
         RowLayout {
@@ -239,7 +266,7 @@ Rectangle {
                         var value = parseInt(text)
                         if (!isNaN(value) && value >= 1 && value <= 8) {
                             ConfigManager.channels = value
-                            ConfigManager.saveConfig("/home/haiminh/Desktop/Anomaly_Detection/D-ESCA_v2/config/default.json")
+                            ConfigManager.saveConfig()
                         }
                     }
                 }
@@ -276,7 +303,7 @@ Rectangle {
                         var value = parseInt(text)
                         if (!isNaN(value) && value >= 8000 && value <= 96000) {
                             ConfigManager.samplingRate = value
-                            ConfigManager.saveConfig("/home/haiminh/Desktop/Anomaly_Detection/D-ESCA_v2/config/default.json")
+                            ConfigManager.saveConfig()
                         }
                     }
                 }
@@ -313,41 +340,18 @@ Rectangle {
                         var value = parseInt(text)
                         if (!isNaN(value) && value >= 1 && value <= 60) {
                             ConfigManager.second = value
-                            ConfigManager.saveConfig("/home/haiminh/Desktop/Anomaly_Detection/D-ESCA_v2/config/default.json")
+                            ConfigManager.saveConfig()
                         }
                     }
                 }
             }
-        }
-
-        RowLayout {
-            Layout.fillWidth: true
-            spacing: 10
-
-            Text {
-                text: "Import File:"
-                color: "#FFFFFF"
-                Layout.alignment: Qt.AlignLeft
-                Layout.minimumWidth: 200
-                font.pointSize: 14
-                font.family: "Oxanium"
-            }
-
-            CheckBox {
-                id: importFileCheckbox
-                checked: ConfigManager.importFile
-                onCheckedChanged: {
-                    ConfigManager.importFile = checked
-                    ConfigManager.saveConfig()
-                }
-            }
-        }
+        }       
     }
 
     Button {
         id: button
-        x: 447
-        y: 371
+        x: 106
+        y: 415
         text: qsTr("Inference Screen")
 
         onClicked: {

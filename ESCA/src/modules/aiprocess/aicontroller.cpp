@@ -22,7 +22,6 @@ void AIController::start()
     //     qWarning() << "Failed to load configuration.";
     //     return;
     // }
-
     processManager->startPythonService();
     setinferenceStatus(true);
 }

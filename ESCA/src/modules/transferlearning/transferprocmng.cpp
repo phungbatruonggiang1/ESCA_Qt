@@ -10,7 +10,6 @@ TransferProcMng::TransferProcMng(QObject *parent)
             static_cast<void (QProcess::*)(int, QProcess::ExitStatus)>(&QProcess::finished),
             this,
             &TransferProcMng::handleProcessFinished);
-
 }
 
 TransferProcMng::~TransferProcMng()

@@ -11,7 +11,6 @@ Rectangle {
 
     property bool recStatus: RecordingObject.recStatus
     property bool aiStatus: AIObject.inferenceStatus
-
     property var predValue: []  // Variable to store audio data
 
     Rectangle {

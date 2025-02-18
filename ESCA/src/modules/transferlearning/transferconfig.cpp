@@ -1,8 +1,4 @@
 #include "transferconfig.h"
-#include <QFile>
-#include <QJsonDocument>
-#include <QJsonArray>
-#include <QDebug>
 
 TransferConfig::TransferConfig(QObject *parent)
     : QObject(parent),
@@ -12,9 +8,10 @@ TransferConfig::TransferConfig(QObject *parent)
     m_savePath(""),
     m_batchSize(0),
     m_learningRate(0.0),
-    m_epoch(0),
+    m_epoch(81),
     m_beta(0.0)
 {
+    m_filePath = QStandardPaths::writableLocation(QStandardPaths::HomeLocation) + QDir::separator() + "config.json";
 }
 
 QString TransferConfig::baseWeightPath() const { return m_baseWeightPath; }
@@ -42,9 +39,9 @@ double TransferConfig::beta() const { return m_beta; }
 void TransferConfig::setBeta(double beta) { m_beta = beta; emit betaChanged(); }
 
 bool TransferConfig::loadConfig(const QString &filePath) {
-    QFile file(filePath);
+    QFile file(m_filePath);
     if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
-        qWarning() << "Không thể mở file để đọc:" << filePath;
+        qWarning() << "Không thể mở file để đọc:" << m_filePath;
         loadDefaults();
         return false;
     }
@@ -62,13 +59,14 @@ bool TransferConfig::loadConfig(const QString &filePath) {
     // Cập nhật các trường từ TRANSFER_LEARNING
     if (rootObject.contains("TRANSFER_LEARNING") && rootObject["TRANSFER_LEARNING"].isObject()) {
         QJsonObject transferLearning = rootObject["TRANSFER_LEARNING"].toObject();
-        setBaseWeightPath(transferLearning.value("BASED_WEIGHTS").toString(m_baseWeightPath));
-        setTfrecordNewPath(transferLearning.value("TFRECORDS").toArray().at(0).toString());
-        setSavePath(transferLearning.value("SAVE_PATH").toString(m_savePath));
-        setBatchSize(transferLearning.value("ANOM_BATCH_SIZE").toInt(m_batchSize));
-        setLearningRate(transferLearning.value("LEARNING_RATE").toDouble(m_learningRate));
-        setEpoch(transferLearning.value("EPOCH").toInt(m_epoch));
-        setBeta(transferLearning.value("BETA").toDouble(m_beta));
+
+        setBaseWeightPath(transferLearning.value("BASED_WEIGHTS").toString("/home/haiminh/Desktop/D-ESCA_v2/Results/base_training_result/saved_model/vq_vae"));
+        setTfrecordNewPath(transferLearning.value("TFRECORDS").toArray().at(0).toString("/home/haiminh/Desktop/D-ESCA_v2/data/target/Target25"));
+        setSavePath(transferLearning.value("SAVE_PATH").toString("/home/haiminh/Desktop/D-ESCA_v2/Results/tl-training_results/Target3"));
+        setBatchSize(transferLearning.value("ANOM_BATCH_SIZE").toInt(128));
+        setLearningRate(transferLearning.value("LEARNING_RATE").toDouble(0.001));
+        setEpoch(transferLearning.value("EPOCH").toInt(81));
+        setBeta(transferLearning.value("BETA").toDouble(1.0));
     }
 
     // Cập nhật TFRecord Used Path từ DATASET
@@ -76,10 +74,9 @@ bool TransferConfig::loadConfig(const QString &filePath) {
         QJsonObject dataset = rootObject["DATASET"].toObject();
         if (dataset.contains("PATH") && dataset["PATH"].isObject()) {
             QJsonObject path = dataset["PATH"].toObject();
-            setTfrecordUsedPath(path.value("TFRECORDS").toArray().at(0).toString(m_tfrecordUsedPath));
+            setTfrecordUsedPath(path.value("TFRECORDS").toArray().at(0).toString("/home/haiminh/Desktop/D-ESCA_v2/park_dataset_demo/mel_data2"));
         }
     }
-
     return true;
 }
 

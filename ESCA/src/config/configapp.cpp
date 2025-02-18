@@ -47,6 +47,7 @@ void ConfigApp::generateConfig() {
     // PREPROCESS
     QJsonObject preprocess;
     preprocess["AUDIO_LEN"] = 2;
+    preprocess["FRAME_RATE"] = 44100;
 
     QJsonObject gamma;
     gamma["CHANNELS"] = 32;
@@ -69,15 +70,15 @@ void ConfigApp::generateConfig() {
 
     // REALTIME
     QJsonObject realtime;
-    realtime["CHANNELS"] = 1;
-    realtime["DEVICE_INDEX_INPUT"] = 12;
-    realtime["IMPORT_FILE"] = false;
+    realtime["CHANNEL"] = 1;
+    realtime["SAMPLE_RATE"]=44100;
+    realtime["SAMPLE_SIZE"]=16;
+    realtime["IMPORT_FILE"]=false;
     realtime["LOG_PATH"] = "/home/haiminh/Desktop/Anomaly_Detection/D-ESCA_v2/Results/rt_test_results";
+    realtime["MODEL_PATH"]= "/home/haiminh/Desktop/ESCA_Qt/python_ai/result/saved_model/vq_vae",
     realtime["MANUAL_THRESHOLD"] = 0.01;
     realtime["RUNTIME"] = 1000;
-    realtime["SAMPLING_RATE"] = 44100;
     realtime["SECOND"] = 2;
-    realtime["TRANSFER_LEARNING"] = false;
     realtime["SHARED_MEMORY_KEY"] = "0xDEADBEEF";
     realtime["SEMAPHORE_KEY"] = "0xBEEFDEAD";
     realtime["BUFFER_SIZE"] = 176400;
