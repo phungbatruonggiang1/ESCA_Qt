@@ -18,9 +18,10 @@ Rectangle {
         } else {
             // Khi chuyển sang false (Stop): xóa nội dung TextArea (reset về ban đầu)
             // logArea.clear()
-            progressTx.text = "0%"
-            progressBar.value = 0
-            notificationManager.open();
+            // progressTx.text = "0%"
+            // progressBar.value = 0
+            // totalEpoch = 0
+            epoch = 0
         }
     }
 
@@ -107,6 +108,8 @@ Rectangle {
             // Ví dụ: Append thêm dòng thông báo khi epoch thay đổi
             logArea.clear()
             logArea.append(TransferObject.logText)
+            totalEpoch = TransferObject.totalEpoch
+            epoch= TransferObject.epoch
         }
         onTlStatusChanged: {
             updateLogOnTlStatusChange(TransferObject.tlStatus);

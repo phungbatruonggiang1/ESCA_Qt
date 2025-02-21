@@ -8,6 +8,7 @@ AIController::AIController(QObject *parent) : QObject(parent)
     processManager = new ProcessManager(this);
     // Kết nối tín hiệu từ ProcessManager tới AIController
     connect(processManager, &ProcessManager::resultReceived, this, &AIController::handleInferenceResult);
+    connect(processManager, &ProcessManager::abnormalDetect, this, &AIController::handleAbnormalDetect);
 }
 
 AIController::~AIController()
@@ -34,17 +35,19 @@ void AIController::stop()
 
 void AIController::handleInferenceResult(const float predValue)
 {
-    if (predValue != 0.0f) {
-        m_predValue.push_back(predValue);
+    m_predValue.push_back(predValue);
 
-        if (m_predValue.size() > 200) { // Giới hạn số cột hiển thị
-            m_predValue.removeFirst();
-        }
-        emit predValueChanged();
-        // qDebug() << "Data arr: "<<m_predValue;
-    } else {
-        // qDebug() << "Data loi ne cau =0, hoac toan chu b";
+    if (m_predValue.size() > 200) { // Giới hạn số cột hiển thị
+        m_predValue.removeFirst();
     }
+    emit predValueChanged();
+    // qDebug() << "Data arr: "<<m_predValue;
+}
+
+void AIController::handleAbnormalDetect()
+{
+    setAbnomalDetect(true);
+    qDebug() << "setAbnomalDetect: "<<abnomalDetect();
 }
 
 QVector<float> AIController::predValue() const
@@ -63,4 +66,15 @@ void AIController::setinferenceStatus(bool newInferenceStatus)
         return;
     m_inferenceStatus = newInferenceStatus;
     emit inferenceStatusChanged();
+}
+
+bool AIController::abnomalDetect() const
+{
+    return m_abnomalDetect;
+}
+
+void AIController::setAbnomalDetect(bool newAbnomalDetect)
+{
+    m_abnomalDetect = newAbnomalDetect;
+    emit abnomalDetectChanged();
 }

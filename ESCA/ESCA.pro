@@ -20,6 +20,7 @@ SOURCES += \
     src/modules/audiorecording/recordingcontroller.cpp \
     src/modules/audiorecording/recordingschedule.cpp \
     src/modules/audiorecording/recordio.cpp \
+    src/modules/notification/notificationlogger.cpp \
     src/modules/systeminformation/systeminformationcontroller.cpp \
     src/modules/filemanager/filemanager.cpp \
     src/modules/transferlearning/histogrammanager.cpp \
@@ -63,6 +64,7 @@ HEADERS += \
  \    # src/modules/systeminformation/basicmonitor.h
     src/modules/audiorecording/recordio.h \
     src/modules/filemanager/FileIO.h \
+    src/modules/notification/notificationlogger.h \
     src/modules/systeminformation/systeminformationcontroller.h \
     src/modules/filemanager/filemanager.h \
     src/modules/transferlearning/histogrammanager.h \
@@ -82,6 +84,8 @@ DISTFILES += \
     qml/content/FileManager/fileManager.qml \
     qml/content/Inference/realTimeInference_data.qml \
     qml/content/Inference/realTimeInference_result.qml \
+    qml/content/Notification/NotificationCenter.qml \
+    qml/content/Notification/NotificationItem.qml \
     qml/content/RecordModule/AudioChart.qml \
     qml/content/RecordModule/ConfigAudio.qml \
     qml/content/RecordModule/RecordModule.qml \

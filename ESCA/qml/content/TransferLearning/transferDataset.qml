@@ -12,9 +12,9 @@ Rectangle {
 
     Column {
         anchors.centerIn: parent
-        width: 750
+        width: parent.width
         height: 400
-        spacing: 30
+        spacing: 40
 
         Text {
             text: "Dataset Configuration"
@@ -27,9 +27,10 @@ Rectangle {
         }
 
         GridLayout {
+            width: 700
             columns: 3
-            columnSpacing: 40
-            rowSpacing: 25
+            columnSpacing: 15
+            rowSpacing: 30
             anchors.horizontalCenter: parent.horizontalCenter
 
             Label {
@@ -37,20 +38,34 @@ Rectangle {
                 font.pointSize: 13
                 color: "#ffffff"
                 font.family: "Oxanium"
-                Layout.alignment: Qt.AlignRight
+                Layout.alignment: Qt.AlignCenter
             }
             TextField {
                 id: baseWeightPath
-                placeholderText: "./Results/tl-training_results/Target2/saved_model/vq_vae"
-                text: "./Results/tl-training_results/Target2/saved_model/vq_vae"
-                width: 600
+                text: TransferConfig.baseWeightPath
+                width: 150
                 height: 35
+                Layout.fillWidth: true  // Cho phép mở rộng theo chiều ngang
                 font.family: "Oxanium"
                 readOnly: true
                 horizontalAlignment: Text.AlignLeft
                 font.pointSize: 13
                 clip: true
-                //                elide: Text.ElideNone
+                // Đảm bảo cập nhật khi giá trị thay đổi từ C++
+                Connections {
+                    target: TransferConfig
+                    function onBaseWeightPathChanged() {
+                        if (baseWeightPath.text !== TransferConfig.baseWeightPath)
+                            baseWeightPath.text = TransferConfig.baseWeightPath;
+                    }
+                }
+                // Cập nhật khi người dùng nhập liệu, nhưng tránh vòng lặp
+                onTextChanged: {
+                    if (TransferConfig.baseWeightPath !== text) {
+                        TransferConfig.baseWeightPath = text;
+                        // TransferConfig.saveConfig();
+                    }
+                }
             }
 
             Rectangle {
@@ -73,20 +88,34 @@ Rectangle {
                 font.pointSize: 13
                 color: "#ffffff"
                 font.family: "Oxanium"
-                Layout.alignment: Qt.AlignRight
+                Layout.alignment: Qt.AlignCenter
             }
             TextField {
                 id: tfrecordUsedPath
-                placeholderText: "./park_dataset_demo/target/Target3"
-                text: "./park_dataset_demo/target/Target3"
+                text: TransferConfig.tfrecordUsedPath
                 width: 600
                 height: 35
+                Layout.fillWidth: true
                 font.family: "Oxanium"
                 readOnly: true
                 horizontalAlignment: Text.AlignLeft
                 font.pointSize: 13
                 clip: true
-                //                elide: Text.ElideNone
+                // Đảm bảo cập nhật khi giá trị thay đổi từ C++
+                Connections {
+                    target: TransferConfig
+                    function onTfrecordUsedPathChanged() {
+                        if (tfrecordUsedPath.text !== TransferConfig.tfrecordUsedPath)
+                            tfrecordUsedPath.text = TransferConfig.tfrecordUsedPath;
+                    }
+                }
+                // Cập nhật khi người dùng nhập liệu, nhưng tránh vòng lặp
+                onTextChanged: {
+                    if (TransferConfig.tfrecordUsedPath !== text) {
+                        TransferConfig.tfrecordUsedPath = text;
+                        // TransferConfig.saveConfig();
+                    }
+                }
             }
 
             Rectangle {
@@ -109,18 +138,32 @@ Rectangle {
                 font.pointSize: 13
                 color: "#ffffff"
                 font.family: "Oxanium"
-                Layout.alignment: Qt.AlignRight
+                Layout.alignment: Qt.AlignCenter
             }
             TextField {
                 id: tfrecordNewPath
-                placeholderText: "Path to new TFRecord dataset"
                 width: 600
                 height: 35
+                Layout.fillWidth: true
                 font.family: "Oxanium"
+                text: TransferConfig.tfrecordNewPath
                 horizontalAlignment: Text.AlignLeft
                 font.pointSize: 13
                 clip: true
-                //                elide: Text.ElideNone
+                Connections {
+                    target: TransferConfig
+                    function onTfrecordNewPathChanged() {
+                        if (tfrecordNewPath.text !== TransferConfig.tfrecordNewPath)
+                            tfrecordNewPath.text = TransferConfig.tfrecordNewPath;
+                    }
+                }
+                // Cập nhật khi người dùng nhập liệu, nhưng tránh vòng lặp
+                onTextChanged: {
+                    if (TransferConfig.tfrecordNewPath !== text) {
+                        TransferConfig.tfrecordNewPath = text;
+                        // TransferConfig.saveConfig();
+                    }
+                }
             }
 
             Rectangle {
@@ -143,20 +186,32 @@ Rectangle {
                 font.pointSize: 13
                 color: "#ffffff"
                 font.family: "Oxanium"
-                Layout.alignment: Qt.AlignRight
+                Layout.alignment: Qt.AlignCenter
             }
             TextField {
                 id: savePath
                 text: TransferConfig.savePath
                 width: 600
                 height: 35
+                Layout.fillWidth: true
                 font.family: "Oxanium"
                 readOnly: true
                 horizontalAlignment: Text.AlignLeft
                 font.pointSize: 13
                 clip: true
+                Connections {
+                    target: TransferConfig
+                    function onSavePathChanged() {
+                        if (savePath.text !== TransferConfig.savePath)
+                            savePath.text = TransferConfig.savePath;
+                    }
+                }
+                // Cập nhật khi người dùng nhập liệu, nhưng tránh vòng lặp
                 onTextChanged: {
-                    TransferConfig.savePath = savePath.text
+                    if (TransferConfig.savePath !== text) {
+                        TransferConfig.savePath = text;
+                        // TransferConfig.saveConfig();
+                    }
                 }
             }
 
@@ -251,7 +306,9 @@ Rectangle {
                 console.log("TFRecord Path (New):", tfrecordNewPath.text)
                 console.log("Save Path:", savePath.text)
                 // Add logic to save these paths to a JSON file
-                TransferConfig.saveConfig("/home/haiminh/config.json");
+                TransferConfig.saveConfig();
+                notificationCenter.showNotification("Transfer Dataset saved", "success", 1);
+
             }
         }
     }

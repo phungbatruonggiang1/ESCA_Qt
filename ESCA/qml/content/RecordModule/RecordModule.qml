@@ -22,10 +22,6 @@ Rectangle {
         color: "#161525"
         radius: 20
 
-        StatusLight {
-            id: statusLight
-        }
-
         Button {
             id: startBtn
             x: 40

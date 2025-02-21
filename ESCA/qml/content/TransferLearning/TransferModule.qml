@@ -12,7 +12,7 @@ Rectangle {
 
     property string selectedBtn: "monitor"
     property bool tlStatus: TransferObject.tlStatus
-    property string logContent: ""
+    property string logContent: ""    
 
     Rectangle {
         id: rectangle
@@ -153,7 +153,7 @@ Rectangle {
                     }
                 }
             }
-        }
+        }        
     }
 
     Rectangle {

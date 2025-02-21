@@ -91,9 +91,21 @@ Rectangle {
                     anchors.margins: 5
                     text: ConfigManager.modelPath
                     color: "#FFFFFF"
+                    // Đảm bảo cập nhật khi giá trị thay đổi từ C++
+                    Connections {
+                        target: ConfigManager
+                        function onModelPathChanged() {
+                            if (modelInput.text !== ConfigManager.modelPath)
+                                modelInput.text = ConfigManager.modelPath;
+                        }
+                    }
+
+                    // Cập nhật khi người dùng nhập liệu, nhưng tránh vòng lặp
                     onTextChanged: {
-                        ConfigManager.modelPath = text
-                        ConfigManager.saveConfig()
+                        if (ConfigManager.modelPath !== text) {
+                            ConfigManager.modelPath = text;
+                            ConfigManager.saveConfig();
+                        }
                     }
                 }
                 Rectangle {
@@ -111,19 +123,19 @@ Rectangle {
                         }
                     }
                 }
-               FileDialog { // Thay thế FolderDialog bằng FileDialog
-                   id: fileDialog
-                   // currentFolder: StandardPaths.writableLocation(StandardPaths.PicturesLocation)
-                   title: "Choose a folder"
-                   selectFolder: true // Thêm thuộc tính để chọn thư mục
-                   selectExisting: true
-                   onAccepted: {
-                       modelInput.text = fileDialog.fileUrl
-                   }
-                   onRejected: {
-                       console.log("Canceled")
-                   }
-               }
+                FileDialog { // Thay thế FolderDialog bằng FileDialog
+                    id: fileDialog
+                    // currentFolder: StandardPaths.writableLocation(StandardPaths.PicturesLocation)
+                    title: "Choose a folder"
+                    selectFolder: true // Thêm thuộc tính để chọn thư mục
+                    selectExisting: true
+                    onAccepted: {
+                        modelInput.text = fileDialog.fileUrl
+                    }
+                    onRejected: {
+                        console.log("Canceled")
+                    }
+                }
             }
         }
     }
@@ -345,7 +357,7 @@ Rectangle {
                     }
                 }
             }
-        }       
+        }
     }
 
     Button {

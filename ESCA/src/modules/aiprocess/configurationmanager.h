@@ -21,6 +21,7 @@ class ConfigurationManager : public QObject
     Q_PROPERTY(int samplingRate READ samplingRate WRITE setSamplingRate NOTIFY samplingRateChanged)
     Q_PROPERTY(bool importFile READ importFile WRITE setImportFile NOTIFY importFileChanged)
     Q_PROPERTY(QString modelPath READ modelPath WRITE setModelPath NOTIFY modelPathChanged FINAL)
+    Q_PROPERTY(double threshold READ threshold WRITE setThreshold NOTIFY thresholdChanged FINAL)
 
 public:
     explicit ConfigurationManager(QObject *parent = nullptr);
@@ -51,6 +52,15 @@ public:
     QString modelPath() const;
     void setModelPath(const QString &newModelPath);
 
+    double threshold() const;
+    void setThreshold(double newThreshold);
+
+    double min() const;
+    void setMin(double newMin);
+
+    double max() const;
+    void setMax(double newMax);
+
 signals:
     void logPathChanged();
     void manualThresholdChanged();
@@ -61,6 +71,8 @@ signals:
     void importFileChanged();
 
     void modelPathChanged();
+
+    void thresholdChanged();
 
 private:
     QString m_logPath;
@@ -75,9 +87,15 @@ private:
     QString m_filePath;
 
     void loadDefaults();
+    void loadMetricsDetails();
     void applyConfig(const QJsonObject& realtime);
     QJsonObject generateConfig() const;
+
     QString m_modelPath;
+
+    double m_threshold;
+    double m_max;
+    double m_min;
 };
 
 #endif // CONFIGURATIONMANAGER_H

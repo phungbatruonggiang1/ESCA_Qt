@@ -3,6 +3,7 @@ import QtQuick.Controls 2.15
 import ProjectImport 1.0 // IMport component: Constants, Animation, ...
 import "component"
 import "Base"
+import "Notification"
 
 ApplicationWindow {
     width: Constants.width
@@ -16,9 +17,12 @@ ApplicationWindow {
         source: "./Base/FullScreen.qml"
     }
 
-    // Khởi tạo NotificationManager
-    NotificationManager {
-        id: notificationManager
+    // NotificationCenter như một overlay
+    // NotificationCenter luôn hiển thị lên trên các nội dung khác
+    NotificationCenter {
+        id: notificationCenter
+        anchors.fill: parent
+        z: 100
     }
 
     TopBar {
@@ -27,6 +31,26 @@ ApplicationWindow {
 
     HomeButton {
         id: homeButton
+    }
+
+    // Cập nhật log khi epoch thay đổi
+    Connections {
+        target: TransferObject
+        onTlStatusChanged: {
+            // updateTlStatusChange(TransferObject.tlStatus);
+            if (TransferObject.tlStatus === true) {
+            } else {
+                notificationCenter.showNotification("Transfer Learning training completed.", "info", 1);
+            }
+        }
+    }
+    Connections {
+        target: AIObject
+        onAbnomalDetectChanged: {
+            if (AIObject.abnomalDetect === true) {            
+                notificationCenter.showNotification("Inference: Abnomaly Detected", "warning", 1);
+            }
+        }
     }
 
 }

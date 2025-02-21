@@ -22,11 +22,11 @@ public:
 
 signals:
     void resultReceived(const float predValue);
+    void abnormalDetect();
 
 private slots:
     void handleStandardOutput();
     void handleProcessFinished(int exitCode, QProcess::ExitStatus exitStatus);
-
 
 private:
     QString m_scriptPath;
