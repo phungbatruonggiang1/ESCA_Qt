@@ -50,7 +50,8 @@ void ProcessManager::handleStandardOutput()
         qInfo() << "Predict Result:" << predValue;
         emit resultReceived(predValue);
     } else {
-        qWarning() << "Invalid data from Python:" << outputStr;
+        qWarning() << "Warning from Python:" << outputStr;
+        emit abnormalDetect();
     }
 }
 

@@ -50,8 +50,8 @@ public:
     double beta() const;
     void setBeta(double beta);
 
-    Q_INVOKABLE bool saveConfig(const QString &filePath) const;
-    Q_INVOKABLE bool loadConfig(const QString &filePath);
+    Q_INVOKABLE bool saveConfig() const;
+    Q_INVOKABLE bool loadConfig();
 
 signals:
     void baseWeightPathChanged();

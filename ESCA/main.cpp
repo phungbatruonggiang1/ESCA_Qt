@@ -15,10 +15,10 @@
 #include "./src/config/configapp.h"
 #include "./src/modules/transferlearning/transfercontroller.h"
 #include "./src/modules/transferlearning/transferconfig.h"
+#include "./src/modules/notification/notificationlogger.h"
 
 int main(int argc, char *argv[])
 {
-
     QGuiApplication app(argc, argv);
     QCoreApplication::setOrganizationName("HUST-SIST-SPARC");
     QCoreApplication::setOrganizationDomain("sparc.com");
@@ -40,6 +40,7 @@ int main(int argc, char *argv[])
     SystemInformationController systemInformationController;
     AIController aiController;
     TransferController transferController;
+    NotificationLogger notificationLogger;
 
     // AudioConfig audioConfig;
     QQmlApplicationEngine engine;
@@ -48,7 +49,7 @@ int main(int argc, char *argv[])
     ConfigurationManager configManager;
     configManager.loadConfig();
     TransferConfig transferConfig;
-    transferConfig.loadConfig(filePath);
+    transferConfig.loadConfig();
 
     engine.addImportPath("qrc:/qml/imports"); // Thêm phần QML vô C++
     const QUrl url(QStringLiteral("qrc:/qml/main.qml"));
@@ -60,6 +61,8 @@ int main(int argc, char *argv[])
 
     engine.rootContext()->setContextProperty("ConfigManager", &configManager);
     engine.rootContext()->setContextProperty("TransferConfig", &transferConfig);
+
+    engine.rootContext()->setContextProperty("NotificationLoggerCpp", &notificationLogger);
 
     qmlRegisterType<FileIO>("FileIO", 1, 0, "FileIO");
 

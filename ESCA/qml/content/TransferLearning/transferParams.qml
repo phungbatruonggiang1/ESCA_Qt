@@ -40,7 +40,7 @@ Rectangle {
                     from: 1
                     to: 1024
                     stepSize: 1
-                    value: 128
+                    value: TransferConfig.batchSize
                     width: 200
                 }
 
@@ -53,7 +53,7 @@ Rectangle {
                     from: 1
                     to: 10
                     stepSize: 1
-                    value: 1
+                    value: TransferConfig.beta
                     width: 200
                 }
 
@@ -66,7 +66,7 @@ Rectangle {
                     from: 1
                     to: 500
                     stepSize: 1
-                    value: 81
+                    value: TransferConfig.epoch
                     width: 200
                 }
 
@@ -76,7 +76,8 @@ Rectangle {
                 }
                 TextField {
                     id: learningRate
-                    placeholderText: "0.001"
+                    text: TransferConfig.learningRate + ""
+                    // placeholderText: "0.001"
                     width: 200
                     inputMethodHints: Qt.ImhFormattedNumbersOnly
                 }
@@ -93,6 +94,13 @@ Rectangle {
                     radius: 10
                 }
                 onClicked: {
+                    TransferConfig.beta = beta.value
+                    TransferConfig.batchSize = anomBatchSize.value
+                    TransferConfig.epoch = epoch.value
+                    TransferConfig.learningRate = parseFloat(learningRate.text)
+
+                    TransferConfig.saveConfig()
+                    notificationCenter.showNotification("Transfer Learning Params saved.", "success", 1);
                     console.log("ANOM_BATCH_SIZE:", anomBatchSize.value)
                     console.log("BETA:", beta.value)
                     console.log("EPOCH:", epoch.value)

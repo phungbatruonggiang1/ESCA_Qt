@@ -314,6 +314,7 @@ Rectangle {
                 endianzCb.currentIndex = AudioConfig.nearistParams[4]
                 sampleSizeCb.currentIndex = AudioConfig.nearistParams[5]
                 console.log("test sig qml", AudioConfig.saveDone);
+                notificationCenter.showNotification("The selected format is not supported for recording - USE NEARIST FORMAT.", "warning", 1);
             }
         }
 
@@ -355,14 +356,15 @@ Rectangle {
 
         onClicked: {
             //Load to Record Device
-            // console.log("from codec: " + codecCb.currentIndex)
+            // console.log("from codec: " + codecCb.currentIndex)        
             if (codecCb.currentIndex === -1) {
                 minhDialog.visible = true;
+                notificationCenter.showNotification("Format You Choose Not Supported, Please Choose Another Device", "error", 1);
             }
             else {
                 AudioConfig.saveConfig(deviceCb.currentIndex, codecCb.currentIndex, sampleRateCb.currentIndex, channelsCb.currentIndex, endianzCb.currentIndex, sampleSizeCb.currentIndex, durationCb.currentIndex, textOutput.text)
-                // console.log("audioConfig.listChannel[0]: " + AudioConfig.listChannel[0])
-                // console.log("click: " +devicename)
+                notificationCenter.showNotification("Record-Config completed successfully.", "success", 1);
+
             }
             testtext.text = "" + AudioConfig.nearistParams;
             console.log("AudioConfig.nearistParams[5]: ", AudioConfig.nearistParams[5]);

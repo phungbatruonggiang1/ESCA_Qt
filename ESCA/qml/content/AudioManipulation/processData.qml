@@ -1,8 +1,7 @@
 import QtQuick 2.15
 import QtQuick.Controls 2.15
 import "../component"
-// Import folder list
-import Qt.labs.folderlistmodel 2.6
+import QtQuick.Dialogs 1.2
 
 
 Rectangle {
@@ -53,92 +52,135 @@ Rectangle {
     Rectangle {
         id: mainRect
         x: 25
-        y: 110
+        y: 93
         width: 448
-        height: 323
+        height: 351
 //        border.color: "black"
         color: "#272d37"
-        ListView {
-            id: listView
-            // Initialization Selected Item For Hightlight
-            property int selectedItemIndex: -1
 
-            // property of list View
-            x: 0
-            y: 42
-            width: parent.width
-            height: parent.height
-            clip: true
-            model: FolderListModel {
-                id: folderListModel
-                folder: "file:///home/haiminh/Desktop/Anomaly_Detection/D-ESCA_v2"
-                showDirsFirst: true
-
-                // If add filters then remove
-                // nameFilters: ["*.mp3", "*.flac"]
-
-
-                // ------------------ Hander forward feature ------------------
-                // Add a stack property to store navigation history
-                property var folderStack: []
-
-                onFolderChanged: {
-                    // Push the current folder onto the stack when it changes
-                    folderStack.push(folder)
-                }
-
-                function popFolderFromStack() {
-                    // Pop a folder from the stack
-                    if (folderStack.length > 1) {
-                        folderStack.pop();
-                        folder = folderStack[folderStack.length - 1];
-                    }
-                }
-
-                // ------------------------- end ------------------------------
+        Label {
+            x: 20
+            y: 85
+            text: "Choose Source"
+            font.pointSize: 13
+            color: "#ffffff"
+            font.family: "Oxanium"
+        }
+        TextField {
+            id: chooseSourceTx
+            x: 8
+            y: 117
+            placeholderText: "Choose File/Folder to process"
+//            text: TransferConfig.baseWeightPath
+            width: 432
+            height: 45
+            font.family: "Oxanium"
+            readOnly: true
+            font.pointSize: 13
+            // Đảm bảo cập nhật khi giá trị thay đổi từ C++
+            Connections {
+//                target: TransferConfig
+//                function onBaseWeightPathChanged() {
+//                    if (baseWeightPath.text !== TransferConfig.baseWeightPath)
+//                        baseWeightPath.text = TransferConfig.baseWeightPath;
+//                }
             }
+            // Cập nhật khi người dùng nhập liệu, nhưng tránh vòng lặp
+            onTextChanged: {
+//                if (TransferConfig.baseWeightPath !== text) {
+//                    TransferConfig.baseWeightPath = text;
+//                    // TransferConfig.saveConfig();
+//                }
+            }
+        }
 
-            delegate: Rectangle {
-                width: parent.width
-                height: 66
-                border.color: "black"
-                Text {
-                    anchors.verticalCenter: parent.verticalCenter
-                    anchors.left: parent.left
-                    anchors.leftMargin: 20
-                    width: 158
-                    height: 22
-                    color: "#ffffff"
-                    text: fileName
-                    font.pixelSize: 20
+        Rectangle {
+            id: rectangle
+            x: 207
+            y: 76
+            width: 35
+            height: 35
+            color: "#ffffff"
+
+            MouseArea {
+                id: chooseFileMa
+                anchors.fill: parent
+                anchors.centerIn: parent
+                onClicked: {
+                    folderDialog1.open();
                 }
+            }
+        }
 
-                Text {
-                    anchors.verticalCenter: parent.verticalCenter
-                    anchors.right: parent.right
-                    anchors.rightMargin: 20
-                    width: 158
-                    height: 22
-                    color: "#ffffff"
-                    text: fileIsDir ? "" : ((fileSize / 1024).toFixed(2) + " KB")
-                    font.pixelSize: 20
-                    horizontalAlignment: Text.AlignRight
-                }
+        TextField {
+            id: chooseTargetTx
+            x: 8
+            y: 257
+            width: 432
+            height: 45
+            font.pointSize: 13
+            Connections {
+            }
+            placeholderText: "Choose File/Folder to process"
+            readOnly: true
+            font.family: "Oxanium"
+        }
 
-                // --------------------- Hander hightlight clicked item ---------------------
-                // Thêm MouseArea để bắt sự kiện nhấp chuột
-                MouseArea {
-                    anchors.fill: parent
-                    onClicked: {
-                        // Đặt màu nền cho item được chọn
-                        listView.selectedItemIndex = index;
-                        chooseFile = fileName;
+        Label {
+            x: 20
+            y: 229
+            color: "#ffffff"
+            text: "Choose Target Folder"
+            font.pointSize: 13
+            font.family: "Oxanium"
+        }
 
-                    }
-                }
-                // Sử dụng biến selectedItemIndex để xác định xem item có được chọn hay không
-                color: listView.selectedItemIndex  === index ? "#aaddff" : (fileIsDir ? "#e3e3e3" : "#394251")
-                // --------------------------- END --------------------------------------------
+        Rectangle {
+            id: rectangle1
+            x: 207
+            y: 216
+            width: 35
+            height: 35
+            color: "#ffffff"
+            MouseArea {
+                anchors.fill: parent
+                onClicked: {
+                            folderDialog2.open();
+                        }
+                anchors.centerIn: parent
+            }
+        }
+
+        FileDialog {
+            id: folderDialog1
+            title: "Choose a file"
+//            selectFolder: true // This is the key to select folders instead of files
+            selectExisting: true // Make sure we select an existing one
+            nameFilters: ["*"] // Display all folders
+            onAccepted: {
+                var urlStr = folderDialog1.fileUrl.toString()
+                chooseSourceTx.text = urlStr.replace("file://", "");
+                chooseFile = urlStr.replace("file:///", "");
+                console.log("Selected file: " + chooseSourceTx.text)
+            }
+            onRejected: {
+                console.log("Folder1 selection cancelled")
+            }
+        }
+        FileDialog {
+            id: folderDialog2
+            title: "Choose a folder"
+            selectFolder: true // This is the key to select folders instead of files
+            selectExisting: true // Make sure we select an existing one
+            nameFilters: ["*"] // Display all folders
+            onAccepted: {
+                var urlStr = folderDialog2.fileUrl.toString()
+                chooseTargetTx.text = urlStr.replace("file:///", "");
+                chooseFile = urlStr.replace("file:///", "");
+                console.log("Selected folder: " + chooseTargetTx.text)
+            }
+            onRejected: {
+                console.log("Folder2 selection cancelled")
             }
         }
     }
@@ -165,7 +207,7 @@ Rectangle {
 
     // ruler
     Rectangle {
-        id: rectangle
+        id: rectangleruler
         x: 514
         y: 101
         width: 2

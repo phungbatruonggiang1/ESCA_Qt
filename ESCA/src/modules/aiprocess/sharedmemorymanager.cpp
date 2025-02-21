@@ -1,4 +1,4 @@
-    #include "sharedmemorymanager.h"
+#include "sharedmemorymanager.h"
 #include <cstring>
 #include <iostream>
 #include <csignal>
@@ -6,7 +6,7 @@
 
 #define SHM_KEY 0x1234
 #define SEM_KEY 0x5678
-#define SHM_SIZE 176400
+#define SHM_SIZE 176400   // 2s with 44100HZ | 1 Channel | 16bit SampleSize
 
 SharedMemoryManager::SharedMemoryManager(QObject* parent)
     : QThread(parent), shm_key(SHM_KEY), sem_key(SEM_KEY), shm_size(SHM_SIZE),

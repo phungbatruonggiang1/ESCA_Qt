@@ -16,6 +16,10 @@ Rectangle {
     height: 440
     color: "#2a2a2a"
 
+    FileIO {
+        id: fileIO
+    }
+
     // tool Bar
     Rectangle {
         id: rectangle_55
@@ -271,8 +275,8 @@ Rectangle {
                             filePath = filePath.replace("file://", "");
                             console.log("Trying delete file:", filePath);
 
-                            if (FileIO.fileExist(filePath)) {
-                                var success = FileIO.deleteFile(filePath);
+                            if (fileIO.fileExists(filePath)) {
+                                var success = fileIO.removeFile(filePath);
                                 if (success) {
                                     console.log("Delete done:", filePath);
                                     folderListModel.refresh(); // Lam moi danh sach sau khi xoa
@@ -421,17 +425,4 @@ Rectangle {
         source: ""
     }
 
-    function fileExist(filePath) {
-        var file = new XMLHttpRequest();
-        file.open("HEAD", filePath, false);
-        file.send();
-        return file.status !== 404;
-    }
-
-    function deleteFile(filePath) {
-        var file = new XMLHttpRequest();
-        file.open("DELETE", filePath, false);
-        file.send();
-        return file.status >= 200 && file.status < 300;
-    }
 }

@@ -34,6 +34,7 @@ void TransferProcMng::startPythonService()
 
 void TransferProcMng::stopPythonService()
 {
+    m_epoch = 0;
     qInfo() << Q_FUNC_INFO;
     stop();
 }

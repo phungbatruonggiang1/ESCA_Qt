@@ -15,16 +15,62 @@ TransferConfig::TransferConfig(QObject *parent)
 }
 
 QString TransferConfig::baseWeightPath() const { return m_baseWeightPath; }
-void TransferConfig::setBaseWeightPath(const QString &path) { m_baseWeightPath = path; emit baseWeightPathChanged(); }
+
+void TransferConfig::setBaseWeightPath(const QString &newPath) {
+    QUrl fileUrl(newPath);
+    if (fileUrl.isValid() && fileUrl.scheme() == "file") {
+        QString path = fileUrl.toLocalFile();
+        m_baseWeightPath = path;
+        qDebug()<<"setListOutput"+path;
+    } else {
+        m_baseWeightPath = newPath;
+        qDebug()<<"setListOutput"+newPath;
+    }
+    emit baseWeightPathChanged();
+}
 
 QString TransferConfig::tfrecordUsedPath() const { return m_tfrecordUsedPath; }
-void TransferConfig::setTfrecordUsedPath(const QString &path) { m_tfrecordUsedPath = path; emit tfrecordUsedPathChanged(); }
+
+void TransferConfig::setTfrecordUsedPath(const QString &newPath) {
+    QUrl fileUrl(newPath);
+    if (fileUrl.isValid() && fileUrl.scheme() == "file") {
+        QString path = fileUrl.toLocalFile();
+        m_tfrecordUsedPath = path;
+        qDebug()<<"setListOutput"+path;
+    } else {
+        m_tfrecordUsedPath = newPath;
+        qDebug()<<"setListOutput"+newPath;
+    }
+    emit tfrecordUsedPathChanged();
+}
 
 QString TransferConfig::tfrecordNewPath() const { return m_tfrecordNewPath; }
-void TransferConfig::setTfrecordNewPath(const QString &path) { m_tfrecordNewPath = path; emit tfrecordNewPathChanged(); }
+void TransferConfig::setTfrecordNewPath(const QString &newPath) {
+    QUrl fileUrl(newPath);
+    if (fileUrl.isValid() && fileUrl.scheme() == "file") {
+        QString path = fileUrl.toLocalFile();
+        m_tfrecordNewPath = path;
+        qDebug()<<"setListOutput"+path;
+    } else {
+        m_tfrecordNewPath = newPath;
+        qDebug()<<"setListOutput"+newPath;
+    }
+    emit tfrecordNewPathChanged();
+}
 
 QString TransferConfig::savePath() const { return m_savePath; }
-void TransferConfig::setSavePath(const QString &path) { m_savePath = path; emit savePathChanged(); }
+void TransferConfig::setSavePath(const QString &newPath) {
+    QUrl fileUrl(newPath);
+    if (fileUrl.isValid() && fileUrl.scheme() == "file") {
+        QString path = fileUrl.toLocalFile();
+        m_savePath = path;
+        qDebug()<<"setListOutput"+path;
+    } else {
+        m_savePath = newPath;
+        qDebug()<<"setListOutput"+newPath;
+    }
+    emit savePathChanged();
+}
 
 int TransferConfig::batchSize() const { return m_batchSize; }
 void TransferConfig::setBatchSize(int size) { m_batchSize = size; emit batchSizeChanged(); }
@@ -38,7 +84,7 @@ void TransferConfig::setEpoch(int epoch) { m_epoch = epoch; emit epochChanged();
 double TransferConfig::beta() const { return m_beta; }
 void TransferConfig::setBeta(double beta) { m_beta = beta; emit betaChanged(); }
 
-bool TransferConfig::loadConfig(const QString &filePath) {
+bool TransferConfig::loadConfig() {
     QFile file(m_filePath);
     if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
         qWarning() << "Không thể mở file để đọc:" << m_filePath;
@@ -80,14 +126,14 @@ bool TransferConfig::loadConfig(const QString &filePath) {
     return true;
 }
 
-bool TransferConfig::saveConfig(const QString &filePath) const {
-    QFile file(filePath);
+bool TransferConfig::saveConfig() const {
+    QFile file(m_filePath);
     QJsonObject rootObject;
 
     // Đọc cấu hình hiện tại từ file nếu tồn tại
     if (file.exists()) {
         if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
-            qWarning() << "Không thể mở file để đọc:" << filePath;
+            qWarning() << "Không thể mở file để đọc:" << m_filePath;
             return false;
         }
         QByteArray data = file.readAll();
@@ -120,14 +166,15 @@ bool TransferConfig::saveConfig(const QString &filePath) const {
         // path["TFRECORDS"] = QJsonArray{m_tfrecordUsedPath};
         QJsonArray usedtfrecordsArray;
         usedtfrecordsArray.append(m_tfrecordUsedPath);
-        path["TFRECORDS"] = tfrecordsArray;
+        path["TFRECORDS"] = usedtfrecordsArray;
         dataset["PATH"] = path;
         rootObject["DATASET"] = dataset;
+        qDebug()<<usedtfrecordsArray;
     }
 
     // Ghi lại cấu hình vào file
     if (!file.open(QIODevice::WriteOnly | QIODevice::Text)) {
-        qWarning() << "Không thể mở file để ghi:" << filePath;
+        qWarning() << "Không thể mở file để ghi:" << m_filePath;
         return false;
     }
 
@@ -138,10 +185,10 @@ bool TransferConfig::saveConfig(const QString &filePath) const {
 }
 
 void TransferConfig::loadDefaults() {
-    m_baseWeightPath = "./Results/tl-training_results/Target2/saved_model/vq_vae";
-    m_tfrecordUsedPath = "/home/haiminh/Desktop/Anomaly_Detection/D-ESCA_v2/park_dataset_demo/mel_data";
-    m_tfrecordNewPath = "./park_dataset_demo/target/Target3";
-    m_savePath = "/home/haiminh/Desktop/Anomaly_Detection/D-ESCA_v2/./Results/tl-training_results/Target2";
+    m_baseWeightPath = "/home/haiminh/Desktop/D-ESCA_v2/Results/base_training_result/saved_model/vq_vae";
+    m_tfrecordUsedPath = "/home/haiminh/Desktop/D-ESCA_v2/park_dataset_demo/mel_data2";
+    m_tfrecordNewPath = "/home/haiminh/Desktop/D-ESCA_v2/data/target/Target25";
+    m_savePath = "/home/haiminh/Desktop/D-ESCA_v2/Results/tl-training_results/Target3";
     m_batchSize = 128;
     m_learningRate = 0.001;
     m_epoch = 81;

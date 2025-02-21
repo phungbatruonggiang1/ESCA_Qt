@@ -93,7 +93,7 @@ Rectangle {
         Canvas {
             id: predChart
             anchors.fill: parent
-            property double threshold: 0.0003307155566290021
+            property double threshold: ConfigManager.threshold
             property double manualThreshold: ConfigManager.manualThreshold
             property double bufferFactor: 1.1  // Hệ số để tránh cột chạm trần
             property double maxValue: Math.max(threshold*2, Math.max.apply(null, predValue) * bufferFactor)  // Điều chỉnh maxValue động
@@ -137,7 +137,7 @@ Rectangle {
                 }
 
                 // Vẽ threshold (tự động cập nhật theo maxValue)
-                var thresholdRatio = threshold / maxValue;
+                var thresholdRatio = manualThreshold / maxValue;
                 var thresholdY = height - margin - (thresholdRatio * chartHeight);
                 ctx.strokeStyle = "#ff0000";
                 ctx.lineWidth = 3;
@@ -154,7 +154,7 @@ Rectangle {
             onPredValueChanged: {
                 predValue = AIObject.predValue;
                 predChart.requestPaint();
-                minhtestTx.text = ""+AIObject.predValue[0]
+                minhtestTx.text = ""+predValue.slice(-1)
             }
         }
     }

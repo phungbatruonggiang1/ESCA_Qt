@@ -5,8 +5,6 @@ AudioManipulation::AudioManipulation(QObject *parent) : QObject(parent)
     // Implement any necessary initialization here
 }
 
-
-
 void AudioManipulation::extractMFCC(QString audioPath)
 {
     m_audio_extractor = new Process();
@@ -18,7 +16,6 @@ void AudioManipulation::extractMFCC(QString audioPath)
     filePath.append("data.wav");
     // qInfo() << "Hello Giang Dep trai " << filePath;
     // QString statement ="cd /home/sparc/ESCA/gammatone/spafe/src \n python3 mfcc.py -f ";
-
 
     QString statement = "cd ";
     statement.append(AUDIO_FEATURES_EXTRACTOR_SRC);
@@ -42,7 +39,6 @@ void AudioManipulation::extractGFCC(QString audioPath)
     // qInfo() << "Hello Giang Dep trai " << filePath;
     // QString statement ="cd /home/sparc/ESCA/gammatone/spafe/src \n python3 mfcc.py -f ";
 
-
     QString statement = "cd ";
     statement.append(AUDIO_FEATURES_EXTRACTOR_SRC);
     statement.append(" \n ");
@@ -51,7 +47,6 @@ void AudioManipulation::extractGFCC(QString audioPath)
     qInfo() << statement;
     m_audio_extractor->setStatement(statement);
     m_audio_extractor->start();
-
 }
 
 void AudioManipulation::extractFrequency(QString audioPath)
@@ -65,7 +60,6 @@ void AudioManipulation::extractFrequency(QString audioPath)
     filePath.append("data.wav");
     // qInfo() << "Hello Giang Dep trai " << filePath;
     // QString statement ="cd /home/sparc/ESCA/gammatone/spafe/src \n python3 mfcc.py -f ";
-
 
     QString statement = "cd ";
     statement.append(AUDIO_FEATURES_EXTRACTOR_SRC);

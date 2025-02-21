@@ -10,13 +10,49 @@ ConfigurationManager::ConfigurationManager(QObject *parent) : QObject(parent),
     m_channels(1),
     m_samplingRate(44100),
     m_importFile(false),
-    m_modelPath("/home/haiminh/Desktop/ESCA_Qt/python_ai/result/saved_model/vq_vae")
+    m_modelPath("/home/haiminh/Desktop/ESCA_Qt/python_ai/result/saved_model/vq_vae"),
+    m_threshold(0.0),
+    m_max(1.0),
+    m_min(0.0)
 {
     m_filePath = QStandardPaths::writableLocation(QStandardPaths::HomeLocation) + QDir::separator() + "config.json";
 }
 
 ConfigurationManager::~ConfigurationManager()
 {
+}
+
+void ConfigurationManager::loadMetricsDetails() {
+    QFile file(m_modelPath+"/save_parameter/metrics_detail.json");
+    if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
+        qWarning() << "Không thể mở file metrics_details.json:" << m_modelPath+"/save_parameter/metrics_detail.json";
+        return;
+    }
+
+    QByteArray data = file.readAll();
+    file.close();
+
+    QJsonDocument doc = QJsonDocument::fromJson(data);
+    if (doc.isNull() || !doc.isObject()) {
+        qWarning() << "File metrics_details.json không hợp lệ.";
+        return;
+    }
+
+    QJsonObject jsonObj = doc.object();
+
+    if (jsonObj.contains("threshold") && jsonObj["threshold"].isDouble()) {
+        setThreshold(jsonObj["threshold"].toDouble());
+    }
+    if (jsonObj.contains("max") && jsonObj["max"].isDouble()) {
+        setMax(jsonObj["max"].toDouble());
+    }
+    if (jsonObj.contains("min") && jsonObj["min"].isDouble()) {
+        setMin(jsonObj["min"].toDouble());
+    }
+
+    qDebug() << "Đã cập nhật threshold:" << m_threshold;
+    qDebug() << "Đã cập nhật max:" << m_max;
+    qDebug() << "Đã cập nhật min:" << m_min;
 }
 
 bool ConfigurationManager::loadConfig() {
@@ -50,13 +86,14 @@ bool ConfigurationManager::loadConfig() {
         m_channels = realtimeConfig.value("CHANNELS").toInt(1);
         m_samplingRate = realtimeConfig.value("SAMPLING_RATE").toInt(44100);
         m_importFile = realtimeConfig.value("IMPORT_FILE").toBool(false);
-        m_modelPath = realtimeConfig.value("MODEL_PATH").toString("/home/haiminh/Desktop/ESCA_Qt/python_ai/result/saved_model/vq_vae");
+        m_modelPath = realtimeConfig.value("MODEL_PATH").toString("/home/haiminh/Desktop/ESCA_Qt/python_ai/result");
 
         qDebug() << "Đã cập nhật các tham số REALTIME từ file cấu hình.";
     } else {
         qWarning() << "Phần REALTIME không tồn tại trong file cấu hình. Sử dụng giá trị mặc định.";
         loadDefaults(); // Chỉ tải giá trị mặc định cho phần REALTIME
     }
+    loadMetricsDetails();
     return true;
 }
 
@@ -89,6 +126,11 @@ bool ConfigurationManager::saveConfig() const {
     realtimeConfig["SAMPLING_RATE"] = m_samplingRate;
     realtimeConfig["IMPORT_FILE"] = m_importFile;
     realtimeConfig["MODEL_PATH"] = m_modelPath;
+
+    // Thêm các giá trị mới
+    realtimeConfig["THRESHOLD"] = m_threshold;
+    realtimeConfig["MAX"] = m_max;
+    realtimeConfig["MIN"] = m_min;
 
     rootObject["REALTIME"] = realtimeConfig; // Ghi đè hoặc thêm phần REALTIME
 
@@ -172,7 +214,6 @@ void ConfigurationManager::setImportFile(bool importFile)
     }
 }
 
-
 QString ConfigurationManager::modelPath() const
 {
     return m_modelPath;
@@ -180,9 +221,21 @@ QString ConfigurationManager::modelPath() const
 
 void ConfigurationManager::setModelPath(const QString &newModelPath)
 {
-    if (m_modelPath == newModelPath)
-        return;
-    m_modelPath = newModelPath;
+    // if (m_modelPath == newModelPath)
+    //     return;
+    // m_modelPath = newModelPath;
+    // emit modelPathChanged();
+
+    QUrl fileUrl(newModelPath);
+    if (fileUrl.isValid() && fileUrl.scheme() == "file") {
+        QString path = fileUrl.toLocalFile();
+        m_modelPath = path;
+        qDebug()<<"setListOutput"+path;
+    } else {
+        m_modelPath = newModelPath;
+        qDebug()<<"setListOutput"+newModelPath;
+    }
+
     emit modelPathChanged();
 }
 
@@ -241,3 +294,32 @@ QJsonObject ConfigurationManager::generateConfig() const
     return realtimeObj;
 }
 
+double ConfigurationManager::max() const
+{
+    return m_max;
+}
+
+void ConfigurationManager::setMax(double newMax)
+{
+    m_max = newMax;
+}
+
+double ConfigurationManager::min() const
+{
+    return m_min;
+}
+
+void ConfigurationManager::setMin(double newMin)
+{
+    m_min = newMin;
+}
+
+double ConfigurationManager::threshold() const
+{
+    return m_threshold;
+}
+
+void ConfigurationManager::setThreshold(double newThreshold)
+{
+    m_threshold = newThreshold;
+}
