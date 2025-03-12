@@ -8,6 +8,7 @@ AudioConfig::AudioConfig(QObject *parent) : QObject{parent}
     QFile configFile(appDataPath);
 
     m_listOutput = QStandardPaths::writableLocation(QStandardPaths::HomeLocation);
+
     qDebug()<< "Home Location" << listOutput();
 
     if (!configFile.exists()) {
@@ -106,7 +107,6 @@ AudioConfig::AudioConfig(QObject *parent) : QObject{parent}
 
 AudioConfig::~AudioConfig()
 {
-
 }
 
 void AudioConfig::changeDevice(int idx)
@@ -283,6 +283,12 @@ QAudioDeviceInfo AudioConfig::deviceInfo()
 
 QAudioFormat AudioConfig::format()
 {
+    m_format.setCodec(m_deviceInfo.supportedCodecs().at(m_nearistParams[1]));
+    m_format.setSampleRate(m_deviceInfo.supportedSampleRates().at(m_nearistParams[2]));
+    m_format.setChannelCount(m_deviceInfo.supportedChannelCounts().at(m_nearistParams[3]));
+    m_format.setByteOrder(m_deviceInfo.supportedByteOrders().at(m_nearistParams[4]));
+    m_format.setSampleSize(m_deviceInfo.supportedSampleSizes().at(m_nearistParams[5]));
+    m_format.setSampleType(QAudioFormat::SignedInt);
     return m_format;
 }
 
@@ -347,7 +353,6 @@ void AudioConfig::saveSettings()
         qWarning() << "Failed to open config file for saving.";
     }
 }
-
 
 QStringList AudioConfig::listSampleRateStr() const
 {

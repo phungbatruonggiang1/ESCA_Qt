@@ -49,7 +49,7 @@ private:
     SharedMemoryManager* sharedMemoryManager;
 
     QThread *m_audioFileThread;
-    QAudioFormat format;
+    QAudioFormat m_format;
     QMutex m_mutex;
     QString m_outputDir;
 

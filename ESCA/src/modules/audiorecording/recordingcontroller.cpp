@@ -9,7 +9,7 @@ RecordingController::RecordingController(QObject *parent)
     , m_audioFile(nullptr)
     , m_audioFileThread(nullptr)
     , m_recordingSchedule(nullptr)
-    , format(m_audioConfig->format())
+    , m_format(m_audioConfig->format())
     , m_recStatus(false)
     , sharedMemoryManager(new SharedMemoryManager(this))
 {
@@ -50,12 +50,14 @@ RecordingController::~RecordingController()
 
 void RecordingController::startRecording()
 {
-    QAudioFormat format = m_audioConfig->format();
+    m_format = m_audioConfig->format();
+    qDebug()<< "format"<< m_format;
+
     QAudioDeviceInfo deviceInfo = m_audioConfig->deviceInfo();
     m_outputDir = m_audioConfig->listOutput();
     qDebug()<< "m_outputDir"<< m_outputDir;
 
-    m_audioFile = new AudioFile(m_outputDir, format, 2.0);
+    m_audioFile = new AudioFile(m_outputDir, m_format, 2.0);
 
     // Đảm bảo thread chưa chạy thì start lại
     if (!m_audioFileThread) {
@@ -65,8 +67,8 @@ void RecordingController::startRecording()
         m_audioFileThread->wait();
     }
 
-    m_recordIO->startAudioInput(format, deviceInfo);
-    qInfo() << "format before thread" << format;
+    m_recordIO->startAudioInput(m_format, deviceInfo);
+    qInfo() << "format before thread" << m_format;
 
     m_audioFile->moveToThread(m_audioFileThread);   // cho AudioFile vào thread riêng
 
@@ -79,7 +81,7 @@ void RecordingController::startRecording()
     m_audioFileThread->start();
 
     setRecStatus(true);
-    qInfo() << "Start recording with format" << format;
+    qInfo() << "Start recording with format" << m_format;
 
     sharedMemoryManager->start();
     qDebug() << "Producer Record is running.";
