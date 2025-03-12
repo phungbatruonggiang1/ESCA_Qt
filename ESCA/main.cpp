@@ -35,12 +35,13 @@ int main(int argc, char *argv[])
     const QUrl url(QStringLiteral("qrc:/qml/main.qml"));
 
     engine.rootContext()->setContextProperty("RecordingObject", &recordingController);
-    engine.rootContext()->setContextProperty("BackendObject", &systemInformationController);
+    //engine.rootContext()->setContextProperty("BackendObject", &systemInformationController);
     engine.rootContext()->setContextProperty("AIObject", &aiController);
 
     engine.rootContext()->setContextProperty("ConfigManager", &configManager);
 
     qmlRegisterType<FileIO>("FileIO", 1, 0, "FileIO");
+    qmlRegisterType<SystemInformationController>("SystemInformation", 1, 0, "SystemInformationController");
 
     QObject::connect(
         &engine,

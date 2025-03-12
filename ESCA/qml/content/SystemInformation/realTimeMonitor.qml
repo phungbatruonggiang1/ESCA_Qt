@@ -2,6 +2,7 @@ import QtQuick 2.15
 import QtQuick.Controls 2.15
 
 import "../component"
+import SystemInformation 1.0
 
 Rectangle {
     id: rectangle
@@ -9,6 +10,9 @@ Rectangle {
     height: 480
     color: "#2a2a2a"
 
+    SystemInformationController {
+        id: backendObject
+    }
     // graph
     CpuFrame{
         x: 277
@@ -69,7 +73,7 @@ Rectangle {
         width: 313
         height: 40
         color: "#ffffff"
-        text: BackendObject.diskText
+        text: backendObject.diskText
         font.pixelSize: 23
         horizontalAlignment: Text.AlignLeft
         verticalAlignment: Text.AlignVCenter
@@ -85,7 +89,7 @@ Rectangle {
         width: 260
         height: 40
         color: "#ffffff"
-        text: "Monitor: ASUS VA27EHF"
+        text: backendObject.networkPingText
         font.pixelSize: 23
         horizontalAlignment: Text.AlignLeft
         verticalAlignment: Text.AlignVCenter
@@ -93,6 +97,29 @@ Rectangle {
         font.family: "Oxanium"
         font.weight: Font.Normal
     }
+
+    Button {
+        x: 320
+        width: 95
+        height: 30
+        anchors.verticalCenter: internetStatus.verticalCenter
+        background: Rectangle {
+            radius: 5
+            color: "#444444"
+        }
+        Text {
+            anchors.centerIn: parent
+            color: "#ffffff"
+            text: qsTr("Update")
+            font.pixelSize: 23
+            font.family: "Oxanium"
+            font.weight: Font.Normal
+        }
+        onClicked: {
+            backendObject.updateNetworkPing()
+        }
+    }
+
     Text {
         id: runnningTime
         x: 684

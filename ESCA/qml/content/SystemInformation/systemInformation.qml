@@ -1,48 +1,53 @@
 import QtQuick 2.15
 import QtQuick.Controls 2.15
 import "../component"
+import SystemInformation 1.0
 
 Rectangle {
     width: 1000
     height: 420
     color: "#2a2a2a"
 
+    SystemInformationController {
+        id: backendObject
+    }
     // TEMP COMPONENT
 
-    Text {
-        id: diskUsage
-        x: 38
-        y: 255
-        width: 272
-        height: 40
-        color: "#ffffff"
-        text: BackendObject.diskText
-        font.pixelSize: 20
-        horizontalAlignment: Text.AlignLeft
-        verticalAlignment: Text.AlignVCenter
-        wrapMode: Text.Wrap
-        font.family: "Roboto"
-        font.weight: Font.Normal
-    }
+    // Text {
+    //     id: diskUsage
+    //     x: 38
+    //     y: 255
+    //     width: 272
+    //     height: 40
+    //     color: "#ffffff"
+    //     text: backendObject.diskText
+    //     font.pixelSize: 20
+    //     horizontalAlignment: Text.AlignLeft
+    //     verticalAlignment: Text.AlignVCenter
+    //     wrapMode: Text.Wrap
+    //     font.family: "Roboto"
+    //     font.weight: Font.Normal
+    // }
+
+    // Text {
+    //     id: internetStatus
+    //     x: 38
+    //     y: 322
+    //     width: 440
+    //     height: 40
+    //     color: "#ffffff"
+    //     text: backendObject.networkPingText
+    //     font.pixelSize: 20
+    //     horizontalAlignment: Text.AlignLeft
+    //     verticalAlignment: Text.AlignVCenter
+    //     wrapMode: Text.Wrap
+    //     font.family: "Roboto"
+    //     font.weight: Font.Normal
+    // }
 
     Text {
-        id: internetStatus
-        x: 38
-        y: 322
-        width: 440
-        height: 40
-        color: "#ffffff"
-        text: "Display: 7 inch QLED quantum Dot display"
-        font.pixelSize: 20
-        horizontalAlignment: Text.AlignLeft
-        verticalAlignment: Text.AlignVCenter
-        wrapMode: Text.Wrap
-        font.family: "Roboto"
-        font.weight: Font.Normal
-    }
-    Text {
         id: runnningTime
-        x: 510
+        x: 38
         y: 255
         width: 429
         height: 40
@@ -58,7 +63,7 @@ Rectangle {
 
     Text {
         id: connectionPort
-        x: 510
+        x: 38
         y: 322
         width: 429
         height: 40
@@ -79,7 +84,7 @@ Rectangle {
         width: 663
         height: 40
         color: "#ffffff"
-        text: "CPU: Quad-core ARM Cortex-A57 MPCore processor"
+        text: "CPU" + backendObject.getCpuName()
         font.pixelSize: 20
         horizontalAlignment: Text.AlignLeft
         verticalAlignment: Text.AlignVCenter
@@ -95,7 +100,7 @@ Rectangle {
         width: 663
         height: 40
         color: "#ffffff"
-        text: "GPU: NVIDIA Maxwell architecture with 128 NVIDIA CUDA® cores\t"
+        text: "GPU: " + backendObject.getGpuName()
         font.pixelSize: 20
         horizontalAlignment: Text.AlignLeft
         verticalAlignment: Text.AlignVCenter
@@ -188,7 +193,7 @@ Rectangle {
         width: 140
         height: 40
         color: "#ffffff"
-        text: "L1:      32 KB"
+        text: "L1:      " + backendObject.getCacheL1() + " KB"
         font.pixelSize: 20
         horizontalAlignment: Text.AlignLeft
         verticalAlignment: Text.AlignVCenter
@@ -204,7 +209,7 @@ Rectangle {
         width: 140
         height: 40
         color: "#ffffff"
-        text: "L2:      2 MB"
+        text: "L2:      " + backendObject.getCacheL2() + "B"
         font.pixelSize: 20
         horizontalAlignment: Text.AlignLeft
         verticalAlignment: Text.AlignVCenter
