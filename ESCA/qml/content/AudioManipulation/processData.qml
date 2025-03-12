@@ -11,6 +11,7 @@ Rectangle {
     color: "#2a2a2a"
 
     property string chooseFile: ""
+    property string targetFolder: ""
 
     // BACKGOUND
     Rectangle {
@@ -296,7 +297,7 @@ Rectangle {
         Text {
             id: text9
             color: "#ffffff"
-            text: qsTr("Filter banks")
+            text: qsTr("Split to 2s")
             anchors.fill: parent
             font.pixelSize: 20
             horizontalAlignment: Text.AlignHCenter
@@ -306,6 +307,21 @@ Rectangle {
             anchors.topMargin: 0
             anchors.leftMargin: 0
         }
+        MouseArea {
+            id: splitAuMa
+            anchors.fill: parent
+            anchors.rightMargin: 0
+            anchors.bottomMargin: 0
+            anchors.topMargin: 0
+            anchors.leftMargin: 0
+            cursorShape: Qt.WaitCursor
+            onClicked: {
+                chooseFile = chooseSourceTx.text;
+                targetFolder = chooseTargetTx.text;
+                AudioManipulationObject.splitAudio(chooseFile, targetFolder, "2")
+            }
+        }
+
     }
 
     Rectangle {
@@ -365,6 +381,7 @@ Rectangle {
             anchors.leftMargin: 0
             cursorShape: Qt.WaitCursor
             onClicked: {
+                chooseFile = chooseSourceTx.text;
                 AudioManipulationObject.extractMFCC(chooseFile);
             }
         }
