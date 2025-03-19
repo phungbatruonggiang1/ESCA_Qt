@@ -7,13 +7,14 @@
 #include <sys/sem.h>
 #include <string>
 #include <QByteArray>
-
+#include <QMutexLocker>
+#include <QMutex>
 
 class SharedMemoryManager : public QThread {
     Q_OBJECT
 public:
     SharedMemoryManager(QObject* parent = nullptr);
-    ~SharedMemoryManager();   
+    ~SharedMemoryManager();
 
     bool init_ipc();
     void cleanup_ipc();
@@ -23,7 +24,6 @@ public:
 public slots:
 
     void getAudioData(const QByteArray &data);
-
 
 signals:
     void bufferChanged();
@@ -37,6 +37,8 @@ private:
     bool running;
 
     QByteArray buffer;   // 2s buffer
+    // Mutex để đồng bộ hóa khi ghi vào buffer
+    QMutex m_bufferMutex;
 
     // Semaphore operations
     struct sembuf sem_lock;

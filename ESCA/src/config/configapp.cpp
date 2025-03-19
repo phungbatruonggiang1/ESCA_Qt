@@ -74,6 +74,7 @@ void ConfigApp::generateConfig() {
     realtime["SAMPLE_RATE"]=44100;
     realtime["SAMPLE_SIZE"]=16;
     realtime["IMPORT_FILE"]=false;
+    realtime["FOLDER_PATH"]="/home/haiminh/Desktop/ESCA_Qt/ESCA/data";
     realtime["LOG_PATH"] = "/home/haiminh/Desktop/Anomaly_Detection/D-ESCA_v2/Results/rt_test_results";
     realtime["MODEL_PATH"]= "/home/haiminh/Desktop/ESCA_Qt/python_ai/result",
     realtime["MANUAL_THRESHOLD"] = 0.01;

@@ -75,7 +75,7 @@ void AudioFile::createFile()
 {
     QDateTime local(QDateTime::currentDateTime());
     // qInfo() << "I'm creating an audio file " << local.toTime_t();
-    QString fileName = QString("%1/basefile.wav%2").arg(m_outputDir).arg(local.toTime_t());
+    QString fileName = QString("%1/basefile%2.wav").arg(m_outputDir).arg(local.toTime_t());
 
     m_outFile.setFileName(fileName);
     if (!m_outFile.open(QIODevice::WriteOnly)) {
@@ -189,7 +189,7 @@ void AudioFile::writeAudioData(const QByteArray &data) {
 
     QMutexLocker locker(&m_mutex);
 
-    qDebug()<< "writeAudioData 5: "<<data.at(0);
+    // qDebug()<< "writeAudioData 5: "<<data.at(0);
 
     QByteArray &currentBuffer = m_usingBuffer1 ? m_buffer1 : m_buffer2;
     currentBuffer.append(data);
@@ -212,7 +212,7 @@ void AudioFile::writeAudioData(const QByteArray &data) {
         // Tạo file mới
         createFile();
     }
-    qDebug()<< "writeAudioData in audiofile: "<<data.at(0);
+    // qDebug()<< "writeAudioData in audiofile: "<<data.at(0);
 }
 
 void AudioFile::finalizeWavHeader(quint32 dataSize) {

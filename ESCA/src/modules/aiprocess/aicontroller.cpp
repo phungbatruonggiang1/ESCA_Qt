@@ -41,6 +41,7 @@ void AIController::handleInferenceResult(const float predValue)
         m_predValue.removeFirst();
     }
     emit predValueChanged();
+    qDebug() << "Total Pred Values Stored: " << m_predValue.size();
     // qDebug() << "Data arr: "<<m_predValue;
 }
 

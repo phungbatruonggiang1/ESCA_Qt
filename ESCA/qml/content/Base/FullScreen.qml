@@ -360,7 +360,7 @@ Rectangle {
             anchors.fill: parent
             anchors.leftMargin: 0
             onClicked: {
-                screenLoader.source = "/ui/layout/fileManager.qml"
+                screenLoader.source = "../FileManager/fileManager.qml"
             }
         }
     }
