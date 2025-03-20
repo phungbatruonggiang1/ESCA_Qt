@@ -38,20 +38,33 @@ void ProcessManager::stopPythonService()
 
 void ProcessManager::handleStandardOutput()
 {
-    QByteArray data = m_process.readAllStandardOutput();
-    if (data.isEmpty()) return; // Tránh xử lý khi không có dữ liệu
+    static QByteArray buffer;
+    buffer.append(m_process.readAllStandardOutput());  // Ghi nhận dữ liệu mới
 
-    QString outputStr = QString::fromUtf8(data);
+    QList<QByteArray> lines = buffer.split('\n');  // Chia nhỏ theo dòng
 
-    bool ok;
-    float predValue = outputStr.toFloat(&ok); // Lấy trực tiếp giá trị số từ stdout
-
-    if (ok && predValue != 0.0f) {
-        qInfo() << "Predict Result:" << predValue;
-        emit resultReceived(predValue);
+    // Nếu buffer không kết thúc bằng '\n', giữ lại dòng cuối để ghép với dữ liệu sau
+    if (!buffer.endsWith("\n")) {
+        buffer = lines.takeLast();
     } else {
-        qWarning() << "Warning from Python:" << outputStr;
-        emit abnormalDetect();
+        buffer.clear();
+    }
+
+    for (const QByteArray &line : lines) {
+        QString outputStr = QString::fromUtf8(line).trimmed();
+
+        if (outputStr.isEmpty()) continue;  // Bỏ qua dòng rỗng
+
+        bool ok;
+        float predValue = outputStr.toFloat(&ok);
+
+        if (ok) {  // Nếu là số thực
+            qInfo() << "Predict Result:" << predValue;
+            emit resultReceived(predValue);
+        } else {  // Nếu là chuỗi cảnh báo
+            qWarning() << "Warning from Python:" << outputStr;
+            emit abnormalDetect();
+        }
     }
 }
 

@@ -25,9 +25,14 @@ RecordingController::RecordingController(QObject *parent)
     qInfo()<<"format in ini: "<<m_audioConfig->format();
 
     if (!sharedMemoryManager->init_ipc()) {
-        qDebug()<< "Failed to initialize IPC.";
+        qDebug() << "Failed to initialize IPC.";
         delete sharedMemoryManager;
+        sharedMemoryManager = nullptr;
     }
+    /*else {
+        sharedMemoryManager->start();
+        qDebug() << "SharedMemoryManager started.";
+    }*/
 }
 
 RecordingController::~RecordingController()
@@ -84,7 +89,7 @@ void RecordingController::startRecording()
     qInfo() << "Start recording with format" << m_format;
 
     sharedMemoryManager->start();
-    qDebug() << "Producer Record is running.";
+    // qDebug() << "Producer Record is running.";
 }
 
 void RecordingController::stopRecording()
@@ -102,19 +107,18 @@ void RecordingController::stopRecording()
 void RecordingController::handleDataReady(const QByteArray &data)
 {
     // audioBuffer.append(data);
+    QString duration = m_audioConfig->duration();
     QByteArray &currentBuffer = m_usingBuffer1 ? audioBuffer1 : audioBuffer2;
     currentBuffer.append(data);
 
-    if (currentBuffer.size() >= chunkSize) {
+    if (currentBuffer.size() == 176400) {
         // Ghi dữ liệu vào file
         // Chuyển buffer
-        m_usingBuffer1 = !m_usingBuffer1;
+        m_usingBuffer1 = !m_usingBuffer1;        
 
         sharedMemoryManager->getAudioData(currentBuffer);
-        // qDebug()<<"Buffer: "<< currentBuffer;
+        qDebug() << "SharedMemoryManager received data of size:" << currentBuffer.size();
 
-        QString duration = m_audioConfig->duration();
-        // qDebug()<<"handleDataReady for:" <<duration;
         if (duration == "2s"){
             // Chuyển tiếp dữ liệu cho AudioFile để xử lý buffering và ghi file
             if (m_audioFile) {

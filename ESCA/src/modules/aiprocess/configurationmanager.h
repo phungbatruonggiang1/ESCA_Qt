@@ -22,6 +22,7 @@ class ConfigurationManager : public QObject
     Q_PROPERTY(bool importFile READ importFile WRITE setImportFile NOTIFY importFileChanged)
     Q_PROPERTY(QString modelPath READ modelPath WRITE setModelPath NOTIFY modelPathChanged FINAL)
     Q_PROPERTY(double threshold READ threshold WRITE setThreshold NOTIFY thresholdChanged FINAL)
+    Q_PROPERTY(QString folderPath READ folderPath WRITE setFolderPath NOTIFY folderPathChanged FINAL)
 
 public:
     explicit ConfigurationManager(QObject *parent = nullptr);
@@ -61,6 +62,9 @@ public:
     double max() const;
     void setMax(double newMax);
 
+    QString folderPath() const;
+    void setFolderPath(const QString &newFolderPath);
+
 signals:
     void logPathChanged();
     void manualThresholdChanged();
@@ -73,6 +77,8 @@ signals:
     void modelPathChanged();
 
     void thresholdChanged();
+
+    void folderPathChanged();
 
 private:
     QString m_logPath;
@@ -96,6 +102,7 @@ private:
     double m_threshold;
     double m_max;
     double m_min;
+    QString m_folderPath;
 };
 
 #endif // CONFIGURATIONMANAGER_H

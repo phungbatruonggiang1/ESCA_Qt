@@ -57,7 +57,7 @@ private:
     QByteArray audioBuffer2;
     bool m_usingBuffer1;
 
-    const size_t chunkSize = 44100 * 2 * 2;
+    const size_t chunkSize = 176400;
     
     bool m_recStatus;
 };

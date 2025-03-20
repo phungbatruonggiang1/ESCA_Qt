@@ -10,10 +10,10 @@ void AudioManipulation::extractMFCC(QString audioPath)
     qDebug()<<"AudioManipulation audioPath"<<audioPath;
     m_audio_extractor = new Process();
 
-    QString statement = "cd ";
-    statement.append(AUDIO_FEATURES_EXTRACTOR_SRC);
-    statement.append(" \n ");
-    statement.append("python3 mfcc.py -f ");
+    QString statement = "";
+    // statement.append(AUDIO_FEATURES_EXTRACTOR_SRC);
+    // statement.append(" \n ");
+    statement.append("export PYTHONPATH=~/Desktop/ESCA_Audio_Features_Extractor:$PYTHONPATH && python3 ~/Desktop/ESCA_Audio_Features_Extractor/src/mel.py -f ");
     statement.append(audioPath);
     qInfo() << statement;
     m_audio_extractor->setStatement(statement);
@@ -54,11 +54,11 @@ void AudioManipulation::extractFrequency(QString audioPath)
     // qInfo() << "Hello Giang Dep trai " << filePath;
     // QString statement ="cd /home/sparc/ESCA/gammatone/spafe/src \n python3 mfcc.py -f ";
 
-    QString statement = "cd ";
-    statement.append(AUDIO_FEATURES_EXTRACTOR_SRC);
-    statement.append(" \n ");
-    statement.append("python3 frequency.py -f ");
-    statement.append(filePath);
+    QString statement = "";
+    // statement.append(AUDIO_FEATURES_EXTRACTOR_SRC);
+    // statement.append(" \n ");
+    statement.append("export PYTHONPATH=~/Desktop/ESCA_Audio_Features_Extractor:$PYTHONPATH && python3 ~/Desktop/ESCA_Audio_Features_Extractor/src/frequency.py -f ");
+    statement.append(audioPath);
     qInfo() << statement;
     m_audio_extractor->setStatement(statement);
     m_audio_extractor->start();

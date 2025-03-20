@@ -11,6 +11,7 @@ ConfigurationManager::ConfigurationManager(QObject *parent) : QObject(parent),
     m_samplingRate(44100),
     m_importFile(false),
     m_modelPath("/home/haiminh/Desktop/ESCA_Qt/python_ai/result/saved_model/vq_vae"),
+    m_folderPath("/home/haiminh/Desktop/ESCA_Qt/ESCA/data"),
     m_threshold(0.0),
     m_max(1.0),
     m_min(0.0)
@@ -87,6 +88,7 @@ bool ConfigurationManager::loadConfig() {
         m_samplingRate = realtimeConfig.value("SAMPLING_RATE").toInt(44100);
         m_importFile = realtimeConfig.value("IMPORT_FILE").toBool(false);
         m_modelPath = realtimeConfig.value("MODEL_PATH").toString("/home/haiminh/Desktop/ESCA_Qt/python_ai/result");
+        m_folderPath = realtimeConfig.value("FOLDER_PATH").toString("/home/haiminh/Desktop/ESCA_Qt/ESCA/data");
 
         qDebug() << "Đã cập nhật các tham số REALTIME từ file cấu hình.";
     } else {
@@ -126,8 +128,8 @@ bool ConfigurationManager::saveConfig() const {
     realtimeConfig["SAMPLING_RATE"] = m_samplingRate;
     realtimeConfig["IMPORT_FILE"] = m_importFile;
     realtimeConfig["MODEL_PATH"] = m_modelPath;
+    realtimeConfig["FOLDER_PATH"] = m_folderPath;
 
-    // Thêm các giá trị mới
     realtimeConfig["THRESHOLD"] = m_threshold;
     realtimeConfig["MAX"] = m_max;
     realtimeConfig["MIN"] = m_min;
@@ -277,6 +279,9 @@ void ConfigurationManager::applyConfig(const QJsonObject& realtime)
     if (realtime.contains("MODEL_PATH") && realtime["MODEL_PATH"].isString()) {
         setImportFile(realtime["MODEL_PATH"].isString());
     }
+    if (realtime.contains("FOLDER_PATH") && realtime["FOLDER_PATH"].isString()) {
+        setImportFile(realtime["FOLDER_PATH"].isString());
+    }
 }
 
 QJsonObject ConfigurationManager::generateConfig() const
@@ -322,4 +327,29 @@ double ConfigurationManager::threshold() const
 void ConfigurationManager::setThreshold(double newThreshold)
 {
     m_threshold = newThreshold;
+}
+
+QString ConfigurationManager::folderPath() const
+{
+    return m_folderPath;
+}
+
+void ConfigurationManager::setFolderPath(const QString &newFolderPath)
+{
+    if (m_folderPath == newFolderPath)
+        return;
+    m_folderPath = newFolderPath;
+    emit folderPathChanged();
+
+    QUrl fileUrl(newFolderPath);
+    if (fileUrl.isValid() && fileUrl.scheme() == "file") {
+        QString path = fileUrl.toLocalFile();
+        m_folderPath = path;
+        qDebug()<<"setListOutput"+path;
+    } else {
+        m_folderPath = newFolderPath;
+        qDebug()<<"setListOutput"+newFolderPath;
+    }
+
+    emit modelPathChanged();
 }
