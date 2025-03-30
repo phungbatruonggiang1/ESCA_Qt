@@ -9,7 +9,7 @@ Rectangle {
     height: 500
     color: "#000000"
 
-    property bool recStatus: RecordingObject.recStatus
+    // property bool recStatus: RecordingObject.recStatus
     property bool aiStatus: AIObject.inferenceStatus
     property var predValue: []  // Variable to store audio data
 
@@ -38,18 +38,22 @@ Rectangle {
         Button {
             id: startBtn
             x: 815
-            y: 7
+            y: 6
             width: 137
-            height: 46
+            height: 50
             text: qsTr("Start")
 
             onClicked: {
-                if (!recStatus) {
-                    RecordingObject.startRecording()
-                }
+                // if (!recStatus) {
+                //     RecordingObject.startRecording()
+                // }
 
                 if (!aiStatus) {
+                    AIObject.doneDetect = false
                     AIObject.start();
+                    RecordingObject.startSharedMemory()
+                    // RecordingObject.startRecording()
+                    // console.log(AIObject.doneDetect)
                 }
             }
         }
@@ -57,14 +61,14 @@ Rectangle {
         Button {
             id: stopBtn
             x: 641
-            y: 8
+            y: 6
             width: 137
-            height: 46
+            height: 50
             text: qsTr("Stop")
 
             onClicked: {
                 AIObject.stop();
-                RecordingObject.stopRecording()
+                RecordingObject.stopSharedMemory()
             }
         }
     }
@@ -155,6 +159,11 @@ Rectangle {
                 predValue = AIObject.predValue;
                 predChart.requestPaint();
                 minhtestTx.text = ""+predValue.slice(-1)
+            }
+            onDoneDetectChanged: {
+                AIObject.stop();
+                RecordingObject.stopSharedMemory()
+                // RecordingObject.stopRecording()
             }
         }
     }

@@ -17,7 +17,7 @@ Rectangle {
 
     function getStatusText() {
         if (tlStatus) return qsTr("Transfer Learning");
-        if (recStatus && infStatus) return qsTr("Inferencing");
+        if (infStatus) return qsTr("Inferencing");
         if (recStatus) return qsTr("Recording");
         return "Feel Free!";
     }

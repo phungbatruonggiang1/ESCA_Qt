@@ -61,6 +61,8 @@ void ProcessManager::handleStandardOutput()
         if (ok) {  // Nếu là số thực
             qInfo() << "Predict Result:" << predValue;
             emit resultReceived(predValue);
+        } else if (outputStr == "Done Folder Mode") {
+            emit doneProcess();
         } else {  // Nếu là chuỗi cảnh báo
             qWarning() << "Warning from Python:" << outputStr;
             emit abnormalDetect();

@@ -9,6 +9,7 @@ AIController::AIController(QObject *parent) : QObject(parent)
     // Kết nối tín hiệu từ ProcessManager tới AIController
     connect(processManager, &ProcessManager::resultReceived, this, &AIController::handleInferenceResult);
     connect(processManager, &ProcessManager::abnormalDetect, this, &AIController::handleAbnormalDetect);
+    connect(processManager, &ProcessManager::doneProcess, this, &AIController::handleDoneProcess);
 }
 
 AIController::~AIController()
@@ -51,6 +52,13 @@ void AIController::handleAbnormalDetect()
     qDebug() << "setAbnomalDetect: "<<abnomalDetect();
 }
 
+void AIController::handleDoneProcess()
+{
+    // setinferenceStatus(false);
+    setDoneDetect(true);
+    qDebug() << "Done Detect: "<<doneDetect();
+}
+
 QVector<float> AIController::predValue() const
 {
     return m_predValue;
@@ -78,4 +86,17 @@ void AIController::setAbnomalDetect(bool newAbnomalDetect)
 {
     m_abnomalDetect = newAbnomalDetect;
     emit abnomalDetectChanged();
+}
+
+bool AIController::doneDetect() const
+{
+    return m_doneDetect;
+}
+
+void AIController::setDoneDetect(bool newDoneDetect)
+{
+    if (m_doneDetect == newDoneDetect)
+        return;
+    m_doneDetect = newDoneDetect;
+    emit doneDetectChanged();
 }

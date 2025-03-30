@@ -16,6 +16,7 @@ public:
     Q_PROPERTY(bool inferenceStatus READ inferenceStatus WRITE setinferenceStatus NOTIFY inferenceStatusChanged FINAL)
     Q_PROPERTY(QVector<float> predValue READ predValue NOTIFY predValueChanged FINAL)
     Q_PROPERTY(bool abnomalDetect READ abnomalDetect WRITE setAbnomalDetect NOTIFY abnomalDetectChanged FINAL)
+    Q_PROPERTY(bool doneDetect READ doneDetect WRITE setDoneDetect NOTIFY doneDetectChanged FINAL)
 
     Q_INVOKABLE void start();
     Q_INVOKABLE void stop();
@@ -28,14 +29,20 @@ public:
     bool abnomalDetect() const;
     void setAbnomalDetect(bool newAbnomalDetect);
 
+    bool doneDetect() const;
+    void setDoneDetect(bool newDoneDetect);
+
 signals:
     void predValueChanged();
     void inferenceStatusChanged();
     void abnomalDetectChanged();
 
+    void doneDetectChanged();
+
 private slots:
     void handleInferenceResult(const float predValue);
     void handleAbnormalDetect();
+    void handleDoneProcess();
 
 private:
     // ConfigurationManager* configManager;
@@ -45,6 +52,7 @@ private:
     QVector<float> m_predValue;
     bool m_inferenceStatus = false;
     bool m_abnomalDetect = false;
+    bool m_doneDetect;
 };
 
 #endif // AICONTROLLER_H

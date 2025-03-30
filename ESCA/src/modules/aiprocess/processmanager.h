@@ -23,6 +23,7 @@ public:
 signals:
     void resultReceived(const float predValue);
     void abnormalDetect();
+    void doneProcess();
 
 private slots:
     void handleStandardOutput();

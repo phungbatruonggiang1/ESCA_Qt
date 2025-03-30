@@ -1,46 +1,48 @@
 #include "sharedmemorymanager.h"
-#include <cstring>
-#include <iostream>
-#include <csignal>
 #include <QDebug>
 
-#define SHM_KEY 0x1234
-#define SEM_KEY 0x5678
-#define SHM_SIZE 176400   // 2s with 44100HZ | 1 Channel | 16bit SampleSize
-
 SharedMemoryManager::SharedMemoryManager(QObject* parent)
-    : QThread(parent), shm_key(SHM_KEY), sem_key(SEM_KEY), shm_size(SHM_SIZE),
-    shm_id(-1), sem_id(-1), running(true) {
-    // Initialize semaphore operations
-    sem_lock = {0, -1, 0};  // P operation
-    sem_unlock = {0, 1, 0}; // V operation
-}
+    : QThread(parent),
+    shm_key(SHM_KEY),
+    sem_key(SEM_KEY),
+    shm_size(SHM_SIZE),
+    shm_id(-1),
+    sem_id(-1),
+    running(false) {}
 
 SharedMemoryManager::~SharedMemoryManager() {
+    stop();
+    wait(); // Đảm bảo thread kết thúc trước khi hủy
     cleanup_ipc();
 }
 
 bool SharedMemoryManager::init_ipc() {
     // Tạo shared memory
     shm_id = shmget(shm_key, shm_size, IPC_CREAT | 0666);
-    if (shm_id < 0) {
-        perror("shmget failed");
+    if (shm_id == -1) {
+        std::cerr << "shmget failed: " << strerror(errno) << std::endl;
         return false;
     }
 
     // Tạo semaphore
     sem_id = semget(sem_key, 1, IPC_CREAT | 0666);
-    if (sem_id < 0) {
-        perror("semget failed");
+    if (sem_id == -1) {
+        std::cerr << "semget failed: " << strerror(errno) << std::endl;
+        cleanup_ipc(); // Dọn dẹp shm_id đã tạo
         return false;
     }
 
-    // Khởi tạo semaphore nếu mới tạo
-    if (semctl(sem_id, 0, GETVAL) == 0) { // Nếu semaphore chưa được khởi tạo
-        if (semctl(sem_id, 0, SETVAL, 1) == -1) {
-            perror("semctl SETVAL failed");
-            return false;
-        }
+    // Khởi tạo semaphore
+    union semun {
+        int val;
+        struct semid_ds* buf;
+        unsigned short* array;
+    } sem_arg;
+    sem_arg.val = 1;
+    if (semctl(sem_id, 0, SETVAL, sem_arg) == -1) {
+        std::cerr << "semctl SETVAL failed: " << strerror(errno) << std::endl;
+        cleanup_ipc();
+        return false;
     }
 
     return true;
@@ -48,68 +50,73 @@ bool SharedMemoryManager::init_ipc() {
 
 void SharedMemoryManager::cleanup_ipc() {
     if (shm_id != -1) {
-        if (shmctl(shm_id, IPC_RMID, nullptr) == -1) {
-            perror("shmctl IPC_RMID failed");
-        } else {
-            std::cout << "Shared memory removed." << std::endl;
-        }
+        shmctl(shm_id, IPC_RMID, nullptr);
         shm_id = -1;
     }
     if (sem_id != -1) {
-        if (semctl(sem_id, 0, IPC_RMID) == -1) {
-            perror("semctl IPC_RMID failed");
-        } else {
-            std::cout << "Semaphore removed." << std::endl;
-        }
+        semctl(sem_id, 0, IPC_RMID);
         sem_id = -1;
     }
 }
 
-void SharedMemoryManager::run() {
-    while (running) {
+bool SharedMemoryManager::attachSharedMemory(char*& shm_ptr) {
+    shm_ptr = static_cast<char*>(shmat(shm_id, nullptr, 0));
+    if (shm_ptr == reinterpret_cast<char*>(-1)) {
+        std::cerr << "shmat failed: " << strerror(errno) << std::endl;
+        return false;
+    }
+    return true;
+}
 
-        // Thực hiện P operation để khóa semaphore
+void SharedMemoryManager::detachSharedMemory(char* shm_ptr) {
+    if (shm_ptr && shm_ptr != reinterpret_cast<char*>(-1)) {
+        shmdt(shm_ptr);
+    }
+}
+
+void SharedMemoryManager::run() {
+    running = true;
+    char* shm_ptr = nullptr;
+
+    while (running) {
         if (semop(sem_id, &sem_lock, 1) == -1) {
-            perror("semop lock failed");
-            continue;
+            if (errno == EINTR) continue; // Bị gián đoạn bởi signal
+            std::cerr << "semop lock failed: " << strerror(errno) << std::endl;
+            break;
         }
 
-        // Gắn shared memory
-        char* shm_ptr = static_cast<char*>(shmat(shm_id, nullptr, 0));
-        if (shm_ptr == reinterpret_cast<char*>(-1)) {
-            perror("shmat failed");
-            // Thực hiện V operation để mở khóa semaphore
+        if (!attachSharedMemory(shm_ptr)) {
             semop(sem_id, &sem_unlock, 1);
             continue;
         }
 
-        // Ghi dữ liệu vào shared memory
-        memset(shm_ptr, 0, shm_size);
-        strncpy(shm_ptr, buffer, shm_size - 1);
-
-        // qDebug()<<"Buffer shm"<<buffer;
-
-        // Ngắt kết nối shared memory
-        if (shmdt(shm_ptr) == -1) {
-            perror("shmdt failed");
+        {
+            QMutexLocker locker(&bufferMutex);
+            std::memset(shm_ptr, 0, shm_size);
+            std::memcpy(shm_ptr, buffer.constData(),
+                        std::min(static_cast<size_t>(buffer.size()), shm_size));
         }
 
-        // Thực hiện V operation để mở khóa semaphore
+        detachSharedMemory(shm_ptr);
+
         if (semop(sem_id, &sem_unlock, 1) == -1) {
-            perror("semop unlock failed");
+            std::cerr << "semop unlock failed: " << strerror(errno) << std::endl;
+            break;
         }
 
-        // Giới hạn tốc độ gửi
-        msleep(100);
+        msleep(100); // Có thể điều chỉnh tùy theo yêu cầu realtime
     }
+
+    // Cleanup trong trường hợp thoát bất thường
+    detachSharedMemory(shm_ptr);
 }
 
-void SharedMemoryManager::getAudioData(const QByteArray &data)
-{
-    buffer = data;
+void SharedMemoryManager::getAudioData(const QByteArray &data) {
+    QMutexLocker locker(&bufferMutex);
+    buffer = data; // Sử dụng move semantics thay vì copy nếu có thể
+    emit bufferChanged();
 }
 
 void SharedMemoryManager::stop() {
     running = false;
 }
-

@@ -9,7 +9,7 @@ Rectangle {
     radius: 20
 
     property var audioData: []  // Variable to store audio data
-    property int maxAmplitude: 32767  // Maximum amplitude (assuming 16-bit PCM)
+    property int maxAmplitude: 1  // Maximum amplitude (assuming 16-bit PCM)
     property int threshold: 10000  // Set the threshold value
 
     Canvas {
@@ -26,7 +26,7 @@ Rectangle {
             ctx.fillText("Amplitude Time Series Chart (s)", audioWaveform.width / 2 - 130, audioWaveform.height - 10);
 
             // Draw Y-axis grid and labels
-            var yAxisValues = [-32767, -1, -1, 0, 1, 1, 32767];
+            var yAxisValues = [-1, -1, -1, 0, 1, 1, 1];
             var yAxisStep = (audioWaveform.height - 60) / (yAxisValues.length - 1);
             ctx.font = "13px Oxanium";
             ctx.strokeStyle = "#5A5A5A";

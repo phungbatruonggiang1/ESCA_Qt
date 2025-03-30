@@ -3,14 +3,10 @@
 
 #include <QObject>
 #include <QString>
-#include <QFile>
-#include <QTextStream>
+#include <QProcess>
 #include <QDebug>
 
 #include "../../config/config.h"
-#include "../../common/process/process.h"
-
-class Process;
 
 class AudioManipulation : public QObject
 {
@@ -18,6 +14,7 @@ class AudioManipulation : public QObject
 
 public:
     explicit AudioManipulation(QObject *parent = nullptr);
+    ~AudioManipulation();
 
     Q_INVOKABLE void extractMFCC(QString audioPath);
     Q_INVOKABLE void extractGFCC(QString audioPath);
@@ -25,8 +22,11 @@ public:
     Q_INVOKABLE void splitAudio(QString source, QString destination, QString duration);
 
 private:
-    Process* m_audio_extractor = nullptr;
-    
+    QProcess *m_process;
+
+private slots:
+    void onProcessFinished(int exitCode, QProcess::ExitStatus exitStatus);
+    void onProcessError(QProcess::ProcessError error);
 };
 
 #endif // AUDIOMANIPULATION_H

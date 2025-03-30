@@ -21,14 +21,14 @@ Item {
 
     function getColor() {
         if (tlStatus) return "#FF1493";   // Transfer Learning (Hồng đậm)
-        if (recStatus && infStatus) return "#FF8C00"; // Cam (Recording + Inference)
+        if (infStatus) return "#FF8C00"; // Cam (Recording + Inference)
         if (recStatus) return "#FF4500";   // Đỏ (Recording)
         return "green"; // Xanh lá (Mặc định - không nháy)
     }
 
     function getBlinkColor() {
         if (tlStatus) return "#FF69B4"; // Hồng nhạt (Transfer Learning)
-        if (recStatus && infStatus) return "#FFA07A"; // Cam nhạt (Recording + Inference)
+        if (infStatus) return "#FFA07A"; // Cam nhạt (Recording + Inference)
         if (recStatus) return "#FF6347"; // Đỏ nhạt (Recording)
         return "green";
     }

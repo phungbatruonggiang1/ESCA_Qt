@@ -51,6 +51,11 @@ ApplicationWindow {
                 notificationCenter.showNotification("Inference: Abnomaly Detected", "warning", 1);
             }
         }
+        onDoneDetectChanged: {
+            if (AIObject.inferenceStatus === false) {
+                // notificationCenter.showNotification("Inference with Audio Folder Done", "info", 1);
+            }
+        }
     }
 
 }
