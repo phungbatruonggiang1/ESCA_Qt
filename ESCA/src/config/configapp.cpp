@@ -83,6 +83,9 @@ void ConfigApp::generateConfig() {
     realtime["SHARED_MEMORY_KEY"] = "0xDEADBEEF";
     realtime["SEMAPHORE_KEY"] = "0xBEEFDEAD";
     realtime["BUFFER_SIZE"] = 176400;
+    realtime["MIN"] = -23.14520263671875;
+    realtime["MAX"] = 51.67738342285156;
+    realtime["THRESHOLD"] = 0.002630938310176134;
 
     root["REALTIME"] = realtime;
 

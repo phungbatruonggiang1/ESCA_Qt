@@ -9,11 +9,10 @@ Rectangle {
     height: 480
     color: "#161525"
 
-    Component.onCompleted: {
-        // console.log("nearistParams[0]: ", deviceIndex);
-        console.log("AudioConfig.nearistParams[5]: "+AudioConfig.nearistParams[5]);
-        testtext.text = "" + AudioConfig.nearistParams;
-    }
+    // Component.onCompleted: {
+    //     // console.log("nearistParams[0]: ", deviceIndex);
+    //     console.log("AudioConfig.nearistParams[5]: "+AudioConfig.nearistParams[5]);
+    // }
 
     ComboBox {
         id: deviceCb
@@ -365,23 +364,9 @@ Rectangle {
                 AudioConfig.saveConfig(deviceCb.currentIndex, codecCb.currentIndex, sampleRateCb.currentIndex, channelsCb.currentIndex, endianzCb.currentIndex, sampleSizeCb.currentIndex, durationCb.currentIndex, textOutput.text)
                 notificationCenter.showNotification("Record-Config completed successfully.", "success", 1);
 
-            }
-            testtext.text = "" + AudioConfig.nearistParams;
+            }            
             console.log("AudioConfig.nearistParams[5]: ", AudioConfig.nearistParams[5]);
             textOutput.text = AudioConfig.listOutput;
         }
     }
-
-    Text {
-        id: testtext
-        x: 42
-        y: 378
-        width: 158
-        height: 56
-        color: "#ffffff"
-        text: qsTr("Test Text")
-        font.pixelSize: 12
-        styleColor: "#ffffff"
-    }
-
 }

@@ -1,7 +1,7 @@
 #include "recordingchart.h"
 #include <QDebug>
 
-CircuitBuffer::CircuitBuffer() : buffer(1000), head(0), tail(0), isFull(false) {}
+CircuitBuffer::CircuitBuffer() : buffer(88200), head(0), tail(0), isFull(false) {}
 
 void CircuitBuffer::add(float value)
 {
@@ -44,7 +44,7 @@ void RecordingChart::onSendChartData(const QByteArray &data)
     int sampleCount = data.size() / sizeof(int16_t);
 
     for (int i = 0; i < sampleCount; ++i) {
-        buffer.add(samples[i] /*/ 32767.0f*/); // chuan hoa ve khoang [-1, 1]
+        buffer.add(samples[i] / 32767.0f); // chuan hoa ve khoang [-1, 1]
     }
 
     // Retrieve data from buffer and prepare it for display
@@ -58,7 +58,7 @@ void RecordingChart::onSendChartData(const QByteArray &data)
     }
 
     setAudioSeries(QVariant::fromValue(displayData));
-    // qInfo()<< "onSendChartData" << audioSeries();
+    // qInfo()<< "onSendChartData" << audioSeries() << displayData.mid(0,20);
 }
 
 QVariant RecordingChart::audioSeries() const

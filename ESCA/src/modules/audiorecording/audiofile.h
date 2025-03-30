@@ -30,10 +30,10 @@ private:
     QAudioFormat m_audioFormat;
     double m_durationSeconds;
     quint32 m_chunkSize;
+    quint32 dataSize = 0;
 
     QFile m_outFile;    
     // int m_fileIndex;
-    quint32 dataSize;
     QMutex m_mutex;
 
     QByteArray m_buffer1;
@@ -41,7 +41,7 @@ private:
     bool m_usingBuffer1;
 
     void createFile();
-    void writeWavHeader(quint32 dataSize);
+    void writeWavHeader();
     void finalizeWavHeader(quint32 dataSize);
 
 };

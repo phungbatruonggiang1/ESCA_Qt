@@ -19,7 +19,6 @@ RecordingController::RecordingController(QObject *parent)
 
     // m_outputDir = QStandardPaths::writableLocation(QStandardPaths::HomeLocation);
 
-    connect(m_recordIO, &RecordIO::sendData, this, &RecordingController::handleDataReady);
     connect(this, &RecordingController::sendChartData, m_recordingChart, &RecordingChart::onSendChartData);
 
     qInfo()<<"format in ini: "<<m_audioConfig->format();
@@ -29,10 +28,10 @@ RecordingController::RecordingController(QObject *parent)
         delete sharedMemoryManager;
         sharedMemoryManager = nullptr;
     }
-    /*else {
-        sharedMemoryManager->start();
-        qDebug() << "SharedMemoryManager started.";
-    }*/
+    // else {
+    //     sharedMemoryManager->start();
+    //     qDebug() << "SharedMemoryManager started.";
+    // }
 }
 
 RecordingController::~RecordingController()
@@ -55,6 +54,7 @@ RecordingController::~RecordingController()
 
 void RecordingController::startRecording()
 {
+    connect(m_recordIO, &RecordIO::sendData, this, &RecordingController::handleDataReady);
     m_format = m_audioConfig->format();
     qDebug()<< "format"<< m_format;
 
@@ -88,12 +88,12 @@ void RecordingController::startRecording()
     setRecStatus(true);
     qInfo() << "Start recording with format" << m_format;
 
-    sharedMemoryManager->start();
     // qDebug() << "Producer Record is running.";
 }
 
 void RecordingController::stopRecording()
 {
+    disconnect(m_recordIO, &RecordIO::sendData, this, &RecordingController::handleDataReady);
     if (recStatus() == true) {
         m_audioFile->stopRecording();
         m_recordIO->audioInputStop();
@@ -104,43 +104,83 @@ void RecordingController::stopRecording()
     setRecStatus(false);   
 }
 
+void RecordingController::startSharedMemory(){
+    connect(m_recordIO, &RecordIO::sendData, this, &RecordingController::handleSharedMemory);
+
+    QAudioDeviceInfo deviceInfo = m_audioConfig->deviceInfo();
+    sharedMemoryManager->start();
+    m_recordIO->startAudioInput(m_format, deviceInfo);
+    qInfo() << "format before shm" << m_format;
+}
+
+void RecordingController::stopSharedMemory()
+{
+    disconnect(m_recordIO, &RecordIO::sendData, this, &RecordingController::handleSharedMemory);
+    m_recordIO->audioInputStop();
+    sharedMemoryManager->stop();
+}
+
 void RecordingController::handleDataReady(const QByteArray &data)
 {
-    // audioBuffer.append(data);
     QString duration = m_audioConfig->duration();
-    QByteArray &currentBuffer = m_usingBuffer1 ? audioBuffer1 : audioBuffer2;
-    currentBuffer.append(data);
+    // static QDateTime lastSwapTime = QDateTime::currentDateTime();
+    QByteArray &activeBuffer = m_usingBuffer1 ? audioBuffer1 : audioBuffer2;
 
-    if (currentBuffer.size() == 176400) {
-        // Ghi dữ liệu vào file
-        // Chuyển buffer
-        m_usingBuffer1 = !m_usingBuffer1;        
+    activeBuffer.append(data);
 
-        sharedMemoryManager->getAudioData(currentBuffer);
-        qDebug() << "SharedMemoryManager received data of size:" << currentBuffer.size();
+    // Log kích thước buffer và thời gian
+    // qDebug() << "handleDataReady() at" << QDateTime::currentDateTime().toString("hh:mm:ss.zzz")
+    //          << "buffer size:" << activeBuffer.size();
+
+    if (activeBuffer.size() >= 176400) {
+        QByteArray dataToSend = activeBuffer.left(176400);
+        activeBuffer.remove(0, 176400);
+
+        // Swap buffer
+        m_usingBuffer1 = !m_usingBuffer1;
+        // lastSwapTime = swapStartTime;
+
+        // qDebug() << "Real-time data - First 10 bytes: " << dataToSend.mid(0, 10);
+        // QDateTime swapStartTime = QDateTime::currentDateTime();
+        // qDebug() << "🔄 Buffer Swap! Ready to send shared memory at:" << swapStartTime.toString("hh:mm:ss.zzz");
+
+        // sharedMemoryManager->getAudioData(dataToSend);
+        // qDebug() << "✅ Writing to shared memory completed at:" << QDateTime::currentDateTime().toString("hh:mm:ss.zzz");
 
         if (duration == "2s"){
             // Chuyển tiếp dữ liệu cho AudioFile để xử lý buffering và ghi file
             if (m_audioFile) {
                 QMetaObject::invokeMethod(m_audioFile, "writeAudioData",
                                           Qt::QueuedConnection,
-                                          Q_ARG(QByteArray, currentBuffer));
+                                          Q_ARG(QByteArray, dataToSend));
             }
         }
         else {
             if (m_audioFile) {
                 QMetaObject::invokeMethod(m_audioFile, "writeDataForever",
                                           Qt::QueuedConnection,
-                                          Q_ARG(QByteArray, currentBuffer));
+                                          Q_ARG(QByteArray, dataToSend));
             }
         }
-
-        // Chỉ xóa buffer nếu dữ liệu thực sự được ghi
-        if (currentBuffer.size() >= chunkSize) {
-            currentBuffer.remove(0, chunkSize);
-        }
     }
+
     m_recordingChart->onSendChartData(data);
+}
+
+void RecordingController::handleSharedMemory(const QByteArray &data) {
+    QString duration = m_audioConfig->duration();
+    // static QDateTime lastSwapTime = QDateTime::currentDateTime();
+    QByteArray &activeBuffer = m_usingBuffer1 ? audioBuffer1 : audioBuffer2;
+
+    activeBuffer.append(data);
+
+    if (activeBuffer.size() >= 176400) {
+        QByteArray dataToSend = activeBuffer.left(176400);
+        activeBuffer.remove(0, 176400);
+        qDebug() << "Real-time SharedMemory - First 10 bytes: " << dataToSend.mid(0, 30);
+        m_usingBuffer1 = !m_usingBuffer1;
+        sharedMemoryManager->getAudioData(dataToSend);
+    }
 }
 
 bool RecordingController::recStatus() /*const*/

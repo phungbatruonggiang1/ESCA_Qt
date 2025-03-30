@@ -5,7 +5,7 @@
 ConfigurationManager::ConfigurationManager(QObject *parent) : QObject(parent),
     m_logPath("/home/haiminh/Desktop/rt_test_results"),
     m_manualThreshold(0.0026),
-    m_runtime(1000),
+    m_sampleSize(16),
     m_second(2),
     m_channels(1),
     m_samplingRate(44100),
@@ -82,7 +82,7 @@ bool ConfigurationManager::loadConfig() {
         // Cập nhật từng tham số (nếu thiếu thì bổ sung mặc định)
         m_logPath = realtimeConfig.value("LOG_PATH").toString("/default/log/path");
         m_manualThreshold = realtimeConfig.value("MANUAL_THRESHOLD").toDouble(0.01);
-        m_runtime = realtimeConfig.value("RUNTIME").toInt(1000);
+        m_sampleSize = realtimeConfig.value("SAMPLESIZE").toInt(16);
         m_second = realtimeConfig.value("SECOND").toInt(5);
         m_channels = realtimeConfig.value("CHANNELS").toInt(1);
         m_samplingRate = realtimeConfig.value("SAMPLING_RATE").toInt(44100);
@@ -122,7 +122,7 @@ bool ConfigurationManager::saveConfig() const {
     QJsonObject realtimeConfig;
     realtimeConfig["LOG_PATH"] = m_logPath;
     realtimeConfig["MANUAL_THRESHOLD"] = m_manualThreshold;
-    realtimeConfig["RUNTIME"] = m_runtime;
+    realtimeConfig["SAMPLESIZE"] = m_sampleSize;
     realtimeConfig["SECOND"] = m_second;
     realtimeConfig["CHANNELS"] = m_channels;
     realtimeConfig["SAMPLING_RATE"] = m_samplingRate;
@@ -152,7 +152,6 @@ bool ConfigurationManager::saveConfig() const {
 // Getters
 QString ConfigurationManager::logPath() const { return m_logPath; }
 double ConfigurationManager::manualThreshold() const { return m_manualThreshold; }
-int ConfigurationManager::runtime() const { return m_runtime; }
 int ConfigurationManager::second() const { return m_second; }
 int ConfigurationManager::channels() const { return m_channels; }
 int ConfigurationManager::samplingRate() const { return m_samplingRate; }
@@ -173,14 +172,6 @@ void ConfigurationManager::setManualThreshold(double manualThreshold)
     if (m_manualThreshold != manualThreshold) {
         m_manualThreshold = manualThreshold;
         emit manualThresholdChanged();
-    }
-}
-
-void ConfigurationManager::setRuntime(int runtime)
-{
-    if (m_runtime != runtime) {
-        m_runtime = runtime;
-        emit runtimeChanged();
     }
 }
 
@@ -257,8 +248,8 @@ void ConfigurationManager::applyConfig(const QJsonObject& realtime)
         setManualThreshold(realtime["MANUAL_THRESHOLD"].toDouble());
     }
 
-    if (realtime.contains("RUNTIME") && realtime["RUNTIME"].isDouble()) {
-        setRuntime(realtime["RUNTIME"].toInt());
+    if (realtime.contains("SAMPLESIZE") && realtime["SAMPLESIZE"].isDouble()) {
+        setSampleSize(realtime["SAMPLESIZE"].toInt());
     }
 
     if (realtime.contains("SECOND") && realtime["SECOND"].isDouble()) {
@@ -289,7 +280,7 @@ QJsonObject ConfigurationManager::generateConfig() const
     QJsonObject realtimeObj;
     realtimeObj["LOG_PATH"] = m_logPath;
     realtimeObj["MANUAL_THRESHOLD"] = m_manualThreshold;
-    realtimeObj["RUNTIME"] = m_runtime;
+    realtimeObj["SAMPLESIZE"] = m_sampleSize;
     realtimeObj["SECOND"] = m_second;
     realtimeObj["CHANNELS"] = m_channels;
     realtimeObj["SAMPLING_RATE"] = m_samplingRate;
@@ -352,4 +343,17 @@ void ConfigurationManager::setFolderPath(const QString &newFolderPath)
     }
 
     emit modelPathChanged();
+}
+
+int ConfigurationManager::sampleSize() const
+{
+    return m_sampleSize;
+}
+
+void ConfigurationManager::setSampleSize(int newSampleSize)
+{
+    if (m_sampleSize == newSampleSize)
+        return;
+    m_sampleSize = newSampleSize;
+    emit sampleSizeChanged();
 }

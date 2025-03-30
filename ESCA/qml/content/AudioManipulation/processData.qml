@@ -56,7 +56,7 @@ Rectangle {
         y: 93
         width: 448
         height: 351
-//        border.color: "black"
+        //        border.color: "black"
         color: "#272d37"
 
         Label {
@@ -72,7 +72,7 @@ Rectangle {
             x: 8
             y: 117
             placeholderText: "Choose File/Folder to process"
-//            text: TransferConfig.baseWeightPath
+            //            text: TransferConfig.baseWeightPath
             width: 432
             height: 45
             font.family: "Oxanium"
@@ -80,18 +80,18 @@ Rectangle {
             font.pointSize: 13
             // Đảm bảo cập nhật khi giá trị thay đổi từ C++
             Connections {
-//                target: TransferConfig
-//                function onBaseWeightPathChanged() {
-//                    if (baseWeightPath.text !== TransferConfig.baseWeightPath)
-//                        baseWeightPath.text = TransferConfig.baseWeightPath;
-//                }
+                //                target: TransferConfig
+                //                function onBaseWeightPathChanged() {
+                //                    if (baseWeightPath.text !== TransferConfig.baseWeightPath)
+                //                        baseWeightPath.text = TransferConfig.baseWeightPath;
+                //                }
             }
             // Cập nhật khi người dùng nhập liệu, nhưng tránh vòng lặp
             onTextChanged: {
-//                if (TransferConfig.baseWeightPath !== text) {
-//                    TransferConfig.baseWeightPath = text;
-//                    // TransferConfig.saveConfig();
-//                }
+                //                if (TransferConfig.baseWeightPath !== text) {
+                //                    TransferConfig.baseWeightPath = text;
+                //                    // TransferConfig.saveConfig();
+                //                }
             }
         }
 
@@ -146,8 +146,8 @@ Rectangle {
             MouseArea {
                 anchors.fill: parent
                 onClicked: {
-                            folderDialog2.open();
-                        }
+                    folderDialog2.open();
+                }
                 anchors.centerIn: parent
             }
         }
@@ -155,8 +155,9 @@ Rectangle {
         FileDialog {
             id: folderDialog1
             title: "Choose a file"
-//            selectFolder: true // This is the key to select folders instead of files
+            selectFolder: true // This is the key to select folders instead of files
             selectExisting: true // Make sure we select an existing one
+
             nameFilters: ["*"] // Display all folders
             onAccepted: {
                 var urlStr = folderDialog1.fileUrl.toString()
@@ -350,6 +351,7 @@ Rectangle {
             anchors.leftMargin: 0
             cursorShape: Qt.WaitCursor
             onClicked: {
+                chooseFile = chooseSourceTx.text;
                 AudioManipulationObject.extractGFCC(chooseFile);
             }
         }

@@ -15,7 +15,7 @@ class ConfigurationManager : public QObject
     // Các thuộc tính của phần REALTIME
     Q_PROPERTY(QString logPath READ logPath WRITE setLogPath NOTIFY logPathChanged)
     Q_PROPERTY(double manualThreshold READ manualThreshold WRITE setManualThreshold NOTIFY manualThresholdChanged)
-    Q_PROPERTY(int runtime READ runtime WRITE setRuntime NOTIFY runtimeChanged)
+    Q_PROPERTY(int sampleSize READ sampleSize WRITE setSampleSize NOTIFY sampleSizeChanged)
     Q_PROPERTY(int second READ second WRITE setSecond NOTIFY secondChanged)
     Q_PROPERTY(int channels READ channels WRITE setChannels NOTIFY channelsChanged)
     Q_PROPERTY(int samplingRate READ samplingRate WRITE setSamplingRate NOTIFY samplingRateChanged)
@@ -31,7 +31,6 @@ public:
     // Getters
     QString logPath() const;
     double manualThreshold() const;
-    int runtime() const;
     int second() const;
     int channels() const;
     int samplingRate() const;
@@ -40,7 +39,6 @@ public:
     // Setters
     void setLogPath(const QString &logPath);
     void setManualThreshold(double manualThreshold);
-    void setRuntime(int runtime);
     void setSecond(int second);
     void setChannels(int channels);
     void setSamplingRate(int samplingRate);
@@ -65,10 +63,12 @@ public:
     QString folderPath() const;
     void setFolderPath(const QString &newFolderPath);
 
+    int sampleSize() const;
+    void setSampleSize(int newSampleSize);
+
 signals:
     void logPathChanged();
     void manualThresholdChanged();
-    void runtimeChanged();
     void secondChanged();
     void channelsChanged();
     void samplingRateChanged();
@@ -80,10 +80,12 @@ signals:
 
     void folderPathChanged();
 
+    void sampleSizeChanged();
+
 private:
     QString m_logPath;
     double m_manualThreshold;
-    int m_runtime;
+    int m_sampleSize;
     int m_second;
     int m_channels;
     int m_samplingRate;

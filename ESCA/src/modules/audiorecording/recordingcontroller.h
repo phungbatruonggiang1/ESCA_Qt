@@ -29,6 +29,8 @@ public:
 
     Q_INVOKABLE void startRecording();
     Q_INVOKABLE void stopRecording();
+    Q_INVOKABLE void startSharedMemory();
+    Q_INVOKABLE void stopSharedMemory();
 
     bool recStatus();
     void setRecStatus(bool newRecStatus);
@@ -39,6 +41,7 @@ signals:
 
 private slots:
     void handleDataReady(const QByteArray &data);
+    void handleSharedMemory(const QByteArray &data);
 
 private:
     RecordingSchedule* m_recordingSchedule;

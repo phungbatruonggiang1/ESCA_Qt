@@ -10,7 +10,6 @@ Rectangle {
     width: 1024
     height: 500
     color: "#151515"
-    radius: 10
     border.color: "#414141"
 
     // Bố cục chính
@@ -37,7 +36,7 @@ Rectangle {
             spacing: 10
 
             Text {
-                text: "Log Path:"
+                text: "Import Folder Path:"
                 color: "#FFFFFF"
                 Layout.alignment: Qt.AlignLeft
                 Layout.minimumWidth: 200
@@ -53,14 +52,55 @@ Rectangle {
                 border.color: "#FFFFFF"
 
                 TextInput {
-                    id: logPathInput
+                    id: folderPathInput
+                    enabled: !AIObject.inferenceStatus
                     anchors.fill: parent
                     anchors.margins: 5
-                    text: ConfigManager.logPath
+                    text: ConfigManager.folderPath
                     color: "#FFFFFF"
+
+                    Connections {
+                        target: ConfigManager
+                        function onFolderPathChanged() {
+                            if (folderPathInput.text !== ConfigManager.folderPath)
+                                folderPathInput.text = ConfigManager.folderPath;
+                        }
+                    }
+
                     onTextChanged: {
-                        ConfigManager.logPath = text
-                        ConfigManager.saveConfig()
+                        if (ConfigManager.folderPath !== text) {
+                            ConfigManager.folderPath = text;
+                            ConfigManager.saveConfig();
+                        }
+                    }
+                }
+                Rectangle {
+                    x: 566
+                    y: 3
+                    width: 25
+                    height: 25
+                    color: "#cccccc"
+
+                    MouseArea {
+                        id: mouseAreafolder
+                        enabled: !AIObject.inferenceStatus
+                        anchors.fill: parent
+                        onClicked: {
+                            fileDialogfolder.open()
+                        }
+                    }
+                }
+                FileDialog { // Thay thế FolderDialog bằng FileDialog
+                    id: fileDialogfolder
+                    // currentFolder: StandardPaths.writableLocation(StandardPaths.PicturesLocation)
+                    title: "Choose a folder"
+                   selectFolder: true // Thêm thuộc tính để chọn thư mục
+                   selectExisting: true
+                    onAccepted: {
+                        folderPathInput.text = fileDialogfolder.fileUrl
+                    }
+                    onRejected: {
+                        console.log("Canceled")
                     }
                 }
             }
@@ -87,6 +127,7 @@ Rectangle {
 
                 TextInput {
                     id: modelInput
+                    enabled: !AIObject.inferenceStatus
                     anchors.fill: parent
                     anchors.margins: 5
                     text: ConfigManager.modelPath
@@ -117,6 +158,7 @@ Rectangle {
 
                     MouseArea {
                         id: mouseArea
+                        enabled: !AIObject.inferenceStatus
                         anchors.fill: parent
                         onClicked: {
                             fileDialog.open()
@@ -127,8 +169,8 @@ Rectangle {
                     id: fileDialog
                     // currentFolder: StandardPaths.writableLocation(StandardPaths.PicturesLocation)
                     title: "Choose a folder"
-                    selectFolder: true // Thêm thuộc tính để chọn thư mục
-                    selectExisting: true
+                   selectFolder: true // Thêm thuộc tính để chọn thư mục
+                   selectExisting: true
                     onAccepted: {
                         modelInput.text = fileDialog.fileUrl
                     }
@@ -167,6 +209,7 @@ Rectangle {
 
                 TextInput {
                     id: manualThresholdInput
+                    enabled: !AIObject.inferenceStatus
                     anchors.fill: parent
                     anchors.margins: 5
                     text: ConfigManager.manualThreshold.toString()
@@ -187,7 +230,7 @@ Rectangle {
             spacing: 10
 
             Text {
-                text: "Runtime (ms):"
+                text: "Sample Size (bit):"
                 color: "#FFFFFF"
                 Layout.alignment: Qt.AlignLeft
                 Layout.minimumWidth: 200
@@ -203,15 +246,16 @@ Rectangle {
                 border.color: "#FFFFFF"
 
                 TextInput {
-                    id: runtimeInput
+                    id: sampleSizeInput
+                    enabled: !AIObject.inferenceStatus
                     anchors.fill: parent
                     anchors.margins: 5
-                    text: ConfigManager.runtime.toString()
+                    text: ConfigManager.sampleSize.toString()
                     color: "#FFFFFF"
                     onTextChanged: {
                         var value = parseInt(text)
                         if (!isNaN(value) && value >= 100 && value <= 10000) {
-                            ConfigManager.runtime = value
+                            ConfigManager.sampleSize = value
                             ConfigManager.saveConfig()
                         }
                     }
@@ -234,6 +278,7 @@ Rectangle {
 
             CheckBox {
                 id: importFileCheckbox
+                enabled: !AIObject.inferenceStatus
                 checked: ConfigManager.importFile
                 onCheckedChanged: {
                     ConfigManager.importFile = checked
@@ -270,6 +315,7 @@ Rectangle {
 
                 TextInput {
                     id: channelsInput
+                    enabled: !AIObject.inferenceStatus
                     anchors.fill: parent
                     anchors.margins: 5
                     text: ConfigManager.channels.toString()
@@ -307,6 +353,7 @@ Rectangle {
 
                 TextInput {
                     id: samplingRateInput
+                    enabled: !AIObject.inferenceStatus
                     anchors.fill: parent
                     anchors.margins: 5
                     text: ConfigManager.samplingRate.toString()
@@ -344,6 +391,7 @@ Rectangle {
 
                 TextInput {
                     id: secondInput
+                    enabled: !AIObject.inferenceStatus
                     anchors.fill: parent
                     anchors.margins: 5
                     text: ConfigManager.second.toString()

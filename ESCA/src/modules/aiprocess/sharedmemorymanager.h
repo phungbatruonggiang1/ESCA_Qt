@@ -1,48 +1,56 @@
-#ifndef SharedMemoryManager_H
-#define SharedMemoryManager_H
+#ifndef SHAREDMEMORYMANAGER_H
+#define SHAREDMEMORYMANAGER_H
 
 #include <QThread>
+#include <QByteArray>
 #include <sys/ipc.h>
 #include <sys/shm.h>
 #include <sys/sem.h>
-#include <string>
-#include <QByteArray>
-#include <QMutexLocker>
 #include <QMutex>
+#include <cstring>
+#include <iostream>
 
 class SharedMemoryManager : public QThread {
     Q_OBJECT
 public:
-    SharedMemoryManager(QObject* parent = nullptr);
-    ~SharedMemoryManager();
+    explicit SharedMemoryManager(QObject* parent = nullptr);
+    ~SharedMemoryManager() override;
 
     bool init_ipc();
     void cleanup_ipc();
+
+protected:
     void run() override;
-    void stop();
 
 public slots:
-
     void getAudioData(const QByteArray &data);
+    void stop();
 
 signals:
     void bufferChanged();
 
 private:
+    static constexpr key_t SHM_KEY = 0x1234;
+    static constexpr key_t SEM_KEY = 0x5678;
+    static constexpr size_t SHM_SIZE = 176400; // 2s @ 44100Hz, 1ch, 16bit
+
     key_t shm_key;
     key_t sem_key;
     size_t shm_size;
     int shm_id;
     int sem_id;
-    bool running;
+    volatile bool running;
 
-    QByteArray buffer;   // 2s buffer
-    // Mutex để đồng bộ hóa khi ghi vào buffer
-    QMutex m_bufferMutex;
+    QByteArray buffer;
+    QMutex bufferMutex;
 
-    // Semaphore operations
-    struct sembuf sem_lock;
-    struct sembuf sem_unlock;
+    struct sembuf sem_lock{0, -1, 0};   // P operation
+    struct sembuf sem_unlock{0, 1, 0};  // V operation
+
+    static_assert(sizeof(struct sembuf) > 0, "struct sembuf is not defined");
+
+    bool attachSharedMemory(char*& shm_ptr);
+    void detachSharedMemory(char* shm_ptr);
 };
 
-#endif // SharedMemoryManager_H
+#endif // SHAREDMEMORYMANAGER_H
