@@ -3,7 +3,6 @@
 
 ProcessManager::ProcessManager(QObject *parent)
     : Process(parent),
-    // m_scriptPath("/home/haiminh/Desktop/rt_test.py -cfg /home/haiminh/Desktop/params.yaml -f /home/haiminh/Desktop/temp.csv") // Đường dẫn mặc định
     m_scriptPath("../../../../python_ai/inference/shared_memory_reader.py")
 {
     connect(&m_process, &QProcess::readyRead, this, &ProcessManager::handleStandardOutput);
