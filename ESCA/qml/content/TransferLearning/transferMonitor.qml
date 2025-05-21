@@ -24,6 +24,10 @@ Rectangle {
             epoch = 0
         }
     }
+    function calc(epoch, totalEpoch) {
+        console.log("ABC",epoch, totalEpoch,Math.round((epoch / totalEpoch) * 100))
+        return totalEpoch > 0 ? Math.round((epoch / totalEpoch) * 100) : 0
+    }
 
     Column {
         anchors.fill: parent
@@ -68,7 +72,7 @@ Rectangle {
 
                 Text {
                     id: progressTx
-                    text: Math.round((epoch / totalEpoch) * 100) + "%"
+                    text: calc(epoch, totalEpoch) + "%"
                     font.pointSize: 18
                     color: "#ffffff"
                 }

@@ -48,9 +48,11 @@ Item {
         }
         width: parent.width - 20
         // Chiều cao sẽ tự điều chỉnh theo số lượng thông báo (mỗi thông báo cách nhau 10px)
-        height: Math.min(notificationModel.count * 60, parent.height)
+        // height: Math.min(notificationModel.count * 60, parent.height-200)
+        height: Math.min(notificationModel.count * 60, 120)
         model: notificationModel
         spacing: 10
+        clip: true
         interactive: false
         orientation: ListView.Vertical
         delegate: NotificationItem {

@@ -22,6 +22,7 @@ TransferController::TransferController(QObject *parent)
 
     // Kết nối tín hiệu khi process hoàn thành
     QObject::connect(transferProcMng, &TransferProcMng::transFinished, this, &TransferController::stop);
+    setEpoch(0);
 }
 
 TransferController::~TransferController()
@@ -44,6 +45,7 @@ void TransferController::stop()
 {
     transferProcMng->stopPythonService();
     setTlStatus(false);
+    setEpoch(0);
 }
 
 bool TransferController::tlStatus() const
@@ -66,8 +68,8 @@ int TransferController::epoch() const
 
 void TransferController::setEpoch(int newEpoch)
 {
-    if (m_epoch == newEpoch)
-        return;
+    // if (m_epoch == newEpoch)
+    //     return;
     m_epoch = newEpoch;
     emit epochChanged();
 }
@@ -79,8 +81,8 @@ int TransferController::totalEpoch() const
 
 void TransferController::setTotalEpoch(int newTotalEpoch)
 {
-    if (m_totalEpoch == newTotalEpoch)
-        return;
+    // if (m_totalEpoch == newTotalEpoch)
+    //     return;
     m_totalEpoch = newTotalEpoch;
     emit totalEpochChanged();
 }
