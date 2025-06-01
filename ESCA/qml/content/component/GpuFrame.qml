@@ -52,13 +52,13 @@ Item {
         y: 73
         width: 176
         height: 121
-        _45Text: BackendObject.cpuText
+        _45Text: backendObject.gpuText
         minutesRemainingText: "GPU Usage"
     }
 
     RangeMapper {
         id: rangeMapper
-        input: BackendObject.cpuPercentage
+        input: backendObject.gpuPercentage
         outputMaximum: 180
         outputMinimum: -180
     }
