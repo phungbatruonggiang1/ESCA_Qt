@@ -7,6 +7,11 @@ from gammatone import gtgram
 from tensorflow.keras.models import load_model
 import os
 import wave
+import tensorflow as tf
+try:
+    from tensorflow.python.compiler.tensorrt import trt_convert as trt
+except Exception:
+    trt = None
 
 from config.config_manager import ConfigManager
 
@@ -36,7 +41,30 @@ MAX = config_manager.get("REALTIME.MAX")
 # print(f"manual_threshold: {manual_threshold}, threshold: {threshold}, MIN: {MIN}, MAX: {MAX}")
 
 # Load model
-model = load_model(model_path)
+use_trt = config_manager.get("DEVICE.USE_TENSORRT")
+trt_model_path = config_manager.get("REALTIME.TRT_MODEL_PATH")
+
+if use_trt and trt is not None:
+    try:
+        if trt_model_path and os.path.exists(trt_model_path):
+            model = tf.saved_model.load(trt_model_path)
+            infer = model.signatures['serving_default']
+        else:
+            converter = trt.TrtGraphConverterV2(input_saved_model_dir=model_path)
+            converter.convert()
+            if trt_model_path:
+                converter.save(trt_model_path)
+                model = tf.saved_model.load(trt_model_path)
+            else:
+                model = converter.convert()
+            infer = model.signatures['serving_default'] if hasattr(model, 'signatures') else model
+    except Exception as e:
+        print(f"TensorRT conversion failed: {e}. Falling back to TensorFlow model.")
+        model = load_model(model_path)
+        infer = model
+else:
+    model = load_model(model_path)
+    infer = model
 # model.summary()
 
 shm = None
@@ -92,8 +120,15 @@ def predict_mse(audio_array):
         print(f"Input shape không hợp lệ: {a.shape}")
         return None
 
-    pred = model.predict(a, verbose=0)
-    return np.mean((a - pred) ** 2)    
+    if use_trt and trt is not None and callable(infer):
+        result = infer(tf.convert_to_tensor(a))
+        if isinstance(result, dict):
+            pred = list(result.values())[0].numpy()
+        else:
+            pred = result.numpy()
+    else:
+        pred = model.predict(a, verbose=0)
+    return np.mean((a - pred) ** 2)  
 
 def process_realtime():
     """Xử lý Real-time: Đọc shared memory và inference mỗi 2 giây."""
