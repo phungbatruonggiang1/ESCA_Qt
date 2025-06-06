@@ -157,6 +157,7 @@ def process_realtime():
             print(f"⚠️ Warning: Expected {SHM_SIZE} bytes but got {len(raw_data)} bytes!")
             continue
 
+        start_time = time.time()
         audio_array = np.frombuffer(raw_data, dtype=np.int16)
         # print(f"Real-time - Mean: {np.mean(audio_array)}, Std: {np.std(audio_array)}")
         # print(f"First 5 samples: {audio_array[:5]}")
@@ -183,6 +184,9 @@ def process_realtime():
         if elapsed < cycle_duration:
             time.sleep(cycle_duration - elapsed)
 
+        end_time = time.time()
+        print(f"Processing time: {end_time - start_time} seconds and Pred: {mse}")
+
 def process_folder(folder_path):
     """
     Xử lý âm thanh từ các file WAV trong thư mục.
@@ -194,6 +198,7 @@ def process_folder(folder_path):
     # print(f"Files: {wav_files}")
 
     for wav_file in wav_files:
+        start_time = time.time()
         file_path = os.path.join(folder_path, wav_file)
         # print(f"\n=== Đang xử lý file: {file_path} ===")
 
@@ -229,6 +234,9 @@ def process_folder(folder_path):
                 print("Anomaly detected!", flush=True)
                 exceed_count = 0  # reset
             print(mse, flush=True)
+
+            end_time = time.time()
+            print(f"Processing time for {wav_file}: {end_time - start_time} seconds and Pred: {mse}")
 
     print("Done Folder Mode")    
 
