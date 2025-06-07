@@ -26,8 +26,7 @@ void ROCManager::computeROCCurve(const QVector<double>& fpr, const QVector<doubl
     // Nếu epoch vừa nhận là một trong các epoch quan trọng, cập nhật lại danh sách
     // (ví dụ: epoch 1, 20, 40, 60, 81 tương ứng với chỉ số 0, 19, 39, 59, 80)
     if (m_epochCount == 1 || m_epochCount == 20 ||
-        m_epochCount == 40 || m_epochCount == 60 || m_epochCount == 81)
-    {
+        m_epochCount == 40 || m_epochCount == 60 || m_epochCount == 81) {
         updateImportantROCCurves();
     }
 }

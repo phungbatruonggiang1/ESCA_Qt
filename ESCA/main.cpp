@@ -8,7 +8,6 @@
 #include <QQmlApplicationEngine>
 #include <QQmlEngine>
 #include <QQmlContext>
-// #include <QtWidgets/QApplication>
 #include <QDebug>
 
 #include "./src/modules/audiorecording/recordingcontroller.h"

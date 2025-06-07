@@ -8,10 +8,13 @@
 #include "configapp.h"
 
 // Constructor
-ConfigApp::ConfigApp(QString &filePath) : filePath(filePath) {}
+ConfigApp::ConfigApp(QString &filePath) : filePath(filePath)
+{
+}
 
 // Generate ConfigApp
-void ConfigApp::generateConfig() {
+void ConfigApp::generateConfig()
+{
     QJsonObject root;
 
     // DATASET
@@ -138,7 +141,8 @@ void ConfigApp::generateConfig() {
 }
 
 // Save JSON to file
-void ConfigApp::saveToFile(const QJsonObject &jsonObject) {
+void ConfigApp::saveToFile(const QJsonObject &jsonObject)
+{
     QFile file(filePath);
     if (file.open(QIODevice::WriteOnly)) {
         QJsonDocument doc(jsonObject);

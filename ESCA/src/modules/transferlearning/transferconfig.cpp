@@ -23,7 +23,8 @@ TransferConfig::TransferConfig(QObject *parent)
 
 QString TransferConfig::baseWeightPath() const { return m_baseWeightPath; }
 
-void TransferConfig::setBaseWeightPath(const QString &newPath) {
+void TransferConfig::setBaseWeightPath(const QString &newPath)
+{
     QUrl fileUrl(newPath);
     if (fileUrl.isValid() && fileUrl.scheme() == "file") {
         QString path = fileUrl.toLocalFile();
@@ -36,9 +37,13 @@ void TransferConfig::setBaseWeightPath(const QString &newPath) {
     emit baseWeightPathChanged();
 }
 
-QString TransferConfig::tfrecordUsedPath() const { return m_tfrecordUsedPath; }
+QString TransferConfig::tfrecordUsedPath() const 
+{ 
+    return m_tfrecordUsedPath;
+}
 
-void TransferConfig::setTfrecordUsedPath(const QString &newPath) {
+void TransferConfig::setTfrecordUsedPath(const QString &newPath)
+{
     QUrl fileUrl(newPath);
     if (fileUrl.isValid() && fileUrl.scheme() == "file") {
         QString path = fileUrl.toLocalFile();
@@ -51,8 +56,12 @@ void TransferConfig::setTfrecordUsedPath(const QString &newPath) {
     emit tfrecordUsedPathChanged();
 }
 
-QString TransferConfig::tfrecordNewPath() const { return m_tfrecordNewPath; }
-void TransferConfig::setTfrecordNewPath(const QString &newPath) {
+QString TransferConfig::tfrecordNewPath() const 
+{
+    return m_tfrecordNewPath;
+}
+void TransferConfig::setTfrecordNewPath(const QString &newPath)
+{
     QUrl fileUrl(newPath);
     if (fileUrl.isValid() && fileUrl.scheme() == "file") {
         QString path = fileUrl.toLocalFile();
@@ -65,8 +74,12 @@ void TransferConfig::setTfrecordNewPath(const QString &newPath) {
     emit tfrecordNewPathChanged();
 }
 
-QString TransferConfig::savePath() const { return m_savePath; }
-void TransferConfig::setSavePath(const QString &newPath) {
+QString TransferConfig::savePath() const
+{ 
+    return m_savePath;
+}
+void TransferConfig::setSavePath(const QString &newPath)
+{
     QUrl fileUrl(newPath);
     if (fileUrl.isValid() && fileUrl.scheme() == "file") {
         QString path = fileUrl.toLocalFile();
@@ -79,19 +92,45 @@ void TransferConfig::setSavePath(const QString &newPath) {
     emit savePathChanged();
 }
 
-int TransferConfig::batchSize() const { return m_batchSize; }
-void TransferConfig::setBatchSize(int size) { m_batchSize = size; emit batchSizeChanged(); }
+int TransferConfig::batchSize() const
+{ 
+    return m_batchSize;
+}
+void TransferConfig::setBatchSize(int size)
+{
+    m_batchSize = size; emit batchSizeChanged();
+}
 
-double TransferConfig::learningRate() const { return m_learningRate; }
-void TransferConfig::setLearningRate(double rate) { m_learningRate = rate; emit learningRateChanged(); }
+double TransferConfig::learningRate() const 
+{
+    return m_learningRate;
+}
+void TransferConfig::setLearningRate(double rate) 
+{
+    m_learningRate = rate;
+    emit learningRateChanged();
+}
 
-int TransferConfig::epoch() const { return m_epoch; }
-void TransferConfig::setEpoch(int epoch) { m_epoch = epoch; emit epochChanged(); }
+int TransferConfig::epoch() const 
+{
+    return m_epoch; 
+}
+void TransferConfig::setEpoch(int epoch)
+{ 
+    m_epoch = epoch; emit epochChanged();
+}
 
-double TransferConfig::beta() const { return m_beta; }
-void TransferConfig::setBeta(double beta) { m_beta = beta; emit betaChanged(); }
+double TransferConfig::beta() const 
+{ 
+    return m_beta; 
+}
+void TransferConfig::setBeta(double beta) 
+{
+    m_beta = beta; emit betaChanged();
+}
 
-bool TransferConfig::loadConfig() {
+bool TransferConfig::loadConfig()
+{
     QFile file(m_filePath);
     if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
         qWarning() << "Không thể mở file để đọc:" << m_filePath;
@@ -133,7 +172,8 @@ bool TransferConfig::loadConfig() {
     return true;
 }
 
-bool TransferConfig::saveConfig() const {
+bool TransferConfig::saveConfig() const
+{
     QFile file(m_filePath);
     QJsonObject rootObject;
 
@@ -191,7 +231,8 @@ bool TransferConfig::saveConfig() const {
     return true;
 }
 
-void TransferConfig::loadDefaults() {
+void TransferConfig::loadDefaults()
+{
     m_baseWeightPath = "/home/haiminh/Desktop/D-ESCA_v2/Results/base_training_result/saved_model/vq_vae";
     m_tfrecordUsedPath = "/home/haiminh/Desktop/D-ESCA_v2/park_dataset_demo/mel_data2";
     m_tfrecordNewPath = "/home/haiminh/Desktop/D-ESCA_v2/data/target/Target25";
