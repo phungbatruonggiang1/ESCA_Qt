@@ -1,3 +1,10 @@
+/* @@@LICENSE
+ *
+ * Copyright (c) 2020-2025 SPARC Laboratory, HUST.
+ * Copyright (c) 2023-2025 Phung Ba Truong Giang.
+ *
+ * LICENSE@@@ */
+
 import QtQuick 2.15
 import QtQuick.Controls 2.15
 import QtQuick.Layouts 1.3
