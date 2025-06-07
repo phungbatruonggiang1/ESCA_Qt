@@ -5,13 +5,16 @@ import time
 import numpy as np
 from gammatone import gtgram
 from tensorflow.keras.models import load_model
-import os
-import wave
+
 import tensorflow as tf
 try:
     from tensorflow.python.compiler.tensorrt import trt_convert as trt
 except Exception:
     trt = None
+
+import os
+import wave
+import logging
 
 from config.config_manager import ConfigManager
 
@@ -24,6 +27,44 @@ SHM_SIZE = 176400  # 2 giây dữ liệu = 176400 bytes = 88200 mẫu int16
 
 EXCEED_LIMIT = 1
 
+def gtgram_tf(audio_array, sr, window_time, hop_time, channels, f_min):
+    """GPU-accelerated gammatone spectrogram using TensorFlow ops."""
+    window_size = int(sr * window_time)
+    hop_size = int(sr * hop_time)
+    audio = tf.convert_to_tensor(audio_array, dtype=tf.float32)
+    stft = tf.signal.stft(
+        audio,
+        frame_length=window_size,
+        frame_step=hop_size,
+        window_fn=tf.signal.hann_window,
+        pad_end=True,
+    )
+    magnitude = tf.abs(stft)
+    spec_bins = tf.shape(magnitude)[-1]
+    weights = tf.signal.linear_to_mel_weight_matrix(
+        num_mel_bins=channels,
+        num_spectrogram_bins=spec_bins,
+        sample_rate=sr,
+        lower_edge_hertz=f_min,
+        upper_edge_hertz=sr / 2,
+        dtype=magnitude.dtype,
+    )
+    gammatone_spec = tf.matmul(tf.square(magnitude), weights)
+    return tf.transpose(gammatone_spec)
+
+log_dir = config_manager.get("REALTIME.LOG_PATH", "./logs")
+os.makedirs(log_dir, exist_ok=True)
+log_file = os.path.join(log_dir, "processing_time.log")
+logging.basicConfig(
+    filename=log_file,
+    level=logging.INFO,
+    format="%(asctime)s - %(levelname)s - %(message)s",
+)
+logger = logging.getLogger(__name__)
+
+logger.info("Cấu hình mặc định:")
+logger.info(config_manager.config)
+
 # Lấy tham số cấu hình từ config
 frame_rate = config_manager.get("PREPROCESS.FRAME_RATE")
 window_time = config_manager.get("PREPROCESS.GAMMA.WINDOW_TIME")
@@ -35,6 +76,7 @@ manual_threshold = config_manager.get("REALTIME.MANUAL_THRESHOLD")
 threshold = config_manager.get("REALTIME.THRESHOLD")
 MIN = config_manager.get("REALTIME.MIN")
 MAX = config_manager.get("REALTIME.MAX")
+use_tf_gamma = config_manager.get("PREPROCESS.USE_TF_GTGRAM")
 
 # print(f"model_path: {model_path}")
 # print(f"frame_rate: {frame_rate}, window_time: {window_time}, hop_time: {hop_time}, channels: {channels}, f_min: {f_min}")
@@ -44,27 +86,38 @@ MAX = config_manager.get("REALTIME.MAX")
 use_trt = config_manager.get("DEVICE.USE_TENSORRT")
 trt_model_path = config_manager.get("REALTIME.TRT_MODEL_PATH")
 
-if use_trt and trt is not None:
-    try:
-        if trt_model_path and os.path.exists(trt_model_path):
-            model = tf.saved_model.load(trt_model_path)
-            infer = model.signatures['serving_default']
-        else:
-            converter = trt.TrtGraphConverterV2(input_saved_model_dir=model_path)
-            converter.convert()
-            if trt_model_path:
-                converter.save(trt_model_path)
+run_model = None
+
+def _setup_model():
+    global run_model
+    if use_trt and trt is not None:
+        try:
+            if trt_model_path and os.path.exists(trt_model_path):
                 model = tf.saved_model.load(trt_model_path)
+                infer = model.signatures['serving_default']
             else:
-                model = converter.convert()
-            infer = model.signatures['serving_default'] if hasattr(model, 'signatures') else model
-    except Exception as e:
-        print(f"TensorRT conversion failed: {e}. Falling back to TensorFlow model.")
-        model = load_model(model_path)
-        infer = model
-else:
+                converter = trt.TrtGraphConverterV2(input_saved_model_dir=model_path)
+                converter.convert()
+                if trt_model_path:
+                    converter.save(trt_model_path)
+                    model = tf.saved_model.load(trt_model_path)
+                else:
+                    model = converter.convert()
+                infer = model.signatures['serving_default'] if hasattr(model, 'signatures') else model
+
+            def run_trt(a):
+                result = infer(tf.convert_to_tensor(a))
+                return list(result.values())[0].numpy() if isinstance(result, dict) else result.numpy()
+
+            run_model = run_trt
+            return
+        except Exception as e:
+            logger.error(f"TensorRT conversion failed: {e}. Falling back to TensorFlow model.")
+
     model = load_model(model_path)
-    infer = model
+    run_model = lambda a: model.predict(a, verbose=0)
+
+_setup_model()
 # model.summary()
 
 shm = None
@@ -76,13 +129,13 @@ def cleanup():
     if shm:
         try:
             shm.detach()
-            print("Shared memory detached.")
+            logger.info("Shared memory detached.")
         except Exception as e:
-            print(f"Failed to detach shared memory: {e}")
-
+            logger.error(f"Failed to detach shared memory: {e}")
+            
 def signal_handler(signum, frame):
     """Xử lý tín hiệu (SIGINT, SIGTERM)."""
-    print(f"Signal {signum} received. Exiting...")
+    logger.info(f"Signal {signum} received. Exiting...")
     cleanup()
     sys.exit(0)
 
@@ -92,24 +145,27 @@ def wait_for_shared_memory():
     while True:
         try:
             shm = sysv_ipc.SharedMemory(SHM_KEY)
-            print("Shared memory connected.")
+            logger.info("Shared memory connected.")
             break
         except sysv_ipc.ExistentialError:
-            print("Shared memory không tồn tại. Đang chờ...")
+            logger.info("Shared memory không tồn tại. Đang chờ...")
             time.sleep(1)
 
     while True:
         try:
             semaphore = sysv_ipc.Semaphore(SEM_KEY)
-            print("Semaphore connected.")
+            logger.info("Semaphore connected.")
             break
         except sysv_ipc.ExistentialError:
-            print("Semaphore không tồn tại. Đang chờ...")
+            logger.info("Semaphore không tồn tại. Đang chờ...")
             time.sleep(1)
 
 def predict_mse(audio_array):
-    """Dự đoán MSE từ audio array."""
-    gtg = gtgram.gtgram(audio_array, frame_rate, window_time, hop_time, channels, f_min)
+    # Dự đoán MSE từ audio array
+    if use_tf_gamma and tf is not None:
+        gtg = gtgram_tf(audio_array, frame_rate, window_time, hop_time, channels, f_min).numpy()
+    else:
+        gtg = gtgram.gtgram(audio_array, frame_rate, window_time, hop_time, channels, f_min)
     a = np.flipud(20 * np.log10(gtg + 1e-10))  # Tránh log(0)
     a = np.clip((a-MIN)/(MAX-MIN), a_min=0, a_max=1)
     # print(f"Spectrogram shape: {a.shape}")
@@ -117,17 +173,10 @@ def predict_mse(audio_array):
     # print(f"Reshaped Spectrogram shape: {a.shape}")
 
     if a.shape != (1, 32, 32, 1):
-        print(f"Input shape không hợp lệ: {a.shape}")
+        logger.error(f"Input shape không hợp lệ: {a.shape}")
         return None
-
-    if use_trt and trt is not None and callable(infer):
-        result = infer(tf.convert_to_tensor(a))
-        if isinstance(result, dict):
-            pred = list(result.values())[0].numpy()
-        else:
-            pred = result.numpy()
-    else:
-        pred = model.predict(a, verbose=0)
+ 
+    pred = run_model(a)
     return np.mean((a - pred) ** 2)  
 
 def process_realtime():
@@ -149,12 +198,13 @@ def process_realtime():
             semaphore.acquire()
             raw_data = bytearray(shm.read(SHM_SIZE))
             semaphore.release()
-        except sysv_ipc.BusyError:
-            print("Semaphore is busy. Skipping this cycle.")
+        except sysv_ipc.BusyError:            
+            logger.error("Semaphore is busy. Skipping this cycle.")
             continue
 
         if len(raw_data) != SHM_SIZE:
-            print(f"⚠️ Warning: Expected {SHM_SIZE} bytes but got {len(raw_data)} bytes!")
+            logger.error(f"⚠️ Warning: Expected {SHM_SIZE} bytes but got {len(raw_data)} bytes!")
+            
             continue
 
         start_time = time.time()
@@ -175,6 +225,7 @@ def process_realtime():
 
         # Kiểm tra anomaly
         if mse > manual_threshold:
+            logger.info("Anomaly detected!")
             print("Anomaly detected!", flush=True)
         # print(f"Predict Result: {mse}", flush=True)
         print(mse, flush=True)
@@ -185,7 +236,8 @@ def process_realtime():
             time.sleep(cycle_duration - elapsed)
 
         end_time = time.time()
-        print(f"Processing time: {end_time - start_time} seconds and Pred: {mse}")
+        logger.info(f"Processing time: {end_time - start_time} seconds and Pred: {mse}")
+        #print(f"Processing time: {end_time - start_time} seconds and Pred: {mse}")
 
 def process_folder(folder_path):
     """
@@ -236,9 +288,9 @@ def process_folder(folder_path):
             print(mse, flush=True)
 
             end_time = time.time()
-            print(f"Processing time for {wav_file}: {end_time - start_time} seconds and Pred: {mse}")
+            logger.info(f"Processing time for {wav_file}: {end_time - start_time} seconds and Pred: {mse}")
 
-    print("Done Folder Mode")    
+    logger.info(f"Done!! Total files processed: {len(wav_files)}")        
 
 def main():
     """Hàm chính: Chỉ tối ưu phần Real-time, giữ nguyên chế độ đọc file từ folder."""
@@ -246,15 +298,15 @@ def main():
     signal.signal(signal.SIGTERM, signal_handler)
 
     import_file = config_manager.get("REALTIME.IMPORT_FILE")  # True = Folder Mode, False = Real-time Mode
-    print(f"IMPORT_FILE: {import_file}")
+    logger.info(f"IMPORT_FILE: {import_file}")
 
     if not import_file:
-        # print("Chế độ Real-time")
+        logger.info("Chế độ Real-time")
         wait_for_shared_memory()
         process_realtime()
     else:
         folder_path = config_manager.get("REALTIME.FOLDER_PATH")
-        # print(f"Chế độ Folder, xử lý thư mục: {folder_path}")
+        logger.info(f"Chế độ Folder, xử lý thư mục: {folder_path}")
         process_folder(folder_path)  # Giữ nguyên không thay đổi
 
 if __name__ == "__main__":
