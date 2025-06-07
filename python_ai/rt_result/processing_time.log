@@ -1,0 +1,657 @@
+2025-06-07 20:25:28,810 - INFO - Cấu hình mặc định:
+2025-06-07 20:25:28,810 - INFO - {'DATASET': {'DATALOADER': {'BATCH_SIZE': 128, 'SHUFFLE': True}, 'PATH': {'ANOMALY': '/home/haiminh/Desktop/fanDataset/abnomalyTarget', 'NORMAL': '/home/haiminh/Desktop/fanDataset/normalTarget', 'TEST': None, 'TFRECORDS': ['/home/haiminh/Desktop/D-ESCA_v2/park_dataset_demo/mel_dataFan']}, 'RATIO': {'TEST': 0.1, 'TRAIN': 0.8}}, 'DEVICE': {'JETSON': False, 'USE_TENSORRT': False}, 'MODEL': {'TYPE': 'vq_vae'}, 'POSTPROCESS': {'PATH_SAVE_THRESHOLD': '/home/thanhho/SPARC/ESCA/Code/train_on_PCv2/Results/'}, 'PREPROCESS': {'AUDIO_LEN': 2, 'FRAME_RATE': 44100, 'GAMMA': {'CHANNELS': 32, 'F_MIN': 100, 'HOP_TIME': 0.06, 'WINDOW_TIME': 0.12}, 'MEL': {'NFFT': 2048, 'N_BANDS': 32, 'SR': 16000}, 'SAMPLE_PER_FILE': 200, 'SEGMENT_LEN': 2, 'TYPE': 'gamma', 'USE_TF_GTGRAM': True}, 'REALTIME': {'CHANNELS': 1, 'FOLDER_PATH': '/home/haiminh/Desktop/Data_Predictive_Maintainance/newNormal', 'IMPORT_FILE': True, 'LOG_PATH': '/home/haiminh/Desktop/ESCA_Qt/python_ai/rt_result', 'MANUAL_THRESHOLD': 0.001, 'MAX': 51.67738342285156, 'MIN': -23.14520263671875, 'MODEL_PATH': '/home/haiminh/Desktop/ESCA_Qt/python_ai/result', 'SAMPLESIZE': 16, 'SAMPLING_RATE': 44100, 'SECOND': 2, 'THRESHOLD': 0.002630938310176134}, 'RECORD': {'ABNOMALY': False, 'CHANNEL': 0, 'CODEC': 0, 'DATASET_PATH': './dataset_mic_laptop_16k', 'DEVICE': 0, 'DEVICENAME': 'default', 'DURATION': 0, 'ENDIAN': 0, 'SAMPLERATE': 3, 'SAMPLESIZE': 1}, 'TRAINING': {'EPOCH': 15, 'LEARNING_RATE': 0.001, 'LOG_FOLDER': '/home/haiminh/Desktop/info.txt', 'PRETRAINED_WEIGHTS': '/home/haiminh/Desktop/ESCA_Qt/python_ai/temp/saved_model', 'SAVE_PATH': '/home/haiminh/Desktop/ESCA_Qt/python_ai/resultFan'}, 'TRANSFER_LEARNING': {'ANOM_BATCH_SIZE': 128, 'BASED_WEIGHTS': '/home/haiminh/Desktop/ESCA_Qt/python_ai/resultFan/saved_model/vq_vae', 'BETA': 1, 'EPOCH': 81, 'LEARNING_RATE': 0.001, 'SAVE_PATH': '/home/haiminh/Desktop/ESCA_Qt/python_ai/tl_resultFan', 'TEST_DIR': None, 'TFRECORDS': ['/home/haiminh/Desktop/D-ESCA_v2/park_dataset_demo/mel_dataFanTarget']}}
+2025-06-07 20:25:29,230 - INFO - Fingerprint not found. Saved model loading will continue.
+2025-06-07 20:25:29,236 - INFO - IMPORT_FILE: True
+2025-06-07 20:25:29,236 - INFO - Chế độ Folder, xử lý thư mục: /home/haiminh/Desktop/Data_Predictive_Maintainance/newNormal
+2025-06-07 20:25:29,746 - INFO - Processing time for splited0803_s1_0_0.wav: 0.50992751121521 seconds and Pred: 0.021969754248857498
+2025-06-07 20:25:30,006 - INFO - Processing time for splited0803_s1_0_1.wav: 0.2598848342895508 seconds and Pred: 0.019669704139232635
+2025-06-07 20:25:30,269 - INFO - Processing time for splited0803_s1_0_10.wav: 0.2620871067047119 seconds and Pred: 0.019189756363630295
+2025-06-07 20:25:30,533 - INFO - Processing time for splited0803_s1_0_11.wav: 0.2648184299468994 seconds and Pred: 0.01863820105791092
+2025-06-07 20:25:30,784 - INFO - Processing time for splited0803_s1_0_12.wav: 0.25072789192199707 seconds and Pred: 0.018466979265213013
+2025-06-07 20:25:31,045 - INFO - Processing time for splited0803_s1_0_13.wav: 0.2605569362640381 seconds and Pred: 0.018650460988283157
+2025-06-07 20:25:31,315 - INFO - Processing time for splited0803_s1_0_14.wav: 0.2700519561767578 seconds and Pred: 0.018843024969100952
+2025-06-07 20:25:31,557 - INFO - Processing time for splited0803_s1_0_15.wav: 0.24207711219787598 seconds and Pred: 0.01787745952606201
+2025-06-07 20:25:31,805 - INFO - Processing time for splited0803_s1_0_16.wav: 0.24753952026367188 seconds and Pred: 0.01825682446360588
+2025-06-07 20:25:32,052 - INFO - Processing time for splited0803_s1_0_17.wav: 0.24635958671569824 seconds and Pred: 0.017960024997591972
+2025-06-07 20:25:32,325 - INFO - Processing time for splited0803_s1_0_18.wav: 0.27321958541870117 seconds and Pred: 0.018131542950868607
+2025-06-07 20:25:32,567 - INFO - Processing time for splited0803_s1_0_19.wav: 0.2417600154876709 seconds and Pred: 0.017669253051280975
+2025-06-07 20:25:32,802 - INFO - Processing time for splited0803_s1_0_2.wav: 0.23538708686828613 seconds and Pred: 0.018713172525167465
+2025-06-07 20:25:33,071 - INFO - Processing time for splited0803_s1_0_20.wav: 0.2688100337982178 seconds and Pred: 0.01838141307234764
+2025-06-07 20:25:33,330 - INFO - Processing time for splited0803_s1_0_21.wav: 0.2582204341888428 seconds and Pred: 0.01851874589920044
+2025-06-07 20:25:33,572 - INFO - Processing time for splited0803_s1_0_22.wav: 0.24216365814208984 seconds and Pred: 0.018554288893938065
+2025-06-07 20:25:33,815 - INFO - Processing time for splited0803_s1_0_23.wav: 0.24299883842468262 seconds and Pred: 0.017882928252220154
+2025-06-07 20:25:34,070 - INFO - Processing time for splited0803_s1_0_24.wav: 0.25527334213256836 seconds and Pred: 0.01808919757604599
+2025-06-07 20:25:34,309 - INFO - Processing time for splited0803_s1_0_25.wav: 0.23813390731811523 seconds and Pred: 0.017878307029604912
+2025-06-07 20:25:34,546 - INFO - Processing time for splited0803_s1_0_26.wav: 0.2369832992553711 seconds and Pred: 0.01800982654094696
+2025-06-07 20:25:34,798 - INFO - Processing time for splited0803_s1_0_27.wav: 0.2520461082458496 seconds and Pred: 0.01853811927139759
+2025-06-07 20:25:35,053 - INFO - Processing time for splited0803_s1_0_28.wav: 0.25534605979919434 seconds and Pred: 0.01802055537700653
+2025-06-07 20:25:35,301 - INFO - Processing time for splited0803_s1_0_29.wav: 0.2469465732574463 seconds and Pred: 0.018126286566257477
+2025-06-07 20:25:35,553 - INFO - Processing time for splited0803_s1_0_3.wav: 0.2518765926361084 seconds and Pred: 0.01949119195342064
+2025-06-07 20:25:35,797 - INFO - Processing time for splited0803_s1_0_4.wav: 0.24420428276062012 seconds and Pred: 0.01987529918551445
+2025-06-07 20:25:36,045 - INFO - Processing time for splited0803_s1_0_5.wav: 0.24809956550598145 seconds and Pred: 0.020619630813598633
+2025-06-07 20:25:36,285 - INFO - Processing time for splited0803_s1_0_6.wav: 0.24028325080871582 seconds and Pred: 0.01970939338207245
+2025-06-07 20:25:36,536 - INFO - Processing time for splited0803_s1_0_7.wav: 0.250058650970459 seconds and Pred: 0.019742734730243683
+2025-06-07 20:25:36,781 - INFO - Processing time for splited0803_s1_0_8.wav: 0.24542856216430664 seconds and Pred: 0.020197076722979546
+2025-06-07 20:25:37,023 - INFO - Processing time for splited0803_s1_0_9.wav: 0.2413933277130127 seconds and Pred: 0.019709106534719467
+2025-06-07 20:25:37,269 - INFO - Processing time for splited0803_s1_10_0.wav: 0.24649763107299805 seconds and Pred: 0.018360089510679245
+2025-06-07 20:25:37,519 - INFO - Processing time for splited0803_s1_10_1.wav: 0.24989676475524902 seconds and Pred: 0.017364179715514183
+2025-06-07 20:25:37,763 - INFO - Processing time for splited0803_s1_10_10.wav: 0.24322772026062012 seconds and Pred: 0.01778380572795868
+2025-06-07 20:25:38,026 - INFO - Processing time for splited0803_s1_10_11.wav: 0.2627131938934326 seconds and Pred: 0.01792295277118683
+2025-06-07 20:25:38,270 - INFO - Processing time for splited0803_s1_10_12.wav: 0.24466323852539062 seconds and Pred: 0.018256064504384995
+2025-06-07 20:25:38,515 - INFO - Processing time for splited0803_s1_10_13.wav: 0.2441086769104004 seconds and Pred: 0.017929760739207268
+2025-06-07 20:25:38,753 - INFO - Processing time for splited0803_s1_10_14.wav: 0.23875808715820312 seconds and Pred: 0.01756317913532257
+2025-06-07 20:25:39,000 - INFO - Processing time for splited0803_s1_10_15.wav: 0.2465829849243164 seconds and Pred: 0.019072294235229492
+2025-06-07 20:25:39,258 - INFO - Processing time for splited0803_s1_10_16.wav: 0.25794219970703125 seconds and Pred: 0.018028387799859047
+2025-06-07 20:25:39,494 - INFO - Processing time for splited0803_s1_10_17.wav: 0.23538970947265625 seconds and Pred: 0.017986547201871872
+2025-06-07 20:25:39,738 - INFO - Processing time for splited0803_s1_10_18.wav: 0.24405455589294434 seconds and Pred: 0.018413513898849487
+2025-06-07 20:25:39,984 - INFO - Processing time for splited0803_s1_10_19.wav: 0.24618768692016602 seconds and Pred: 0.01784851960837841
+2025-06-07 20:25:40,230 - INFO - Processing time for splited0803_s1_10_2.wav: 0.24554157257080078 seconds and Pred: 0.0175081305205822
+2025-06-07 20:25:40,475 - INFO - Processing time for splited0803_s1_10_20.wav: 0.24477171897888184 seconds and Pred: 0.01751691848039627
+2025-06-07 20:25:40,726 - INFO - Processing time for splited0803_s1_10_21.wav: 0.2514634132385254 seconds and Pred: 0.018233947455883026
+2025-06-07 20:25:40,976 - INFO - Processing time for splited0803_s1_10_22.wav: 0.2491312026977539 seconds and Pred: 0.01831282675266266
+2025-06-07 20:25:41,235 - INFO - Processing time for splited0803_s1_10_23.wav: 0.25917673110961914 seconds and Pred: 0.018752016127109528
+2025-06-07 20:25:41,478 - INFO - Processing time for splited0803_s1_10_24.wav: 0.24289178848266602 seconds and Pred: 0.019526081159710884
+2025-06-07 20:25:41,722 - INFO - Processing time for splited0803_s1_10_25.wav: 0.24354028701782227 seconds and Pred: 0.018206724897027016
+2025-06-07 20:25:41,963 - INFO - Processing time for splited0803_s1_10_26.wav: 0.24143695831298828 seconds and Pred: 0.018487203866243362
+2025-06-07 20:25:42,235 - INFO - Processing time for splited0803_s1_10_27.wav: 0.2714533805847168 seconds and Pred: 0.01801121234893799
+2025-06-07 20:25:42,485 - INFO - Processing time for splited0803_s1_10_28.wav: 0.2497568130493164 seconds and Pred: 0.01848190650343895
+2025-06-07 20:25:42,732 - INFO - Processing time for splited0803_s1_10_29.wav: 0.24768948554992676 seconds and Pred: 0.01822603866457939
+2025-06-07 20:25:42,981 - INFO - Processing time for splited0803_s1_10_3.wav: 0.24840974807739258 seconds and Pred: 0.018372656777501106
+2025-06-07 20:25:43,229 - INFO - Processing time for splited0803_s1_10_4.wav: 0.24770212173461914 seconds and Pred: 0.01770259439945221
+2025-06-07 20:25:43,481 - INFO - Processing time for splited0803_s1_10_5.wav: 0.25182080268859863 seconds and Pred: 0.01836494728922844
+2025-06-07 20:25:43,729 - INFO - Processing time for splited0803_s1_10_6.wav: 0.24790716171264648 seconds and Pred: 0.018279820680618286
+2025-06-07 20:25:43,977 - INFO - Processing time for splited0803_s1_10_7.wav: 0.24799180030822754 seconds and Pred: 0.018186120316386223
+2025-06-07 20:25:44,218 - INFO - Processing time for splited0803_s1_10_8.wav: 0.24077200889587402 seconds and Pred: 0.017033033072948456
+2025-06-07 20:25:44,455 - INFO - Processing time for splited0803_s1_10_9.wav: 0.23694443702697754 seconds and Pred: 0.017441876232624054
+2025-06-07 20:25:44,702 - INFO - Processing time for splited0803_s1_11_0.wav: 0.2471001148223877 seconds and Pred: 0.017473656684160233
+2025-06-07 20:25:44,942 - INFO - Processing time for splited0803_s1_11_1.wav: 0.23976564407348633 seconds and Pred: 0.017845725640654564
+2025-06-07 20:25:45,188 - INFO - Processing time for splited0803_s1_11_10.wav: 0.2462456226348877 seconds and Pred: 0.01648150011897087
+2025-06-07 20:25:45,430 - INFO - Processing time for splited0803_s1_11_11.wav: 0.24142932891845703 seconds and Pred: 0.01696193777024746
+2025-06-07 20:25:45,697 - INFO - Processing time for splited0803_s1_11_12.wav: 0.26716065406799316 seconds and Pred: 0.01754526048898697
+2025-06-07 20:25:45,945 - INFO - Processing time for splited0803_s1_11_13.wav: 0.24814128875732422 seconds and Pred: 0.017930112779140472
+2025-06-07 20:25:46,194 - INFO - Processing time for splited0803_s1_11_14.wav: 0.2483079433441162 seconds and Pred: 0.017293734475970268
+2025-06-07 20:25:46,432 - INFO - Processing time for splited0803_s1_11_15.wav: 0.2379453182220459 seconds and Pred: 0.017078101634979248
+2025-06-07 20:25:46,673 - INFO - Processing time for splited0803_s1_11_16.wav: 0.24077892303466797 seconds and Pred: 0.017022401094436646
+2025-06-07 20:25:46,913 - INFO - Processing time for splited0803_s1_11_17.wav: 0.2396383285522461 seconds and Pred: 0.017291318625211716
+2025-06-07 20:25:47,155 - INFO - Processing time for splited0803_s1_11_18.wav: 0.24216914176940918 seconds and Pred: 0.017883211374282837
+2025-06-07 20:25:47,403 - INFO - Processing time for splited0803_s1_11_19.wav: 0.24779319763183594 seconds and Pred: 0.019527560099959373
+2025-06-07 20:25:47,642 - INFO - Processing time for splited0803_s1_11_2.wav: 0.23903822898864746 seconds and Pred: 0.017682330682873726
+2025-06-07 20:25:47,876 - INFO - Processing time for splited0803_s1_11_20.wav: 0.233414888381958 seconds and Pred: 0.01714399643242359
+2025-06-07 20:25:48,129 - INFO - Processing time for splited0803_s1_11_21.wav: 0.25327467918395996 seconds and Pred: 0.017128881067037582
+2025-06-07 20:25:48,371 - INFO - Processing time for splited0803_s1_11_22.wav: 0.24158501625061035 seconds and Pred: 0.017671991139650345
+2025-06-07 20:25:48,616 - INFO - Processing time for splited0803_s1_11_23.wav: 0.245330810546875 seconds and Pred: 0.018302269279956818
+2025-06-07 20:25:48,861 - INFO - Processing time for splited0803_s1_11_24.wav: 0.24471211433410645 seconds and Pred: 0.01704488694667816
+2025-06-07 20:25:49,111 - INFO - Processing time for splited0803_s1_11_25.wav: 0.24996638298034668 seconds and Pred: 0.017857547849416733
+2025-06-07 20:25:49,356 - INFO - Processing time for splited0803_s1_11_26.wav: 0.24478673934936523 seconds and Pred: 0.018277503550052643
+2025-06-07 20:25:49,601 - INFO - Processing time for splited0803_s1_11_27.wav: 0.2445206642150879 seconds and Pred: 0.01775054633617401
+2025-06-07 20:25:49,846 - INFO - Processing time for splited0803_s1_11_28.wav: 0.24536705017089844 seconds and Pred: 0.0171426460146904
+2025-06-07 20:25:50,088 - INFO - Processing time for splited0803_s1_11_29.wav: 0.24159741401672363 seconds and Pred: 0.017921168357133865
+2025-06-07 20:25:50,336 - INFO - Processing time for splited0803_s1_11_3.wav: 0.2484879493713379 seconds and Pred: 0.01672406494617462
+2025-06-07 20:25:50,582 - INFO - Processing time for splited0803_s1_11_4.wav: 0.24554014205932617 seconds and Pred: 0.018111852928996086
+2025-06-07 20:25:50,834 - INFO - Processing time for splited0803_s1_11_5.wav: 0.2513306140899658 seconds and Pred: 0.017367927357554436
+2025-06-07 20:25:51,106 - INFO - Processing time for splited0803_s1_11_6.wav: 0.2726106643676758 seconds and Pred: 0.01677902787923813
+2025-06-07 20:25:51,356 - INFO - Processing time for splited0803_s1_11_7.wav: 0.2492687702178955 seconds and Pred: 0.017225593328475952
+2025-06-07 20:25:51,601 - INFO - Processing time for splited0803_s1_11_8.wav: 0.24463820457458496 seconds and Pred: 0.017169147729873657
+2025-06-07 20:25:51,846 - INFO - Processing time for splited0803_s1_11_9.wav: 0.24549055099487305 seconds and Pred: 0.016860589385032654
+2025-06-07 20:25:52,082 - INFO - Processing time for splited0803_s1_12_0.wav: 0.235870361328125 seconds and Pred: 0.01763007417321205
+2025-06-07 20:25:52,338 - INFO - Processing time for splited0803_s1_12_1.wav: 0.25557899475097656 seconds and Pred: 0.0183781236410141
+2025-06-07 20:25:52,593 - INFO - Processing time for splited0803_s1_12_10.wav: 0.25542330741882324 seconds and Pred: 0.017330678179860115
+2025-06-07 20:25:52,840 - INFO - Processing time for splited0803_s1_12_11.wav: 0.24608325958251953 seconds and Pred: 0.01744132861495018
+2025-06-07 20:25:53,088 - INFO - Processing time for splited0803_s1_12_12.wav: 0.2486732006072998 seconds and Pred: 0.01752002164721489
+2025-06-07 20:25:53,330 - INFO - Processing time for splited0803_s1_12_13.wav: 0.24117374420166016 seconds and Pred: 0.017788954079151154
+2025-06-07 20:25:53,571 - INFO - Processing time for splited0803_s1_12_14.wav: 0.24147987365722656 seconds and Pred: 0.017173223197460175
+2025-06-07 20:25:53,814 - INFO - Signal 2 received. Exiting...
+2025-06-07 20:26:05,752 - INFO - Cấu hình mặc định:
+2025-06-07 20:26:05,752 - INFO - {'DATASET': {'DATALOADER': {'BATCH_SIZE': 128, 'SHUFFLE': True}, 'PATH': {'ANOMALY': '/home/haiminh/Desktop/fanDataset/abnomalyTarget', 'NORMAL': '/home/haiminh/Desktop/fanDataset/normalTarget', 'TEST': None, 'TFRECORDS': ['/home/haiminh/Desktop/D-ESCA_v2/park_dataset_demo/mel_dataFan']}, 'RATIO': {'TEST': 0.1, 'TRAIN': 0.8}}, 'DEVICE': {'JETSON': False, 'USE_TENSORRT': False}, 'MODEL': {'TYPE': 'vq_vae'}, 'POSTPROCESS': {'PATH_SAVE_THRESHOLD': '/home/thanhho/SPARC/ESCA/Code/train_on_PCv2/Results/'}, 'PREPROCESS': {'AUDIO_LEN': 2, 'FRAME_RATE': 44100, 'GAMMA': {'CHANNELS': 32, 'F_MIN': 100, 'HOP_TIME': 0.06, 'WINDOW_TIME': 0.12}, 'MEL': {'NFFT': 2048, 'N_BANDS': 32, 'SR': 16000}, 'SAMPLE_PER_FILE': 200, 'SEGMENT_LEN': 2, 'TYPE': 'gamma', 'USE_TF_GTGRAM': False}, 'REALTIME': {'CHANNELS': 1, 'FOLDER_PATH': '/home/haiminh/Desktop/Data_Predictive_Maintainance/newNormal', 'IMPORT_FILE': True, 'LOG_PATH': '/home/haiminh/Desktop/ESCA_Qt/python_ai/rt_result', 'MANUAL_THRESHOLD': 0.001, 'MAX': 51.67738342285156, 'MIN': -23.14520263671875, 'MODEL_PATH': '/home/haiminh/Desktop/ESCA_Qt/python_ai/result', 'SAMPLESIZE': 16, 'SAMPLING_RATE': 44100, 'SECOND': 2, 'THRESHOLD': 0.002630938310176134}, 'RECORD': {'ABNOMALY': False, 'CHANNEL': 0, 'CODEC': 0, 'DATASET_PATH': './dataset_mic_laptop_16k', 'DEVICE': 0, 'DEVICENAME': 'default', 'DURATION': 0, 'ENDIAN': 0, 'SAMPLERATE': 3, 'SAMPLESIZE': 1}, 'TRAINING': {'EPOCH': 15, 'LEARNING_RATE': 0.001, 'LOG_FOLDER': '/home/haiminh/Desktop/info.txt', 'PRETRAINED_WEIGHTS': '/home/haiminh/Desktop/ESCA_Qt/python_ai/temp/saved_model', 'SAVE_PATH': '/home/haiminh/Desktop/ESCA_Qt/python_ai/resultFan'}, 'TRANSFER_LEARNING': {'ANOM_BATCH_SIZE': 128, 'BASED_WEIGHTS': '/home/haiminh/Desktop/ESCA_Qt/python_ai/resultFan/saved_model/vq_vae', 'BETA': 1, 'EPOCH': 81, 'LEARNING_RATE': 0.001, 'SAVE_PATH': '/home/haiminh/Desktop/ESCA_Qt/python_ai/tl_resultFan', 'TEST_DIR': None, 'TFRECORDS': ['/home/haiminh/Desktop/D-ESCA_v2/park_dataset_demo/mel_dataFanTarget']}}
+2025-06-07 20:26:06,147 - INFO - Fingerprint not found. Saved model loading will continue.
+2025-06-07 20:26:06,153 - INFO - IMPORT_FILE: True
+2025-06-07 20:26:06,153 - INFO - Chế độ Folder, xử lý thư mục: /home/haiminh/Desktop/Data_Predictive_Maintainance/newNormal
+2025-06-07 20:26:06,628 - INFO - Processing time for splited0803_s1_0_0.wav: 0.4747004508972168 seconds and Pred: 0.021969754248857498
+2025-06-07 20:26:06,889 - INFO - Processing time for splited0803_s1_0_1.wav: 0.2610294818878174 seconds and Pred: 0.019669704139232635
+2025-06-07 20:26:07,147 - INFO - Processing time for splited0803_s1_0_10.wav: 0.2579939365386963 seconds and Pred: 0.019189756363630295
+2025-06-07 20:26:07,389 - INFO - Processing time for splited0803_s1_0_11.wav: 0.24132275581359863 seconds and Pred: 0.01863820105791092
+2025-06-07 20:26:07,647 - INFO - Processing time for splited0803_s1_0_12.wav: 0.25813770294189453 seconds and Pred: 0.018466979265213013
+2025-06-07 20:26:07,882 - INFO - Processing time for splited0803_s1_0_13.wav: 0.2352144718170166 seconds and Pred: 0.018650460988283157
+2025-06-07 20:26:08,119 - INFO - Processing time for splited0803_s1_0_14.wav: 0.23669862747192383 seconds and Pred: 0.018843024969100952
+2025-06-07 20:26:08,360 - INFO - Processing time for splited0803_s1_0_15.wav: 0.240858793258667 seconds and Pred: 0.01787745952606201
+2025-06-07 20:26:08,606 - INFO - Processing time for splited0803_s1_0_16.wav: 0.24600529670715332 seconds and Pred: 0.01825682446360588
+2025-06-07 20:26:08,848 - INFO - Processing time for splited0803_s1_0_17.wav: 0.2420041561126709 seconds and Pred: 0.017960024997591972
+2025-06-07 20:26:09,115 - INFO - Processing time for splited0803_s1_0_18.wav: 0.26686620712280273 seconds and Pred: 0.018131542950868607
+2025-06-07 20:26:09,384 - INFO - Processing time for splited0803_s1_0_19.wav: 0.26912760734558105 seconds and Pred: 0.017669253051280975
+2025-06-07 20:26:09,630 - INFO - Processing time for splited0803_s1_0_2.wav: 0.24539852142333984 seconds and Pred: 0.018713172525167465
+2025-06-07 20:26:09,877 - INFO - Processing time for splited0803_s1_0_20.wav: 0.24719858169555664 seconds and Pred: 0.01838141307234764
+2025-06-07 20:26:10,161 - INFO - Processing time for splited0803_s1_0_21.wav: 0.2836723327636719 seconds and Pred: 0.01851874589920044
+2025-06-07 20:26:10,402 - INFO - Processing time for splited0803_s1_0_22.wav: 0.2404186725616455 seconds and Pred: 0.018554288893938065
+2025-06-07 20:26:10,670 - INFO - Processing time for splited0803_s1_0_23.wav: 0.26778292655944824 seconds and Pred: 0.017882928252220154
+2025-06-07 20:26:10,904 - INFO - Processing time for splited0803_s1_0_24.wav: 0.23464679718017578 seconds and Pred: 0.01808919757604599
+2025-06-07 20:26:11,146 - INFO - Processing time for splited0803_s1_0_25.wav: 0.24164628982543945 seconds and Pred: 0.017878307029604912
+2025-06-07 20:26:11,389 - INFO - Processing time for splited0803_s1_0_26.wav: 0.24309682846069336 seconds and Pred: 0.01800982654094696
+2025-06-07 20:26:11,636 - INFO - Processing time for splited0803_s1_0_27.wav: 0.2469620704650879 seconds and Pred: 0.01853811927139759
+2025-06-07 20:26:11,878 - INFO - Processing time for splited0803_s1_0_28.wav: 0.2413957118988037 seconds and Pred: 0.01802055537700653
+2025-06-07 20:26:12,124 - INFO - Processing time for splited0803_s1_0_29.wav: 0.24623966217041016 seconds and Pred: 0.018126286566257477
+2025-06-07 20:26:12,365 - INFO - Processing time for splited0803_s1_0_3.wav: 0.24022722244262695 seconds and Pred: 0.01949119195342064
+2025-06-07 20:26:12,612 - INFO - Processing time for splited0803_s1_0_4.wav: 0.24750900268554688 seconds and Pred: 0.01987529918551445
+2025-06-07 20:26:12,858 - INFO - Processing time for splited0803_s1_0_5.wav: 0.24581480026245117 seconds and Pred: 0.020619630813598633
+2025-06-07 20:26:13,097 - INFO - Processing time for splited0803_s1_0_6.wav: 0.2384951114654541 seconds and Pred: 0.01970939338207245
+2025-06-07 20:26:13,330 - INFO - Processing time for splited0803_s1_0_7.wav: 0.23308181762695312 seconds and Pred: 0.019742734730243683
+2025-06-07 20:26:13,571 - INFO - Processing time for splited0803_s1_0_8.wav: 0.24079155921936035 seconds and Pred: 0.020197076722979546
+2025-06-07 20:26:13,804 - INFO - Processing time for splited0803_s1_0_9.wav: 0.23256540298461914 seconds and Pred: 0.019709106534719467
+2025-06-07 20:26:14,042 - INFO - Processing time for splited0803_s1_10_0.wav: 0.2379920482635498 seconds and Pred: 0.018360089510679245
+2025-06-07 20:26:14,275 - INFO - Processing time for splited0803_s1_10_1.wav: 0.2329249382019043 seconds and Pred: 0.017364179715514183
+2025-06-07 20:26:14,511 - INFO - Processing time for splited0803_s1_10_10.wav: 0.23616242408752441 seconds and Pred: 0.01778380572795868
+2025-06-07 20:26:14,744 - INFO - Processing time for splited0803_s1_10_11.wav: 0.23273015022277832 seconds and Pred: 0.01792295277118683
+2025-06-07 20:26:14,981 - INFO - Processing time for splited0803_s1_10_12.wav: 0.2366034984588623 seconds and Pred: 0.018256064504384995
+2025-06-07 20:26:15,215 - INFO - Processing time for splited0803_s1_10_13.wav: 0.23433804512023926 seconds and Pred: 0.017929760739207268
+2025-06-07 20:26:15,459 - INFO - Processing time for splited0803_s1_10_14.wav: 0.24349331855773926 seconds and Pred: 0.01756317913532257
+2025-06-07 20:26:15,694 - INFO - Processing time for splited0803_s1_10_15.wav: 0.23573946952819824 seconds and Pred: 0.019072294235229492
+2025-06-07 20:26:15,931 - INFO - Processing time for splited0803_s1_10_16.wav: 0.23605942726135254 seconds and Pred: 0.018028387799859047
+2025-06-07 20:26:16,163 - INFO - Processing time for splited0803_s1_10_17.wav: 0.2320880889892578 seconds and Pred: 0.017986547201871872
+2025-06-07 20:26:16,397 - INFO - Processing time for splited0803_s1_10_18.wav: 0.23404884338378906 seconds and Pred: 0.018413513898849487
+2025-06-07 20:26:16,643 - INFO - Processing time for splited0803_s1_10_19.wav: 0.24592208862304688 seconds and Pred: 0.01784851960837841
+2025-06-07 20:26:16,884 - INFO - Processing time for splited0803_s1_10_2.wav: 0.2410144805908203 seconds and Pred: 0.0175081305205822
+2025-06-07 20:26:17,134 - INFO - Processing time for splited0803_s1_10_20.wav: 0.24949240684509277 seconds and Pred: 0.01751691848039627
+2025-06-07 20:26:17,382 - INFO - Processing time for splited0803_s1_10_21.wav: 0.2483062744140625 seconds and Pred: 0.018233947455883026
+2025-06-07 20:26:17,625 - INFO - Processing time for splited0803_s1_10_22.wav: 0.24233508110046387 seconds and Pred: 0.01831282675266266
+2025-06-07 20:26:17,866 - INFO - Processing time for splited0803_s1_10_23.wav: 0.2408292293548584 seconds and Pred: 0.018752016127109528
+2025-06-07 20:26:18,102 - INFO - Signal 2 received. Exiting...
+2025-06-07 20:33:05,766 - INFO - Starting inference with config: {'DATASET': {'DATALOADER': {'BATCH_SIZE': 128, 'SHUFFLE': True}, 'PATH': {'ANOMALY': '/home/haiminh/Desktop/fanDataset/abnomalyTarget', 'NORMAL': '/home/haiminh/Desktop/fanDataset/normalTarget', 'TEST': None, 'TFRECORDS': ['/home/haiminh/Desktop/D-ESCA_v2/park_dataset_demo/mel_dataFan']}, 'RATIO': {'TEST': 0.1, 'TRAIN': 0.8}}, 'DEVICE': {'JETSON': False, 'USE_TENSORRT': False}, 'MODEL': {'TYPE': 'vq_vae'}, 'POSTPROCESS': {'PATH_SAVE_THRESHOLD': '/home/thanhho/SPARC/ESCA/Code/train_on_PCv2/Results/'}, 'PREPROCESS': {'AUDIO_LEN': 2, 'FRAME_RATE': 44100, 'GAMMA': {'CHANNELS': 32, 'F_MIN': 100, 'HOP_TIME': 0.06, 'WINDOW_TIME': 0.12}, 'MEL': {'NFFT': 2048, 'N_BANDS': 32, 'SR': 16000}, 'SAMPLE_PER_FILE': 200, 'SEGMENT_LEN': 2, 'TYPE': 'gamma', 'USE_TF_GTGRAM': False}, 'REALTIME': {'CHANNELS': 1, 'FOLDER_PATH': '/home/haiminh/Desktop/Data_Predictive_Maintainance/newNormal', 'IMPORT_FILE': True, 'LOG_PATH': '/home/haiminh/Desktop/ESCA_Qt/python_ai/rt_result', 'MANUAL_THRESHOLD': 0.001, 'MAX': 51.67738342285156, 'MIN': -23.14520263671875, 'MODEL_PATH': '/home/haiminh/Desktop/ESCA_Qt/python_ai/result', 'SAMPLESIZE': 16, 'SAMPLING_RATE': 44100, 'SECOND': 2, 'THRESHOLD': 0.002630938310176134}, 'RECORD': {'ABNOMALY': False, 'CHANNEL': 0, 'CODEC': 0, 'DATASET_PATH': './dataset_mic_laptop_16k', 'DEVICE': 0, 'DEVICENAME': 'default', 'DURATION': 0, 'ENDIAN': 0, 'SAMPLERATE': 3, 'SAMPLESIZE': 1}, 'TRAINING': {'EPOCH': 15, 'LEARNING_RATE': 0.001, 'LOG_FOLDER': '/home/haiminh/Desktop/info.txt', 'PRETRAINED_WEIGHTS': '/home/haiminh/Desktop/ESCA_Qt/python_ai/temp/saved_model', 'SAVE_PATH': '/home/haiminh/Desktop/ESCA_Qt/python_ai/resultFan'}, 'TRANSFER_LEARNING': {'ANOM_BATCH_SIZE': 128, 'BASED_WEIGHTS': '/home/haiminh/Desktop/ESCA_Qt/python_ai/resultFan/saved_model/vq_vae', 'BETA': 1, 'EPOCH': 81, 'LEARNING_RATE': 0.001, 'SAVE_PATH': '/home/haiminh/Desktop/ESCA_Qt/python_ai/tl_resultFan', 'TEST_DIR': None, 'TFRECORDS': ['/home/haiminh/Desktop/D-ESCA_v2/park_dataset_demo/mel_dataFanTarget']}}
+2025-06-07 20:33:06,086 - INFO - Fingerprint not found. Saved model loading will continue.
+2025-06-07 20:34:19,242 - INFO - Starting inference with config: {'DATASET': {'DATALOADER': {'BATCH_SIZE': 128, 'SHUFFLE': True}, 'PATH': {'ANOMALY': '/home/haiminh/Desktop/fanDataset/abnomalyTarget', 'NORMAL': '/home/haiminh/Desktop/fanDataset/normalTarget', 'TEST': None, 'TFRECORDS': ['/home/haiminh/Desktop/D-ESCA_v2/park_dataset_demo/mel_dataFan']}, 'RATIO': {'TEST': 0.1, 'TRAIN': 0.8}}, 'DEVICE': {'JETSON': False, 'USE_TENSORRT': False}, 'MODEL': {'TYPE': 'vq_vae'}, 'POSTPROCESS': {'PATH_SAVE_THRESHOLD': '/home/thanhho/SPARC/ESCA/Code/train_on_PCv2/Results/'}, 'PREPROCESS': {'AUDIO_LEN': 2, 'FRAME_RATE': 44100, 'GAMMA': {'CHANNELS': 32, 'F_MIN': 100, 'HOP_TIME': 0.06, 'WINDOW_TIME': 0.12}, 'MEL': {'NFFT': 2048, 'N_BANDS': 32, 'SR': 16000}, 'SAMPLE_PER_FILE': 200, 'SEGMENT_LEN': 2, 'TYPE': 'gamma', 'USE_TF_GTGRAM': False}, 'REALTIME': {'CHANNELS': 1, 'FOLDER_PATH': '/home/haiminh/Desktop/Data_Predictive_Maintainance/newNormal', 'IMPORT_FILE': True, 'LOG_PATH': '/home/haiminh/Desktop/ESCA_Qt/python_ai/rt_result', 'MANUAL_THRESHOLD': 0.001, 'MAX': 51.67738342285156, 'MIN': -23.14520263671875, 'MODEL_PATH': '/home/haiminh/Desktop/ESCA_Qt/python_ai/result', 'SAMPLESIZE': 16, 'SAMPLING_RATE': 44100, 'SECOND': 2, 'THRESHOLD': 0.002630938310176134}, 'RECORD': {'ABNOMALY': False, 'CHANNEL': 0, 'CODEC': 0, 'DATASET_PATH': './dataset_mic_laptop_16k', 'DEVICE': 0, 'DEVICENAME': 'default', 'DURATION': 0, 'ENDIAN': 0, 'SAMPLERATE': 3, 'SAMPLESIZE': 1}, 'TRAINING': {'EPOCH': 15, 'LEARNING_RATE': 0.001, 'LOG_FOLDER': '/home/haiminh/Desktop/info.txt', 'PRETRAINED_WEIGHTS': '/home/haiminh/Desktop/ESCA_Qt/python_ai/temp/saved_model', 'SAVE_PATH': '/home/haiminh/Desktop/ESCA_Qt/python_ai/resultFan'}, 'TRANSFER_LEARNING': {'ANOM_BATCH_SIZE': 128, 'BASED_WEIGHTS': '/home/haiminh/Desktop/ESCA_Qt/python_ai/resultFan/saved_model/vq_vae', 'BETA': 1, 'EPOCH': 81, 'LEARNING_RATE': 0.001, 'SAVE_PATH': '/home/haiminh/Desktop/ESCA_Qt/python_ai/tl_resultFan', 'TEST_DIR': None, 'TFRECORDS': ['/home/haiminh/Desktop/D-ESCA_v2/park_dataset_demo/mel_dataFanTarget']}}
+2025-06-07 20:34:19,629 - INFO - Fingerprint not found. Saved model loading will continue.
+2025-06-07 20:34:20,060 - INFO - splited0803_s1_0_0.wav => MSE 0.021970
+2025-06-07 20:34:20,300 - INFO - splited0803_s1_0_1.wav => MSE 0.019670
+2025-06-07 20:34:20,543 - INFO - splited0803_s1_0_10.wav => MSE 0.019190
+2025-06-07 20:34:20,784 - INFO - splited0803_s1_0_11.wav => MSE 0.018638
+2025-06-07 20:34:21,034 - INFO - splited0803_s1_0_12.wav => MSE 0.018467
+2025-06-07 20:34:21,275 - INFO - splited0803_s1_0_13.wav => MSE 0.018650
+2025-06-07 20:34:21,518 - INFO - splited0803_s1_0_14.wav => MSE 0.018843
+2025-06-07 20:34:21,759 - INFO - splited0803_s1_0_15.wav => MSE 0.017877
+2025-06-07 20:34:22,011 - INFO - splited0803_s1_0_16.wav => MSE 0.018257
+2025-06-07 20:34:22,252 - INFO - splited0803_s1_0_17.wav => MSE 0.017960
+2025-06-07 20:34:22,495 - INFO - splited0803_s1_0_18.wav => MSE 0.018132
+2025-06-07 20:34:22,738 - INFO - splited0803_s1_0_19.wav => MSE 0.017669
+2025-06-07 20:34:22,983 - INFO - splited0803_s1_0_2.wav => MSE 0.018713
+2025-06-07 20:34:23,228 - INFO - splited0803_s1_0_20.wav => MSE 0.018381
+2025-06-07 20:34:23,469 - INFO - splited0803_s1_0_21.wav => MSE 0.018519
+2025-06-07 20:34:23,710 - INFO - splited0803_s1_0_22.wav => MSE 0.018554
+2025-06-07 20:34:23,953 - INFO - splited0803_s1_0_23.wav => MSE 0.017883
+2025-06-07 20:34:24,193 - INFO - splited0803_s1_0_24.wav => MSE 0.018089
+2025-06-07 20:34:24,437 - INFO - splited0803_s1_0_25.wav => MSE 0.017878
+2025-06-07 20:34:24,692 - INFO - splited0803_s1_0_26.wav => MSE 0.018010
+2025-06-07 20:34:24,949 - INFO - splited0803_s1_0_27.wav => MSE 0.018538
+2025-06-07 20:34:25,211 - INFO - splited0803_s1_0_28.wav => MSE 0.018021
+2025-06-07 20:34:25,469 - INFO - splited0803_s1_0_29.wav => MSE 0.018126
+2025-06-07 20:34:25,719 - INFO - splited0803_s1_0_3.wav => MSE 0.019491
+2025-06-07 20:34:25,967 - INFO - splited0803_s1_0_4.wav => MSE 0.019875
+2025-06-07 20:34:26,228 - INFO - splited0803_s1_0_5.wav => MSE 0.020620
+2025-06-07 20:34:26,482 - INFO - splited0803_s1_0_6.wav => MSE 0.019709
+2025-06-07 20:34:26,730 - INFO - splited0803_s1_0_7.wav => MSE 0.019743
+2025-06-07 20:34:26,981 - INFO - splited0803_s1_0_8.wav => MSE 0.020197
+2025-06-07 20:34:27,232 - INFO - splited0803_s1_0_9.wav => MSE 0.019709
+2025-06-07 20:34:27,486 - INFO - splited0803_s1_10_0.wav => MSE 0.018360
+2025-06-07 20:34:27,737 - INFO - splited0803_s1_10_1.wav => MSE 0.017364
+2025-06-07 20:34:27,985 - INFO - splited0803_s1_10_10.wav => MSE 0.017784
+2025-06-07 20:34:28,251 - INFO - splited0803_s1_10_11.wav => MSE 0.017923
+2025-06-07 20:34:28,497 - INFO - splited0803_s1_10_12.wav => MSE 0.018256
+2025-06-07 20:34:28,745 - INFO - splited0803_s1_10_13.wav => MSE 0.017930
+2025-06-07 20:34:28,994 - INFO - splited0803_s1_10_14.wav => MSE 0.017563
+2025-06-07 20:34:29,242 - INFO - splited0803_s1_10_15.wav => MSE 0.019072
+2025-06-07 20:34:29,486 - INFO - splited0803_s1_10_16.wav => MSE 0.018028
+2025-06-07 20:34:29,730 - INFO - splited0803_s1_10_17.wav => MSE 0.017987
+2025-06-07 20:34:29,975 - INFO - splited0803_s1_10_18.wav => MSE 0.018414
+2025-06-07 20:34:30,215 - INFO - splited0803_s1_10_19.wav => MSE 0.017849
+2025-06-07 20:34:30,460 - INFO - splited0803_s1_10_2.wav => MSE 0.017508
+2025-06-07 20:34:30,709 - INFO - splited0803_s1_10_20.wav => MSE 0.017517
+2025-06-07 20:34:30,951 - INFO - splited0803_s1_10_21.wav => MSE 0.018234
+2025-06-07 20:34:31,194 - INFO - splited0803_s1_10_22.wav => MSE 0.018313
+2025-06-07 20:34:31,438 - INFO - splited0803_s1_10_23.wav => MSE 0.018752
+2025-06-07 20:34:31,677 - INFO - splited0803_s1_10_24.wav => MSE 0.019526
+2025-06-07 20:34:31,920 - INFO - splited0803_s1_10_25.wav => MSE 0.018207
+2025-06-07 20:34:32,160 - INFO - splited0803_s1_10_26.wav => MSE 0.018487
+2025-06-07 20:34:32,403 - INFO - splited0803_s1_10_27.wav => MSE 0.018011
+2025-06-07 20:34:32,657 - INFO - splited0803_s1_10_28.wav => MSE 0.018482
+2025-06-07 20:34:32,898 - INFO - splited0803_s1_10_29.wav => MSE 0.018226
+2025-06-07 20:34:33,139 - INFO - splited0803_s1_10_3.wav => MSE 0.018373
+2025-06-07 20:34:33,381 - INFO - splited0803_s1_10_4.wav => MSE 0.017703
+2025-06-07 20:34:33,621 - INFO - splited0803_s1_10_5.wav => MSE 0.018365
+2025-06-07 20:34:33,865 - INFO - splited0803_s1_10_6.wav => MSE 0.018280
+2025-06-07 20:34:34,104 - INFO - splited0803_s1_10_7.wav => MSE 0.018186
+2025-06-07 20:34:34,347 - INFO - splited0803_s1_10_8.wav => MSE 0.017033
+2025-06-07 20:34:34,587 - INFO - splited0803_s1_10_9.wav => MSE 0.017442
+2025-06-07 20:34:34,833 - INFO - splited0803_s1_11_0.wav => MSE 0.017474
+2025-06-07 20:34:35,082 - INFO - splited0803_s1_11_1.wav => MSE 0.017846
+2025-06-07 20:34:35,330 - INFO - splited0803_s1_11_10.wav => MSE 0.016482
+2025-06-07 20:34:35,587 - INFO - splited0803_s1_11_11.wav => MSE 0.016962
+2025-06-07 20:34:35,834 - INFO - splited0803_s1_11_12.wav => MSE 0.017545
+2025-06-07 20:34:36,090 - INFO - splited0803_s1_11_13.wav => MSE 0.017930
+2025-06-07 20:34:36,340 - INFO - splited0803_s1_11_14.wav => MSE 0.017294
+2025-06-07 20:34:36,581 - INFO - splited0803_s1_11_15.wav => MSE 0.017078
+2025-06-07 20:34:36,830 - INFO - splited0803_s1_11_16.wav => MSE 0.017022
+2025-06-07 20:34:37,089 - INFO - splited0803_s1_11_17.wav => MSE 0.017291
+2025-06-07 20:34:37,335 - INFO - splited0803_s1_11_18.wav => MSE 0.017883
+2025-06-07 20:34:37,587 - INFO - splited0803_s1_11_19.wav => MSE 0.019528
+2025-06-07 20:34:37,831 - INFO - splited0803_s1_11_2.wav => MSE 0.017682
+2025-06-07 20:34:38,078 - INFO - splited0803_s1_11_20.wav => MSE 0.017144
+2025-06-07 20:34:38,323 - INFO - splited0803_s1_11_21.wav => MSE 0.017129
+2025-06-07 20:34:38,571 - INFO - splited0803_s1_11_22.wav => MSE 0.017672
+2025-06-07 20:34:38,813 - INFO - splited0803_s1_11_23.wav => MSE 0.018302
+2025-06-07 20:34:39,064 - INFO - splited0803_s1_11_24.wav => MSE 0.017045
+2025-06-07 20:34:39,313 - INFO - splited0803_s1_11_25.wav => MSE 0.017858
+2025-06-07 20:34:39,557 - INFO - splited0803_s1_11_26.wav => MSE 0.018278
+2025-06-07 20:34:39,803 - INFO - splited0803_s1_11_27.wav => MSE 0.017751
+2025-06-07 20:34:40,047 - INFO - splited0803_s1_11_28.wav => MSE 0.017143
+2025-06-07 20:34:40,293 - INFO - splited0803_s1_11_29.wav => MSE 0.017921
+2025-06-07 20:34:40,544 - INFO - splited0803_s1_11_3.wav => MSE 0.016724
+2025-06-07 20:34:40,793 - INFO - splited0803_s1_11_4.wav => MSE 0.018112
+2025-06-07 20:34:41,043 - INFO - splited0803_s1_11_5.wav => MSE 0.017368
+2025-06-07 20:34:41,295 - INFO - splited0803_s1_11_6.wav => MSE 0.016779
+2025-06-07 20:34:41,542 - INFO - splited0803_s1_11_7.wav => MSE 0.017226
+2025-06-07 20:34:41,786 - INFO - splited0803_s1_11_8.wav => MSE 0.017169
+2025-06-07 20:34:42,028 - INFO - splited0803_s1_11_9.wav => MSE 0.016861
+2025-06-07 20:34:42,274 - INFO - splited0803_s1_12_0.wav => MSE 0.017630
+2025-06-07 20:34:42,516 - INFO - splited0803_s1_12_1.wav => MSE 0.018378
+2025-06-07 20:34:42,760 - INFO - splited0803_s1_12_10.wav => MSE 0.017331
+2025-06-07 20:34:43,004 - INFO - splited0803_s1_12_11.wav => MSE 0.017441
+2025-06-07 20:34:43,246 - INFO - splited0803_s1_12_12.wav => MSE 0.017520
+2025-06-07 20:34:43,494 - INFO - splited0803_s1_12_13.wav => MSE 0.017789
+2025-06-07 20:34:43,758 - INFO - splited0803_s1_12_14.wav => MSE 0.017173
+2025-06-07 20:34:44,008 - INFO - splited0803_s1_12_15.wav => MSE 0.018806
+2025-06-07 20:34:44,262 - INFO - splited0803_s1_12_16.wav => MSE 0.017768
+2025-06-07 20:34:44,509 - INFO - splited0803_s1_12_17.wav => MSE 0.016932
+2025-06-07 20:34:44,741 - INFO - Signal 2 received, exiting.
+2025-06-07 20:38:57,723 - INFO - Starting inference with config: {'DATASET': {'DATALOADER': {'BATCH_SIZE': 128, 'SHUFFLE': True}, 'PATH': {'ANOMALY': '/home/haiminh/Desktop/fanDataset/abnomalyTarget', 'NORMAL': '/home/haiminh/Desktop/fanDataset/normalTarget', 'TEST': None, 'TFRECORDS': ['/home/haiminh/Desktop/D-ESCA_v2/park_dataset_demo/mel_dataFan']}, 'RATIO': {'TEST': 0.1, 'TRAIN': 0.8}}, 'DEVICE': {'JETSON': False, 'USE_TENSORRT': False}, 'MODEL': {'TYPE': 'vq_vae'}, 'POSTPROCESS': {'PATH_SAVE_THRESHOLD': '/home/thanhho/SPARC/ESCA/Code/train_on_PCv2/Results/'}, 'PREPROCESS': {'AUDIO_LEN': 2, 'FRAME_RATE': 44100, 'GAMMA': {'CHANNELS': 32, 'F_MIN': 100, 'HOP_TIME': 0.06, 'WINDOW_TIME': 0.12}, 'MEL': {'NFFT': 2048, 'N_BANDS': 32, 'SR': 16000}, 'SAMPLE_PER_FILE': 200, 'SEGMENT_LEN': 2, 'TYPE': 'gamma', 'USE_TF_GTGRAM': False}, 'REALTIME': {'CHANNELS': 1, 'FOLDER_PATH': '/home/haiminh/Desktop/Data_Predictive_Maintainance/newNormal', 'IMPORT_FILE': True, 'LOG_PATH': '/home/haiminh/Desktop/ESCA_Qt/python_ai/rt_result', 'MANUAL_THRESHOLD': 0.001, 'MAX': 51.67738342285156, 'MIN': -23.14520263671875, 'MODEL_PATH': '/home/haiminh/Desktop/ESCA_Qt/python_ai/result', 'SAMPLESIZE': 16, 'SAMPLING_RATE': 44100, 'SECOND': 2, 'THRESHOLD': 0.002630938310176134}, 'RECORD': {'ABNOMALY': False, 'CHANNEL': 0, 'CODEC': 0, 'DATASET_PATH': './dataset_mic_laptop_16k', 'DEVICE': 0, 'DEVICENAME': 'default', 'DURATION': 0, 'ENDIAN': 0, 'SAMPLERATE': 3, 'SAMPLESIZE': 1}, 'TRAINING': {'EPOCH': 15, 'LEARNING_RATE': 0.001, 'LOG_FOLDER': '/home/haiminh/Desktop/info.txt', 'PRETRAINED_WEIGHTS': '/home/haiminh/Desktop/ESCA_Qt/python_ai/temp/saved_model', 'SAVE_PATH': '/home/haiminh/Desktop/ESCA_Qt/python_ai/resultFan'}, 'TRANSFER_LEARNING': {'ANOM_BATCH_SIZE': 128, 'BASED_WEIGHTS': '/home/haiminh/Desktop/ESCA_Qt/python_ai/resultFan/saved_model/vq_vae', 'BETA': 1, 'EPOCH': 81, 'LEARNING_RATE': 0.001, 'SAVE_PATH': '/home/haiminh/Desktop/ESCA_Qt/python_ai/tl_resultFan', 'TEST_DIR': None, 'TFRECORDS': ['/home/haiminh/Desktop/D-ESCA_v2/park_dataset_demo/mel_dataFanTarget']}}
+2025-06-07 20:38:58,106 - INFO - Fingerprint not found. Saved model loading will continue.
+2025-06-07 20:38:58,483 - INFO - Processing time for splited0803_s1_0_0.wav: 0.370683 seconds and Pred: 0.021970
+2025-06-07 20:38:58,727 - INFO - Processing time for splited0803_s1_0_1.wav: 0.243774 seconds and Pred: 0.019670
+2025-06-07 20:38:58,977 - INFO - Processing time for splited0803_s1_0_10.wav: 0.249623 seconds and Pred: 0.019190
+2025-06-07 20:38:59,217 - INFO - Processing time for splited0803_s1_0_11.wav: 0.240634 seconds and Pred: 0.018638
+2025-06-07 20:38:59,460 - INFO - Processing time for splited0803_s1_0_12.wav: 0.241965 seconds and Pred: 0.018467
+2025-06-07 20:38:59,706 - INFO - Processing time for splited0803_s1_0_13.wav: 0.246403 seconds and Pred: 0.018650
+2025-06-07 20:38:59,949 - INFO - Processing time for splited0803_s1_0_14.wav: 0.242591 seconds and Pred: 0.018843
+2025-06-07 20:39:00,193 - INFO - Processing time for splited0803_s1_0_15.wav: 0.243912 seconds and Pred: 0.017877
+2025-06-07 20:39:00,436 - INFO - Processing time for splited0803_s1_0_16.wav: 0.243200 seconds and Pred: 0.018257
+2025-06-07 20:39:00,679 - INFO - Processing time for splited0803_s1_0_17.wav: 0.243081 seconds and Pred: 0.017960
+2025-06-07 20:39:00,921 - INFO - Processing time for splited0803_s1_0_18.wav: 0.241543 seconds and Pred: 0.018132
+2025-06-07 20:39:01,162 - INFO - Processing time for splited0803_s1_0_19.wav: 0.241117 seconds and Pred: 0.017669
+2025-06-07 20:39:01,405 - INFO - Processing time for splited0803_s1_0_2.wav: 0.242288 seconds and Pred: 0.018713
+2025-06-07 20:39:01,655 - INFO - Processing time for splited0803_s1_0_20.wav: 0.250008 seconds and Pred: 0.018381
+2025-06-07 20:39:01,897 - INFO - Processing time for splited0803_s1_0_21.wav: 0.242400 seconds and Pred: 0.018519
+2025-06-07 20:39:02,139 - INFO - Processing time for splited0803_s1_0_22.wav: 0.241259 seconds and Pred: 0.018554
+2025-06-07 20:39:02,380 - INFO - Processing time for splited0803_s1_0_23.wav: 0.241757 seconds and Pred: 0.017883
+2025-06-07 20:39:02,623 - INFO - Processing time for splited0803_s1_0_24.wav: 0.242362 seconds and Pred: 0.018089
+2025-06-07 20:39:02,863 - INFO - Processing time for splited0803_s1_0_25.wav: 0.239531 seconds and Pred: 0.017878
+2025-06-07 20:39:03,104 - INFO - Processing time for splited0803_s1_0_26.wav: 0.241259 seconds and Pred: 0.018010
+2025-06-07 20:39:03,345 - INFO - Processing time for splited0803_s1_0_27.wav: 0.241138 seconds and Pred: 0.018538
+2025-06-07 20:39:03,593 - INFO - Processing time for splited0803_s1_0_28.wav: 0.247351 seconds and Pred: 0.018021
+2025-06-07 20:39:03,838 - INFO - Processing time for splited0803_s1_0_29.wav: 0.245113 seconds and Pred: 0.018126
+2025-06-07 20:39:04,083 - INFO - Processing time for splited0803_s1_0_3.wav: 0.244828 seconds and Pred: 0.019491
+2025-06-07 20:39:04,328 - INFO - Processing time for splited0803_s1_0_4.wav: 0.245050 seconds and Pred: 0.019875
+2025-06-07 20:39:04,577 - INFO - Processing time for splited0803_s1_0_5.wav: 0.249027 seconds and Pred: 0.020620
+2025-06-07 20:39:04,818 - INFO - Processing time for splited0803_s1_0_6.wav: 0.241036 seconds and Pred: 0.019709
+2025-06-07 20:39:05,061 - INFO - Processing time for splited0803_s1_0_7.wav: 0.242641 seconds and Pred: 0.019743
+2025-06-07 20:39:05,302 - INFO - Processing time for splited0803_s1_0_8.wav: 0.241361 seconds and Pred: 0.020197
+2025-06-07 20:39:05,548 - INFO - Processing time for splited0803_s1_0_9.wav: 0.245688 seconds and Pred: 0.019709
+2025-06-07 20:39:05,790 - INFO - Processing time for splited0803_s1_10_0.wav: 0.241292 seconds and Pred: 0.018360
+2025-06-07 20:39:06,035 - INFO - Processing time for splited0803_s1_10_1.wav: 0.245390 seconds and Pred: 0.017364
+2025-06-07 20:39:06,282 - INFO - Processing time for splited0803_s1_10_10.wav: 0.246615 seconds and Pred: 0.017784
+2025-06-07 20:39:06,529 - INFO - Processing time for splited0803_s1_10_11.wav: 0.246850 seconds and Pred: 0.017923
+2025-06-07 20:39:06,769 - INFO - Processing time for splited0803_s1_10_12.wav: 0.239922 seconds and Pred: 0.018256
+2025-06-07 20:39:07,010 - INFO - Processing time for splited0803_s1_10_13.wav: 0.241318 seconds and Pred: 0.017930
+2025-06-07 20:39:07,251 - INFO - Processing time for splited0803_s1_10_14.wav: 0.240779 seconds and Pred: 0.017563
+2025-06-07 20:39:07,496 - INFO - Processing time for splited0803_s1_10_15.wav: 0.245019 seconds and Pred: 0.019072
+2025-06-07 20:39:07,738 - INFO - Processing time for splited0803_s1_10_16.wav: 0.241891 seconds and Pred: 0.018028
+2025-06-07 20:39:07,986 - INFO - Processing time for splited0803_s1_10_17.wav: 0.247580 seconds and Pred: 0.017987
+2025-06-07 20:39:08,227 - INFO - Processing time for splited0803_s1_10_18.wav: 0.240381 seconds and Pred: 0.018414
+2025-06-07 20:39:08,470 - INFO - Processing time for splited0803_s1_10_19.wav: 0.242892 seconds and Pred: 0.017849
+2025-06-07 20:39:08,712 - INFO - Processing time for splited0803_s1_10_2.wav: 0.242516 seconds and Pred: 0.017508
+2025-06-07 20:39:08,955 - INFO - Processing time for splited0803_s1_10_20.wav: 0.242296 seconds and Pred: 0.017517
+2025-06-07 20:39:09,196 - INFO - Processing time for splited0803_s1_10_21.wav: 0.241570 seconds and Pred: 0.018234
+2025-06-07 20:39:09,441 - INFO - Processing time for splited0803_s1_10_22.wav: 0.244767 seconds and Pred: 0.018313
+2025-06-07 20:39:09,683 - INFO - Processing time for splited0803_s1_10_23.wav: 0.241199 seconds and Pred: 0.018752
+2025-06-07 20:39:09,925 - INFO - Processing time for splited0803_s1_10_24.wav: 0.241913 seconds and Pred: 0.019526
+2025-06-07 20:39:10,173 - INFO - Processing time for splited0803_s1_10_25.wav: 0.247939 seconds and Pred: 0.018207
+2025-06-07 20:39:10,420 - INFO - Processing time for splited0803_s1_10_26.wav: 0.247231 seconds and Pred: 0.018487
+2025-06-07 20:39:10,661 - INFO - Processing time for splited0803_s1_10_27.wav: 0.240568 seconds and Pred: 0.018011
+2025-06-07 20:39:10,903 - INFO - Processing time for splited0803_s1_10_28.wav: 0.241840 seconds and Pred: 0.018482
+2025-06-07 20:39:11,147 - INFO - Processing time for splited0803_s1_10_29.wav: 0.244302 seconds and Pred: 0.018226
+2025-06-07 20:39:11,395 - INFO - Processing time for splited0803_s1_10_3.wav: 0.247990 seconds and Pred: 0.018373
+2025-06-07 20:39:11,637 - INFO - Processing time for splited0803_s1_10_4.wav: 0.242237 seconds and Pred: 0.017703
+2025-06-07 20:39:11,879 - INFO - Processing time for splited0803_s1_10_5.wav: 0.241038 seconds and Pred: 0.018365
+2025-06-07 20:39:12,122 - INFO - Processing time for splited0803_s1_10_6.wav: 0.243248 seconds and Pred: 0.018280
+2025-06-07 20:39:12,363 - INFO - Processing time for splited0803_s1_10_7.wav: 0.240425 seconds and Pred: 0.018186
+2025-06-07 20:39:12,604 - INFO - Processing time for splited0803_s1_10_8.wav: 0.241379 seconds and Pred: 0.017033
+2025-06-07 20:39:12,846 - INFO - Processing time for splited0803_s1_10_9.wav: 0.242007 seconds and Pred: 0.017442
+2025-06-07 20:39:13,092 - INFO - Processing time for splited0803_s1_11_0.wav: 0.245916 seconds and Pred: 0.017474
+2025-06-07 20:39:13,337 - INFO - Processing time for splited0803_s1_11_1.wav: 0.244945 seconds and Pred: 0.017846
+2025-06-07 20:39:13,580 - INFO - Processing time for splited0803_s1_11_10.wav: 0.242775 seconds and Pred: 0.016482
+2025-06-07 20:39:13,822 - INFO - Processing time for splited0803_s1_11_11.wav: 0.242151 seconds and Pred: 0.016962
+2025-06-07 20:39:14,071 - INFO - Processing time for splited0803_s1_11_12.wav: 0.248276 seconds and Pred: 0.017545
+2025-06-07 20:39:14,311 - INFO - Processing time for splited0803_s1_11_13.wav: 0.239912 seconds and Pred: 0.017930
+2025-06-07 20:39:14,552 - INFO - Processing time for splited0803_s1_11_14.wav: 0.240998 seconds and Pred: 0.017294
+2025-06-07 20:39:14,793 - INFO - Processing time for splited0803_s1_11_15.wav: 0.241504 seconds and Pred: 0.017078
+2025-06-07 20:39:15,035 - INFO - Processing time for splited0803_s1_11_16.wav: 0.241817 seconds and Pred: 0.017022
+2025-06-07 20:39:15,280 - INFO - Processing time for splited0803_s1_11_17.wav: 0.244844 seconds and Pred: 0.017291
+2025-06-07 20:39:15,538 - INFO - Processing time for splited0803_s1_11_18.wav: 0.257508 seconds and Pred: 0.017883
+2025-06-07 20:39:15,788 - INFO - Processing time for splited0803_s1_11_19.wav: 0.249901 seconds and Pred: 0.019528
+2025-06-07 20:39:16,034 - INFO - Processing time for splited0803_s1_11_2.wav: 0.246174 seconds and Pred: 0.017682
+2025-06-07 20:39:16,276 - INFO - Processing time for splited0803_s1_11_20.wav: 0.241265 seconds and Pred: 0.017144
+2025-06-07 20:39:16,518 - INFO - Processing time for splited0803_s1_11_21.wav: 0.242351 seconds and Pred: 0.017129
+2025-06-07 20:39:16,758 - INFO - Processing time for splited0803_s1_11_22.wav: 0.240231 seconds and Pred: 0.017672
+2025-06-07 20:39:17,011 - INFO - Processing time for splited0803_s1_11_23.wav: 0.252055 seconds and Pred: 0.018302
+2025-06-07 20:39:17,257 - INFO - Processing time for splited0803_s1_11_24.wav: 0.246120 seconds and Pred: 0.017045
+2025-06-07 20:39:17,503 - INFO - Processing time for splited0803_s1_11_25.wav: 0.245524 seconds and Pred: 0.017858
+2025-06-07 20:39:17,743 - INFO - Processing time for splited0803_s1_11_26.wav: 0.240337 seconds and Pred: 0.018278
+2025-06-07 20:39:17,983 - INFO - Processing time for splited0803_s1_11_27.wav: 0.239764 seconds and Pred: 0.017751
+2025-06-07 20:39:18,225 - INFO - Processing time for splited0803_s1_11_28.wav: 0.242064 seconds and Pred: 0.017143
+2025-06-07 20:39:18,468 - INFO - Processing time for splited0803_s1_11_29.wav: 0.243241 seconds and Pred: 0.017921
+2025-06-07 20:39:18,709 - INFO - Processing time for splited0803_s1_11_3.wav: 0.240652 seconds and Pred: 0.016724
+2025-06-07 20:39:18,952 - INFO - Processing time for splited0803_s1_11_4.wav: 0.242830 seconds and Pred: 0.018112
+2025-06-07 20:39:19,196 - INFO - Processing time for splited0803_s1_11_5.wav: 0.243639 seconds and Pred: 0.017368
+2025-06-07 20:39:19,438 - INFO - Processing time for splited0803_s1_11_6.wav: 0.242199 seconds and Pred: 0.016779
+2025-06-07 20:39:19,681 - INFO - Processing time for splited0803_s1_11_7.wav: 0.242769 seconds and Pred: 0.017226
+2025-06-07 20:39:19,925 - INFO - Processing time for splited0803_s1_11_8.wav: 0.244272 seconds and Pred: 0.017169
+2025-06-07 20:39:20,166 - INFO - Processing time for splited0803_s1_11_9.wav: 0.240952 seconds and Pred: 0.016861
+2025-06-07 20:39:20,409 - INFO - Processing time for splited0803_s1_12_0.wav: 0.242834 seconds and Pred: 0.017630
+2025-06-07 20:39:20,666 - INFO - Processing time for splited0803_s1_12_1.wav: 0.256942 seconds and Pred: 0.018378
+2025-06-07 20:39:20,910 - INFO - Processing time for splited0803_s1_12_10.wav: 0.243348 seconds and Pred: 0.017331
+2025-06-07 20:39:21,155 - INFO - Processing time for splited0803_s1_12_11.wav: 0.244550 seconds and Pred: 0.017441
+2025-06-07 20:39:21,397 - INFO - Processing time for splited0803_s1_12_12.wav: 0.242603 seconds and Pred: 0.017520
+2025-06-07 20:39:21,641 - INFO - Processing time for splited0803_s1_12_13.wav: 0.243332 seconds and Pred: 0.017789
+2025-06-07 20:39:21,882 - INFO - Processing time for splited0803_s1_12_14.wav: 0.241083 seconds and Pred: 0.017173
+2025-06-07 20:39:22,123 - INFO - Processing time for splited0803_s1_12_15.wav: 0.241117 seconds and Pred: 0.018806
+2025-06-07 20:39:22,367 - INFO - Processing time for splited0803_s1_12_16.wav: 0.243348 seconds and Pred: 0.017768
+2025-06-07 20:39:22,612 - INFO - Processing time for splited0803_s1_12_17.wav: 0.245434 seconds and Pred: 0.016932
+2025-06-07 20:39:22,855 - INFO - Processing time for splited0803_s1_12_18.wav: 0.242991 seconds and Pred: 0.017260
+2025-06-07 20:39:23,105 - INFO - Processing time for splited0803_s1_12_19.wav: 0.249479 seconds and Pred: 0.017866
+2025-06-07 20:39:23,352 - INFO - Processing time for splited0803_s1_12_2.wav: 0.247338 seconds and Pred: 0.017388
+2025-06-07 20:39:23,599 - INFO - Processing time for splited0803_s1_12_20.wav: 0.246502 seconds and Pred: 0.016414
+2025-06-07 20:39:23,845 - INFO - Processing time for splited0803_s1_12_21.wav: 0.246338 seconds and Pred: 0.017127
+2025-06-07 20:39:24,091 - INFO - Processing time for splited0803_s1_12_22.wav: 0.245794 seconds and Pred: 0.018791
+2025-06-07 20:39:24,339 - INFO - Processing time for splited0803_s1_12_23.wav: 0.247365 seconds and Pred: 0.017018
+2025-06-07 20:39:24,585 - INFO - Processing time for splited0803_s1_12_24.wav: 0.245837 seconds and Pred: 0.016934
+2025-06-07 20:39:24,833 - INFO - Processing time for splited0803_s1_12_25.wav: 0.248507 seconds and Pred: 0.017440
+2025-06-07 20:39:25,086 - INFO - Processing time for splited0803_s1_12_26.wav: 0.252903 seconds and Pred: 0.016819
+2025-06-07 20:39:25,335 - INFO - Processing time for splited0803_s1_12_27.wav: 0.248457 seconds and Pred: 0.016785
+2025-06-07 20:39:25,589 - INFO - Processing time for splited0803_s1_12_28.wav: 0.253890 seconds and Pred: 0.017417
+2025-06-07 20:39:25,833 - INFO - Processing time for splited0803_s1_12_29.wav: 0.243785 seconds and Pred: 0.016238
+2025-06-07 20:39:26,081 - INFO - Processing time for splited0803_s1_12_3.wav: 0.248425 seconds and Pred: 0.017389
+2025-06-07 20:39:26,326 - INFO - Processing time for splited0803_s1_12_4.wav: 0.244340 seconds and Pred: 0.017503
+2025-06-07 20:39:26,575 - INFO - Processing time for splited0803_s1_12_5.wav: 0.249263 seconds and Pred: 0.017252
+2025-06-07 20:39:26,822 - INFO - Processing time for splited0803_s1_12_6.wav: 0.247083 seconds and Pred: 0.016739
+2025-06-07 20:39:27,073 - INFO - Processing time for splited0803_s1_12_7.wav: 0.250933 seconds and Pred: 0.018064
+2025-06-07 20:39:27,320 - INFO - Processing time for splited0803_s1_12_8.wav: 0.246565 seconds and Pred: 0.017486
+2025-06-07 20:39:27,567 - INFO - Processing time for splited0803_s1_12_9.wav: 0.247229 seconds and Pred: 0.017124
+2025-06-07 20:39:27,814 - INFO - Processing time for splited0803_s1_13_0.wav: 0.246487 seconds and Pred: 0.017203
+2025-06-07 20:39:28,060 - INFO - Processing time for splited0803_s1_13_1.wav: 0.246081 seconds and Pred: 0.016631
+2025-06-07 20:39:28,306 - INFO - Processing time for splited0803_s1_13_10.wav: 0.245805 seconds and Pred: 0.017361
+2025-06-07 20:39:28,554 - INFO - Processing time for splited0803_s1_13_11.wav: 0.247928 seconds and Pred: 0.016996
+2025-06-07 20:39:28,801 - INFO - Processing time for splited0803_s1_13_12.wav: 0.247037 seconds and Pred: 0.017059
+2025-06-07 20:39:29,052 - INFO - Processing time for splited0803_s1_13_13.wav: 0.250565 seconds and Pred: 0.016710
+2025-06-07 20:39:29,298 - INFO - Processing time for splited0803_s1_13_14.wav: 0.245937 seconds and Pred: 0.016762
+2025-06-07 20:39:29,546 - INFO - Processing time for splited0803_s1_13_15.wav: 0.247887 seconds and Pred: 0.016667
+2025-06-07 20:39:29,794 - INFO - Processing time for splited0803_s1_13_16.wav: 0.248221 seconds and Pred: 0.016835
+2025-06-07 20:39:30,043 - INFO - Processing time for splited0803_s1_13_17.wav: 0.248537 seconds and Pred: 0.017143
+2025-06-07 20:39:30,295 - INFO - Processing time for splited0803_s1_13_18.wav: 0.251620 seconds and Pred: 0.016822
+2025-06-07 20:39:30,543 - INFO - Processing time for splited0803_s1_13_19.wav: 0.248433 seconds and Pred: 0.016738
+2025-06-07 20:39:30,793 - INFO - Processing time for splited0803_s1_13_2.wav: 0.249160 seconds and Pred: 0.017005
+2025-06-07 20:39:31,043 - INFO - Processing time for splited0803_s1_13_20.wav: 0.250307 seconds and Pred: 0.016882
+2025-06-07 20:39:31,291 - INFO - Processing time for splited0803_s1_13_21.wav: 0.247559 seconds and Pred: 0.016826
+2025-06-07 20:39:31,539 - INFO - Processing time for splited0803_s1_13_22.wav: 0.247947 seconds and Pred: 0.016641
+2025-06-07 20:39:31,788 - INFO - Processing time for splited0803_s1_13_23.wav: 0.248679 seconds and Pred: 0.019380
+2025-06-07 20:39:32,044 - INFO - Processing time for splited0803_s1_13_24.wav: 0.256716 seconds and Pred: 0.016356
+2025-06-07 20:39:32,308 - INFO - Processing time for splited0803_s1_13_25.wav: 0.263774 seconds and Pred: 0.016832
+2025-06-07 20:39:32,558 - INFO - Processing time for splited0803_s1_13_26.wav: 0.249875 seconds and Pred: 0.016393
+2025-06-07 20:39:32,806 - INFO - Processing time for splited0803_s1_13_27.wav: 0.247804 seconds and Pred: 0.016843
+2025-06-07 20:39:33,059 - INFO - Processing time for splited0803_s1_13_28.wav: 0.252457 seconds and Pred: 0.016937
+2025-06-07 20:39:33,308 - INFO - Processing time for splited0803_s1_13_29.wav: 0.249264 seconds and Pred: 0.017890
+2025-06-07 20:39:33,562 - INFO - Processing time for splited0803_s1_13_3.wav: 0.253312 seconds and Pred: 0.016586
+2025-06-07 20:39:33,809 - INFO - Processing time for splited0803_s1_13_4.wav: 0.247794 seconds and Pred: 0.017051
+2025-06-07 20:39:34,059 - INFO - Processing time for splited0803_s1_13_5.wav: 0.249892 seconds and Pred: 0.016445
+2025-06-07 20:39:34,309 - INFO - Processing time for splited0803_s1_13_6.wav: 0.249081 seconds and Pred: 0.017460
+2025-06-07 20:39:34,557 - INFO - Processing time for splited0803_s1_13_7.wav: 0.248295 seconds and Pred: 0.017106
+2025-06-07 20:39:34,806 - INFO - Processing time for splited0803_s1_13_8.wav: 0.248563 seconds and Pred: 0.017532
+2025-06-07 20:39:35,058 - INFO - Processing time for splited0803_s1_13_9.wav: 0.252150 seconds and Pred: 0.017247
+2025-06-07 20:39:35,308 - INFO - Processing time for splited0803_s1_14_0.wav: 0.249500 seconds and Pred: 0.017335
+2025-06-07 20:39:35,562 - INFO - Processing time for splited0803_s1_14_1.wav: 0.253971 seconds and Pred: 0.017497
+2025-06-07 20:39:35,817 - INFO - Processing time for splited0803_s1_14_10.wav: 0.255429 seconds and Pred: 0.016243
+2025-06-07 20:39:36,067 - INFO - Processing time for splited0803_s1_14_11.wav: 0.249957 seconds and Pred: 0.017105
+2025-06-07 20:39:36,315 - INFO - Processing time for splited0803_s1_14_12.wav: 0.247696 seconds and Pred: 0.016847
+2025-06-07 20:39:36,577 - INFO - Processing time for splited0803_s1_14_13.wav: 0.261542 seconds and Pred: 0.017262
+2025-06-07 20:39:36,826 - INFO - Processing time for splited0803_s1_14_14.wav: 0.248876 seconds and Pred: 0.017557
+2025-06-07 20:39:37,079 - INFO - Processing time for splited0803_s1_14_15.wav: 0.253626 seconds and Pred: 0.016864
+2025-06-07 20:39:37,331 - INFO - Processing time for splited0803_s1_14_16.wav: 0.251109 seconds and Pred: 0.017633
+2025-06-07 20:39:37,582 - INFO - Processing time for splited0803_s1_14_17.wav: 0.251254 seconds and Pred: 0.016793
+2025-06-07 20:39:37,841 - INFO - Processing time for splited0803_s1_14_18.wav: 0.258617 seconds and Pred: 0.016493
+2025-06-07 20:39:38,090 - INFO - Processing time for splited0803_s1_14_19.wav: 0.248810 seconds and Pred: 0.016812
+2025-06-07 20:39:38,340 - INFO - Processing time for splited0803_s1_14_2.wav: 0.250348 seconds and Pred: 0.016969
+2025-06-07 20:39:38,594 - INFO - Processing time for splited0803_s1_14_20.wav: 0.253975 seconds and Pred: 0.018277
+2025-06-07 20:39:38,855 - INFO - Processing time for splited0803_s1_14_21.wav: 0.260468 seconds and Pred: 0.016985
+2025-06-07 20:39:39,111 - INFO - Processing time for splited0803_s1_14_22.wav: 0.256027 seconds and Pred: 0.017101
+2025-06-07 20:39:39,361 - INFO - Processing time for splited0803_s1_14_23.wav: 0.249611 seconds and Pred: 0.016668
+2025-06-07 20:39:39,627 - INFO - Processing time for splited0803_s1_14_24.wav: 0.266067 seconds and Pred: 0.017011
+2025-06-07 20:39:39,886 - INFO - Processing time for splited0803_s1_14_25.wav: 0.259184 seconds and Pred: 0.017211
+2025-06-07 20:39:40,139 - INFO - Processing time for splited0803_s1_14_26.wav: 0.252278 seconds and Pred: 0.016185
+2025-06-07 20:39:40,389 - INFO - Processing time for splited0803_s1_14_27.wav: 0.250621 seconds and Pred: 0.016474
+2025-06-07 20:39:40,641 - INFO - Processing time for splited0803_s1_14_28.wav: 0.251735 seconds and Pred: 0.017501
+2025-06-07 20:39:40,897 - INFO - Processing time for splited0803_s1_14_29.wav: 0.256207 seconds and Pred: 0.016800
+2025-06-07 20:39:41,151 - INFO - Processing time for splited0803_s1_14_3.wav: 0.253269 seconds and Pred: 0.016981
+2025-06-07 20:39:41,401 - INFO - Processing time for splited0803_s1_14_4.wav: 0.250416 seconds and Pred: 0.017470
+2025-06-07 20:39:41,656 - INFO - Processing time for splited0803_s1_14_5.wav: 0.254062 seconds and Pred: 0.017199
+2025-06-07 20:39:41,904 - INFO - Processing time for splited0803_s1_14_6.wav: 0.248491 seconds and Pred: 0.016811
+2025-06-07 20:39:42,153 - INFO - Processing time for splited0803_s1_14_7.wav: 0.248775 seconds and Pred: 0.017331
+2025-06-07 20:39:42,404 - INFO - Processing time for splited0803_s1_14_8.wav: 0.250452 seconds and Pred: 0.016663
+2025-06-07 20:39:42,653 - INFO - Processing time for splited0803_s1_14_9.wav: 0.249728 seconds and Pred: 0.016899
+2025-06-07 20:39:42,899 - INFO - Processing time for splited0803_s1_15_0.wav: 0.245772 seconds and Pred: 0.016999
+2025-06-07 20:39:43,147 - INFO - Processing time for splited0803_s1_15_1.wav: 0.247114 seconds and Pred: 0.016529
+2025-06-07 20:39:43,392 - INFO - Processing time for splited0803_s1_15_10.wav: 0.245813 seconds and Pred: 0.017136
+2025-06-07 20:39:43,641 - INFO - Processing time for splited0803_s1_15_11.wav: 0.248104 seconds and Pred: 0.016745
+2025-06-07 20:39:43,895 - INFO - Processing time for splited0803_s1_15_12.wav: 0.254225 seconds and Pred: 0.016999
+2025-06-07 20:39:44,150 - INFO - Processing time for splited0803_s1_15_13.wav: 0.254785 seconds and Pred: 0.018595
+2025-06-07 20:39:44,398 - INFO - Processing time for splited0803_s1_15_14.wav: 0.247835 seconds and Pred: 0.017224
+2025-06-07 20:39:44,646 - INFO - Processing time for splited0803_s1_15_15.wav: 0.248305 seconds and Pred: 0.016830
+2025-06-07 20:39:44,900 - INFO - Processing time for splited0803_s1_15_16.wav: 0.254024 seconds and Pred: 0.017547
+2025-06-07 20:39:45,170 - INFO - Processing time for splited0803_s1_15_17.wav: 0.269453 seconds and Pred: 0.016873
+2025-06-07 20:39:45,427 - INFO - Processing time for splited0803_s1_15_18.wav: 0.256836 seconds and Pred: 0.017051
+2025-06-07 20:39:45,686 - INFO - Processing time for splited0803_s1_15_19.wav: 0.259423 seconds and Pred: 0.016708
+2025-06-07 20:39:45,936 - INFO - Processing time for splited0803_s1_15_2.wav: 0.249816 seconds and Pred: 0.016949
+2025-06-07 20:39:46,187 - INFO - Processing time for splited0803_s1_15_20.wav: 0.250163 seconds and Pred: 0.017092
+2025-06-07 20:39:46,445 - INFO - Processing time for splited0803_s1_15_21.wav: 0.258585 seconds and Pred: 0.017206
+2025-06-07 20:39:46,695 - INFO - Processing time for splited0803_s1_15_22.wav: 0.249602 seconds and Pred: 0.017199
+2025-06-07 20:39:46,943 - INFO - Processing time for splited0803_s1_15_23.wav: 0.247448 seconds and Pred: 0.016774
+2025-06-07 20:39:47,197 - INFO - Processing time for splited0803_s1_15_24.wav: 0.254299 seconds and Pred: 0.017207
+2025-06-07 20:39:47,455 - INFO - Processing time for splited0803_s1_15_25.wav: 0.258254 seconds and Pred: 0.016838
+2025-06-07 20:39:47,701 - INFO - Processing time for splited0803_s1_15_26.wav: 0.245545 seconds and Pred: 0.017424
+2025-06-07 20:39:47,950 - INFO - Processing time for splited0803_s1_15_27.wav: 0.249072 seconds and Pred: 0.017094
+2025-06-07 20:39:48,201 - INFO - Processing time for splited0803_s1_15_28.wav: 0.250672 seconds and Pred: 0.017648
+2025-06-07 20:39:48,451 - INFO - Processing time for splited0803_s1_15_29.wav: 0.250201 seconds and Pred: 0.017113
+2025-06-07 20:39:48,703 - INFO - Processing time for splited0803_s1_15_3.wav: 0.251118 seconds and Pred: 0.017298
+2025-06-07 20:39:48,957 - INFO - Processing time for splited0803_s1_15_4.wav: 0.254167 seconds and Pred: 0.017826
+2025-06-07 20:39:49,210 - INFO - Processing time for splited0803_s1_15_5.wav: 0.252620 seconds and Pred: 0.017237
+2025-06-07 20:39:49,459 - INFO - Processing time for splited0803_s1_15_6.wav: 0.248909 seconds and Pred: 0.017045
+2025-06-07 20:39:49,712 - INFO - Processing time for splited0803_s1_15_7.wav: 0.253541 seconds and Pred: 0.017333
+2025-06-07 20:39:49,964 - INFO - Processing time for splited0803_s1_15_8.wav: 0.251462 seconds and Pred: 0.017380
+2025-06-07 20:39:50,214 - INFO - Processing time for splited0803_s1_15_9.wav: 0.249608 seconds and Pred: 0.016981
+2025-06-07 20:39:50,464 - INFO - Processing time for splited0803_s1_16_0.wav: 0.250152 seconds and Pred: 0.017344
+2025-06-07 20:39:50,709 - INFO - Processing time for splited0803_s1_16_1.wav: 0.244972 seconds and Pred: 0.017973
+2025-06-07 20:39:50,961 - INFO - Processing time for splited0803_s1_16_10.wav: 0.252344 seconds and Pred: 0.017701
+2025-06-07 20:39:51,215 - INFO - Processing time for splited0803_s1_16_11.wav: 0.253104 seconds and Pred: 0.017407
+2025-06-07 20:39:51,464 - INFO - Processing time for splited0803_s1_16_12.wav: 0.249593 seconds and Pred: 0.017007
+2025-06-07 20:39:51,719 - INFO - Processing time for splited0803_s1_16_13.wav: 0.254188 seconds and Pred: 0.017847
+2025-06-07 20:39:51,967 - INFO - Processing time for splited0803_s1_16_14.wav: 0.247906 seconds and Pred: 0.018216
+2025-06-07 20:39:52,217 - INFO - Processing time for splited0803_s1_16_15.wav: 0.250475 seconds and Pred: 0.018149
+2025-06-07 20:39:52,466 - INFO - Processing time for splited0803_s1_16_16.wav: 0.248979 seconds and Pred: 0.018557
+2025-06-07 20:39:52,716 - INFO - Processing time for splited0803_s1_16_17.wav: 0.249877 seconds and Pred: 0.021580
+2025-06-07 20:39:52,967 - INFO - Processing time for splited0803_s1_16_18.wav: 0.250278 seconds and Pred: 0.017320
+2025-06-07 20:39:53,218 - INFO - Processing time for splited0803_s1_16_19.wav: 0.251141 seconds and Pred: 0.018351
+2025-06-07 20:39:53,469 - INFO - Processing time for splited0803_s1_16_2.wav: 0.250847 seconds and Pred: 0.017046
+2025-06-07 20:39:53,719 - INFO - Processing time for splited0803_s1_16_20.wav: 0.249685 seconds and Pred: 0.017420
+2025-06-07 20:39:53,977 - INFO - Processing time for splited0803_s1_16_21.wav: 0.257885 seconds and Pred: 0.017740
+2025-06-07 20:39:54,226 - INFO - Processing time for splited0803_s1_16_22.wav: 0.249356 seconds and Pred: 0.018698
+2025-06-07 20:39:54,475 - INFO - Processing time for splited0803_s1_16_23.wav: 0.248393 seconds and Pred: 0.017782
+2025-06-07 20:39:54,725 - INFO - Processing time for splited0803_s1_16_24.wav: 0.249876 seconds and Pred: 0.017935
+2025-06-07 20:39:54,975 - INFO - Processing time for splited0803_s1_16_25.wav: 0.250376 seconds and Pred: 0.017321
+2025-06-07 20:39:55,234 - INFO - Processing time for splited0803_s1_16_26.wav: 0.259194 seconds and Pred: 0.017136
+2025-06-07 20:39:55,487 - INFO - Processing time for splited0803_s1_16_27.wav: 0.252305 seconds and Pred: 0.018050
+2025-06-07 20:39:55,737 - INFO - Processing time for splited0803_s1_16_28.wav: 0.250191 seconds and Pred: 0.017724
+2025-06-07 20:39:55,988 - INFO - Processing time for splited0803_s1_16_29.wav: 0.250959 seconds and Pred: 0.017366
+2025-06-07 20:39:56,237 - INFO - Processing time for splited0803_s1_16_3.wav: 0.249002 seconds and Pred: 0.017124
+2025-06-07 20:39:56,487 - INFO - Processing time for splited0803_s1_16_4.wav: 0.249185 seconds and Pred: 0.017309
+2025-06-07 20:39:56,736 - INFO - Processing time for splited0803_s1_16_5.wav: 0.249624 seconds and Pred: 0.017501
+2025-06-07 20:39:56,986 - INFO - Processing time for splited0803_s1_16_6.wav: 0.249550 seconds and Pred: 0.017667
+2025-06-07 20:39:57,239 - INFO - Processing time for splited0803_s1_16_7.wav: 0.253058 seconds and Pred: 0.017529
+2025-06-07 20:39:57,491 - INFO - Processing time for splited0803_s1_16_8.wav: 0.251405 seconds and Pred: 0.016993
+2025-06-07 20:39:57,742 - INFO - Processing time for splited0803_s1_16_9.wav: 0.250959 seconds and Pred: 0.017259
+2025-06-07 20:39:57,987 - INFO - Processing time for splited0803_s1_17_0.wav: 0.244987 seconds and Pred: 0.017933
+2025-06-07 20:39:58,237 - INFO - Processing time for splited0803_s1_17_1.wav: 0.249535 seconds and Pred: 0.017595
+2025-06-07 20:39:58,486 - INFO - Processing time for splited0803_s1_17_10.wav: 0.249159 seconds and Pred: 0.018093
+2025-06-07 20:39:58,735 - INFO - Processing time for splited0803_s1_17_11.wav: 0.248673 seconds and Pred: 0.017741
+2025-06-07 20:39:58,982 - INFO - Processing time for splited0803_s1_17_12.wav: 0.247664 seconds and Pred: 0.018355
+2025-06-07 20:39:59,242 - INFO - Processing time for splited0803_s1_17_13.wav: 0.259929 seconds and Pred: 0.017728
+2025-06-07 20:39:59,487 - INFO - Processing time for splited0803_s1_17_14.wav: 0.244242 seconds and Pred: 0.016778
+2025-06-07 20:39:59,737 - INFO - Processing time for splited0803_s1_17_15.wav: 0.249670 seconds and Pred: 0.018172
+2025-06-07 20:39:59,987 - INFO - Processing time for splited0803_s1_17_16.wav: 0.250235 seconds and Pred: 0.017635
+2025-06-07 20:40:00,239 - INFO - Processing time for splited0803_s1_17_17.wav: 0.252230 seconds and Pred: 0.017459
+2025-06-07 20:40:00,500 - INFO - Processing time for splited0803_s1_17_18.wav: 0.261051 seconds and Pred: 0.017839
+2025-06-07 20:40:00,747 - INFO - Processing time for splited0803_s1_17_19.wav: 0.246183 seconds and Pred: 0.017736
+2025-06-07 20:40:00,991 - INFO - Processing time for splited0803_s1_17_2.wav: 0.244081 seconds and Pred: 0.017985
+2025-06-07 20:40:01,240 - INFO - Processing time for splited0803_s1_17_20.wav: 0.248739 seconds and Pred: 0.017384
+2025-06-07 20:40:01,487 - INFO - Processing time for splited0803_s1_17_21.wav: 0.246839 seconds and Pred: 0.017427
+2025-06-07 20:40:01,742 - INFO - Processing time for splited0803_s1_17_22.wav: 0.254875 seconds and Pred: 0.017512
+2025-06-07 20:40:01,990 - INFO - Processing time for splited0803_s1_17_23.wav: 0.247846 seconds and Pred: 0.017046
+2025-06-07 20:40:02,238 - INFO - Processing time for splited0803_s1_17_24.wav: 0.248163 seconds and Pred: 0.017214
+2025-06-07 20:40:02,490 - INFO - Processing time for splited0803_s1_17_25.wav: 0.252053 seconds and Pred: 0.016984
+2025-06-07 20:40:02,734 - INFO - Processing time for splited0803_s1_17_26.wav: 0.243688 seconds and Pred: 0.016869
+2025-06-07 20:40:02,985 - INFO - Processing time for splited0803_s1_17_27.wav: 0.250582 seconds and Pred: 0.018406
+2025-06-07 20:40:03,238 - INFO - Processing time for splited0803_s1_17_28.wav: 0.253576 seconds and Pred: 0.019021
+2025-06-07 20:40:03,487 - INFO - Processing time for splited0803_s1_17_29.wav: 0.248871 seconds and Pred: 0.018582
+2025-06-07 20:40:03,738 - INFO - Processing time for splited0803_s1_17_3.wav: 0.250734 seconds and Pred: 0.018121
+2025-06-07 20:40:03,989 - INFO - Processing time for splited0803_s1_17_4.wav: 0.250959 seconds and Pred: 0.017317
+2025-06-07 20:40:04,239 - INFO - Processing time for splited0803_s1_17_5.wav: 0.249494 seconds and Pred: 0.017040
+2025-06-07 20:40:04,487 - INFO - Processing time for splited0803_s1_17_6.wav: 0.247941 seconds and Pred: 0.017244
+2025-06-07 20:40:04,735 - INFO - Processing time for splited0803_s1_17_7.wav: 0.248567 seconds and Pred: 0.017426
+2025-06-07 20:40:04,985 - INFO - Processing time for splited0803_s1_17_8.wav: 0.249285 seconds and Pred: 0.017253
+2025-06-07 20:40:05,237 - INFO - Processing time for splited0803_s1_17_9.wav: 0.251964 seconds and Pred: 0.017917
+2025-06-07 20:40:05,486 - INFO - Processing time for splited0803_s1_18_0.wav: 0.248945 seconds and Pred: 0.018150
+2025-06-07 20:40:05,737 - INFO - Processing time for splited0803_s1_18_1.wav: 0.250840 seconds and Pred: 0.018452
+2025-06-07 20:40:06,000 - INFO - Processing time for splited0803_s1_18_10.wav: 0.262426 seconds and Pred: 0.017763
+2025-06-07 20:40:06,247 - INFO - Processing time for splited0803_s1_18_11.wav: 0.247363 seconds and Pred: 0.017298
+2025-06-07 20:40:06,503 - INFO - Processing time for splited0803_s1_18_12.wav: 0.255643 seconds and Pred: 0.017656
+2025-06-07 20:40:06,753 - INFO - Processing time for splited0803_s1_18_13.wav: 0.250221 seconds and Pred: 0.019046
+2025-06-07 20:40:06,997 - INFO - Processing time for splited0803_s1_18_14.wav: 0.244097 seconds and Pred: 0.017596
+2025-06-07 20:40:07,249 - INFO - Processing time for splited0803_s1_18_15.wav: 0.251834 seconds and Pred: 0.017400
+2025-06-07 20:40:07,499 - INFO - Processing time for splited0803_s1_18_16.wav: 0.249365 seconds and Pred: 0.017512
+2025-06-07 20:40:07,752 - INFO - Processing time for splited0803_s1_18_17.wav: 0.252924 seconds and Pred: 0.017030
+2025-06-07 20:40:08,001 - INFO - Processing time for splited0803_s1_18_18.wav: 0.248853 seconds and Pred: 0.016902
+2025-06-07 20:40:08,248 - INFO - Processing time for splited0803_s1_18_19.wav: 0.247612 seconds and Pred: 0.016593
+2025-06-07 20:40:08,495 - INFO - Processing time for splited0803_s1_18_2.wav: 0.246145 seconds and Pred: 0.018080
+2025-06-07 20:40:08,743 - INFO - Processing time for splited0803_s1_18_20.wav: 0.248174 seconds and Pred: 0.017295
+2025-06-07 20:40:08,992 - INFO - Processing time for splited0803_s1_18_21.wav: 0.249398 seconds and Pred: 0.017244
+2025-06-07 20:40:09,244 - INFO - Processing time for splited0803_s1_18_22.wav: 0.251916 seconds and Pred: 0.016858
+2025-06-07 20:40:09,493 - INFO - Processing time for splited0803_s1_18_23.wav: 0.248373 seconds and Pred: 0.016747
+2025-06-07 20:40:09,747 - INFO - Processing time for splited0803_s1_18_24.wav: 0.253491 seconds and Pred: 0.017154
+2025-06-07 20:40:09,997 - INFO - Processing time for splited0803_s1_18_25.wav: 0.250596 seconds and Pred: 0.016778
+2025-06-07 20:40:10,247 - INFO - Processing time for splited0803_s1_18_26.wav: 0.249488 seconds and Pred: 0.016872
+2025-06-07 20:40:10,495 - INFO - Processing time for splited0803_s1_18_27.wav: 0.247675 seconds and Pred: 0.016895
+2025-06-07 20:40:10,749 - INFO - Processing time for splited0803_s1_18_28.wav: 0.253929 seconds and Pred: 0.017073
+2025-06-07 20:40:10,993 - INFO - Processing time for splited0803_s1_18_29.wav: 0.243927 seconds and Pred: 0.016972
+2025-06-07 20:40:11,255 - INFO - Processing time for splited0803_s1_18_3.wav: 0.262333 seconds and Pred: 0.017608
+2025-06-07 20:40:11,503 - INFO - Processing time for splited0803_s1_18_4.wav: 0.247835 seconds and Pred: 0.018139
+2025-06-07 20:40:11,754 - INFO - Processing time for splited0803_s1_18_5.wav: 0.251253 seconds and Pred: 0.018130
+2025-06-07 20:40:11,998 - INFO - Processing time for splited0803_s1_18_6.wav: 0.243859 seconds and Pred: 0.018646
+2025-06-07 20:40:12,250 - INFO - Processing time for splited0803_s1_18_7.wav: 0.251553 seconds and Pred: 0.019412
+2025-06-07 20:40:12,502 - INFO - Processing time for splited0803_s1_18_8.wav: 0.251661 seconds and Pred: 0.018192
+2025-06-07 20:40:12,752 - INFO - Processing time for splited0803_s1_18_9.wav: 0.249572 seconds and Pred: 0.017175
+2025-06-07 20:40:13,002 - INFO - Processing time for splited0803_s1_19_0.wav: 0.250251 seconds and Pred: 0.017551
+2025-06-07 20:40:13,256 - INFO - Processing time for splited0803_s1_19_1.wav: 0.254047 seconds and Pred: 0.017054
+2025-06-07 20:40:13,503 - INFO - Processing time for splited0803_s1_19_10.wav: 0.246475 seconds and Pred: 0.016966
+2025-06-07 20:40:13,751 - INFO - Processing time for splited0803_s1_19_11.wav: 0.247834 seconds and Pred: 0.017456
+2025-06-07 20:40:13,995 - INFO - Processing time for splited0803_s1_19_12.wav: 0.244575 seconds and Pred: 0.017743
+2025-06-07 20:40:14,240 - INFO - Processing time for splited0803_s1_19_13.wav: 0.244100 seconds and Pred: 0.016437
+2025-06-07 20:40:14,515 - INFO - Processing time for splited0803_s1_19_14.wav: 0.275049 seconds and Pred: 0.016973
+2025-06-07 20:40:14,761 - INFO - Processing time for splited0803_s1_19_15.wav: 0.246410 seconds and Pred: 0.017311
+2025-06-07 20:40:15,015 - INFO - Processing time for splited0803_s1_19_16.wav: 0.253938 seconds and Pred: 0.016406
+2025-06-07 20:40:15,282 - INFO - Processing time for splited0803_s1_19_17.wav: 0.266753 seconds and Pred: 0.016628
+2025-06-07 20:40:15,548 - INFO - Processing time for splited0803_s1_19_18.wav: 0.266086 seconds and Pred: 0.017475
+2025-06-07 20:40:15,810 - INFO - Processing time for splited0803_s1_19_19.wav: 0.261099 seconds and Pred: 0.016706
+2025-06-07 20:40:16,069 - INFO - Processing time for splited0803_s1_19_2.wav: 0.259530 seconds and Pred: 0.017317
+2025-06-07 20:40:16,337 - INFO - Processing time for splited0803_s1_19_20.wav: 0.267774 seconds and Pred: 0.017504
+2025-06-07 20:40:16,617 - INFO - Processing time for splited0803_s1_19_21.wav: 0.279999 seconds and Pred: 0.017148
+2025-06-07 20:40:16,873 - INFO - Processing time for splited0803_s1_19_22.wav: 0.255982 seconds and Pred: 0.016694
+2025-06-07 20:40:17,126 - INFO - Processing time for splited0803_s1_19_23.wav: 0.252394 seconds and Pred: 0.016463
+2025-06-07 20:40:17,378 - INFO - Processing time for splited0803_s1_19_24.wav: 0.251704 seconds and Pred: 0.017039
+2025-06-07 20:40:17,638 - INFO - Processing time for splited0803_s1_19_25.wav: 0.260050 seconds and Pred: 0.016196
+2025-06-07 20:40:17,896 - INFO - Processing time for splited0803_s1_19_26.wav: 0.258505 seconds and Pred: 0.017961
+2025-06-07 20:40:18,147 - INFO - Processing time for splited0803_s1_19_27.wav: 0.250732 seconds and Pred: 0.018227
+2025-06-07 20:40:18,403 - INFO - Processing time for splited0803_s1_19_28.wav: 0.255433 seconds and Pred: 0.017777
+2025-06-07 20:40:18,668 - INFO - Processing time for splited0803_s1_19_29.wav: 0.265147 seconds and Pred: 0.017458
+2025-06-07 20:40:18,922 - INFO - Processing time for splited0803_s1_19_3.wav: 0.253394 seconds and Pred: 0.016766
+2025-06-07 20:40:19,183 - INFO - Processing time for splited0803_s1_19_4.wav: 0.261576 seconds and Pred: 0.016650
+2025-06-07 20:40:19,486 - INFO - Processing time for splited0803_s1_19_5.wav: 0.302541 seconds and Pred: 0.017051
+2025-06-07 20:40:19,734 - INFO - Processing time for splited0803_s1_19_6.wav: 0.247658 seconds and Pred: 0.016875
+2025-06-07 20:40:19,983 - INFO - Processing time for splited0803_s1_19_7.wav: 0.249511 seconds and Pred: 0.016547
+2025-06-07 20:40:20,235 - INFO - Processing time for splited0803_s1_19_8.wav: 0.251038 seconds and Pred: 0.016817
+2025-06-07 20:40:20,491 - INFO - Processing time for splited0803_s1_19_9.wav: 0.256263 seconds and Pred: 0.017125
+2025-06-07 20:40:20,742 - INFO - Processing time for splited0803_s1_1_0.wav: 0.251327 seconds and Pred: 0.017974
+2025-06-07 20:40:20,992 - INFO - Processing time for splited0803_s1_1_1.wav: 0.249465 seconds and Pred: 0.017292
+2025-06-07 20:40:21,242 - INFO - Processing time for splited0803_s1_1_10.wav: 0.249613 seconds and Pred: 0.017752
+2025-06-07 20:40:21,507 - INFO - Processing time for splited0803_s1_1_11.wav: 0.264728 seconds and Pred: 0.021165
+2025-06-07 20:40:21,758 - INFO - Processing time for splited0803_s1_1_12.wav: 0.250905 seconds and Pred: 0.017137
+2025-06-07 20:40:22,007 - INFO - Processing time for splited0803_s1_1_13.wav: 0.249099 seconds and Pred: 0.017431
+2025-06-07 20:40:22,258 - INFO - Processing time for splited0803_s1_1_14.wav: 0.251051 seconds and Pred: 0.017868
+2025-06-07 20:40:22,503 - INFO - Processing time for splited0803_s1_1_15.wav: 0.244760 seconds and Pred: 0.018043
+2025-06-07 20:40:22,755 - INFO - Processing time for splited0803_s1_1_16.wav: 0.252138 seconds and Pred: 0.018160
+2025-06-07 20:40:23,002 - INFO - Processing time for splited0803_s1_1_17.wav: 0.247112 seconds and Pred: 0.018666
+2025-06-07 20:40:23,279 - INFO - Processing time for splited0803_s1_1_18.wav: 0.276667 seconds and Pred: 0.018051
+2025-06-07 20:40:23,531 - INFO - Processing time for splited0803_s1_1_19.wav: 0.251377 seconds and Pred: 0.017631
+2025-06-07 20:40:23,779 - INFO - Processing time for splited0803_s1_1_2.wav: 0.248100 seconds and Pred: 0.018124
+2025-06-07 20:40:23,988 - INFO - Signal 2 received, exiting.
+2025-06-07 20:41:10,602 - INFO - Starting inference with config: {'DATASET': {'DATALOADER': {'BATCH_SIZE': 128, 'SHUFFLE': True}, 'PATH': {'ANOMALY': '/home/haiminh/Desktop/fanDataset/abnomalyTarget', 'NORMAL': '/home/haiminh/Desktop/fanDataset/normalTarget', 'TEST': None, 'TFRECORDS': ['/home/haiminh/Desktop/D-ESCA_v2/park_dataset_demo/mel_dataFan']}, 'RATIO': {'TEST': 0.1, 'TRAIN': 0.8}}, 'DEVICE': {'JETSON': False, 'USE_TENSORRT': False}, 'MODEL': {'TYPE': 'vq_vae'}, 'POSTPROCESS': {'PATH_SAVE_THRESHOLD': '/home/thanhho/SPARC/ESCA/Code/train_on_PCv2/Results/'}, 'PREPROCESS': {'AUDIO_LEN': 2, 'FRAME_RATE': 44100, 'GAMMA': {'CHANNELS': 32, 'F_MIN': 100, 'HOP_TIME': 0.06, 'WINDOW_TIME': 0.12}, 'MEL': {'NFFT': 2048, 'N_BANDS': 32, 'SR': 16000}, 'SAMPLE_PER_FILE': 200, 'SEGMENT_LEN': 2, 'TYPE': 'gamma', 'USE_TF_GTGRAM': True}, 'REALTIME': {'CHANNELS': 1, 'FOLDER_PATH': '/home/haiminh/Desktop/Data_Predictive_Maintainance/newNormal', 'IMPORT_FILE': True, 'LOG_PATH': '/home/haiminh/Desktop/ESCA_Qt/python_ai/rt_result', 'MANUAL_THRESHOLD': 0.001, 'MAX': 51.67738342285156, 'MIN': -23.14520263671875, 'MODEL_PATH': '/home/haiminh/Desktop/ESCA_Qt/python_ai/result', 'SAMPLESIZE': 16, 'SAMPLING_RATE': 44100, 'SECOND': 2, 'THRESHOLD': 0.002630938310176134}, 'RECORD': {'ABNOMALY': False, 'CHANNEL': 0, 'CODEC': 0, 'DATASET_PATH': './dataset_mic_laptop_16k', 'DEVICE': 0, 'DEVICENAME': 'default', 'DURATION': 0, 'ENDIAN': 0, 'SAMPLERATE': 3, 'SAMPLESIZE': 1}, 'TRAINING': {'EPOCH': 15, 'LEARNING_RATE': 0.001, 'LOG_FOLDER': '/home/haiminh/Desktop/info.txt', 'PRETRAINED_WEIGHTS': '/home/haiminh/Desktop/ESCA_Qt/python_ai/temp/saved_model', 'SAVE_PATH': '/home/haiminh/Desktop/ESCA_Qt/python_ai/resultFan'}, 'TRANSFER_LEARNING': {'ANOM_BATCH_SIZE': 128, 'BASED_WEIGHTS': '/home/haiminh/Desktop/ESCA_Qt/python_ai/resultFan/saved_model/vq_vae', 'BETA': 1, 'EPOCH': 81, 'LEARNING_RATE': 0.001, 'SAVE_PATH': '/home/haiminh/Desktop/ESCA_Qt/python_ai/tl_resultFan', 'TEST_DIR': None, 'TFRECORDS': ['/home/haiminh/Desktop/D-ESCA_v2/park_dataset_demo/mel_dataFanTarget']}}
+2025-06-07 20:41:11,000 - INFO - Fingerprint not found. Saved model loading will continue.
+2025-06-07 20:43:39,918 - INFO - Starting inference with config: {'DATASET': {'DATALOADER': {'BATCH_SIZE': 128, 'SHUFFLE': True}, 'PATH': {'ANOMALY': '/home/haiminh/Desktop/fanDataset/abnomalyTarget', 'NORMAL': '/home/haiminh/Desktop/fanDataset/normalTarget', 'TEST': None, 'TFRECORDS': ['/home/haiminh/Desktop/D-ESCA_v2/park_dataset_demo/mel_dataFan']}, 'RATIO': {'TEST': 0.1, 'TRAIN': 0.8}}, 'DEVICE': {'JETSON': False, 'USE_TENSORRT': False}, 'MODEL': {'TYPE': 'vq_vae'}, 'POSTPROCESS': {'PATH_SAVE_THRESHOLD': '/home/thanhho/SPARC/ESCA/Code/train_on_PCv2/Results/'}, 'PREPROCESS': {'AUDIO_LEN': 2, 'FRAME_RATE': 44100, 'GAMMA': {'CHANNELS': 32, 'F_MIN': 100, 'HOP_TIME': 0.06, 'WINDOW_TIME': 0.12}, 'MEL': {'NFFT': 2048, 'N_BANDS': 32, 'SR': 16000}, 'SAMPLE_PER_FILE': 200, 'SEGMENT_LEN': 2, 'TYPE': 'gamma', 'USE_TF_GTGRAM': True}, 'REALTIME': {'CHANNELS': 1, 'FOLDER_PATH': '/home/haiminh/Desktop/Data_Predictive_Maintainance/newNormal', 'IMPORT_FILE': True, 'LOG_PATH': '/home/haiminh/Desktop/ESCA_Qt/python_ai/rt_result', 'MANUAL_THRESHOLD': 0.001, 'MAX': 51.67738342285156, 'MIN': -23.14520263671875, 'MODEL_PATH': '/home/haiminh/Desktop/ESCA_Qt/python_ai/result', 'SAMPLESIZE': 16, 'SAMPLING_RATE': 44100, 'SECOND': 2, 'THRESHOLD': 0.002630938310176134}, 'RECORD': {'ABNOMALY': False, 'CHANNEL': 0, 'CODEC': 0, 'DATASET_PATH': './dataset_mic_laptop_16k', 'DEVICE': 0, 'DEVICENAME': 'default', 'DURATION': 0, 'ENDIAN': 0, 'SAMPLERATE': 3, 'SAMPLESIZE': 1}, 'TRAINING': {'EPOCH': 15, 'LEARNING_RATE': 0.001, 'LOG_FOLDER': '/home/haiminh/Desktop/info.txt', 'PRETRAINED_WEIGHTS': '/home/haiminh/Desktop/ESCA_Qt/python_ai/temp/saved_model', 'SAVE_PATH': '/home/haiminh/Desktop/ESCA_Qt/python_ai/resultFan'}, 'TRANSFER_LEARNING': {'ANOM_BATCH_SIZE': 128, 'BASED_WEIGHTS': '/home/haiminh/Desktop/ESCA_Qt/python_ai/resultFan/saved_model/vq_vae', 'BETA': 1, 'EPOCH': 81, 'LEARNING_RATE': 0.001, 'SAVE_PATH': '/home/haiminh/Desktop/ESCA_Qt/python_ai/tl_resultFan', 'TEST_DIR': None, 'TFRECORDS': ['/home/haiminh/Desktop/D-ESCA_v2/park_dataset_demo/mel_dataFanTarget']}}
+2025-06-07 20:43:40,368 - INFO - Fingerprint not found. Saved model loading will continue.
+2025-06-07 20:43:40,884 - INFO - Processing time for splited0803_s1_0_0.wav: 0.508225 seconds and Pred: 0.021970
+2025-06-07 20:43:41,167 - INFO - Processing time for splited0803_s1_0_1.wav: 0.282857 seconds and Pred: 0.019670
+2025-06-07 20:43:41,450 - INFO - Processing time for splited0803_s1_0_10.wav: 0.283329 seconds and Pred: 0.019190
+2025-06-07 20:43:41,717 - INFO - Processing time for splited0803_s1_0_11.wav: 0.266301 seconds and Pred: 0.018638
+2025-06-07 20:43:41,958 - INFO - Processing time for splited0803_s1_0_12.wav: 0.241025 seconds and Pred: 0.018467
+2025-06-07 20:43:42,200 - INFO - Processing time for splited0803_s1_0_13.wav: 0.241755 seconds and Pred: 0.018650
+2025-06-07 20:43:42,434 - INFO - Processing time for splited0803_s1_0_14.wav: 0.234041 seconds and Pred: 0.018843
+2025-06-07 20:43:42,673 - INFO - Processing time for splited0803_s1_0_15.wav: 0.238634 seconds and Pred: 0.017877
+2025-06-07 20:43:42,948 - INFO - Processing time for splited0803_s1_0_16.wav: 0.275384 seconds and Pred: 0.018257
+2025-06-07 20:43:43,206 - INFO - Processing time for splited0803_s1_0_17.wav: 0.257203 seconds and Pred: 0.017960
+2025-06-07 20:43:43,507 - INFO - Processing time for splited0803_s1_0_18.wav: 0.300986 seconds and Pred: 0.018132
+2025-06-07 20:43:43,778 - INFO - Processing time for splited0803_s1_0_19.wav: 0.270861 seconds and Pred: 0.017669
+2025-06-07 20:43:44,058 - INFO - Processing time for splited0803_s1_0_2.wav: 0.279740 seconds and Pred: 0.018713
+2025-06-07 20:43:44,360 - INFO - Processing time for splited0803_s1_0_20.wav: 0.302087 seconds and Pred: 0.018381
+2025-06-07 20:43:44,650 - INFO - Processing time for splited0803_s1_0_21.wav: 0.289862 seconds and Pred: 0.018519
+2025-06-07 20:43:44,899 - INFO - Processing time for splited0803_s1_0_22.wav: 0.248834 seconds and Pred: 0.018554
+2025-06-07 20:43:45,137 - INFO - Processing time for splited0803_s1_0_23.wav: 0.238191 seconds and Pred: 0.017883
+2025-06-07 20:43:45,405 - INFO - Processing time for splited0803_s1_0_24.wav: 0.267986 seconds and Pred: 0.018089
+2025-06-07 20:43:45,669 - INFO - Processing time for splited0803_s1_0_25.wav: 0.259095 seconds and Pred: 0.017878
+2025-06-07 20:43:45,917 - INFO - Processing time for splited0803_s1_0_26.wav: 0.247914 seconds and Pred: 0.018010
+2025-06-07 20:43:46,161 - INFO - Processing time for splited0803_s1_0_27.wav: 0.243414 seconds and Pred: 0.018538
+2025-06-07 20:43:46,437 - INFO - Processing time for splited0803_s1_0_28.wav: 0.275659 seconds and Pred: 0.018021
+2025-06-07 20:43:46,683 - INFO - Processing time for splited0803_s1_0_29.wav: 0.246528 seconds and Pred: 0.018126
+2025-06-07 20:43:46,932 - INFO - Processing time for splited0803_s1_0_3.wav: 0.248105 seconds and Pred: 0.019491
+2025-06-07 20:43:47,176 - INFO - Processing time for splited0803_s1_0_4.wav: 0.243958 seconds and Pred: 0.019875
+2025-06-07 20:43:47,418 - INFO - Processing time for splited0803_s1_0_5.wav: 0.241961 seconds and Pred: 0.020620
+2025-06-07 20:43:47,663 - INFO - Processing time for splited0803_s1_0_6.wav: 0.245596 seconds and Pred: 0.019709
+2025-06-07 20:43:47,901 - INFO - Processing time for splited0803_s1_0_7.wav: 0.237776 seconds and Pred: 0.019743
+2025-06-07 20:43:48,165 - INFO - Processing time for splited0803_s1_0_8.wav: 0.263733 seconds and Pred: 0.020197
+2025-06-07 20:43:48,410 - INFO - Processing time for splited0803_s1_0_9.wav: 0.244444 seconds and Pred: 0.019709
+2025-06-07 20:43:48,655 - INFO - Processing time for splited0803_s1_10_0.wav: 0.245179 seconds and Pred: 0.018360
+2025-06-07 20:43:48,912 - INFO - Processing time for splited0803_s1_10_1.wav: 0.256917 seconds and Pred: 0.017364
+2025-06-07 20:43:49,154 - INFO - Processing time for splited0803_s1_10_10.wav: 0.242353 seconds and Pred: 0.017784
+2025-06-07 20:43:49,399 - INFO - Processing time for splited0803_s1_10_11.wav: 0.244125 seconds and Pred: 0.017923
+2025-06-07 20:43:49,652 - INFO - Processing time for splited0803_s1_10_12.wav: 0.253354 seconds and Pred: 0.018256
+2025-06-07 20:43:49,899 - INFO - Processing time for splited0803_s1_10_13.wav: 0.246738 seconds and Pred: 0.017930
+2025-06-07 20:43:50,141 - INFO - Processing time for splited0803_s1_10_14.wav: 0.241892 seconds and Pred: 0.017563
+2025-06-07 20:43:50,391 - INFO - Processing time for splited0803_s1_10_15.wav: 0.249671 seconds and Pred: 0.019072
+2025-06-07 20:43:50,630 - INFO - Processing time for splited0803_s1_10_16.wav: 0.239606 seconds and Pred: 0.018028
+2025-06-07 20:43:50,871 - INFO - Processing time for splited0803_s1_10_17.wav: 0.240279 seconds and Pred: 0.017987
+2025-06-07 20:43:51,111 - INFO - Processing time for splited0803_s1_10_18.wav: 0.239767 seconds and Pred: 0.018414
+2025-06-07 20:43:51,370 - INFO - Processing time for splited0803_s1_10_19.wav: 0.258734 seconds and Pred: 0.017849
+2025-06-07 20:43:51,619 - INFO - Processing time for splited0803_s1_10_2.wav: 0.249472 seconds and Pred: 0.017508
+2025-06-07 20:43:51,863 - INFO - Processing time for splited0803_s1_10_20.wav: 0.243859 seconds and Pred: 0.017517
+2025-06-07 20:43:52,103 - INFO - Processing time for splited0803_s1_10_21.wav: 0.239465 seconds and Pred: 0.018234
+2025-06-07 20:43:52,359 - INFO - Signal 2 received, exiting.
