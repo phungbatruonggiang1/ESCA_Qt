@@ -30,7 +30,8 @@ ConfigurationManager::~ConfigurationManager()
 {
 }
 
-void ConfigurationManager::loadMetricsDetails() {
+void ConfigurationManager::loadMetricsDetails()
+{
     QFile file(m_modelPath+"/save_parameter/metrics_detail.json");
     if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
         qWarning() << "Không thể mở file metrics_details.json:" << m_modelPath+"/save_parameter/metrics_detail.json";
@@ -63,7 +64,8 @@ void ConfigurationManager::loadMetricsDetails() {
     qDebug() << "Đã cập nhật min:" << m_min;
 }
 
-bool ConfigurationManager::loadConfig() {
+bool ConfigurationManager::loadConfig()
+{
     QFile file(m_filePath);
     if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
         qWarning() << "Không thể mở file cấu hình:" << m_filePath;
@@ -106,7 +108,8 @@ bool ConfigurationManager::loadConfig() {
     return true;
 }
 
-bool ConfigurationManager::saveConfig() const {
+bool ConfigurationManager::saveConfig() const
+{
     QFile file(m_filePath);
     QJsonObject rootObject;
     if (file.exists()) {

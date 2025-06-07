@@ -9,5 +9,4 @@
 
 RecordingSchedule::RecordingSchedule()
 {
-
 }

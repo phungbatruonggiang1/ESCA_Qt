@@ -7,7 +7,8 @@
 
 #include "process.h"
 
-Process::Process(QObject* parent) : QObject(parent){
+Process::Process(QObject* parent) : QObject(parent)
+{
     connect(&m_process, &QProcess::errorOccurred, this, &Process::errorOccured);
     connect(&m_process, &QProcess::readyReadStandardError, this, &Process::readyReadStandardError);
     connect(&m_process, &QProcess::readyReadStandardOutput, this, &Process::readyReadStandardOutput);
@@ -41,14 +42,14 @@ void Process::stop()
 
 void Process::errorOccured(QProcess::ProcessError error)
 {
-    if(!m_running) return;
+    if (!m_running) return;
     qInfo() << Q_FUNC_INFO << error;
     qInfo() << "Error";
 }
 
 void Process::finished(int exitCode, QProcess::ExitStatus exitStatus)
 {
-    if(!m_running) return;
+    if (!m_running) return;
     qInfo() << Q_FUNC_INFO;
     Q_UNUSED(exitCode);
     Q_UNUSED(exitStatus);
@@ -57,7 +58,7 @@ void Process::finished(int exitCode, QProcess::ExitStatus exitStatus)
 
 void Process::readyReadStandardError()
 {
-    if(!m_running) return;
+    if (!m_running) return;
     // qInfo() << Q_FUNC_INFO;
     QByteArray data = m_process.readAllStandardError();
     QString message = "Standard Error: ";
@@ -67,7 +68,7 @@ void Process::readyReadStandardError()
 
 void Process::readyReadStandardOutput()
 {
-    if(!m_running) return;
+    if (!m_running) return;
     // qInfo() << Q_FUNC_INFO;
     QByteArray data = m_process.readAll().trimmed();
     // QByteArray data = m_process.readAllStandardOutput();
@@ -111,8 +112,8 @@ void Process::setStatement(const QString &newStatement)
 QString Process::getProcess()
 {
     qInfo() << Q_FUNC_INFO;
-    if(QSysInfo::productType() == "windows") return "cmd";
-    if(QSysInfo::productType() == "osx") return "/bin/zsh";
+    if (QSysInfo::productType() == "windows") return "cmd";
+    if (QSysInfo::productType() == "osx") return "/bin/zsh";
     return "bash";
 }
 
@@ -120,7 +121,7 @@ void Process::startProcess()
 {
     QByteArray command;
     command.append(m_statement);
-    if(QSysInfo::productType() == "windows") command.append("\r");
+    if (QSysInfo::productType() == "windows") command.append("\r");
     command.append("\n");
     m_process.write(command);
 }
