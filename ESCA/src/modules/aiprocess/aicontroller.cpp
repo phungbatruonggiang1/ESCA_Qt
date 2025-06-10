@@ -3,9 +3,14 @@
 
 AIController::AIController(QObject *parent) : QObject(parent)
 {
-    // configManager = new ConfigurationManager(this);
-    // sharedMemoryManager = new SharedMemoryManager(this);
+    configManager = new ConfigurationManager(this);
+    sharedMemoryManager = new SharedMemoryManager(this);
     processManager = new ProcessManager(this);
+
+    if (!sharedMemoryManager->init_ipc()) {
+        qWarning() << "Failed to initialize shared memory";
+    }
+
     // Kết nối tín hiệu từ ProcessManager tới AIController
     connect(processManager, &ProcessManager::resultReceived, this, &AIController::handleInferenceResult);
     connect(processManager, &ProcessManager::abnormalDetect, this, &AIController::handleAbnormalDetect);
@@ -15,15 +20,16 @@ AIController::AIController(QObject *parent) : QObject(parent)
 AIController::~AIController()
 {
     stop();
+    if (sharedMemoryManager) {
+        sharedMemoryManager->cleanup_ipc();
+    }
 }
 
 void AIController::start()
 {
-    // Đọc cấu hình
-    // if (!configManager->loadConfig("python_ai/ai_module/config/config.json")) {
-    //     qWarning() << "Failed to load configuration.";
-    //     return;
-    // }
+    if (!configManager->loadConfig()) {
+        qWarning() << "Failed to load configuration.";
+    }
     processManager->startPythonService();
     setinferenceStatus(true);
 }
@@ -43,12 +49,11 @@ void AIController::handleInferenceResult(const float predValue)
     }
     emit predValueChanged();
     qDebug() << "Total Pred Values Stored: " << m_predValue.size();
-    // qDebug() << "Data arr: "<<m_predValue;
 }
 
-void AIController::handleAbnormalDetect()
+void AIController::handleAbnormalDetect(QString outputStr)
 {
-    setAbnomalDetect(true);
+    setAbnomalDetect(outputStr);
     qDebug() << "setAbnomalDetect: "<<abnomalDetect();
 }
 
@@ -77,17 +82,6 @@ void AIController::setinferenceStatus(bool newInferenceStatus)
     emit inferenceStatusChanged();
 }
 
-bool AIController::abnomalDetect() const
-{
-    return m_abnomalDetect;
-}
-
-void AIController::setAbnomalDetect(bool newAbnomalDetect)
-{
-    m_abnomalDetect = newAbnomalDetect;
-    emit abnomalDetectChanged();
-}
-
 bool AIController::doneDetect() const
 {
     return m_doneDetect;
@@ -99,4 +93,15 @@ void AIController::setDoneDetect(bool newDoneDetect)
         return;
     m_doneDetect = newDoneDetect;
     emit doneDetectChanged();
+}
+
+QString AIController::abnomalDetect() const
+{
+    return m_abnomalDetect;
+}
+
+void AIController::setAbnomalDetect(const QString &newAbnomalDetect)
+{
+    m_abnomalDetect = newAbnomalDetect;
+    emit abnomalDetectChanged();
 }

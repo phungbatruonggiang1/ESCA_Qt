@@ -1,10 +1,11 @@
 #include "processmanager.h"
 #include <QDebug>
+#include <QCoreApplication>
 
 ProcessManager::ProcessManager(QObject *parent)
-    : Process(parent),
-    m_scriptPath("../../../../python_ai/inference/shared_memory_reader.py")
+    : Process(parent)
 {
+    m_scriptPath = "~/Desktop/ESCA_Qt/python_ai/inference.py";
     connect(&m_process, &QProcess::readyRead, this, &ProcessManager::handleStandardOutput);
 }
 
@@ -22,7 +23,9 @@ void ProcessManager::startPythonService()
     }
 
     qDebug() << "Current working directory:" << QDir::currentPath();
-    setStatement("python3 ~/Desktop/ESCA_Qt/python_ai/inference.py");
+    //setStatement("python3 ~/Desktop/ESCA_Qt/python_ai/inference.py");
+    QString cmd = QString("python3 %1").arg(m_scriptPath);
+    setStatement(cmd);
     qInfo() << statement();
 
     startProcess();
@@ -64,7 +67,7 @@ void ProcessManager::handleStandardOutput()
             emit doneProcess();
         } else {  // Nếu là chuỗi cảnh báo
             qWarning() << "Warning from Python:" << outputStr;
-            emit abnormalDetect();
+            emit abnormalDetect(outputStr);
         }
     }
 }
