@@ -41,9 +41,9 @@ QML_IMPORT_PATH = qml/imports
 QML_DESIGNER_IMPORT_PATH =
 
 # Default rules for deployment.
-qnx: target.path = /tmp/$${TARGET}/bin
-else: unix:!android: target.path = /home/haiminh/Desktop
-!isEmpty(target.path): INSTALLS += target
+#qnx: target.path = /tmp/$${TARGET}/bin
+#else: unix:!android: target.path = /home/haiminh/Desktop
+#!isEmpty(target.path): INSTALLS += target
 
 HEADERS += \
     # src/common/chartview.h \
